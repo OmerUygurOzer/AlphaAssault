@@ -7,8 +7,8 @@ import com.boomer.alphaassault.AlphaAssault;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.height = AlphaAssault.VIRTUAL_HEIGHT * AlphaAssault.SCALE;
-		config.width = AlphaAssault.VIRTUAL_WIDTH * AlphaAssault.SCALE;
+		config.height = 400;
+		config.width = 800;
 		new LwjglApplication(new AlphaAssault(), config);
 	}
 }

@@ -1,8 +1,17 @@
 package com.boomer.alphaassault.gamestates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.boomer.alphaassault.AlphaAssault;
 import com.boomer.alphaassault.GUI.Controller;
 import com.boomer.alphaassault.handlers.GameStateManager;
+import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.units.AssaultTrooper;
 import com.boomer.alphaassault.units.UnitBase;
 import com.boomer.alphaassault.utilities.Location;
@@ -15,10 +24,13 @@ public class Play extends GameStateBase {
     AssaultTrooper assaultTrooper;
     Controller controller;
 
+
     public Play(GameStateManager _gameStateManager) {
         super(_gameStateManager);
-        assaultTrooper = new AssaultTrooper(UnitBase.TEAM_RED,new Location(320,320));
+        //assaultTrooper = new AssaultTrooper(UnitBase.TEAM_RED,new Location(0,0));
         controller = new Controller();
+
+
     }
 
     @Override
@@ -33,13 +45,14 @@ public class Play extends GameStateBase {
 
     @Override
     public void render() {
-        System.out.println("WIDTH"+Gdx.graphics.getWidth());
-        System.out.println("HEIGHT"+Gdx.graphics.getHeight());
-        spriteBatch.setProjectionMatrix(orthographicCamera.combined);
-        spriteBatch.begin();
-        assaultTrooper.render(spriteBatch);
-        controller.render(spriteBatch);
-        spriteBatch.end();
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        AlphaAssault.mainSpriteBatch.begin();
+        controller.render(AlphaAssault.mainSpriteBatch);
+        AlphaAssault.mainSpriteBatch.end();
+
+
 
     }
 

@@ -7,8 +7,8 @@ import com.boomer.alphaassault.utilities.Location;
  * Created by Omer on 11/25/2015.
  */
 public class Crate extends MapFeatureBase {
-    public Crate(Location _location) {
-        super(FEATURE_TYPE_CRATE, _location);
+    public Crate(Location _LOCATION) {
+        super(FEATURE_TYPE_CRATE, _LOCATION);
     }
 
     @Override

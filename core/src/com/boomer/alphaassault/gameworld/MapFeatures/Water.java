@@ -7,8 +7,8 @@ import com.boomer.alphaassault.utilities.Location;
  * Created by Omer on 11/25/2015.
  */
 public class Water extends MapFeatureBase {
-    public Water(Location _location) {
-        super(FEATURE_TYPE_WATER, _location);
+    public Water(Location _LOCATION) {
+        super(FEATURE_TYPE_WATER, _LOCATION);
     }
 
     @Override

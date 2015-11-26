@@ -1,6 +1,8 @@
 package com.boomer.alphaassault.units;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
 
 /**
@@ -23,12 +25,19 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
 
 
-    public AssaultTrooper(int _TEAM, Location _location) {
-        super(UNIT_TYPE_ASSAULT, _TEAM, _location);
+    public AssaultTrooper(int _TEAM, Location _LOCATION) {
+        super(UNIT_TYPE_ASSAULT, _TEAM, _LOCATION);
         FLASHBANG_READY = true;
         FLASHBANG_FIRE_SPEED = 10;
         RUN_ACTIVE = false;
         RUN_READY = true;
+
+        UNIT_SPRITE = new Sprite(Resource.getTexture(Resource.TEXTURE_ASSAULT_TROOPER));
+        UNIT_SPRITE.setSize(RADIUS*5,RADIUS*5);
+
+        UNIT_SPRITE.setCenter(LOCATION.x,LOCATION.y);
+
+
 
     }
 
@@ -66,6 +75,8 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
     }
 
+
+
     @Override
     public void tick() {
         super.tick();
@@ -92,6 +103,6 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-            character.draw(spriteBatch);
+            UNIT_SPRITE.draw(spriteBatch);
     }
 }

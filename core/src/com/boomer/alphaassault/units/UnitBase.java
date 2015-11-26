@@ -4,6 +4,7 @@ package com.boomer.alphaassault.units;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
 import com.boomer.alphaassault.utilities.Ticker;
@@ -17,9 +18,6 @@ import java.util.Random;
  */
 public abstract class UnitBase implements Ticker, Renderable {
 
-    //GRAPHICS DETAILS
-    public static final Texture unitTexture = new Texture(Gdx.files.internal("character.png"));
-
     //TYPE DETAILS
     public static final int UNIT_TYPE_ASSAULT = 0;
     public static final int UNIT_TYPE_ENGINEER = 1;
@@ -30,11 +28,11 @@ public abstract class UnitBase implements Ticker, Renderable {
     public static final int TEAM_RED = 0;
     public static final int TEAM_BLUE = 1;
 
-    //MECHANIC DETAILS
+    //MECHANICAL/GRAPHICAL DETAILS
     protected int RADIUS;
     public double FACING_ANGLE;
     protected Location LOCATION;
-
+    protected Sprite UNIT_SPRITE;
 
     //TYPE PROPERTIES
     //COMMON
@@ -93,11 +91,7 @@ public abstract class UnitBase implements Ticker, Renderable {
     //TIMERS
     long FIRE_TIMER;
 
-    /*
-    * TEST!!!!
-    * */
 
-    protected Sprite character;
 
     UnitBase(int _TYPE, int _TEAM, Location _location){
 
@@ -111,10 +105,6 @@ public abstract class UnitBase implements Ticker, Renderable {
         FIRE_READY = true;
         INVISIBLE = false;
 
-        character = new Sprite(unitTexture);//TEST
-        //character.scale(2);
-        character.setSize(40,40);
-        character.setCenter(LOCATION.x,LOCATION.y);
 
 
         switch(TYPE){
@@ -180,7 +170,8 @@ public abstract class UnitBase implements Ticker, Renderable {
 
     public abstract void resupply();
 
-    public abstract void move(double angle);
+    public abstract void move(double _angle);
+
 
     @Override
     public void tick() {

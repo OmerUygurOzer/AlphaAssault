@@ -9,22 +9,22 @@ import com.boomer.alphaassault.handlers.GameStateManager;
  * Created by Omer on 11/24/2015.
  */
 public abstract class GameStateBase {
-    protected GameStateManager gameStateManager;
-    protected AlphaAssault game;
-    protected SpriteBatch spriteBatch;
-    protected OrthographicCamera orthographicCamera;
+    protected GameStateManager GAME_STATE_MANAGER;
+    protected AlphaAssault GAME;
+
+
+    protected static int SCREEN_WIDTH = 800;
+    protected static int SCREEN_HEIGHT = 400;
 
     public GameStateBase(GameStateManager _gameStateManager){
-        gameStateManager = _gameStateManager;
-        game = gameStateManager.game;
-        spriteBatch = game.spriteBatch;
-        orthographicCamera = game.orthographicCamera;
+        GAME_STATE_MANAGER = _gameStateManager;
+        GAME = GAME_STATE_MANAGER.game;
 
 
     }
 
     public abstract void handleInput();
-    public abstract void update(float deltaTime);
+    public abstract void update(float _deltaTime);
     public abstract void render();
     public abstract void dispose();
 }

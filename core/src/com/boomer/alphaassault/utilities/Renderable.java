@@ -6,5 +6,5 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Created by Omer on 11/25/2015.
  */
 public interface Renderable {
-    public void render(SpriteBatch spriteBatch);
+    public void render(SpriteBatch _spriteBatch);
 }

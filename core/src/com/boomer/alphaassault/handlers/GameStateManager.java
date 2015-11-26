@@ -3,6 +3,7 @@ package com.boomer.alphaassault.handlers;
 import com.boomer.alphaassault.AlphaAssault;
 import com.boomer.alphaassault.gamestates.GameStateBase;
 import com.boomer.alphaassault.gamestates.Play;
+import com.boomer.alphaassault.resources.Resource;
 
 import java.util.Stack;
 
@@ -12,12 +13,14 @@ import java.util.Stack;
 public class GameStateManager {
     public AlphaAssault game;
     private Stack<GameStateBase> gameStates;
+    private Resource gameResources;
 
     public static final int PLAY = 0;
 
     public GameStateManager (AlphaAssault _game){
         this.game = _game;
         gameStates = new Stack<GameStateBase>();
+
         pushState(PLAY);
 
     }

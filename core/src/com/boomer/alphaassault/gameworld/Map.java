@@ -10,13 +10,8 @@ public class Map implements Renderable{
 
 
 
-
-
-
-
-
     @Override
-    public void render(SpriteBatch spriteBatch) {
+    public void render(SpriteBatch _spriteBatch) {
 
     }
 }
