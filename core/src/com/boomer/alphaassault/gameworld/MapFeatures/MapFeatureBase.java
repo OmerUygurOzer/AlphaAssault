@@ -1,12 +1,15 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.boomer.alphaassault.graphics.GameGraphics;
+import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
 
 /**
  * Created by Omer on 11/25/2015.
  */
-public abstract class MapFeatureBase implements Renderable {
+public abstract class MapFeatureBase implements Renderable{
     //TYPE DETAILS
     public static final int FEATURE_TYPE_CRATE = 0;
     public static final int FEATURE_TYPE_BUSH = 1;
@@ -32,14 +35,17 @@ public abstract class MapFeatureBase implements Renderable {
 
     protected boolean DESTROYABLE;
 
-    //MECHANIC DETAILS
+    //MECHANIC/GRAPHICAL DETAILS
     protected Location LOCATION;
+    private long REFERENCE_ID;
+    private Sprite FEATURE_SPRITE;
 
-    public MapFeatureBase(int _TYPE, Location _location) {
+    public MapFeatureBase(int _type, Location _location) {
 
+        REFERENCE_ID = System.currentTimeMillis();
         LOCATION = _location;
 
-        switch (_TYPE){
+        switch (_type){
             case FEATURE_TYPE_CRATE:
                 DESTROYABLE = true;
                 BLOCKS_MOVEMENT = true;
@@ -84,6 +90,7 @@ public abstract class MapFeatureBase implements Renderable {
                 break;
         }
 
+        addToRenderState();
     }
 
     public boolean isDestroyable(){
@@ -115,4 +122,18 @@ public abstract class MapFeatureBase implements Renderable {
     }
 
 
+    @Override
+    public void addToRenderState() {
+        RenderStateManager.add(GameGraphics.CAMERA_TYPE_MAP,REFERENCE_ID,FEATURE_SPRITE,LOCATION);
+    }
+
+    @Override
+    public void createReferenceID() {
+        REFERENCE_ID = System.currentTimeMillis();
+    }
+
+    @Override
+    public long getReferenceID() {
+        return REFERENCE_ID;
+    }
 }

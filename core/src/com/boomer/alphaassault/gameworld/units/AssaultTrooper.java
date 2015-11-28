@@ -25,8 +25,8 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
 
 
-    public AssaultTrooper(int _TEAM, Location _LOCATION) {
-        super(UNIT_TYPE_ASSAULT, _TEAM, _LOCATION);
+    public AssaultTrooper(int _team, Location _location) {
+        super(UNIT_TYPE_ASSAULT, _team, _location);
         FLASHBANG_READY = true;
         FLASHBANG_FIRE_SPEED = 10;
         RUN_ACTIVE = false;
@@ -34,9 +34,9 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
         UNIT_SPRITE = new Sprite(Resource.getTexture(Resource.TEXTURE_ASSAULT_TROOPER));
         UNIT_SPRITE.setSize(RADIUS*5,RADIUS*5);
-
         UNIT_SPRITE.setCenter(LOCATION.x,LOCATION.y);
 
+       addToRenderState();
 
 
     }
@@ -101,8 +101,6 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
     }
 
-    @Override
-    public void render(SpriteBatch spriteBatch) {
-            UNIT_SPRITE.draw(spriteBatch);
-    }
+
+
 }

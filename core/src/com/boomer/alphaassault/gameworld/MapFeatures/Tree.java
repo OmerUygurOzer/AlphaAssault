@@ -11,8 +11,5 @@ public class Tree extends MapFeatureBase {
         super(FEATURE_TYPE_TREE, _LOCATION);
     }
 
-    @Override
-    public void render(SpriteBatch spriteBatch) {
 
-    }
 }

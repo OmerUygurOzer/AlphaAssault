@@ -1,6 +1,5 @@
 package com.boomer.alphaassault.gameworld;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boomer.alphaassault.utilities.Renderable;
 
 /**
@@ -9,9 +8,18 @@ import com.boomer.alphaassault.utilities.Renderable;
 public class Map implements Renderable{
 
 
+    @Override
+    public void addToRenderState() {
+
+    }
 
     @Override
-    public void render(SpriteBatch _spriteBatch) {
+    public void createReferenceID() {
 
+    }
+
+    @Override
+    public long getReferenceID() {
+        return 0;
     }
 }

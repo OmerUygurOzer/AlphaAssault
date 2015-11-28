@@ -11,8 +11,6 @@ public class Water extends MapFeatureBase {
         super(FEATURE_TYPE_WATER, _LOCATION);
     }
 
-    @Override
-    public void render(SpriteBatch spriteBatch) {
 
-    }
+
 }

@@ -11,8 +11,6 @@ public class Crate extends MapFeatureBase {
         super(FEATURE_TYPE_CRATE, _LOCATION);
     }
 
-    @Override
-    public void render(SpriteBatch spriteBatch) {
 
-    }
+
 }

@@ -2,6 +2,8 @@ package com.boomer.alphaassault.gameworld.units;
 
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.boomer.alphaassault.graphics.GameGraphics;
+import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
 import com.boomer.alphaassault.utilities.Updateable;
@@ -12,7 +14,7 @@ import java.util.Random;
 /**
  * Created by Omer on 11/24/2015.
  */
-public abstract class UnitBase implements Updateable, Renderable {
+public abstract class UnitBase implements Updateable,Renderable{
 
     //TYPE DETAILS
     public static final int UNIT_TYPE_ASSAULT = 0;
@@ -20,14 +22,12 @@ public abstract class UnitBase implements Updateable, Renderable {
     public static final int UNIT_TYPE_COMMANDO = 2;
     public static final int UNIT_TYPE_MEDIC = 3;
 
-    //TEAM DETAILS
-    public static final int TEAM_RED = 0;
-    public static final int TEAM_BLUE = 1;
 
     //MECHANICAL/GRAPHICAL DETAILS
     protected int RADIUS;
-    public double FACING_ANGLE;
+    protected double FACING_ANGLE;
     protected Location LOCATION;
+    private long REFERENCE_ID;
     protected Sprite UNIT_SPRITE;
 
     //TYPE PROPERTIES
@@ -89,18 +89,18 @@ public abstract class UnitBase implements Updateable, Renderable {
 
 
 
-    UnitBase(int _TYPE, int _TEAM, Location _location){
+    protected UnitBase(int _type, int _team, Location _location){
 
 
-        Random random = new Random();
-        FACING_ANGLE = random.nextInt((359 - 0) + 1) + 0;
-        TYPE = _TYPE;
-        TEAM = _TEAM;
+        Random RANDOM = new Random();
+        FACING_ANGLE = RANDOM.nextInt((359 - 0) + 1) + 0;
+        TYPE = _type;
+        TEAM = _team;
         RADIUS = UNIT_RADIUS;
         LOCATION = _location;
         FIRE_READY = true;
         INVISIBLE = false;
-
+        REFERENCE_ID = System.currentTimeMillis();
 
 
         switch(TYPE){
@@ -191,7 +191,21 @@ public abstract class UnitBase implements Updateable, Renderable {
         return INVISIBLE;
     }
 
+    public boolean isAlive() {return (HP>0);}
 
 
+    @Override
+    public void addToRenderState() {
+        RenderStateManager.add(GameGraphics.CAMERA_TYPE_MAP,REFERENCE_ID,UNIT_SPRITE,LOCATION);
+    }
 
+    @Override
+    public void createReferenceID() {
+        REFERENCE_ID = System.currentTimeMillis();
+    }
+
+    @Override
+    public long getReferenceID() {
+        return REFERENCE_ID;
+    }
 }

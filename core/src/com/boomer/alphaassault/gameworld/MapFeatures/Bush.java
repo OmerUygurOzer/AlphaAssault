@@ -12,9 +12,4 @@ public class Bush extends MapFeatureBase {
     }
 
 
-
-    @Override
-    public void render(SpriteBatch spriteBatch) {
-
-    }
 }

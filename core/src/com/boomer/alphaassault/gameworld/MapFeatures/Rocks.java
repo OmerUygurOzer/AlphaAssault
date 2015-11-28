@@ -11,8 +11,6 @@ public class Rocks extends MapFeatureBase {
         super(FEATURE_TYPE_ROCKS, _LOCATION);
     }
 
-    @Override
-    public void render(SpriteBatch spriteBatch) {
 
-    }
+
 }
