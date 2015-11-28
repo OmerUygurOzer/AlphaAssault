@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.units;
+package com.boomer.alphaassault.gameworld.units;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -78,8 +78,8 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
 
     @Override
-    public void tick() {
-        super.tick();
+    public void update() {
+        super.update();
         if(!FLASHBANG_READY) {
             if (FLASHBANG_TIMER + (1000 / FLASHBANG_FIRE_SPEED) < System.currentTimeMillis()) {
                 FLASHBANG_READY = true;

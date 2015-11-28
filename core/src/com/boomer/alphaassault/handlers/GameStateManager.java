@@ -1,5 +1,6 @@
 package com.boomer.alphaassault.handlers;
 
+import com.badlogic.gdx.Game;
 import com.boomer.alphaassault.AlphaAssault;
 import com.boomer.alphaassault.gamestates.GameStateBase;
 import com.boomer.alphaassault.gamestates.Play;
@@ -11,13 +12,13 @@ import java.util.Stack;
  * Created by Omer on 11/24/2015.
  */
 public class GameStateManager {
-    public AlphaAssault game;
+    public Game game;
     private Stack<GameStateBase> gameStates;
     private Resource gameResources;
 
     public static final int PLAY = 0;
 
-    public GameStateManager (AlphaAssault _game){
+    public GameStateManager (Game _game){
         this.game = _game;
         gameStates = new Stack<GameStateBase>();
 
@@ -50,6 +51,10 @@ public class GameStateManager {
     public void popState(){
         GameStateBase gameStateBase = gameStates.pop();
         gameStateBase.dispose();
+    }
+
+    public void reSize(int _width,int _height){
+        gameStates.peek().reSize(_width,_height);
     }
 
 }

@@ -1,22 +1,18 @@
-package com.boomer.alphaassault.units;
+package com.boomer.alphaassault.gameworld.units;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
-import com.boomer.alphaassault.utilities.Ticker;
+import com.boomer.alphaassault.utilities.Updateable;
 
 
-import java.awt.*;
 import java.util.Random;
 
 /**
  * Created by Omer on 11/24/2015.
  */
-public abstract class UnitBase implements Ticker, Renderable {
+public abstract class UnitBase implements Updateable, Renderable {
 
     //TYPE DETAILS
     public static final int UNIT_TYPE_ASSAULT = 0;
@@ -174,7 +170,7 @@ public abstract class UnitBase implements Ticker, Renderable {
 
 
     @Override
-    public void tick() {
+    public void update() {
             if (!FIRE_READY) {
                 if(FIRE_TIMER + (1000/FIRE_SPEED) < System.currentTimeMillis()) {
                     FIRE_READY = true;

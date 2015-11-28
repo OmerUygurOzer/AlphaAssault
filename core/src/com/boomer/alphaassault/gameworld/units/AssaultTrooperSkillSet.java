@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.units;
+package com.boomer.alphaassault.gameworld.units;
 
 /**
  * Created by Omer on 11/24/2015.

@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.gameworld.MapFeatures;
+package com.boomer.alphaassault.gameworld.mapfeatures;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boomer.alphaassault.utilities.Location;

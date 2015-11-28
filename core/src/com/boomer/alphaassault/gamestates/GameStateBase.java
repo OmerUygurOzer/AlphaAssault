@@ -1,8 +1,6 @@
 package com.boomer.alphaassault.gamestates;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.boomer.alphaassault.AlphaAssault;
+import com.badlogic.gdx.Game;
 import com.boomer.alphaassault.handlers.GameStateManager;
 
 /**
@@ -10,11 +8,8 @@ import com.boomer.alphaassault.handlers.GameStateManager;
  */
 public abstract class GameStateBase {
     protected GameStateManager GAME_STATE_MANAGER;
-    protected AlphaAssault GAME;
+    protected Game GAME;
 
-
-    protected static int SCREEN_WIDTH = 800;
-    protected static int SCREEN_HEIGHT = 400;
 
     public GameStateBase(GameStateManager _gameStateManager){
         GAME_STATE_MANAGER = _gameStateManager;
@@ -27,4 +22,5 @@ public abstract class GameStateBase {
     public abstract void update(float _deltaTime);
     public abstract void render();
     public abstract void dispose();
+    public abstract void reSize(int _width,int _height);
 }
