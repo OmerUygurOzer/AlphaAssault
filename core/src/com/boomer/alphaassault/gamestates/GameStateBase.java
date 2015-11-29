@@ -2,7 +2,11 @@ package com.boomer.alphaassault.gamestates;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.handlers.GameStateManager;
+
+import java.util.HashMap;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -10,18 +14,18 @@ import com.boomer.alphaassault.handlers.GameStateManager;
 public abstract class GameStateBase {
 
     protected GameStateManager GAME_STATE_MANAGER;
-    protected Game GAME;
+    protected RenderState RENDER_STATE;
+
 
 
 
     public GameStateBase(GameStateManager _gameStateManager){
         GAME_STATE_MANAGER = _gameStateManager;
-        GAME = GAME_STATE_MANAGER.GAME;
-
+        RENDER_STATE = new RenderState();
 
     }
 
-
+    public abstract void render(SpriteBatch _spriteBatch);
     public abstract void handleInput();
     public abstract void update(float _deltaTime);
     public abstract void dispose();

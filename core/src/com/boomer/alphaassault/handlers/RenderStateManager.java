@@ -2,6 +2,7 @@ package com.boomer.alphaassault.handlers;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.utilities.Location;
 
 /**
@@ -25,33 +26,20 @@ public class RenderStateManager {
         RENDER_STATE_ONE = new RenderState();
         RENDER_STATE_TWO = new RenderState();
         RENDER_STATE_THREE = new RenderState();
+
+
+        RENDER_STATE_ONE.CURRENT_STATE = RenderState.STATE_RECENTLY_UPDATED;
+        RENDER_STATE_TWO.CURRENT_STATE = RenderState.STATE_BEING_RENDERED;
+        RENDER_STATE_THREE.CURRENT_STATE = RenderState.STATE_BEING_UPDATED;
+
+        UPDATED_STATE = RENDER_STATE_ONE;
+        RENDERING_STATE = RENDER_STATE_TWO;
+        UPDATING_STATE = RENDER_STATE_THREE;
     }
 
 
     public static void add(int _type,Long _referenceID,Sprite _sprite, Location _location){
-        if(RENDER_STATE_ONE.isEmpty() && RENDER_STATE_TWO.isEmpty() && RENDER_STATE_THREE.isEmpty()){
-            DEFAULT =null;
-            RENDER_STATE_ONE.add(_type,_referenceID,_sprite,_location);
-            RENDER_STATE_TWO.add(_type,_referenceID,_sprite,_location);
-            RENDER_STATE_THREE.add(_type,_referenceID,_sprite,_location);
-
-            RENDER_STATE_ONE.CURRENT_STATE = RenderState.STATE_RECENTLY_UPDATED;
-            RENDER_STATE_TWO.CURRENT_STATE = RenderState.STATE_BEING_RENDERED;
-            RENDER_STATE_THREE.CURRENT_STATE = RenderState.STATE_BEING_UPDATED;
-
-            UPDATED_STATE = RENDER_STATE_ONE;
-            RENDERING_STATE = RENDER_STATE_TWO;
-            UPDATING_STATE = RENDER_STATE_THREE;
-
-
-           return;
-
-        }
-
         UPDATING_STATE.add(_type,_referenceID,_sprite,_location);
-
-
-
 
     }
 
@@ -72,6 +60,15 @@ public class RenderStateManager {
             UPDATED_STATE = switcher;
 
 
+
+    }
+
+    public static void changeGameRenderState(RenderState _renderState){
+        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_INACTIVE;
+        RENDER_STATE_ONE.copy(_renderState);
+        RENDER_STATE_TWO.copy(_renderState);
+        RENDER_STATE_THREE.copy(_renderState);
+        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
 
     }
 }

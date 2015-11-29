@@ -2,6 +2,7 @@ package com.boomer.alphaassault.handlers;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boomer.alphaassault.gamestates.GameStateBase;
 import com.boomer.alphaassault.gamestates.Play;
 
@@ -11,14 +12,14 @@ import java.util.Stack;
  * Created by Omer on 11/24/2015.
  */
 public class GameStateManager {
-    public Game GAME;
+
     private static Stack<GameStateBase> GAME_STATES;
 
 
     public static final int PLAY = 0;
 
-    public GameStateManager (Game _game){
-        GAME = _game;
+    public GameStateManager (){
+
         GAME_STATES = new Stack<GameStateBase>();
         pushState(PLAY);
 
@@ -53,6 +54,8 @@ public class GameStateManager {
         GAME_STATES.peek().reSize(_width,_height);
     }
 
-
+    public  void render(SpriteBatch _spriteBatch){
+        GAME_STATES.peek().render(_spriteBatch);
+    }
 
 }

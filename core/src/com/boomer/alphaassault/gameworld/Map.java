@@ -22,4 +22,9 @@ public class Map implements Renderable{
     public long getReferenceID() {
         return 0;
     }
+
+    @Override
+    public void setCameraType(int _cameraType) {
+
+    }
 }

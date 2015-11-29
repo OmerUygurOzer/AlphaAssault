@@ -10,10 +10,11 @@ import com.boomer.alphaassault.threads.UpdateThread;
 
 public class AlphaAssault extends RenderThread {
     UpdateThread updateThread;
-   InputThread inputThread;
+    InputThread inputThread;
 
     private GameStateManager gameStateManager;
     private Resource gameResources;
+
 
 
 
@@ -23,9 +24,10 @@ public class AlphaAssault extends RenderThread {
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
         gameResources = new Resource();
         gameResources.initialize();
-        gameStateManager = new GameStateManager(this);
+        gameStateManager = new GameStateManager();
         updateThread = new UpdateThread();
         inputThread = new InputThread();
+        setGameStateManager(gameStateManager);
     }
 
     @Override
@@ -48,9 +50,9 @@ public class AlphaAssault extends RenderThread {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int _width, int _height) {
         //super.resize(width, height);
-        gameStateManager.reSize(width,height);
+        gameStateManager.reSize(_width,_height);
     }
 
 

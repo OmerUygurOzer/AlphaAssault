@@ -31,7 +31,7 @@ public class UpdateThread implements Runnable {
 
                 while (TIME_ACCUMULATED >= GameSettings.UPS) {
                     TIME_ACCUMULATED -= GameSettings.UPS;
-                    //System.out.println("UPDATE");
+                    //System.out.println("UPDATE THREAD");
                     RenderStateManager.update();
 
                 }

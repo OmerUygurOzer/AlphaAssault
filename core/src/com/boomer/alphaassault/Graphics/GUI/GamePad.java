@@ -25,6 +25,7 @@ public class GamePad implements Renderable {
     private static final Location LEFT_BUTTON_CENTER = new Location(100,100);
 
     private long REFERENCE_ID;
+    private int CAMERA_TYPE;
 
 
     public GamePad() {
@@ -39,15 +40,16 @@ public class GamePad implements Renderable {
         GAME_FRAME.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
         GAME_FRAME.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
         GAME_FRAME_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
-        addToRenderState();
+
+
 
     }
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.add(GameGraphics.CAMERA_TYPE_SCREEN,REFERENCE_ID,LEFT_BUTTON_SPRITE, LEFT_BUTTON_CENTER);
-        RenderStateManager.add(GameGraphics.CAMERA_TYPE_SCREEN,REFERENCE_ID+1, LEFT_CIRCLE_SPRITE, LEFT_BUTTON_CENTER);
-        RenderStateManager.add(GameGraphics.CAMERA_TYPE_SCREEN,REFERENCE_ID+2, GAME_FRAME, GAME_FRAME_CENTER);
+        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID,LEFT_BUTTON_SPRITE, LEFT_BUTTON_CENTER);
+        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID+1, LEFT_CIRCLE_SPRITE, LEFT_BUTTON_CENTER);
+        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID+2, GAME_FRAME, GAME_FRAME_CENTER);
     }
 
     @Override
@@ -60,10 +62,14 @@ public class GamePad implements Renderable {
         return REFERENCE_ID;
     }
 
-
-    public void updateButton(){
-
+    @Override
+    public void setCameraType(int _cameraType) {
+        CAMERA_TYPE = _cameraType;
     }
+
+
+
+
 
 
 

@@ -36,7 +36,7 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
         UNIT_SPRITE.setSize(RADIUS*5,RADIUS*5);
         UNIT_SPRITE.setCenter(LOCATION.x,LOCATION.y);
 
-       addToRenderState();
+
 
 
     }

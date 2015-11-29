@@ -29,6 +29,7 @@ public abstract class UnitBase implements Updateable,Renderable{
     protected Location LOCATION;
     private long REFERENCE_ID;
     protected Sprite UNIT_SPRITE;
+    protected int CAMERA_TYPE;
 
     //TYPE PROPERTIES
     //COMMON
@@ -196,7 +197,7 @@ public abstract class UnitBase implements Updateable,Renderable{
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.add(GameGraphics.CAMERA_TYPE_MAP,REFERENCE_ID,UNIT_SPRITE,LOCATION);
+        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID,UNIT_SPRITE,LOCATION);
     }
 
     @Override
@@ -207,5 +208,10 @@ public abstract class UnitBase implements Updateable,Renderable{
     @Override
     public long getReferenceID() {
         return REFERENCE_ID;
+    }
+
+    @Override
+    public void setCameraType(int _cameraType) {
+        CAMERA_TYPE = _cameraType;
     }
 }

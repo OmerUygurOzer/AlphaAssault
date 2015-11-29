@@ -10,11 +10,6 @@ import com.boomer.alphaassault.graphics.GameGraphics;
  */
 public class InputManager extends InputAdapter {
 
-    GamePad Gp;
-
-    public InputManager() {
-        Gp = new GamePad();
-    }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {

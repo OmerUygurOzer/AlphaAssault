@@ -39,6 +39,7 @@ public abstract class MapFeatureBase implements Renderable{
     protected Location LOCATION;
     private long REFERENCE_ID;
     private Sprite FEATURE_SPRITE;
+    private int CAMERA_TYPE;
 
     public MapFeatureBase(int _type, Location _location) {
 
@@ -123,8 +124,13 @@ public abstract class MapFeatureBase implements Renderable{
 
 
     @Override
+    public void setCameraType(int _cameraType) {
+        CAMERA_TYPE = _cameraType;
+    }
+
+    @Override
     public void addToRenderState() {
-        RenderStateManager.add(GameGraphics.CAMERA_TYPE_MAP,REFERENCE_ID,FEATURE_SPRITE,LOCATION);
+        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID,FEATURE_SPRITE,LOCATION);
     }
 
     @Override
