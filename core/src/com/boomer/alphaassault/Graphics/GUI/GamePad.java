@@ -3,15 +3,20 @@ package com.boomer.alphaassault.graphics.GUI;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.boomer.alphaassault.handlers.controls.Inputs;
 import com.boomer.alphaassault.resources.Resource;
+import com.boomer.alphaassault.utilities.InputReceiver;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
 
 /**
  * Created by Omer on 11/25/2015.
  */
-public class GamePad implements Renderable {
+public class GamePad implements Renderable,InputReceiver {
 
+    public static final int LEFT = 0;
+    public static final int RIGHT = 1;
+    public static final int BOTH = 2;
 
     private Location GAME_FRAME_CENTER;
 
@@ -21,14 +26,19 @@ public class GamePad implements Renderable {
 
     private static final int LEFT_BUTTON_SIZE = 40;
     private static final int LEFT_CIRCLE_SIZE = 180;
+    private static final int LEFT_RADIUS = 90;
 
     private static final Location LEFT_BUTTON_CENTER = new Location(100,100);
+    private Location CURRENT_LOCATION;
 
     private long REFERENCE_ID;
     private int CAMERA_TYPE;
 
+    private int TYPE;
 
-    public GamePad() {
+
+
+    public GamePad(int _type) {
         REFERENCE_ID = System.currentTimeMillis();
         LEFT_BUTTON_SPRITE = new Sprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
         LEFT_BUTTON_SPRITE.setSize(LEFT_BUTTON_SIZE,LEFT_BUTTON_SIZE);
@@ -41,7 +51,8 @@ public class GamePad implements Renderable {
         GAME_FRAME.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
         GAME_FRAME_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
-
+        CURRENT_LOCATION = new Location(LEFT_BUTTON_CENTER);
+        TYPE = _type;
 
     }
 
@@ -68,9 +79,23 @@ public class GamePad implements Renderable {
     }
 
 
+    @Override
+    public void receiveInput() {
+        if(!Inputs.getInputs().isEmpty()){
+            for (Long key : Inputs.getInputs().keySet()){
+                if(Location.getDistance(Inputs.getInputs().get(key),CURRENT_LOCATION)<LEFT_RADIUS){
+                    CURRENT_LOCATION.x = Inputs.getInputs().get(key).x;
+                    CURRENT_LOCATION.y = Inputs.getInputs().get(key).y;
+                    LEFT_BUTTON_SPRITE.setCenter(CURRENT_LOCATION.x,CURRENT_LOCATION.y);
+                    return;
+                }
+            }
+
+        }
 
 
-
-
-
+        CURRENT_LOCATION.x = 100f;
+        CURRENT_LOCATION.y = 100f;
+        LEFT_BUTTON_SPRITE.setCenter(CURRENT_LOCATION.x,CURRENT_LOCATION.y);
+    }
 }

@@ -68,6 +68,7 @@ public class RenderStateManager {
         RENDER_STATE_ONE.copy(_renderState);
         RENDER_STATE_TWO.copy(_renderState);
         RENDER_STATE_THREE.copy(_renderState);
+
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
 
     }

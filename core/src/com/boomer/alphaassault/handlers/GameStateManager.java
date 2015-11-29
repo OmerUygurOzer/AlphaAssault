@@ -14,8 +14,6 @@ import java.util.Stack;
 public class GameStateManager {
 
     private static Stack<GameStateBase> GAME_STATES;
-
-
     public static final int PLAY = 0;
 
     public GameStateManager (){
@@ -28,8 +26,6 @@ public class GameStateManager {
     public void update(float deltaTime){
             GAME_STATES.peek().update(deltaTime);
     }
-
-
 
     private GameStateBase getState(int _state){
         if(_state == PLAY){return new Play(this);}
@@ -50,12 +46,12 @@ public class GameStateManager {
         gameStateBase.dispose();
     }
 
-    public void reSize(int _width,int _height){
-        GAME_STATES.peek().reSize(_width,_height);
+    public void reSize(int _width,int _height){GAME_STATES.peek().reSize(_width,_height);}
+
+    public GameStateBase getGameState(){
+        return GAME_STATES.peek();
     }
 
-    public  void render(SpriteBatch _spriteBatch){
-        GAME_STATES.peek().render(_spriteBatch);
-    }
+
 
 }

@@ -106,4 +106,22 @@ public class Resource {
         }
 
     }
+
+    public void disposeAll(){
+        for(Object o : textures.values()) {
+            Texture tex = (Texture) o;
+            tex.dispose();
+        }
+        textures.clear();
+        for(Object o : musics.values()) {
+            Music music = (Music) o;
+            music.dispose();
+        }
+        musics.clear();
+        for(Object o : sounds.values()) {
+            Sound sound = (Sound) o;
+            sound.dispose();
+        }
+        sounds.clear();
+    }
 }

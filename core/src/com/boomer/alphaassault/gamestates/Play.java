@@ -3,12 +3,10 @@ package com.boomer.alphaassault.gamestates;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.*;
 import com.boomer.alphaassault.gameworld.units.AssaultTrooper;
 import com.boomer.alphaassault.graphics.GUI.GamePad;
 import com.boomer.alphaassault.graphics.GameGraphics;
-
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.settings.GameSettings;
@@ -26,7 +24,7 @@ public class Play extends GameStateBase {
     private Viewport MAP_VIEW;
 
     private OrthographicCamera SCREEN_CAM;
-    private OrthographicCamera MAP_CAM;
+   private OrthographicCamera MAP_CAM;
 
     AssaultTrooper assaultTrooper;
     GamePad GAME_PAD;
@@ -51,7 +49,7 @@ public class Play extends GameStateBase {
         RENDER_STATE.addCamera(CAMERA_TYPE_SCREEN,SCREEN_CAM);
         RENDER_STATE.addCamera(CAMERA_TYPE_MAP,MAP_CAM);
 
-        GAME_PAD = new GamePad();
+        GAME_PAD = new GamePad(GamePad.LEFT);
 
         RenderStateManager.changeGameRenderState(RENDER_STATE);
         GAME_PAD.setCameraType(CAMERA_TYPE_SCREEN);
@@ -74,6 +72,7 @@ public class Play extends GameStateBase {
     @Override
     public void handleInput() {
 
+        GAME_PAD.receiveInput();
     }
 
     @Override
@@ -90,7 +89,7 @@ public class Play extends GameStateBase {
     @Override
     public void reSize(int _width, int _height) {
       SCREEN_VIEW.update(_width,_height);
-      MAP_VIEW.update(_width,_height);
+
 
     }
 }

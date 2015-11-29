@@ -36,9 +36,10 @@ public class RenderThread extends Game {
             while (TIME_ACCUMULATED >= GameSettings.RPS) {
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 TIME_ACCUMULATED -= GameSettings.RPS;
-
+                //System.out.println(Thread.currentThread().getId());
                 //System.out.println("RENDER THREAD");
-                GAME_STATE_MANAGER.render(SPRITE_BATCH);
+                GAME_STATE_MANAGER.getGameState().render(SPRITE_BATCH);
+
 
 
 
