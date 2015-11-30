@@ -2,7 +2,6 @@ package com.boomer.alphaassault.gameworld.units;
 
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
@@ -16,7 +15,7 @@ import java.util.Random;
  */
 public abstract class UnitBase implements Updateable,Renderable{
 
-    //TYPE DETAILS
+    //type DETAILS
     public static final int UNIT_TYPE_ASSAULT = 0;
     public static final int UNIT_TYPE_ENGINEER = 1;
     public static final int UNIT_TYPE_COMMANDO = 2;
@@ -24,14 +23,14 @@ public abstract class UnitBase implements Updateable,Renderable{
 
 
     //MECHANICAL/GRAPHICAL DETAILS
-    protected int RADIUS;
-    protected double FACING_ANGLE;
-    protected Location LOCATION;
-    private long REFERENCE_ID;
-    protected Sprite UNIT_SPRITE;
-    protected int CAMERA_TYPE;
+    protected int radius;
+    protected double facingAngle;
+    protected Location location;
+    private long referenceId;
+    protected Sprite unitSprite;
+    protected int cameraType;
 
-    //TYPE PROPERTIES
+    //type PROPERTIES
     //COMMON
     public static final int UNIT_RADIUS = 6;
     //ASSAULT TROOPER
@@ -72,18 +71,18 @@ public abstract class UnitBase implements Updateable,Renderable{
     public static final int MEDIC_AMMO_S2 = 1;
 
     //IN-GAME DETAILS
-    public int HP;
-    private int TYPE;
-    public int TEAM;
+    private int HP;
+    private int type;
+    private int team;
     public int AMMO_S1;
     public int AMMO_S2;
-    public int DAMAGE;
-    private int RANGE;
-    protected int MOVEMENT_SPEED;
-    private int FIRE_SPEED;
-    private int SIGHT;
-    private boolean FIRE_READY;
-    protected boolean INVISIBLE;
+    private int damage;
+    private int range;
+    protected int movementSpeed;
+    private int firingSpeed;
+    private int sight;
+    private boolean readyToFire;
+    private boolean invisibility;
 
     //TIMERS
     long FIRE_TIMER;
@@ -94,54 +93,54 @@ public abstract class UnitBase implements Updateable,Renderable{
 
 
         Random RANDOM = new Random();
-        FACING_ANGLE = RANDOM.nextInt((359 - 0) + 1) + 0;
-        TYPE = _type;
-        TEAM = _team;
-        RADIUS = UNIT_RADIUS;
-        LOCATION = _location;
-        FIRE_READY = true;
-        INVISIBLE = false;
-        REFERENCE_ID = System.currentTimeMillis();
+        facingAngle = RANDOM.nextInt((359 - 0) + 1) + 0;
+        type = _type;
+        team = _team;
+        radius = UNIT_RADIUS;
+        location = _location;
+        readyToFire = true;
+        invisibility = false;
+        referenceId = System.currentTimeMillis();
 
 
-        switch(TYPE){
+        switch(type){
             case UNIT_TYPE_ASSAULT:
                 HP = ASSAULT_HP;
-                RANGE = ASSAULT_RANGE;
-                SIGHT = ASSAULT_SIGHT;
-                FIRE_SPEED = ASSAULT_FIRE_SPEED;
-                DAMAGE = ASSAULT_DAMAGE;
-                MOVEMENT_SPEED = ASSAULT_MOVEMENT_SPEED;
+                range = ASSAULT_RANGE;
+                sight = ASSAULT_SIGHT;
+                firingSpeed = ASSAULT_FIRE_SPEED;
+                damage = ASSAULT_DAMAGE;
+                movementSpeed = ASSAULT_MOVEMENT_SPEED;
                 AMMO_S1 = ASSAULT_AMMO_S1;
                 AMMO_S2 = ASSAULT_AMMO_S2;
                 break;
             case UNIT_TYPE_COMMANDO:
                 HP = COMMANDO_HP;
-                RANGE = COMMANDO_RANGE;
-                SIGHT = COMMANDO_SIGHT;
-                FIRE_SPEED = COMMANDO_FIRE_SPEED;
-                DAMAGE = COMMANDO_DAMAGE;
-                MOVEMENT_SPEED = COMMANDO_MOVEMENT_SPEED;
+                range = COMMANDO_RANGE;
+                sight = COMMANDO_SIGHT;
+                firingSpeed = COMMANDO_FIRE_SPEED;
+                damage = COMMANDO_DAMAGE;
+                movementSpeed = COMMANDO_MOVEMENT_SPEED;
                 AMMO_S1 = COMMANDO_AMMO_S1;
                 AMMO_S2 = COMMANDO_AMMO_S2;
                 break;
             case UNIT_TYPE_ENGINEER:
                 HP = ENGINEER_HP;
-                RANGE = ENGINEER_RANGE;
-                SIGHT = ENGINEER_SIGHT;
-                FIRE_SPEED = ENGINEER_FIRE_SPEED;
-                DAMAGE = ENGINEER_DAMAGE;
-                MOVEMENT_SPEED = ENGINEER_MOVEMENT_SPEED;
+                range = ENGINEER_RANGE;
+                sight = ENGINEER_SIGHT;
+                firingSpeed = ENGINEER_FIRE_SPEED;
+                damage = ENGINEER_DAMAGE;
+                movementSpeed = ENGINEER_MOVEMENT_SPEED;
                 AMMO_S1 = ENGINEER_AMMO_S1;
                 AMMO_S2 = ENGINEER_AMMO_S2;
                 break;
             case UNIT_TYPE_MEDIC:
                 HP =  MEDIC_HP;
-                RANGE = MEDIC_RANGE;
-                SIGHT = MEDIC_SIGHT;
-                FIRE_SPEED = MEDIC_FIRE_SPEED;
-                DAMAGE = MEDIC_DAMAGE;
-                MOVEMENT_SPEED = MEDIC_MOVEMENT_SPEED;
+                range = MEDIC_RANGE;
+                sight = MEDIC_SIGHT;
+                firingSpeed = MEDIC_FIRE_SPEED;
+                damage = MEDIC_DAMAGE;
+                movementSpeed = MEDIC_MOVEMENT_SPEED;
                 AMMO_S1 = MEDIC_AMMO_S1;
                 AMMO_S2 = MEDIC_AMMO_S2;
                 break;
@@ -155,9 +154,9 @@ public abstract class UnitBase implements Updateable,Renderable{
     }
 
     public void fire(){
-        if(FIRE_READY){
+        if(readyToFire){
             FIRE_TIMER = System.currentTimeMillis();
-            FIRE_READY = false;
+            readyToFire = false;
             //FIRE
         }
 
@@ -172,46 +171,45 @@ public abstract class UnitBase implements Updateable,Renderable{
 
     @Override
     public void update() {
-            if (!FIRE_READY) {
-                if(FIRE_TIMER + (1000/FIRE_SPEED) < System.currentTimeMillis()) {
-                    FIRE_READY = true;
+            if (!readyToFire) {
+                if(FIRE_TIMER + (1000/ firingSpeed) < System.currentTimeMillis()) {
+                    readyToFire = true;
                 }
             }
 
     }
 
     public Location getLocation(){
-        return LOCATION;
+        return location;
     }
-
     public int getRadius(){
-        return RADIUS;
+        return radius;
     }
-
     public boolean isInvisible(){
-        return INVISIBLE;
+        return invisibility;
     }
-
     public boolean isAlive() {return (HP>0);}
+    public int getHP(){return HP;}
+    public int getTeam(){return team;}
 
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID,UNIT_SPRITE,LOCATION);
+        RenderStateManager.add(cameraType, referenceId, unitSprite);
     }
 
     @Override
     public void createReferenceID() {
-        REFERENCE_ID = System.currentTimeMillis();
+        referenceId = System.currentTimeMillis();
     }
 
     @Override
     public long getReferenceID() {
-        return REFERENCE_ID;
+        return referenceId;
     }
 
     @Override
     public void setCameraType(int _cameraType) {
-        CAMERA_TYPE = _cameraType;
+        cameraType = _cameraType;
     }
 }

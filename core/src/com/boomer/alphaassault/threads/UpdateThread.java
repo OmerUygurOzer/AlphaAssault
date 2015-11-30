@@ -35,11 +35,9 @@ public class UpdateThread implements Runnable {
                 while (timeAccumulated >= GameSettings.UPS) {
                     timeAccumulated -= GameSettings.UPS;
 
-
-                   // System.out.println("UPDATE THREAD");
                     gameStateManager.getGameState().handleInput();
                     gameStateManager.getGameState().update(getDeltaTime());
-                    RenderStateManager.update();
+                    RenderStateManager.switchRenderState();
                 }
                 wait(1);
 
@@ -48,9 +46,6 @@ public class UpdateThread implements Runnable {
 
     }
 
-    public void start(){
-        updateThread.start();
-    }
 
     private float getDeltaTime(){
         if(timeAccumulated == 0){

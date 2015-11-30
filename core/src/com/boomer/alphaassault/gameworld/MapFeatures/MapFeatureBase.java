@@ -130,7 +130,7 @@ public abstract class MapFeatureBase implements Renderable{
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID,FEATURE_SPRITE,LOCATION);
+        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID,FEATURE_SPRITE);
     }
 
     @Override

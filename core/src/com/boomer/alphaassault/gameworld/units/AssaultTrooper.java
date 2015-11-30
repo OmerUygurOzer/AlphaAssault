@@ -1,7 +1,6 @@
 package com.boomer.alphaassault.gameworld.units;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
 
@@ -32,9 +31,9 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
         RUN_ACTIVE = false;
         RUN_READY = true;
 
-        UNIT_SPRITE = new Sprite(Resource.getTexture(Resource.TEXTURE_ASSAULT_TROOPER));
-        UNIT_SPRITE.setSize(RADIUS*5,RADIUS*5);
-        UNIT_SPRITE.setCenter(LOCATION.x,LOCATION.y);
+        unitSprite = new Sprite(Resource.getTexture(Resource.TEXTURE_ASSAULT_TROOPER));
+        unitSprite.setSize(radius *5, radius *5);
+        unitSprite.setCenter(location.x, location.y);
 
 
 
@@ -61,7 +60,7 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
             RUN_READY = false;
             RUN_COOLDOWN_TIMER = System.currentTimeMillis();
             RUN_DURATION_TIMER = System.currentTimeMillis();
-            MOVEMENT_SPEED += RUN_BOOST;
+            movementSpeed += RUN_BOOST;
         }
     }
 
@@ -93,7 +92,7 @@ public class AssaultTrooper extends UnitBase implements AssaultTrooperSkillSet {
 
         if(RUN_ACTIVE) {
             if (RUN_DURATION_TIMER + (RUN_DURATION * 1000) < System.currentTimeMillis()) {
-               MOVEMENT_SPEED -=RUN_BOOST;
+               movementSpeed -=RUN_BOOST;
                RUN_ACTIVE = false;
             }
         }

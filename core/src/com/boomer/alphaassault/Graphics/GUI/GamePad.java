@@ -14,68 +14,100 @@ import com.boomer.alphaassault.utilities.Renderable;
  */
 public class GamePad implements Renderable,InputReceiver {
 
+    //GAMEPAD TYPE
+    //LEFT : ONLY LEFT CONSOLE
+    //RIGHT: ONLY RIGHT CONSOLE
+    //BOTH: RIGHT AND LEFT CONSOLES
+    private int TYPE;
+
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     public static final int BOTH = 2;
 
-    private Location GAME_FRAME_CENTER;
+    private Location gameFrameCenter;
 
-    private Sprite LEFT_BUTTON_SPRITE;
-    private Sprite LEFT_CIRCLE_SPRITE;
-    private Sprite GAME_FRAME;
+    //GAME PAD SPRITES
+    private Sprite leftButtonSprite;
+    private Sprite leftCircleSprite;
+    private Sprite rightButtonSprite;
+    private Sprite rightCircleSprite;
+    private Sprite gameFrame;
 
-    private static final int LEFT_BUTTON_SIZE = 40;
-    private static final int LEFT_CIRCLE_SIZE = 180;
-    private static final int LEFT_RADIUS = 90;
+
+    private static final int BUTTON_SIZE = 40;
+    private static final int CIRCLE_SIZE = 180;
+    private static final int RADIUS = 90;
 
     private static final Location LEFT_BUTTON_CENTER = new Location(100,100);
-    private Location CURRENT_LOCATION;
+    private static final Location RIGHT_BUTTON_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH-100,100);
 
-    private long REFERENCE_ID;
-    private int CAMERA_TYPE;
+    private Location leftCurrentLocation;
+    private Location rightCurrentLocation;
 
-    private int TYPE;
+    private long referenceId;
+    private int cameraType;
+
+    private boolean leftActive;
+    private boolean rightActive;
 
 
 
     public GamePad(int _type) {
-        REFERENCE_ID = System.currentTimeMillis();
-        LEFT_BUTTON_SPRITE = new Sprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
-        LEFT_BUTTON_SPRITE.setSize(LEFT_BUTTON_SIZE,LEFT_BUTTON_SIZE);
-        LEFT_BUTTON_SPRITE.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
-        LEFT_CIRCLE_SPRITE = new Sprite(Resource.getTexture(Resource.TEXTURE_LEFT_CIRCLE));
-        LEFT_CIRCLE_SPRITE.setSize(LEFT_CIRCLE_SIZE,LEFT_CIRCLE_SIZE);
-        LEFT_CIRCLE_SPRITE.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
-        GAME_FRAME = new Sprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
-        GAME_FRAME.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
-        GAME_FRAME.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
-        GAME_FRAME_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+        referenceId = System.currentTimeMillis();
 
-        CURRENT_LOCATION = new Location(LEFT_BUTTON_CENTER);
+        //LEFT
+        leftButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
+        leftButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        leftButtonSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
+        leftCircleSprite = new Sprite(Resource.getTexture(Resource.TEXTURE_LEFT_CIRCLE));
+        leftCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
+        leftCircleSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
+        leftCurrentLocation = new Location(LEFT_BUTTON_CENTER);
+        leftActive = false;
+
+        //RIGHT
+        rightButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_RIGHT_BUTTON));
+        rightButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        rightButtonSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
+        rightCircleSprite = new Sprite(Resource.getTexture(Resource.TEXTURE_RIGHT_CIRCLE));
+        rightCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
+        rightCircleSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
+        rightCurrentLocation = new Location(RIGHT_BUTTON_CENTER);
+        rightActive = false;
+
+        //GAME HUD VIEW FRAME
+        gameFrame = new Sprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
+        gameFrame.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
+        gameFrame.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+        gameFrameCenter = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+
+
         TYPE = _type;
 
     }
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID,LEFT_BUTTON_SPRITE, LEFT_BUTTON_CENTER);
-        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID+1, LEFT_CIRCLE_SPRITE, LEFT_BUTTON_CENTER);
-        RenderStateManager.add(CAMERA_TYPE,REFERENCE_ID+2, GAME_FRAME, GAME_FRAME_CENTER);
+        RenderStateManager.add(cameraType, referenceId, leftButtonSprite);
+        RenderStateManager.add(cameraType, referenceId +1, leftCircleSprite);
+        RenderStateManager.add(cameraType, referenceId +2, rightCircleSprite);
+        RenderStateManager.add(cameraType, referenceId +3, rightButtonSprite);
+        RenderStateManager.add(cameraType, referenceId +4, gameFrame);
     }
 
     @Override
     public void createReferenceID() {
-        REFERENCE_ID = System.currentTimeMillis();
+        referenceId = System.currentTimeMillis();
     }
 
     @Override
     public long getReferenceID() {
-        return REFERENCE_ID;
+        return referenceId;
     }
 
     @Override
     public void setCameraType(int _cameraType) {
-        CAMERA_TYPE = _cameraType;
+        cameraType = _cameraType;
     }
 
 
@@ -83,19 +115,39 @@ public class GamePad implements Renderable,InputReceiver {
     public void receiveInput() {
         if(!Inputs.getInputs().isEmpty()){
             for (Long key : Inputs.getInputs().keySet()){
-                if(Location.getDistance(Inputs.getInputs().get(key),CURRENT_LOCATION)<LEFT_RADIUS){
-                    CURRENT_LOCATION.x = Inputs.getInputs().get(key).x;
-                    CURRENT_LOCATION.y = Inputs.getInputs().get(key).y;
-                    LEFT_BUTTON_SPRITE.setCenter(CURRENT_LOCATION.x,CURRENT_LOCATION.y);
-                    return;
+                if(Location.getDistance(Inputs.getInputs().get(key), leftCurrentLocation)< RADIUS){
+                    leftCurrentLocation.x = Inputs.getInputs().get(key).x;
+                    leftCurrentLocation.y = Inputs.getInputs().get(key).y;
+                    leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
+                    RenderStateManager.updatingState.updateElement(referenceId,leftButtonSprite);
+                    leftActive = true;
+
                 }
+                if(Location.getDistance(Inputs.getInputs().get(key), rightCurrentLocation)< RADIUS){
+                    rightCurrentLocation.x = Inputs.getInputs().get(key).x;
+                    rightCurrentLocation.y = Inputs.getInputs().get(key).y;
+                    rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
+                    RenderStateManager.updatingState.updateElement(referenceId+3,leftButtonSprite);
+                    rightActive = true;
+                }
+
             }
 
         }
 
 
-        CURRENT_LOCATION.x = 100f;
-        CURRENT_LOCATION.y = 100f;
-        LEFT_BUTTON_SPRITE.setCenter(CURRENT_LOCATION.x,CURRENT_LOCATION.y);
+
+        leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
+        leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
+        leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
+        RenderStateManager.updatingState.updateElement(referenceId,leftButtonSprite);
+    }
+
+    private void updateLeft(){
+
+    }
+
+    private void updateRight(){
+
     }
 }

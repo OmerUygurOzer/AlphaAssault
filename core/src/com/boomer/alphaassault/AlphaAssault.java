@@ -24,7 +24,6 @@ public class AlphaAssault extends RenderThread {
     @Override
     public void create() {
         super.create();
-        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
         gameResources = new Resource();
         gameResources.initialize();
         gameStateManager = new GameStateManager();
@@ -32,8 +31,12 @@ public class AlphaAssault extends RenderThread {
         inputThread = new InputThread();
         setGameStateManager(gameStateManager);
 
-
-
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
     }
 
     @Override

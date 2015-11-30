@@ -27,6 +27,8 @@ public class Resource {
 * */
     public static final int TEXTURE_LEFT_BUTTON = 12;
     public static final int TEXTURE_LEFT_CIRCLE = 13;
+    public static final int TEXTURE_RIGHT_BUTTON = 14;
+    public static final int TEXTURE_RIGHT_CIRCLE = 15;
 //OTHER TEXTURES
 
     public static final int TEXTURE_HUD_CAM = 20;
@@ -46,6 +48,10 @@ public class Resource {
         textures.put(TEXTURE_LEFT_BUTTON,texture);
         texture = new Texture(Gdx.files.internal("greencircle.png"));
         textures.put(TEXTURE_LEFT_CIRCLE,texture);
+        texture = new Texture(Gdx.files.internal("redbutton.png"));
+        textures.put(TEXTURE_RIGHT_BUTTON,texture);
+        texture = new Texture(Gdx.files.internal("redcircle.png"));
+        textures.put(TEXTURE_RIGHT_CIRCLE,texture);
         texture = new Texture(Gdx.files.internal("hudcam.png"));
         textures.put(TEXTURE_HUD_CAM,texture);
 
@@ -109,8 +115,8 @@ public class Resource {
 
     public void disposeAll(){
         for(Object o : textures.values()) {
-            Texture tex = (Texture) o;
-            tex.dispose();
+            Texture texture = (Texture) o;
+            texture.dispose();
         }
         textures.clear();
         for(Object o : musics.values()) {

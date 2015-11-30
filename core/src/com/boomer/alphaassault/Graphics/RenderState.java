@@ -4,15 +4,13 @@ package com.boomer.alphaassault.graphics;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.boomer.alphaassault.utilities.Location;
+
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 
 /**
@@ -26,17 +24,11 @@ public class RenderState{
 
     public int CURRENT_STATE;
 
-    private HashMap<Long,Location> locations;
     private HashMap<Long,Sprite> sprites;
     private HashMap<Integer,OrthographicCamera> cameras;
     private HashMap<Integer,List<Long>> cameraMapping;
 
-
-
-
-
     public RenderState(){
-        locations = new HashMap<Long, Location>();
         sprites = new HashMap<Long, Sprite>();
         cameras = new HashMap<Integer, OrthographicCamera>();
         cameraMapping = new HashMap<Integer, List<Long>>();
@@ -47,9 +39,8 @@ public class RenderState{
         cameras.put(_cameraType,_camera);
     }
 
-    public void add(int _cameraType,long _referenceID,Sprite _sprite,Location _location){
-        locations.put(_referenceID,_location);
-        sprites.put(_referenceID,_sprite);
+    public void add(int _cameraType,long _referenceID,Sprite _sprite){
+        sprites.put(_referenceID,new Sprite(_sprite));
         if(!cameraMapping.containsKey(_cameraType)){
             List<Long> list = new ArrayList<Long>();
             list.add(_referenceID);
@@ -64,16 +55,10 @@ public class RenderState{
     }
 
     public void remove(long _referenceID){
-
-            locations.remove(_referenceID);
             sprites.remove(_referenceID);
-
-
-
     }
 
     public void  render(SpriteBatch _spriteBatch) throws InterruptedException {
-
         synchronized (this) {
 
             for (int key : cameras.keySet()) {
@@ -85,59 +70,41 @@ public class RenderState{
                 }
                 for (long MAPPER : cameraMapping.get(key)) {
                     sprites.get(MAPPER).draw(_spriteBatch);
-
                 }
                 _spriteBatch.end();
             }
-
         }
-
     }
      public void copy(RenderState _renderState) {
          synchronized (this){
             for(Long key : _renderState.getSprites().keySet()){
-                System.out.println("LOC:"+_renderState.getLocations().get(key).x + "    " + _renderState.getLocations().get(key).y);
                 if(!sprites.containsKey(key)){
-                    sprites.put(key,new Sprite(_renderState.getSprites().get(key)));
-                    locations.put(key,new Location(_renderState.getLocations().get(key)));
+                    sprites.put(key,_renderState.getSprites().get(key));
+                }else {
+                    sprites.get(key).set(_renderState.getSprites().get(key));
                 }
-
             }
 
-             for(Long key : sprites.keySet()){
-                 if(!_renderState.getSprites().containsKey(key)){
-                     sprites.remove(key);
-                     locations.remove(key);
-                 }
-
-             }
-
-
-
-            cameras.clear();
-            cameraMapping.clear();
             cameras.putAll(_renderState.getCameras());
-             cameraMapping.putAll(_renderState.getCameraMapping());
-
-
+            cameraMapping.putAll(_renderState.getCameraMapping());
             CURRENT_STATE = _renderState.CURRENT_STATE;
      }
      }
 
-
-
-    private HashMap<Long,Sprite> getSprites(){
-        return sprites;
+    public void updateElement(long _referenceID,Sprite _sprite){
+            synchronized (this){
+                sprites.get(_referenceID).set(_sprite);
+            }
     }
-    private HashMap<Long,Location> getLocations(){ return locations;}
+
+
+
+    private HashMap<Long,Sprite> getSprites(){return sprites;}
     private HashMap<Integer,OrthographicCamera> getCameras (){return cameras;}
     private HashMap<Integer,List<Long>> getCameraMapping(){return cameraMapping;}
-    public boolean isEmpty(){
-        return sprites.isEmpty();
-    }
-    public int getCurrentState(){
-        return CURRENT_STATE;
-    }
+    public boolean isEmpty(){return sprites.isEmpty();}
+    public int getCurrentState(){return CURRENT_STATE;}
+    public void setCurrentState(int _state){CURRENT_STATE  = _state;}
 
 
 }

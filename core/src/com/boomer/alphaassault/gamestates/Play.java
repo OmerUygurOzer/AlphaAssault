@@ -51,7 +51,7 @@ public class Play extends GameStateBase {
 
         GAME_PAD = new GamePad(GamePad.LEFT);
 
-        RenderStateManager.changeGameRenderState(RENDER_STATE);
+        RenderStateManager.setGameRenderState(RENDER_STATE);
         GAME_PAD.setCameraType(CAMERA_TYPE_SCREEN);
         GAME_PAD.addToRenderState();
 
@@ -63,7 +63,7 @@ public class Play extends GameStateBase {
     @Override
     public void render(SpriteBatch _spriteBatch) {
         try {
-            RenderStateManager.RENDERING_STATE.render(_spriteBatch);
+            RenderStateManager.renderingState.render(_spriteBatch);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

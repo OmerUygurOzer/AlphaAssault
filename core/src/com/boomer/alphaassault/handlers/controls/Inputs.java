@@ -14,10 +14,10 @@ public class Inputs {
         private static Location hover;
 
         //THREAD LOCKS
-        private static Object HOVER_LOCK;
+        private static final Object HOVER_LOCK;
 
         //SUPPORT MULTIPLE inputs//PRESSES BEING DONE SIMULTANEOUSLY
-        private static int NUMBER_OF_INPUTS;
+        private static int numberOfInputs;
         private static ConcurrentHashMap<Long,Location> inputs;
         public static final int INPUT_SEPARATOR;
 
@@ -28,7 +28,7 @@ public class Inputs {
 
 
             //DRAG STATICS
-            NUMBER_OF_INPUTS = 0;
+            numberOfInputs = 0;
             inputs = new ConcurrentHashMap<Long, Location>();
             INPUT_SEPARATOR = 90;
 
@@ -50,7 +50,7 @@ public class Inputs {
         public static void inputAcquire(int _x, int _y){
 
             if(inputs.isEmpty()){
-                NUMBER_OF_INPUTS++;
+                numberOfInputs++;
                 inputs.put(System.currentTimeMillis(),new Location(_x,_y));
                 return;
             }
@@ -63,7 +63,7 @@ public class Inputs {
                 }
 
             }
-                NUMBER_OF_INPUTS++;
+                numberOfInputs++;
                 inputs.put(System.currentTimeMillis(),new Location(_x,_y));
 
 
@@ -73,7 +73,7 @@ public class Inputs {
             for(Long key: inputs.keySet()){
                         if(Location.getDistance(inputs.get(key),new Location(_x,_y))<INPUT_SEPARATOR){
                             inputs.remove(key);
-                            NUMBER_OF_INPUTS--;
+                            numberOfInputs--;
                             //System.out.println("INPUT RELEASED!");
                             continue;
                         }

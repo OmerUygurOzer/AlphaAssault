@@ -53,9 +53,7 @@ public class InputThread implements Runnable {
 
     }
 
-    public void start(){
-        inputThread.start();
-    }
+
 
     private float getDeltaTime(){
         if(timeAccumulated == 0){
