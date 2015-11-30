@@ -72,4 +72,5 @@ public class RenderStateManager {
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
 
     }
+
 }

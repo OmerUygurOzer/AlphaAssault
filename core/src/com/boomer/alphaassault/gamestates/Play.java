@@ -24,7 +24,7 @@ public class Play extends GameStateBase {
     private Viewport MAP_VIEW;
 
     private OrthographicCamera SCREEN_CAM;
-   private OrthographicCamera MAP_CAM;
+    private OrthographicCamera MAP_CAM;
 
     AssaultTrooper assaultTrooper;
     GamePad GAME_PAD;

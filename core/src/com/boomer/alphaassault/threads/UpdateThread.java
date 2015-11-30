@@ -9,20 +9,20 @@ import com.boomer.alphaassault.settings.GameSettings;
  */
 public class UpdateThread implements Runnable {
 
-    private float TIME_ACCUMULATED;
-    private long TIME;
-    private boolean THREAD_RUNNING;
-    private GameStateManager GAME_STATE_MANAGER;
+    private float timeAccumulated;
+    private long time;
+    private volatile boolean THREAD_RUNNING;
 
-    Thread UPDATE_THREAD;
+    private GameStateManager gameStateManager;
+    private Thread updateThread;
 
 
     public UpdateThread(GameStateManager _gameStateManager) {
-        UPDATE_THREAD = new Thread(this);
-        TIME_ACCUMULATED = 0.0f;
+        updateThread = new Thread(this);
+        timeAccumulated = 0.0f;
         THREAD_RUNNING = true;
-        GAME_STATE_MANAGER = _gameStateManager;
-        UPDATE_THREAD.start();
+        gameStateManager = _gameStateManager;
+        updateThread.start();
 
     }
 
@@ -30,15 +30,15 @@ public class UpdateThread implements Runnable {
     public void run() {
         while(THREAD_RUNNING) {
             while (GameSettings.GAME_RUNNING_STATE) {
-                TIME_ACCUMULATED += getDeltaTime();
+                timeAccumulated += getDeltaTime();
 
-                while (TIME_ACCUMULATED >= GameSettings.UPS) {
-                    TIME_ACCUMULATED -= GameSettings.UPS;
+                while (timeAccumulated >= GameSettings.UPS) {
+                    timeAccumulated -= GameSettings.UPS;
 
 
                    // System.out.println("UPDATE THREAD");
-                    GAME_STATE_MANAGER.getGameState().handleInput();
-                    GAME_STATE_MANAGER.getGameState().update(getDeltaTime());
+                    gameStateManager.getGameState().handleInput();
+                    gameStateManager.getGameState().update(getDeltaTime());
                     RenderStateManager.update();
                 }
                 wait(1);
@@ -49,17 +49,17 @@ public class UpdateThread implements Runnable {
     }
 
     public void start(){
-        UPDATE_THREAD.start();
+        updateThread.start();
     }
 
     private float getDeltaTime(){
-        if(TIME_ACCUMULATED == 0){
-            TIME = System.currentTimeMillis();
+        if(timeAccumulated == 0){
+            time = System.currentTimeMillis();
             return GameSettings.UPS+0.01f;
         }
 
-        long deltaLong = System.currentTimeMillis() - TIME;
-        TIME = System.currentTimeMillis();
+        long deltaLong = System.currentTimeMillis() - time;
+        time = System.currentTimeMillis();
         float deltaFloat=  (float)deltaLong/1000f;
         return deltaFloat;
 
@@ -73,9 +73,9 @@ public class UpdateThread implements Runnable {
         }
     }
 
-    public  void stop(){
+    public void stop(){
     THREAD_RUNNING = false;
     }
-
+    public void resume() {THREAD_RUNNING = true;}
 
 }

@@ -22,9 +22,7 @@ public class GameSettings {
     public static final int TEAM_RED = 0;
     public static final int TEAM_BLUE = 1;
 
-    //LIVE DETAILS
-    public static int FRAMES_PER_SECOND;
-    public static int UPDATES_PER_SECOND;
-    public static int INPUTS_PER_SECOND;
+    //CONTROLS
+    public static final int INPUT_MAX = 5;
 
 }

@@ -23,6 +23,10 @@ public class Location {
         return  Math.sqrt(((_a.x-_b.x)*(_a.x-_b.x)) + ((_a.y-_b.y)*(_a.y-_b.y)) );
     }
 
+    public boolean equals(Location _location){
+        return x==_location.x && y==_location.y;
+    }
+
     public static double getDistance(int _x1,int _y1,int _x2,int _y2){
         return Math.sqrt(((_x1-_x2)*(_x1-_x2)) + ((_y1-_y2)*(_y1-_y2)) );
     }

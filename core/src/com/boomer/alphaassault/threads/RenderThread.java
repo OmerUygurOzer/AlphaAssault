@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boomer.alphaassault.handlers.GameStateManager;
-import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.settings.GameSettings;
 
 /**
@@ -14,31 +13,31 @@ import com.boomer.alphaassault.settings.GameSettings;
 public class RenderThread extends Game {
 
 
-    private float TIME_ACCUMULATED;
-    private SpriteBatch SPRITE_BATCH;
-    private GameStateManager GAME_STATE_MANAGER;
+    private float timeAccumulated;
+    private SpriteBatch spriteBatch;
+    private GameStateManager gameStateManager;
 
     public void setGameStateManager(GameStateManager _gameStateManager){
-        GAME_STATE_MANAGER = _gameStateManager;
+        gameStateManager = _gameStateManager;
     }
 
     @Override
     public void create() {
-            SPRITE_BATCH = new SpriteBatch();
+            spriteBatch = new SpriteBatch();
     }
 
     @Override
     public void render () {
         if (GameSettings.GAME_RUNNING_STATE) {
             super.render();
-            TIME_ACCUMULATED += Gdx.graphics.getDeltaTime();
+            timeAccumulated += Gdx.graphics.getDeltaTime();
             Gdx.gl.glClearColor(0,0,0,1);
-            while (TIME_ACCUMULATED >= GameSettings.RPS) {
+            while (timeAccumulated >= GameSettings.RPS) {
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                TIME_ACCUMULATED -= GameSettings.RPS;
+                timeAccumulated -= GameSettings.RPS;
                 //System.out.println(Thread.currentThread().getId());
                 //System.out.println("RENDER THREAD");
-                GAME_STATE_MANAGER.getGameState().render(SPRITE_BATCH);
+                gameStateManager.getGameState().render(spriteBatch);
 
 
 

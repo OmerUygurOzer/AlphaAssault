@@ -10,6 +10,7 @@ import com.boomer.alphaassault.utilities.Location;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,21 +26,20 @@ public class RenderState{
 
     public int CURRENT_STATE;
 
-    private ConcurrentHashMap<Long,Location> locations;
-    private ConcurrentHashMap<Long,Sprite> sprites;
-    private ConcurrentHashMap<Integer,OrthographicCamera> cameras;
-    private ConcurrentHashMap<Integer,List<Long>> cameraMapping;
-
+    private HashMap<Long,Location> locations;
+    private HashMap<Long,Sprite> sprites;
+    private HashMap<Integer,OrthographicCamera> cameras;
+    private HashMap<Integer,List<Long>> cameraMapping;
 
 
 
 
 
     public RenderState(){
-        locations = new ConcurrentHashMap<Long, Location>();
-        sprites = new ConcurrentHashMap<Long, Sprite>();
-        cameras = new ConcurrentHashMap<Integer, OrthographicCamera>();
-        cameraMapping = new ConcurrentHashMap<Integer, List<Long>>();
+        locations = new HashMap<Long, Location>();
+        sprites = new HashMap<Long, Sprite>();
+        cameras = new HashMap<Integer, OrthographicCamera>();
+        cameraMapping = new HashMap<Integer, List<Long>>();
 
     }
 
@@ -72,7 +72,7 @@ public class RenderState{
 
     }
 
-    public void render(SpriteBatch _spriteBatch) throws InterruptedException {
+    public void  render(SpriteBatch _spriteBatch) throws InterruptedException {
 
         synchronized (this) {
 
@@ -95,50 +95,49 @@ public class RenderState{
     }
      public void copy(RenderState _renderState) {
          synchronized (this){
-         sprites.clear();
-         locations.clear();
-         cameras.clear();
-         cameraMapping.clear();
-         sprites.putAll(_renderState.getSprites());
-         locations.putAll(_renderState.getLocations());
-         cameras.putAll(_renderState.getCameras());
-         /*
-             for (int key : _renderState.getCameras().keySet()) {
-             if (cameraMapping.get(key) == null) {
-                 continue;
+            for(Long key : _renderState.getSprites().keySet()){
+                System.out.println("LOC:"+_renderState.getLocations().get(key).x + "    " + _renderState.getLocations().get(key).y);
+                if(!sprites.containsKey(key)){
+                    sprites.put(key,new Sprite(_renderState.getSprites().get(key)));
+                    locations.put(key,new Location(_renderState.getLocations().get(key)));
+                }
+
+            }
+
+             for(Long key : sprites.keySet()){
+                 if(!_renderState.getSprites().containsKey(key)){
+                     sprites.remove(key);
+                     locations.remove(key);
+                 }
+
              }
-             for (long MAPPER : cameraMapping.get(key)) {
 
 
-             }
 
-         }*/
-         cameraMapping.putAll(_renderState.getCameraMapping());
+            cameras.clear();
+            cameraMapping.clear();
+            cameras.putAll(_renderState.getCameras());
+             cameraMapping.putAll(_renderState.getCameraMapping());
 
 
-         CURRENT_STATE = _renderState.CURRENT_STATE;
+            CURRENT_STATE = _renderState.CURRENT_STATE;
      }
      }
 
-    private ConcurrentHashMap<Long,Sprite> getSprites(){
+
+
+    private HashMap<Long,Sprite> getSprites(){
         return sprites;
     }
-
-    private ConcurrentHashMap<Long,Location> getLocations(){ return locations;
-    }
-
-    private ConcurrentHashMap<Integer,OrthographicCamera> getCameras (){return cameras;}
-
-    private ConcurrentHashMap<Integer,List<Long>> getCameraMapping(){return cameraMapping;}
-
-
-
+    private HashMap<Long,Location> getLocations(){ return locations;}
+    private HashMap<Integer,OrthographicCamera> getCameras (){return cameras;}
+    private HashMap<Integer,List<Long>> getCameraMapping(){return cameraMapping;}
     public boolean isEmpty(){
         return sprites.isEmpty();
     }
-
     public int getCurrentState(){
         return CURRENT_STATE;
     }
+
 
 }
