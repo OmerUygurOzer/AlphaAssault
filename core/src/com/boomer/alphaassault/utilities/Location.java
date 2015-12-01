@@ -1,5 +1,7 @@
 package com.boomer.alphaassault.utilities;
 
+import sun.util.resources.cldr.byn.CalendarData_byn_ER;
+
 /**
  * Created by Omer on 11/24/2015.
  */
@@ -31,9 +33,10 @@ public class Location {
         return Math.sqrt(((_x1-_x2)*(_x1-_x2)) + ((_y1-_y2)*(_y1-_y2)) );
     }
 
-    public static float getAngle(Location _a, Location _b){
-
-        return 0f;
+    public static double getAngle(Location _a, Location _b){
+        double angle = Math.toDegrees(Math.atan2(_a.x - _b.x,_a.y- _b.y));
+        if(angle<360){angle+=360;}
+        return angle;
     }
 
 }

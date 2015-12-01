@@ -4,7 +4,8 @@ package com.boomer.alphaassault.graphics;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 import java.util.ArrayList;
@@ -60,7 +61,6 @@ public class RenderState{
 
     public void  render(SpriteBatch _spriteBatch) {
         synchronized (this) {
-
             for (int key : cameras.keySet()) {
                 _spriteBatch.setProjectionMatrix(cameras.get(key).combined);
                 _spriteBatch.begin();
@@ -75,20 +75,27 @@ public class RenderState{
             }
         }
     }
-     public void copy(RenderState _renderState) {
+     public void getUpdates(RenderState _renderState) {
          synchronized (this){
             for(Long key : _renderState.getSprites().keySet()){
                 if(!sprites.containsKey(key)){
-                    sprites.put(key,_renderState.getSprites().get(key));
+                    sprites.put(key,new Sprite(_renderState.getSprites().get(key)));
                 }else {
                     sprites.get(key).set(_renderState.getSprites().get(key));
                 }
             }
-            cameras.clear();
+             for(Long key : sprites.keySet()){
+                 if(!_renderState.getSprites().containsKey(key)){
+                     sprites.remove(key);
+
+                 }
+             }
+
              cameraMapping.clear();
-            cameras.putAll(_renderState.getCameras());
-            cameraMapping.putAll(_renderState.getCameraMapping());
-            CURRENT_STATE = _renderState.CURRENT_STATE;
+             for(Integer map : _renderState.getCameraMapping().keySet()){
+                 cameraMapping.put(map,new ArrayList<Long>(_renderState.getCameraMapping().get(map)));
+             }
+
      }
      }
 
@@ -96,6 +103,22 @@ public class RenderState{
             synchronized (this){
                 sprites.get(_referenceID).set(_sprite);
             }
+    }
+
+    public void set(RenderState _renderState){
+        sprites.clear();
+        cameras.clear();
+        cameraMapping.clear();
+        for(Long key : _renderState.getSprites().keySet()){
+                sprites.put(key,new Sprite(_renderState.getSprites().get(key)));
+        }
+
+       for(Integer map : _renderState.getCameraMapping().keySet()){
+           cameraMapping.put(map,new ArrayList<Long>(_renderState.getCameraMapping().get(map)));
+       }
+        cameras.putAll(_renderState.getCameras());
+        CURRENT_STATE = _renderState.getCurrentState();
+
     }
 
 

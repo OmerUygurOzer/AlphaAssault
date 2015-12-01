@@ -5,12 +5,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.*;
 import com.boomer.alphaassault.gameworld.units.AssaultTrooper;
-import com.boomer.alphaassault.graphics.GUI.GamePad;
+import com.boomer.alphaassault.GUI.GamePad;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.settings.GameSettings;
-import com.boomer.alphaassault.utilities.Location;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -48,12 +46,13 @@ public class Play extends GameStateBase {
 
         RENDER_STATE.addCamera(CAMERA_TYPE_SCREEN,SCREEN_CAM);
         RENDER_STATE.addCamera(CAMERA_TYPE_MAP,MAP_CAM);
-
-        GAME_PAD = new GamePad(GamePad.LEFT);
-
         RenderStateManager.setGameRenderState(RENDER_STATE);
+
+        GAME_PAD = new GamePad(GamePad.BOTH);
         GAME_PAD.setCameraType(CAMERA_TYPE_SCREEN);
         GAME_PAD.addToRenderState();
+
+
 
 
     }

@@ -3,7 +3,6 @@ package com.boomer.alphaassault.handlers;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.settings.GameSettings;
-import com.boomer.alphaassault.utilities.Location;
 
 /**
  * Created by Omer on 11/27/2015.
@@ -61,16 +60,16 @@ public class RenderStateManager {
             updatingState = renderingState;
             renderingState = updatedState;
             updatedState = switcher;
-            updatingState.copy(updatedState);
+            updatingState.getUpdates(updatedState);
 
 
     }
 
     public static void setGameRenderState(RenderState _renderState){
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_INACTIVE;
-        renderStateOne.copy(_renderState);
-        renderStateTwo.copy(_renderState);
-        renderStateThree.copy(_renderState);
+        renderStateOne.set(_renderState);
+        renderStateTwo.set(_renderState);
+        renderStateThree.set(_renderState);
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
 
     }

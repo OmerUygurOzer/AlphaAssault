@@ -42,6 +42,7 @@ public class UpdateThread implements Runnable {
                 wait(1);
 
             }
+            wait(1);
         }
 
     }

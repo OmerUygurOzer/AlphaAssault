@@ -1,8 +1,9 @@
-package com.boomer.alphaassault.graphics.GUI;
+package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.Inputs;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.InputReceiver;
@@ -12,7 +13,7 @@ import com.boomer.alphaassault.utilities.Renderable;
 /**
  * Created by Omer on 11/25/2015.
  */
-public class GamePad implements Renderable,InputReceiver {
+public class GamePad extends Controller implements Renderable,InputReceiver {
 
     //GAMEPAD TYPE
     //LEFT : ONLY LEFT CONSOLE
@@ -24,7 +25,7 @@ public class GamePad implements Renderable,InputReceiver {
     public static final int RIGHT = 1;
     public static final int BOTH = 2;
 
-    private final Location gameFrameCenter = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+    private static final Location gameFrameCenter = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
     //GAME PAD SPRITES
     private Sprite leftButtonSprite;
@@ -45,11 +46,11 @@ public class GamePad implements Renderable,InputReceiver {
     private Location rightCurrentLocation;
 
     //REFERENCE IDS
-    private  long LEFT_BUTTON_ID;
-    private  long LEFT_CIRCLE_ID;
-    private  long RIGHT_BUTTON_ID;
-    private  long RIGHT_CIRCLE_ID;
-    private  long HUD_ID;
+    private  long leftButtonId;
+    private  long leftCircleId;
+    private  long rightButtonId;
+    private  long rightCircleId;
+    private  long hudId;
 
     private long referenceId;
     private int cameraType;
@@ -57,15 +58,21 @@ public class GamePad implements Renderable,InputReceiver {
     private boolean leftActive;
     private boolean rightActive;
 
+    //INPUT MAPPING
+    public static final int LEFT_ANGLE = 0;
+    public static final int LEFT_SPEED = 1;
+    public static final int RIGHT_ANGLE = 2;
+    public static final int RUGHT_SPEED = 3;
 
 
     public GamePad(int _type) {
+        super();
         referenceId = System.currentTimeMillis();
-        LEFT_BUTTON_ID = referenceId;
-        LEFT_CIRCLE_ID = referenceId+1;
-        RIGHT_BUTTON_ID = referenceId+2;
-        RIGHT_CIRCLE_ID = referenceId+3;
-        HUD_ID = referenceId +4;
+        leftButtonId = referenceId;
+        leftCircleId = referenceId+1;
+        rightButtonId = referenceId+2;
+        rightCircleId = referenceId+3;
+        hudId = referenceId +4;
 
         //LEFT
         leftButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
@@ -99,11 +106,15 @@ public class GamePad implements Renderable,InputReceiver {
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.add(cameraType, LEFT_BUTTON_ID, leftButtonSprite);
-        RenderStateManager.add(cameraType, LEFT_CIRCLE_ID, leftCircleSprite);
-        RenderStateManager.add(cameraType, RIGHT_BUTTON_ID, rightButtonSprite);
-        RenderStateManager.add(cameraType, RIGHT_CIRCLE_ID, rightCircleSprite);
-        RenderStateManager.add(cameraType, HUD_ID, gameFrame);
+        if(TYPE == LEFT || TYPE == BOTH) {
+            RenderStateManager.add(cameraType, leftButtonId, leftButtonSprite);
+            RenderStateManager.add(cameraType, leftCircleId, leftCircleSprite);
+        }
+        if(TYPE == RIGHT || TYPE == BOTH) {
+            RenderStateManager.add(cameraType, rightButtonId, rightButtonSprite);
+            RenderStateManager.add(cameraType, rightCircleId, rightCircleSprite);
+        }
+        RenderStateManager.add(cameraType, hudId, gameFrame);
     }
 
     @Override
@@ -124,18 +135,21 @@ public class GamePad implements Renderable,InputReceiver {
 
     @Override
     public void receiveInput() {
-        updateLeft();
-       updateRight();
-
+        if(TYPE == LEFT || TYPE == BOTH) {
+            updateLeft();
+        }
+        if(TYPE == RIGHT || TYPE == BOTH) {
+            updateRight();
+        }
     }
 
     private void updateLeft(){
         for (Long key : Inputs.getInputs().keySet()){
-            if(Location.getDistance(Inputs.getInputs().get(key), leftCurrentLocation)< RADIUS){
+            if(Location.getDistance(Inputs.getInputs().get(key), LEFT_BUTTON_CENTER)< RADIUS){
                 leftCurrentLocation.x = Inputs.getInputs().get(key).x;
                 leftCurrentLocation.y = Inputs.getInputs().get(key).y;
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-                RenderStateManager.updatingState.updateElement(LEFT_BUTTON_ID,leftButtonSprite);
+                RenderStateManager.updatingState.updateElement(leftButtonId,leftButtonSprite);
                 leftActive = true;
                 return;
             }
@@ -146,17 +160,17 @@ public class GamePad implements Renderable,InputReceiver {
         leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
         leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
         leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-        RenderStateManager.updatingState.updateElement(LEFT_BUTTON_ID,leftButtonSprite);
+        RenderStateManager.updatingState.updateElement(leftButtonId,leftButtonSprite);
 
     }
 
     private void updateRight(){
         for (Long key : Inputs.getInputs().keySet()){
-            if(Location.getDistance(Inputs.getInputs().get(key), rightCurrentLocation)< RADIUS){
+            if(Location.getDistance(Inputs.getInputs().get(key), RIGHT_BUTTON_CENTER)< RADIUS){
                 rightCurrentLocation.x = Inputs.getInputs().get(key).x;
                 rightCurrentLocation.y = Inputs.getInputs().get(key).y;
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
-                RenderStateManager.updatingState.updateElement(RIGHT_BUTTON_ID,rightButtonSprite);
+                RenderStateManager.updatingState.updateElement(rightButtonId,rightButtonSprite);
                 rightActive = true;
                 return;
             }
@@ -167,7 +181,7 @@ public class GamePad implements Renderable,InputReceiver {
         rightCurrentLocation.x = RIGHT_BUTTON_CENTER.x;
         rightCurrentLocation.y = RIGHT_BUTTON_CENTER.y;
         rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
-        RenderStateManager.updatingState.updateElement(RIGHT_BUTTON_ID,rightButtonSprite);
+        RenderStateManager.updatingState.updateElement(rightButtonId,rightButtonSprite);
 
     }
 
