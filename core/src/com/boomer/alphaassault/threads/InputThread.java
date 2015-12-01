@@ -1,5 +1,7 @@
 package com.boomer.alphaassault.threads;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.handlers.controls.InputManager;
 import com.boomer.alphaassault.handlers.controls.Inputs;

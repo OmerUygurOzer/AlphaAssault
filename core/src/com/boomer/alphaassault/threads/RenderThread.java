@@ -27,6 +27,12 @@ public class RenderThread extends Game {
     }
 
     @Override
+    public void dispose() {
+        super.dispose();
+        spriteBatch.dispose();
+    }
+
+    @Override
     public void render () {
         if (GameSettings.GAME_RUNNING_STATE) {
             super.render();

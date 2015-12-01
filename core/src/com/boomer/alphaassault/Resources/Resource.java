@@ -42,18 +42,12 @@ public class Resource {
     }
 
     public void initialize(){
-        Texture texture = new Texture(Gdx.files.internal("character.png"));
-        textures.put(TEXTURE_ASSAULT_TROOPER,texture);
-        texture = new Texture(Gdx.files.internal("greenbutton.png"));
-        textures.put(TEXTURE_LEFT_BUTTON,texture);
-        texture = new Texture(Gdx.files.internal("greencircle.png"));
-        textures.put(TEXTURE_LEFT_CIRCLE,texture);
-        texture = new Texture(Gdx.files.internal("redbutton.png"));
-        textures.put(TEXTURE_RIGHT_BUTTON,texture);
-        texture = new Texture(Gdx.files.internal("redcircle.png"));
-        textures.put(TEXTURE_RIGHT_CIRCLE,texture);
-        texture = new Texture(Gdx.files.internal("hudcam.png"));
-        textures.put(TEXTURE_HUD_CAM,texture);
+        loadTexture(TEXTURE_ASSAULT_TROOPER,"character.png");
+        loadTexture(TEXTURE_LEFT_BUTTON,"greenbutton.png");
+        loadTexture(TEXTURE_LEFT_CIRCLE,"greencircle.png");
+        loadTexture(TEXTURE_RIGHT_BUTTON,"redbutton.png");
+        loadTexture(TEXTURE_RIGHT_CIRCLE,"redcircle.png");
+        loadTexture(TEXTURE_HUD_CAM,"hudcam.png");
 
     }
 

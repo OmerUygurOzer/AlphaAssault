@@ -58,7 +58,7 @@ public class RenderState{
             sprites.remove(_referenceID);
     }
 
-    public void  render(SpriteBatch _spriteBatch) throws InterruptedException {
+    public void  render(SpriteBatch _spriteBatch) {
         synchronized (this) {
 
             for (int key : cameras.keySet()) {
@@ -84,7 +84,8 @@ public class RenderState{
                     sprites.get(key).set(_renderState.getSprites().get(key));
                 }
             }
-
+            cameras.clear();
+             cameraMapping.clear();
             cameras.putAll(_renderState.getCameras());
             cameraMapping.putAll(_renderState.getCameraMapping());
             CURRENT_STATE = _renderState.CURRENT_STATE;

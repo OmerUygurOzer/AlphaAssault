@@ -2,6 +2,7 @@ package com.boomer.alphaassault.handlers.controls;
 
 import com.boomer.alphaassault.utilities.Location;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -18,7 +19,7 @@ public class Inputs {
 
         //SUPPORT MULTIPLE inputs//PRESSES BEING DONE SIMULTANEOUSLY
         private static int numberOfInputs;
-        private static ConcurrentHashMap<Long,Location> inputs;
+        private static Map<Long,Location> inputs;
         public static final int INPUT_SEPARATOR;
 
 
@@ -88,7 +89,7 @@ public class Inputs {
         public static Location getHoverLocation(){
            return hover;
         }
-        public static ConcurrentHashMap<Long,Location> getInputs(){
+        public static Map<Long,Location> getInputs(){
             return inputs;
         }
         public static boolean isEmtpy(){return inputs.isEmpty();}

@@ -55,18 +55,12 @@ public class Play extends GameStateBase {
         GAME_PAD.setCameraType(CAMERA_TYPE_SCREEN);
         GAME_PAD.addToRenderState();
 
-        assaultTrooper = new AssaultTrooper(GameSettings.TEAM_BLUE,new Location(200,200));
-        assaultTrooper.setCameraType(CAMERA_TYPE_MAP);
-        assaultTrooper.addToRenderState();
+
     }
 
     @Override
     public void render(SpriteBatch _spriteBatch) {
-        try {
-            RenderStateManager.renderingState.render(_spriteBatch);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        RenderStateManager.renderingState.render(_spriteBatch);
     }
 
     @Override

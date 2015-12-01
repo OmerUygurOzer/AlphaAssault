@@ -24,7 +24,7 @@ public class GamePad implements Renderable,InputReceiver {
     public static final int RIGHT = 1;
     public static final int BOTH = 2;
 
-    private Location gameFrameCenter;
+    private final Location gameFrameCenter = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
     //GAME PAD SPRITES
     private Sprite leftButtonSprite;
@@ -44,6 +44,13 @@ public class GamePad implements Renderable,InputReceiver {
     private Location leftCurrentLocation;
     private Location rightCurrentLocation;
 
+    //REFERENCE IDS
+    private  long LEFT_BUTTON_ID;
+    private  long LEFT_CIRCLE_ID;
+    private  long RIGHT_BUTTON_ID;
+    private  long RIGHT_CIRCLE_ID;
+    private  long HUD_ID;
+
     private long referenceId;
     private int cameraType;
 
@@ -54,6 +61,11 @@ public class GamePad implements Renderable,InputReceiver {
 
     public GamePad(int _type) {
         referenceId = System.currentTimeMillis();
+        LEFT_BUTTON_ID = referenceId;
+        LEFT_CIRCLE_ID = referenceId+1;
+        RIGHT_BUTTON_ID = referenceId+2;
+        RIGHT_CIRCLE_ID = referenceId+3;
+        HUD_ID = referenceId +4;
 
         //LEFT
         leftButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
@@ -79,7 +91,6 @@ public class GamePad implements Renderable,InputReceiver {
         gameFrame = new Sprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
         gameFrame.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
         gameFrame.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
-        gameFrameCenter = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
 
         TYPE = _type;
@@ -88,11 +99,11 @@ public class GamePad implements Renderable,InputReceiver {
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.add(cameraType, referenceId, leftButtonSprite);
-        RenderStateManager.add(cameraType, referenceId +1, leftCircleSprite);
-        RenderStateManager.add(cameraType, referenceId +2, rightCircleSprite);
-        RenderStateManager.add(cameraType, referenceId +3, rightButtonSprite);
-        RenderStateManager.add(cameraType, referenceId +4, gameFrame);
+        RenderStateManager.add(cameraType, LEFT_BUTTON_ID, leftButtonSprite);
+        RenderStateManager.add(cameraType, LEFT_CIRCLE_ID, leftCircleSprite);
+        RenderStateManager.add(cameraType, RIGHT_BUTTON_ID, rightButtonSprite);
+        RenderStateManager.add(cameraType, RIGHT_CIRCLE_ID, rightCircleSprite);
+        RenderStateManager.add(cameraType, HUD_ID, gameFrame);
     }
 
     @Override
@@ -113,41 +124,51 @@ public class GamePad implements Renderable,InputReceiver {
 
     @Override
     public void receiveInput() {
-        if(!Inputs.getInputs().isEmpty()){
-            for (Long key : Inputs.getInputs().keySet()){
-                if(Location.getDistance(Inputs.getInputs().get(key), leftCurrentLocation)< RADIUS){
-                    leftCurrentLocation.x = Inputs.getInputs().get(key).x;
-                    leftCurrentLocation.y = Inputs.getInputs().get(key).y;
-                    leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-                    RenderStateManager.updatingState.updateElement(referenceId,leftButtonSprite);
-                    leftActive = true;
+        updateLeft();
+       updateRight();
 
-                }
-                if(Location.getDistance(Inputs.getInputs().get(key), rightCurrentLocation)< RADIUS){
-                    rightCurrentLocation.x = Inputs.getInputs().get(key).x;
-                    rightCurrentLocation.y = Inputs.getInputs().get(key).y;
-                    rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
-                    RenderStateManager.updatingState.updateElement(referenceId+3,leftButtonSprite);
-                    rightActive = true;
-                }
-
-            }
-
-        }
-
-
-
-        leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
-        leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
-        leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-        RenderStateManager.updatingState.updateElement(referenceId,leftButtonSprite);
     }
 
     private void updateLeft(){
+        for (Long key : Inputs.getInputs().keySet()){
+            if(Location.getDistance(Inputs.getInputs().get(key), leftCurrentLocation)< RADIUS){
+                leftCurrentLocation.x = Inputs.getInputs().get(key).x;
+                leftCurrentLocation.y = Inputs.getInputs().get(key).y;
+                leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
+                RenderStateManager.updatingState.updateElement(LEFT_BUTTON_ID,leftButtonSprite);
+                leftActive = true;
+                return;
+            }
+
+
+        }
+        leftActive = false;
+        leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
+        leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
+        leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
+        RenderStateManager.updatingState.updateElement(LEFT_BUTTON_ID,leftButtonSprite);
 
     }
 
     private void updateRight(){
+        for (Long key : Inputs.getInputs().keySet()){
+            if(Location.getDistance(Inputs.getInputs().get(key), rightCurrentLocation)< RADIUS){
+                rightCurrentLocation.x = Inputs.getInputs().get(key).x;
+                rightCurrentLocation.y = Inputs.getInputs().get(key).y;
+                rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
+                RenderStateManager.updatingState.updateElement(RIGHT_BUTTON_ID,rightButtonSprite);
+                rightActive = true;
+                return;
+            }
+
+        }
+
+        rightActive = false;
+        rightCurrentLocation.x = RIGHT_BUTTON_CENTER.x;
+        rightCurrentLocation.y = RIGHT_BUTTON_CENTER.y;
+        rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
+        RenderStateManager.updatingState.updateElement(RIGHT_BUTTON_ID,rightButtonSprite);
 
     }
+
 }

@@ -82,11 +82,15 @@ public class InputManager{
     }
 
     private void touchDown(int _x,int _y){
-            Inputs.inputAcquire(_x, SCREEN_HEIGHT- _y);
+            int virtualX = _x*SCREEN_WIDTH/Gdx.graphics.getWidth();
+            int virtualY = SCREEN_HEIGHT - _y*SCREEN_HEIGHT/Gdx.graphics.getHeight();
+            Inputs.inputAcquire(virtualX, virtualY);
     }
 
     private void touchUp(int _x, int _y){
-            Inputs.inputRelease(_x, SCREEN_HEIGHT- _y);
+        int virtualX = _x*SCREEN_WIDTH/Gdx.graphics.getWidth();
+        int virtualY = SCREEN_HEIGHT - _y*SCREEN_HEIGHT/Gdx.graphics.getHeight();
+        Inputs.inputRelease(virtualX, virtualY);
     }
 
 
