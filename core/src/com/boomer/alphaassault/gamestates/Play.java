@@ -89,6 +89,5 @@ public class Play extends GameStateBase {
     public void reSize(int _width, int _height) {
       SCREEN_VIEW.update(_width,_height);
 
-
     }
 }

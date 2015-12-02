@@ -4,6 +4,7 @@ package com.boomer.alphaassault.graphics;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sun.deploy.resources.Deployment_de;
 
 
 import java.util.ArrayList;
@@ -29,33 +30,37 @@ public class RenderState{
 
     public int CURRENT_STATE;
 
+
     private class Addition{
+        public int tracker;
         public int cameraType;
-        public long id;
+        public long referenceId;
         public int depth;
         public Sprite sprite;
-        public Addition(int _cameraType,long _id,int _depth, Sprite _sprite){
+
+        public Addition(int _cameraType,long _referenceId,int _depth,Sprite _sprite){
             cameraType = _cameraType;
-            id = _id;
+            referenceId = _referenceId;
             depth = _depth;
             sprite = new Sprite(_sprite);
-
+            tracker = 1;
         }
     }
 
     private class Removal{
-        public long id;
+        public int tracker;
+        public long referenceId;
         public int depth;
-        public Removal(long _id, int _depth){
-            id = _id;
-            depth = _depth;
 
+        public Removal(long _referenceId,int _depth){
+            referenceId = _referenceId;
+            depth = _depth;
+            tracker = 1;
         }
     }
 
     private List<Addition> additions;
     private List<Removal> removals;
-
 
     private Map<Integer,Map<Long,Sprite>> sprites;
     private Map<Integer,Map<Integer,OrthographicCamera>> cameras;
@@ -84,34 +89,31 @@ public class RenderState{
         }
     }
 
-    public void addElement(int _cameraType, long _referenceID,int _depth,Sprite _sprite){
-        additions.add(new Addition(_cameraType,_referenceID,_depth,_sprite));
-        sprites.get(_depth).put(_referenceID,new Sprite(_sprite));
+    public void addElement(int _cameraType, long _referenceId,int _depth,Sprite _sprite){
+        additions.add(new Addition(_cameraType,_referenceId,_depth,_sprite));
+        sprites.get(_depth).put(_referenceId,new Sprite(_sprite));
         if(!cameraMapping.get(_depth).containsKey(_cameraType)){
             List<Long> list = new CopyOnWriteArrayList<Long>();
-            list.add(_referenceID);
+            list.add(_referenceId);
             cameraMapping.get(_depth).put(_cameraType,list);
 
         }else{
-            cameraMapping.get(_depth).get(_cameraType).add(_referenceID);
+            cameraMapping.get(_depth).get(_cameraType).add(_referenceId);
         }
-
-
-
     }
 
-    public void removeElement(long _referenceID,int _depth){
-        removals.add(new Removal(_referenceID,_depth));
-       sprites.get(_depth).remove(_depth);
+    public void removeElement(long _referenceId,int _depth){
+        removals.add(new Removal(_referenceId,_depth));
+       sprites.get(_depth).remove(_referenceId);
         for(int map: cameraMapping.get(_depth).keySet()){
-            if(cameraMapping.get(_depth).get(map).contains(_referenceID)){
-                cameraMapping.get(_depth).get(map).remove(_referenceID);
+            if(cameraMapping.get(_depth).get(map).contains(_referenceId)){
+                cameraMapping.get(_depth).get(map).remove(_referenceId);
             }
         }
     }
-    public void updateElement(long _referenceID,int _depth,Sprite _sprite){
-        if(sprites.get(_depth).get(_referenceID)!=null) {
-            sprites.get(_depth).get(_referenceID).set(_sprite);
+    public void updateElement(long _referenceId,int _depth,Sprite _sprite){
+        if(sprites.get(_depth).get(_referenceId)!=null) {
+            sprites.get(_depth).get(_referenceId).set(_sprite);
         }
     }
 
@@ -136,19 +138,38 @@ public class RenderState{
     }
 
      public void getUpdates(RenderState _renderState) {
-         for(Addition addition : _renderState.getAdditions()){
-             sprites.get(addition.depth).put(addition.id,new Sprite(addition.sprite));
-             if(!cameraMapping.get(addition.depth).containsKey(addition.cameraType)){
+         for(Addition incomingAddition:_renderState.getAdditions()){
+             sprites.get(incomingAddition.depth).put(incomingAddition.referenceId,incomingAddition.sprite);
+             if(!cameraMapping.get(incomingAddition.depth).containsKey(incomingAddition.cameraType)){
                  List<Long> list = new CopyOnWriteArrayList<Long>();
-                 list.add(addition.id);
-                 cameraMapping.get(addition.depth).put(addition.cameraType,list);
+                 list.add(incomingAddition.referenceId);
+                 cameraMapping.get(incomingAddition.depth).put(incomingAddition.cameraType,list);
 
              }else{
-                 cameraMapping.get(addition.depth).get(addition.cameraType).add(addition.id);
+                 cameraMapping.get(incomingAddition.depth).get(incomingAddition.cameraType).add(incomingAddition.referenceId);
+             }
+             if(incomingAddition.tracker>0){
+                 Addition passingAddition = new Addition(incomingAddition.cameraType,incomingAddition.referenceId,incomingAddition.depth,new Sprite(incomingAddition.sprite));
+                 passingAddition.tracker = incomingAddition.tracker-1;
+                 additions.add(passingAddition);
+
              }
          }
-         for(Removal removal: _renderState.getRemovals()){
-             removeElement(removal.id,removal.depth);
+
+         for(Removal incomingRemoval:_renderState.getRemovals()){
+             sprites.get(incomingRemoval.depth).remove(incomingRemoval.referenceId);
+             for(int map: cameraMapping.get(incomingRemoval.depth).keySet()){
+                 if(cameraMapping.get(incomingRemoval.depth).get(map).contains(incomingRemoval.referenceId)){
+                     cameraMapping.get(incomingRemoval.depth).get(map).remove(incomingRemoval.referenceId);
+                 }
+             }
+             if(incomingRemoval.tracker>0){
+                 Removal passingRemoval = new Removal(incomingRemoval.referenceId,incomingRemoval.depth);
+                 passingRemoval.tracker = passingRemoval.tracker-1;
+                 removals.add(passingRemoval);
+
+             }
+
          }
 
      }
@@ -182,12 +203,14 @@ public class RenderState{
         List<Addition> list = new CopyOnWriteArrayList<Addition>();
         list.addAll(additions);
         additions.clear();
-        return list;}
+        return list;
+    }
     public List<Removal> getRemovals(){
         List<Removal> list = new CopyOnWriteArrayList<Removal>();
         list.addAll(removals);
-        removals.clear();
-        return list;}
+       removals.clear();
+        return list;
+    }
 
 
 }
