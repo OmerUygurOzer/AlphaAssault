@@ -2,6 +2,7 @@ package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.GameGraphics;
+import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.Inputs;
@@ -107,20 +108,16 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     @Override
     public void addToRenderState() {
         if(TYPE == LEFT || TYPE == BOTH) {
-            RenderStateManager.add(cameraType, leftButtonId, leftButtonSprite);
-            RenderStateManager.add(cameraType, leftCircleId, leftCircleSprite);
+            RenderStateManager.addElement(cameraType, leftButtonId, RenderState.DEPTH_GAME_SCREEN, leftButtonSprite);
+            RenderStateManager.addElement(cameraType, leftCircleId, RenderState.DEPTH_GAME_SCREEN,leftCircleSprite);
         }
         if(TYPE == RIGHT || TYPE == BOTH) {
-            RenderStateManager.add(cameraType, rightButtonId, rightButtonSprite);
-            RenderStateManager.add(cameraType, rightCircleId, rightCircleSprite);
+            RenderStateManager.addElement(cameraType, rightButtonId,RenderState.DEPTH_GAME_SCREEN, rightButtonSprite);
+            RenderStateManager.addElement(cameraType, rightCircleId,RenderState.DEPTH_GAME_SCREEN, rightCircleSprite);
         }
-        RenderStateManager.add(cameraType, hudId, gameFrame);
+        RenderStateManager.addElement(cameraType, hudId, RenderState.DEPTH_GAME_SCREEN,gameFrame);
     }
 
-    @Override
-    public void createReferenceID() {
-        referenceId = System.currentTimeMillis();
-    }
 
     @Override
     public long getReferenceID() {
@@ -149,7 +146,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
                 leftCurrentLocation.x = Inputs.getInputs().get(key).x;
                 leftCurrentLocation.y = Inputs.getInputs().get(key).y;
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-                RenderStateManager.updatingState.updateElement(leftButtonId,leftButtonSprite);
+                RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
                 leftActive = true;
                 return;
             }
@@ -160,7 +157,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
         leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
         leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-        RenderStateManager.updatingState.updateElement(leftButtonId,leftButtonSprite);
+        RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
 
     }
 
@@ -170,7 +167,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
                 rightCurrentLocation.x = Inputs.getInputs().get(key).x;
                 rightCurrentLocation.y = Inputs.getInputs().get(key).y;
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
-                RenderStateManager.updatingState.updateElement(rightButtonId,rightButtonSprite);
+                RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);
                 rightActive = true;
                 return;
             }
@@ -181,7 +178,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         rightCurrentLocation.x = RIGHT_BUTTON_CENTER.x;
         rightCurrentLocation.y = RIGHT_BUTTON_CENTER.y;
         rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
-        RenderStateManager.updatingState.updateElement(rightButtonId,rightButtonSprite);
+        RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);
 
     }
 

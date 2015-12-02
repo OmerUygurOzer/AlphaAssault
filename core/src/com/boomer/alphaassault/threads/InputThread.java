@@ -11,6 +11,7 @@ import com.boomer.alphaassault.settings.GameSettings;
  * Created by Omer on 11/27/2015.
  */
 public class InputThread implements Runnable {
+
     private float timeAccumulated;
     private long time;
     private volatile boolean THREAD_RUNNING;
@@ -28,8 +29,7 @@ public class InputThread implements Runnable {
         inputManager = new InputManager();
         inputManager.setLimit(GameSettings.INPUT_MAX);
         inputManager.setScreenBounds(GameGraphics.VIRTUAL_WIDTH,GameGraphics.VIRTUAL_HEIGHT);
-        inputManager.setInputSeparator(Inputs.INPUT_SEPARATOR);
-
+        System.out.println("INPUT THREAD STARTED.");
         inputThread.start();
 
     }
@@ -53,7 +53,7 @@ public class InputThread implements Runnable {
             }
             wait(1);
         }
-
+        System.out.println("INPUT THREAD FINISHED.");
     }
 
 

@@ -29,10 +29,13 @@ public class Resource {
     public static final int TEXTURE_LEFT_CIRCLE = 13;
     public static final int TEXTURE_RIGHT_BUTTON = 14;
     public static final int TEXTURE_RIGHT_CIRCLE = 15;
-//OTHER TEXTURES
+    //OTHER TEXTURES
 
     public static final int TEXTURE_HUD_CAM = 20;
+    //MAP TEXTURES
 
+
+    public static final int TEXTURE_BACKGROUND = 40;
 
     public Resource() {
         textures = new HashMap<Integer, Texture>();
@@ -42,6 +45,7 @@ public class Resource {
     }
 
     public void initialize(){
+        loadTexture(TEXTURE_BACKGROUND,"tiles_background.png");
         loadTexture(TEXTURE_ASSAULT_TROOPER,"character.png");
         loadTexture(TEXTURE_LEFT_BUTTON,"greenbutton.png");
         loadTexture(TEXTURE_LEFT_CIRCLE,"greencircle.png");

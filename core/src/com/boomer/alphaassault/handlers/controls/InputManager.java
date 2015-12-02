@@ -9,10 +9,9 @@ import com.badlogic.gdx.Gdx;
  */
 public class InputManager{
 
-    private int MAX_INPUTS_LIMIT=0;
-    private int SCREEN_WIDTH;
-    private int SCREEN_HEIGHT;
-    private static int INPUT_SEPARATOR;
+    private int inputLimit =1;
+    private int screenWidth;
+    private int screenHeight;
     private Touch [] previousState;
     private Touch [] currentState;
 
@@ -27,16 +26,13 @@ public class InputManager{
         }
     }
 
-    public void setInputSeparator(int _inputSeparator){
-        INPUT_SEPARATOR = _inputSeparator;
-    }
 
     public void setLimit(int _limit){
-        MAX_INPUTS_LIMIT = _limit;
-        previousState = new Touch[MAX_INPUTS_LIMIT];
-        currentState = new Touch[MAX_INPUTS_LIMIT];
+        inputLimit = _limit;
+        previousState = new Touch[inputLimit];
+        currentState = new Touch[inputLimit];
 
-        for(int touchNumber=0;touchNumber<MAX_INPUTS_LIMIT;touchNumber++){
+        for(int touchNumber = 0; touchNumber< inputLimit; touchNumber++){
             previousState[touchNumber] = new Touch();
             currentState[touchNumber] = new Touch();
         }
@@ -44,12 +40,12 @@ public class InputManager{
     }
 
     public void setScreenBounds(int _width,int _height){
-        SCREEN_WIDTH = _width;
-        SCREEN_HEIGHT = _height;
+        screenWidth = _width;
+        screenHeight = _height;
     }
 
     public void poll(){
-        for(int touchNumber=0;touchNumber<MAX_INPUTS_LIMIT;touchNumber++){
+        for(int touchNumber = 0; touchNumber< inputLimit; touchNumber++){
             if(Gdx.input.isTouched(touchNumber)) {
                 currentState[touchNumber].x = Gdx.input.getX(touchNumber);
                 currentState[touchNumber].y = Gdx.input.getY(touchNumber);
@@ -59,7 +55,7 @@ public class InputManager{
             }
         }
 
-        for(int touchNumber=0;touchNumber<MAX_INPUTS_LIMIT;touchNumber++){
+        for(int touchNumber = 0; touchNumber< inputLimit; touchNumber++){
             if((!previousState[touchNumber].down) && currentState[touchNumber].down){ //TOUCH DOWN
                 touchDown(currentState[touchNumber].x,currentState[touchNumber].y);
             }
@@ -72,7 +68,7 @@ public class InputManager{
 
         }
 
-        for(int touchNumber=0;touchNumber<MAX_INPUTS_LIMIT;touchNumber++){
+        for(int touchNumber = 0; touchNumber< inputLimit; touchNumber++){
             previousState[touchNumber].x = currentState[touchNumber].x;
             previousState[touchNumber].y = currentState[touchNumber].y;
             previousState[touchNumber].down = currentState[touchNumber].down;
@@ -82,14 +78,14 @@ public class InputManager{
     }
 
     private void touchDown(int _x,int _y){
-            int virtualX = _x*SCREEN_WIDTH/Gdx.graphics.getWidth();
-            int virtualY = SCREEN_HEIGHT - _y*SCREEN_HEIGHT/Gdx.graphics.getHeight();
+            int virtualX = _x* screenWidth /Gdx.graphics.getWidth();
+            int virtualY = screenHeight - _y* screenHeight /Gdx.graphics.getHeight();
             Inputs.inputAcquire(virtualX, virtualY);
     }
 
     private void touchUp(int _x, int _y){
-        int virtualX = _x*SCREEN_WIDTH/Gdx.graphics.getWidth();
-        int virtualY = SCREEN_HEIGHT - _y*SCREEN_HEIGHT/Gdx.graphics.getHeight();
+        int virtualX = _x* screenWidth /Gdx.graphics.getWidth();
+        int virtualY = screenHeight - _y* screenHeight /Gdx.graphics.getHeight();
         Inputs.inputRelease(virtualX, virtualY);
     }
 

@@ -11,13 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Inputs {
 
-        //MOUSE/TOUCH hover
-        private static Location hover;
+        //MOUSE/TOUCH HOVER
+        private static volatile Location hover;
 
-        //THREAD LOCKS
-        private static final Object HOVER_LOCK;
-
-        //SUPPORT MULTIPLE inputs//PRESSES BEING DONE SIMULTANEOUSLY
+        //SUPPORT MULTIPLE INPUTS//PRESSES BEING DONE SIMULTANEOUSLY
         private static int numberOfInputs;
         private static Map<Long,Location> inputs;
         public static final int INPUT_SEPARATOR;
@@ -26,15 +23,11 @@ public class Inputs {
         static{
 
             hover = new Location(0,0);
-
-
             //DRAG STATICS
             numberOfInputs = 0;
             inputs = new ConcurrentHashMap<Long, Location>();
             INPUT_SEPARATOR = 90;
 
-            //LOCK STATICS
-            HOVER_LOCK = new Object();
 
 
 
@@ -42,10 +35,9 @@ public class Inputs {
 
 
         public static void updateHover(int _x, int _y){
-            synchronized (HOVER_LOCK) {
                 hover.x = _x;
                 hover.y = _y;
-            }
+
         }
 
         public static void inputAcquire(int _x, int _y){
@@ -83,15 +75,10 @@ public class Inputs {
 
         }
 
-
-
-
         public static Location getHoverLocation(){
            return hover;
         }
-        public static Map<Long,Location> getInputs(){
-            return inputs;
-        }
+        public static Map<Long,Location> getInputs(){return inputs;}
         public static boolean isEmtpy(){return inputs.isEmpty();}
 
 

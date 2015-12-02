@@ -24,12 +24,14 @@ public class RenderThread extends Game {
     @Override
     public void create() {
             spriteBatch = new SpriteBatch();
+            System.out.println("RENDER THREAD STARTED.");
     }
 
     @Override
     public void dispose() {
         super.dispose();
         spriteBatch.dispose();
+        System.out.println("RENDER THREAD FINISHED.");
     }
 
     @Override

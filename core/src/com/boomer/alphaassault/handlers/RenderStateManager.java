@@ -37,8 +37,8 @@ public class RenderStateManager {
     }
 
 
-    public static void add(int _type,Long _referenceID,Sprite _sprite){
-        updatingState.add(_type,_referenceID,_sprite);
+    public static void addElement(int _cameraType, Long _referenceID,int _depth ,Sprite _sprite){
+        updatingState.addElement(_cameraType,_referenceID,_depth,_sprite);
 
     }
 
@@ -73,6 +73,8 @@ public class RenderStateManager {
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
 
     }
+
+
 
 
 }

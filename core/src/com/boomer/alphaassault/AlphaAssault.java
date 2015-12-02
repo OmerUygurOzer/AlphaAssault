@@ -24,11 +24,16 @@ public class AlphaAssault extends RenderThread {
     @Override
     public void create() {
         super.create();
+
+        //INITIALIZE GAME RESOURCES
         gameResources = new Resource();
         gameResources.initialize();
+
         gameStateManager = new GameStateManager();
+
         updateThread = new UpdateThread(gameStateManager);
         inputThread = new InputThread();
+
         setGameStateManager(gameStateManager);
 
 

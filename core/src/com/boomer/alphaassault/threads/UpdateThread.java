@@ -22,6 +22,7 @@ public class UpdateThread implements Runnable {
         timeAccumulated = 0.0f;
         THREAD_RUNNING = true;
         gameStateManager = _gameStateManager;
+        System.out.println("UPDATE THREAD STARTED.");
         updateThread.start();
 
     }
@@ -44,7 +45,7 @@ public class UpdateThread implements Runnable {
             }
             wait(1);
         }
-
+        System.out.println("UPDATE THREAD FINISHED.");
     }
 
 
