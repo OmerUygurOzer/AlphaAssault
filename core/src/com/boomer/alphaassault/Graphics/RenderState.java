@@ -4,7 +4,8 @@ package com.boomer.alphaassault.graphics;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.sun.deploy.resources.Deployment_de;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
 
 
 import java.util.ArrayList;
@@ -33,13 +34,13 @@ public class RenderState{
 
     private class Addition{
         public int tracker;
-        public int cameraType;
+        public int viewType;
         public long referenceId;
         public int depth;
         public Sprite sprite;
 
-        public Addition(int _cameraType,long _referenceId,int _depth,Sprite _sprite){
-            cameraType = _cameraType;
+        public Addition(int _viewType,long _referenceId,int _depth,Sprite _sprite){
+            viewType = _viewType;
             referenceId = _referenceId;
             depth = _depth;
             sprite = new Sprite(_sprite);
@@ -63,12 +64,12 @@ public class RenderState{
     private List<Removal> removals;
 
     private Map<Integer,Map<Long,Sprite>> sprites;
-    private Map<Integer,Map<Integer,OrthographicCamera>> cameras;
+    private Map<Integer,Map<Integer,Viewport>> viewPorts;
     private Map<Integer,Map<Integer,List<Long>>> cameraMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
 
     public RenderState(){
         sprites = new ConcurrentHashMap<Integer, Map<Long, Sprite>>();
-        cameras = new ConcurrentHashMap<Integer, Map<Integer, OrthographicCamera>>();
+        viewPorts = new ConcurrentHashMap<Integer, Map<Integer, Viewport>>();
         cameraMapping = new ConcurrentHashMap<Integer, Map<Integer, List<Long>>>();
 
         additions = new CopyOnWriteArrayList<Addition>();
@@ -76,16 +77,16 @@ public class RenderState{
 
         for(int depth = 0;depth<4;depth++){
             sprites.put(depth,new ConcurrentHashMap<Long, Sprite>());
-            cameras.put(depth,new ConcurrentHashMap<Integer, OrthographicCamera>());
+            viewPorts.put(depth,new ConcurrentHashMap<Integer, Viewport>());
             cameraMapping.put(depth,new ConcurrentHashMap<Integer, List<Long>>());
         }
 
 
     }
 
-    public void addCamera(int _cameraType,OrthographicCamera _camera){
-        for(int depth:cameras.keySet()) {
-            cameras.get(depth).put(_cameraType, _camera);
+    public void addView(int _viewType, Viewport _viewPort){
+        for(int depth: viewPorts.keySet()) {
+            viewPorts.get(depth).put(_viewType, _viewPort);
         }
     }
 
@@ -112,9 +113,9 @@ public class RenderState{
         }
     }
     public void updateElement(long _referenceId,int _depth,Sprite _sprite){
-        if(sprites.get(_depth).get(_referenceId)!=null) {
+       // if(sprites.get(_depth).get(_referenceId)!=null) {
             sprites.get(_depth).get(_referenceId).set(_sprite);
-        }
+        //}
     }
 
 
@@ -122,8 +123,9 @@ public class RenderState{
     //GAME SCREEN IS DRAWN LAST
     public void  render(SpriteBatch _spriteBatch) {
         for(int depth: sprites.keySet()) {
-            for (int key : cameras.get(depth).keySet()) {
-                _spriteBatch.setProjectionMatrix(cameras.get(depth).get(key).combined);
+            for (int key : viewPorts.get(depth).keySet()) {
+                viewPorts.get(depth).get(key).apply();
+                _spriteBatch.setProjectionMatrix(viewPorts.get(depth).get(key).getCamera().combined);
                 _spriteBatch.begin();
                 if (cameraMapping.get(depth).get(key) == null) {
                     _spriteBatch.end();
@@ -140,16 +142,16 @@ public class RenderState{
      public void getUpdates(RenderState _renderState) {
          for(Addition incomingAddition:_renderState.getAdditions()){
              sprites.get(incomingAddition.depth).put(incomingAddition.referenceId,incomingAddition.sprite);
-             if(!cameraMapping.get(incomingAddition.depth).containsKey(incomingAddition.cameraType)){
+             if(!cameraMapping.get(incomingAddition.depth).containsKey(incomingAddition.viewType)){
                  List<Long> list = new CopyOnWriteArrayList<Long>();
                  list.add(incomingAddition.referenceId);
-                 cameraMapping.get(incomingAddition.depth).put(incomingAddition.cameraType,list);
+                 cameraMapping.get(incomingAddition.depth).put(incomingAddition.viewType,list);
 
              }else{
-                 cameraMapping.get(incomingAddition.depth).get(incomingAddition.cameraType).add(incomingAddition.referenceId);
+                 cameraMapping.get(incomingAddition.depth).get(incomingAddition.viewType).add(incomingAddition.referenceId);
              }
              if(incomingAddition.tracker>0){
-                 Addition passingAddition = new Addition(incomingAddition.cameraType,incomingAddition.referenceId,incomingAddition.depth,new Sprite(incomingAddition.sprite));
+                 Addition passingAddition = new Addition(incomingAddition.viewType,incomingAddition.referenceId,incomingAddition.depth,new Sprite(incomingAddition.sprite));
                  passingAddition.tracker = incomingAddition.tracker-1;
                  additions.add(passingAddition);
 
@@ -177,7 +179,7 @@ public class RenderState{
     public void set(RenderState _renderState){
         for(int depth: sprites.keySet()) {
             sprites.get(depth).clear();
-            cameras.get(depth).clear();
+            viewPorts.get(depth).clear();
             cameraMapping.get(depth).clear();
             for (Long key : _renderState.getSprites().get(depth).keySet()) {
                 sprites.get(depth).put(key, new Sprite(_renderState.getSprites().get(depth).get(key)));
@@ -186,7 +188,7 @@ public class RenderState{
             for (Integer map : _renderState.getCameraMapping().get(depth).keySet()) {
                 cameraMapping.get(depth).put(map, new ArrayList<Long>(_renderState.getCameraMapping().get(depth).get(map)));
             }
-            cameras.get(depth).putAll(_renderState.getCameras().get(depth));
+            viewPorts.get(depth).putAll(_renderState.getViewPorts().get(depth));
 
         }
         CURRENT_STATE = _renderState.getCurrentState();
@@ -195,7 +197,7 @@ public class RenderState{
 
 
     private Map<Integer,Map<Long,Sprite>> getSprites(){return sprites;}
-    private Map<Integer,Map<Integer,OrthographicCamera>> getCameras (){return cameras;}
+    private Map<Integer,Map<Integer,Viewport>> getViewPorts(){return viewPorts;}
     private Map<Integer,Map<Integer,List<Long>>> getCameraMapping(){return cameraMapping;}
     public int getCurrentState(){return CURRENT_STATE;}
     public void setCurrentState(int _state){CURRENT_STATE  = _state;}

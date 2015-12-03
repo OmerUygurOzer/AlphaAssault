@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.*;
 import com.boomer.alphaassault.gameworld.GameWorld;
-import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
 import com.boomer.alphaassault.GUI.GamePad;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.handlers.GameStateManager;
@@ -16,8 +15,8 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
  */
 public class Play extends GameStateBase {
 
-    public static final int CAMERA_TYPE_SCREEN = 0;
-    public static final int CAMERA_TYPE_MAP = 1;
+    public static final int VIEW_TYPE_SCREEN = 0;
+    public static final int VIEW_TYPE_MAP = 1;
 
     private Viewport SCREEN_VIEW;
     private Viewport MAP_VIEW;
@@ -47,18 +46,18 @@ public class Play extends GameStateBase {
         //MAP_CAM.translate(GameGraphics.VIRTUAL_HEIGHT/2,GameGraphics.VIRTUAL_HEIGHT/2);
         MAP_CAM.update();
 
-        RENDER_STATE.addCamera(CAMERA_TYPE_SCREEN,SCREEN_CAM);
-        RENDER_STATE.addCamera(CAMERA_TYPE_MAP,MAP_CAM);
+        RENDER_STATE.addView(VIEW_TYPE_SCREEN,SCREEN_VIEW);
+        RENDER_STATE.addView(VIEW_TYPE_MAP,MAP_VIEW);
         RenderStateManager.setGameRenderState(RENDER_STATE);
 
         //ACTIVATE GAME PAD
-        GAME_PAD = new GamePad(GamePad.LEFT);
-        GAME_PAD.setCameraType(CAMERA_TYPE_SCREEN);
+        GAME_PAD = new GamePad(GamePad.BOTH);
+        GAME_PAD.setCameraType(VIEW_TYPE_SCREEN);
         GAME_PAD.addToRenderState();
 
 
         gameWorld = new GameWorld();
-        gameWorld.setCameraType(CAMERA_TYPE_MAP);
+        gameWorld.setCameraType(VIEW_TYPE_MAP);
         gameWorld.addToRenderState();
 
     }
@@ -88,6 +87,6 @@ public class Play extends GameStateBase {
     @Override
     public void reSize(int _width, int _height) {
       SCREEN_VIEW.update(_width,_height);
-
+      MAP_VIEW.update(_width,_height);
     }
 }
