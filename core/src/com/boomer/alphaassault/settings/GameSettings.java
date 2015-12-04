@@ -8,9 +8,9 @@ public class GameSettings {
     public static final String TITLE = "ALPHA ASSAULT";
 
 
-    public static final float RPS = 1 / 120f; //120 RENDER PER SECOND
+    public static final float RPS = 1 / 60f; //120 RENDER PER SECOND
     public static final float UPS = 1 / 60f; //60 UPDATE PER SECOND
-    public static final float IPS = 1 / 180f; //180 INPUT PER SECOND
+    public static final float IPS = 1 / 120f; //120 INPUT PER SECOND
 
     //GAME STATES
     public static volatile boolean GAME_RUNNING_STATE = false;

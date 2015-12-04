@@ -9,9 +9,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -19,6 +19,34 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by Omer on 11/27/2015.
  */
 public class RenderState{
+
+    private  class Addition{
+        public int tracker;
+        public int viewType;
+        public long referenceId;
+        public int depth;
+        public Sprite sprite;
+
+        public Addition(int _viewType,long _referenceId,int _depth,Sprite _sprite){
+            viewType = _viewType;
+            referenceId = _referenceId;
+            depth = _depth;
+            sprite = _sprite;
+            tracker = 1;
+        }
+    }
+
+    private  class Removal{
+        public int tracker;
+        public long referenceId;
+        public int depth;
+
+        public Removal(long _referenceId,int _depth){
+            referenceId = _referenceId;
+            depth = _depth;
+            tracker = 1;
+        }
+    }
 
     public static final int STATE_BEING_RENDERED = 0;
     public static final int STATE_BEING_UPDATED = 1;
@@ -31,54 +59,25 @@ public class RenderState{
 
     public int CURRENT_STATE;
 
-
-    private class Addition{
-        public int tracker;
-        public int viewType;
-        public long referenceId;
-        public int depth;
-        public Sprite sprite;
-
-        public Addition(int _viewType,long _referenceId,int _depth,Sprite _sprite){
-            viewType = _viewType;
-            referenceId = _referenceId;
-            depth = _depth;
-            sprite = new Sprite(_sprite);
-            tracker = 1;
-        }
-    }
-
-    private class Removal{
-        public int tracker;
-        public long referenceId;
-        public int depth;
-
-        public Removal(long _referenceId,int _depth){
-            referenceId = _referenceId;
-            depth = _depth;
-            tracker = 1;
-        }
-    }
-
-    private List<Addition> additions;
-    private List<Removal> removals;
-
     private Map<Integer,Map<Long,Sprite>> sprites;
     private Map<Integer,Map<Integer,Viewport>> viewPorts;
     private Map<Integer,Map<Integer,List<Long>>> cameraMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
 
-    public RenderState(){
-        sprites = new ConcurrentHashMap<Integer, Map<Long, Sprite>>();
-        viewPorts = new ConcurrentHashMap<Integer, Map<Integer, Viewport>>();
-        cameraMapping = new ConcurrentHashMap<Integer, Map<Integer, List<Long>>>();
+    private List<Addition> additions;
+    private List<Removal> removals;
 
-        additions = new CopyOnWriteArrayList<Addition>();
-        removals = new CopyOnWriteArrayList<Removal>();
+    public RenderState(){
+        sprites = new HashMap<Integer, Map<Long, Sprite>>();
+        viewPorts = new HashMap<Integer, Map<Integer, Viewport>>();
+        cameraMapping = new HashMap<Integer, Map<Integer, List<Long>>>();
+
+        additions = new ArrayList<Addition>();
+        removals = new ArrayList<Removal>();
 
         for(int depth = 0;depth<4;depth++){
-            sprites.put(depth,new ConcurrentHashMap<Long, Sprite>());
-            viewPorts.put(depth,new ConcurrentHashMap<Integer, Viewport>());
-            cameraMapping.put(depth,new ConcurrentHashMap<Integer, List<Long>>());
+            sprites.put(depth,new HashMap<Long, Sprite>());
+            viewPorts.put(depth,new HashMap<Integer, Viewport>());
+            cameraMapping.put(depth,new HashMap<Integer, List<Long>>());
         }
 
 
@@ -91,7 +90,7 @@ public class RenderState{
     }
 
     public void addElement(int _cameraType, long _referenceId,int _depth,Sprite _sprite){
-        additions.add(new Addition(_cameraType,_referenceId,_depth,_sprite));
+       additions.add(new Addition(_cameraType,_referenceId,_depth,_sprite));
         sprites.get(_depth).put(_referenceId,new Sprite(_sprite));
         if(!cameraMapping.get(_depth).containsKey(_cameraType)){
             List<Long> list = new CopyOnWriteArrayList<Long>();
@@ -104,7 +103,7 @@ public class RenderState{
     }
 
     public void removeElement(long _referenceId,int _depth){
-        removals.add(new Removal(_referenceId,_depth));
+       removals.add(new Removal(_referenceId,_depth));
        sprites.get(_depth).remove(_referenceId);
         for(int map: cameraMapping.get(_depth).keySet()){
             if(cameraMapping.get(_depth).get(map).contains(_referenceId)){
@@ -113,9 +112,7 @@ public class RenderState{
         }
     }
     public void updateElement(long _referenceId,int _depth,Sprite _sprite){
-       // if(sprites.get(_depth).get(_referenceId)!=null) {
             sprites.get(_depth).get(_referenceId).set(_sprite);
-        //}
     }
 
 
@@ -140,8 +137,9 @@ public class RenderState{
     }
 
      public void getUpdates(RenderState _renderState) {
+
          for(Addition incomingAddition:_renderState.getAdditions()){
-             sprites.get(incomingAddition.depth).put(incomingAddition.referenceId,incomingAddition.sprite);
+             sprites.get(incomingAddition.depth).put(incomingAddition.referenceId,new Sprite(incomingAddition.sprite));
              if(!cameraMapping.get(incomingAddition.depth).containsKey(incomingAddition.viewType)){
                  List<Long> list = new CopyOnWriteArrayList<Long>();
                  list.add(incomingAddition.referenceId);
@@ -201,14 +199,15 @@ public class RenderState{
     private Map<Integer,Map<Integer,List<Long>>> getCameraMapping(){return cameraMapping;}
     public int getCurrentState(){return CURRENT_STATE;}
     public void setCurrentState(int _state){CURRENT_STATE  = _state;}
+
     public List<Addition> getAdditions(){
-        List<Addition> list = new CopyOnWriteArrayList<Addition>();
+        List<Addition> list = new ArrayList<Addition>();
         list.addAll(additions);
         additions.clear();
         return list;
     }
     public List<Removal> getRemovals(){
-        List<Removal> list = new CopyOnWriteArrayList<Removal>();
+        List<Removal> list = new ArrayList<Removal>();
         list.addAll(removals);
        removals.clear();
         return list;

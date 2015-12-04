@@ -11,27 +11,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Inputs {
 
-        //MOUSE/TOUCH HOVER
-        private static volatile Location hover;
 
-        //SUPPORT MULTIPLE INPUTS//PRESSES BEING DONE SIMULTANEOUSLY
+        private static volatile Location hover;
         private static int numberOfInputs;
         private static Map<Long,Location> inputs;
         public static final int INPUT_SEPARATOR;
 
 
         static{
-
             hover = new Location(0,0);
-            //DRAG STATICS
             numberOfInputs = 0;
             inputs = new ConcurrentHashMap<Long, Location>();
             INPUT_SEPARATOR = 90;
-
-
-
-
-        }
+           }
 
 
         public static void updateHover(int _x, int _y){

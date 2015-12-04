@@ -18,46 +18,43 @@ public class Play extends GameStateBase {
     public static final int VIEW_TYPE_SCREEN = 0;
     public static final int VIEW_TYPE_MAP = 1;
 
-    private Viewport SCREEN_VIEW;
-    private Viewport MAP_VIEW;
+    private Viewport screenView;
+    private Viewport mapView;
 
-    private OrthographicCamera SCREEN_CAM;
-    private OrthographicCamera MAP_CAM;
+    private OrthographicCamera screenCam;
+    private OrthographicCamera mapCam;
 
 
-    private GamePad GAME_PAD;
-
-    /*
-    GAMEWORLD:  ALL IN-GAME OBJECTS ARE COLLECTED HERE
-     */
+    private GamePad gamePad;
     private GameWorld gameWorld;
+
 
     public Play(GameStateManager _gameStateManager) {
         super(_gameStateManager);
-        SCREEN_CAM = new OrthographicCamera();
-        SCREEN_VIEW = new FitViewport(GameGraphics.VIRTUAL_WIDTH,GameGraphics.VIRTUAL_HEIGHT,SCREEN_CAM);
-        SCREEN_VIEW.apply();
-        SCREEN_CAM.translate(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
-        SCREEN_CAM.update();
+        screenCam = new OrthographicCamera();
+        screenView = new FitViewport(GameGraphics.VIRTUAL_WIDTH,GameGraphics.VIRTUAL_HEIGHT, screenCam);
+        screenView.apply();
+        screenCam.translate(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+        screenCam.update();
 
-        MAP_CAM = new OrthographicCamera();
-        MAP_VIEW = new FitViewport(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT,MAP_CAM);
-        MAP_VIEW.apply();
-        //MAP_CAM.translate(GameGraphics.VIRTUAL_HEIGHT/2,GameGraphics.VIRTUAL_HEIGHT/2);
-        MAP_CAM.update();
+        mapCam = new OrthographicCamera();
+        mapView = new FitViewport(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT, mapCam);
+        mapView.apply();
+        mapCam.update();
 
-        RENDER_STATE.addView(VIEW_TYPE_SCREEN,SCREEN_VIEW);
-        RENDER_STATE.addView(VIEW_TYPE_MAP,MAP_VIEW);
+        RENDER_STATE.addView(VIEW_TYPE_SCREEN, screenView);
+        RENDER_STATE.addView(VIEW_TYPE_MAP, mapView);
         RenderStateManager.setGameRenderState(RENDER_STATE);
 
         //ACTIVATE GAME PAD
-        GAME_PAD = new GamePad(GamePad.BOTH);
-        GAME_PAD.setCameraType(VIEW_TYPE_SCREEN);
-        GAME_PAD.addToRenderState();
+        gamePad = new GamePad(GamePad.BOTH);
+        gamePad.setCameraType(VIEW_TYPE_SCREEN);
+        gamePad.addToRenderState();
 
 
         gameWorld = new GameWorld();
         gameWorld.setCameraType(VIEW_TYPE_MAP);
+        gameWorld.setController(gamePad);
         gameWorld.addToRenderState();
 
     }
@@ -69,8 +66,9 @@ public class Play extends GameStateBase {
 
     @Override
     public void handleInput() {
+        gamePad.receiveInput();
 
-        GAME_PAD.receiveInput();
+
     }
 
     @Override
@@ -86,7 +84,7 @@ public class Play extends GameStateBase {
 
     @Override
     public void reSize(int _width, int _height) {
-      SCREEN_VIEW.update(_width,_height);
-      MAP_VIEW.update(_width,_height);
+      screenView.update(_width,_height);
+      mapView.update(_width,_height);
     }
 }

@@ -21,12 +21,12 @@ public class Location {
         y = _location.y;
     }
 
-    public static double getDistance(Location _a,Location _b){
-        return  Math.sqrt(((_a.x-_b.x)*(_a.x-_b.x)) + ((_a.y-_b.y)*(_a.y-_b.y)) );
-    }
-
     public boolean equals(Location _location){
         return x==_location.x && y==_location.y;
+    }
+
+    public static double getDistance(Location _a,Location _b){
+        return  Math.sqrt(((_a.x-_b.x)*(_a.x-_b.x)) + ((_a.y-_b.y)*(_a.y-_b.y)) );
     }
 
     public static double getDistance(int _x1,int _y1,int _x2,int _y2){
@@ -35,7 +35,7 @@ public class Location {
 
     public static double getAngle(Location _a, Location _b){
         double angle = Math.toDegrees(Math.atan2(_a.x - _b.x,_a.y- _b.y));
-        if(angle<360){angle+=360;}
+        if(angle<0){angle+=360;}
         return angle;
     }
 

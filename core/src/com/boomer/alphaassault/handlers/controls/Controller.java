@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.handlers.controls;
 
 import com.boomer.alphaassault.utilities.Location;
+import sun.util.resources.cldr.lag.CalendarData_lag_TZ;
 
 import java.util.HashMap;
 
@@ -15,56 +16,65 @@ public class Controller {
         public Location valueLocation;
 
         public Value(double _value) {
+            valueBoolean = false;
             valueDouble = _value;
+            valueLocation = null;
         }
 
         public Value(boolean _value) {
             valueBoolean = _value;
+            valueDouble = 0;
+            valueLocation = null;
         }
 
         public Value(Location _value) {
+            valueBoolean = false;
+            valueDouble = 0;
             valueLocation = new Location(_value);
         }
     }
 
 
-    HashMap<Integer, Double> doubles;
-    HashMap<Integer, Boolean> booleans;
-    HashMap<Integer, Location> locations;
+    protected HashMap<Integer, Value> values;
+
 
 
     protected Controller() {
-        doubles = new HashMap<Integer, Double>();
-        booleans = new HashMap<Integer, Boolean>();
-        locations = new HashMap<Integer, Location>();
+       values = new HashMap<Integer, Value>();
     }
 
 
     public void set(Integer _key, double _value) {
-        doubles.put(_key, _value);
+        if(values.containsKey(_key)){
+            values.get(_key).valueDouble = _value;
+        }else{
+            values.put(_key,new Value(_value));
+        }
     }
 
     public void set(Integer _key, boolean _value) {
-        booleans.put(_key, _value);
+        if(values.containsKey(_key)){
+            values.get(_key).valueBoolean = _value;
+        }else{
+            values.put(_key,new Value(_value));
+        }
     }
 
     public void set(Integer _key, Location _value) {
-        locations.put(_key, _value);
+        if(values.containsKey(_key)){
+            values.get(_key).valueLocation.x = _value.x;
+            values.get(_key).valueLocation.y = _value.y;
+
+        }else{
+            values.put(_key,new Value(_value));
+        }
     }
 
     public Value get(Integer _key) {
-        if (doubles.containsKey(_key)) {
-            return new Value(doubles.get(_key));
-        }
-
-        if (booleans.containsKey(_key)) {
-            return new Value(booleans.get(_key));
-        }
-
-        if(locations.containsKey(_key)){
-            return new Value(new Location(locations.get(_key)));
-        }
-
+      if(values.containsKey(_key)){
+          return values.get(_key);
+      }
         return null;
     }
+
 }

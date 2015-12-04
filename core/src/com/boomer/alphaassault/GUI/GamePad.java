@@ -17,13 +17,13 @@ import com.boomer.alphaassault.utilities.Renderable;
 public class GamePad extends Controller implements Renderable,InputReceiver {
 
     //GAMEPAD TYPE
-    //LEFT : ONLY LEFT CONSOLE
-    //RIGHT: ONLY RIGHT CONSOLE
-    //BOTH: RIGHT AND LEFT CONSOLES
+    //LEFT_ONLY : ONLY LEFT_ONLY CONSOLE
+    //RIGHT_ONLY: ONLY RIGHT_ONLY CONSOLE
+    //BOTH: RIGHT_ONLY AND LEFT_ONLY CONSOLES
     private int TYPE;
 
-    public static final int LEFT = 0;
-    public static final int RIGHT = 1;
+    public static final int LEFT_ONLY = 0;
+    public static final int RIGHT_ONLY = 1;
     public static final int BOTH = 2;
 
     private static final Location gameFrameCenter = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
@@ -60,10 +60,10 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     private boolean rightActive;
 
     //INPUT MAPPING
-    public static final int LEFT_ANGLE = 0;
-    public static final int LEFT_SPEED = 1;
-    public static final int RIGHT_ANGLE = 2;
-    public static final int RUGHT_SPEED = 3;
+    public static final int LEFT_ANALOG = 0;
+    public static final int LEFT_ROTATION = 1;
+    public static final int RIGHT_ANALOG = 2;
+    public static final int RIGHT_ROTATION = 3;
 
 
     public GamePad(int _type) {
@@ -75,7 +75,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         rightCircleId = referenceId+3;
         hudId = referenceId +4;
 
-        //LEFT
+        //LEFT_ONLY
         leftButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
         leftButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
         leftButtonSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
@@ -85,7 +85,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         leftCurrentLocation = new Location(LEFT_BUTTON_CENTER);
         leftActive = false;
 
-        //RIGHT
+        //RIGHT_ONLY
         rightButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_RIGHT_BUTTON));
         rightButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
         rightButtonSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
@@ -107,11 +107,11 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     @Override
     public void addToRenderState() {
-        if(TYPE == LEFT || TYPE == BOTH) {
+        if(TYPE == LEFT_ONLY || TYPE == BOTH) {
             RenderStateManager.addElement(cameraType, leftButtonId, RenderState.DEPTH_GAME_SCREEN, leftButtonSprite);
             RenderStateManager.addElement(cameraType, leftCircleId, RenderState.DEPTH_GAME_SCREEN,leftCircleSprite);
         }
-        if(TYPE == RIGHT || TYPE == BOTH) {
+        if(TYPE == RIGHT_ONLY || TYPE == BOTH) {
             RenderStateManager.addElement(cameraType, rightButtonId,RenderState.DEPTH_GAME_SCREEN, rightButtonSprite);
             RenderStateManager.addElement(cameraType, rightCircleId,RenderState.DEPTH_GAME_SCREEN, rightCircleSprite);
         }
@@ -132,27 +132,32 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     @Override
     public void receiveInput() {
-        if(TYPE == LEFT || TYPE == BOTH) {
+        if(TYPE == LEFT_ONLY || TYPE == BOTH) {
             updateLeft();
         }
-        if(TYPE == RIGHT || TYPE == BOTH) {
+        if(TYPE == RIGHT_ONLY || TYPE == BOTH) {
             updateRight();
         }
     }
 
     private void updateLeft(){
         for (Long key : Inputs.getInputs().keySet()){
-            if(Location.getDistance(Inputs.getInputs().get(key), LEFT_BUTTON_CENTER)< RADIUS){
+            if(Location.getDistance(Inputs.getInputs().get(key), LEFT_BUTTON_CENTER)<= RADIUS){
                 leftCurrentLocation.x = Inputs.getInputs().get(key).x;
                 leftCurrentLocation.y = Inputs.getInputs().get(key).y;
+                set(LEFT_ANALOG,Location.getDistance(Inputs.getInputs().get(key), LEFT_BUTTON_CENTER)*1/90);
+                set(LEFT_ROTATION,Location.getAngle(Inputs.getInputs().get(key),LEFT_BUTTON_CENTER));
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
                 leftActive = true;
+
                 return;
             }
 
 
         }
+        set(LEFT_ANALOG,0);
+        set(LEFT_ROTATION,0);
         leftActive = false;
         leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
         leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
@@ -163,9 +168,11 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     private void updateRight(){
         for (Long key : Inputs.getInputs().keySet()){
-            if(Location.getDistance(Inputs.getInputs().get(key), RIGHT_BUTTON_CENTER)< RADIUS){
+            if(Location.getDistance(Inputs.getInputs().get(key), RIGHT_BUTTON_CENTER)<= RADIUS){
                 rightCurrentLocation.x = Inputs.getInputs().get(key).x;
                 rightCurrentLocation.y = Inputs.getInputs().get(key).y;
+                set(RIGHT_ANALOG,Location.getDistance(Inputs.getInputs().get(key), RIGHT_BUTTON_CENTER)*1/90);
+                set(RIGHT_ROTATION,Location.getAngle(Inputs.getInputs().get(key),RIGHT_BUTTON_CENTER));
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);
                 rightActive = true;
@@ -173,7 +180,8 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
             }
 
         }
-
+        set(RIGHT_ANALOG,0);
+        set(RIGHT_ROTATION,0);
         rightActive = false;
         rightCurrentLocation.x = RIGHT_BUTTON_CENTER.x;
         rightCurrentLocation.y = RIGHT_BUTTON_CENTER.y;
