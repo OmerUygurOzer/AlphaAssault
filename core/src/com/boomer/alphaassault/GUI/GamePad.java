@@ -132,6 +132,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     @Override
     public void receiveInput() {
+
         if(TYPE == LEFT_ONLY || TYPE == BOTH) {
             updateLeft();
         }
@@ -171,7 +172,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
             if(Location.getDistance(Inputs.getInputs().get(key), RIGHT_BUTTON_CENTER)<= RADIUS){
                 rightCurrentLocation.x = Inputs.getInputs().get(key).x;
                 rightCurrentLocation.y = Inputs.getInputs().get(key).y;
-                set(RIGHT_ANALOG,Location.getDistance(Inputs.getInputs().get(key), RIGHT_BUTTON_CENTER)*1/90);
+                set(RIGHT_ANALOG,Location.getDistance(Inputs.getInputs().get(key).x,Inputs.getInputs().get(key).y, RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y)*1/90);
                 set(RIGHT_ROTATION,Location.getAngle(Inputs.getInputs().get(key),RIGHT_BUTTON_CENTER));
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);

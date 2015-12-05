@@ -1,7 +1,6 @@
 package com.boomer.alphaassault.graphics;
 
-
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -149,7 +148,7 @@ public class RenderState{
                  cameraMapping.get(incomingAddition.depth).get(incomingAddition.viewType).add(incomingAddition.referenceId);
              }
              if(incomingAddition.tracker>0){
-                 Addition passingAddition = new Addition(incomingAddition.viewType,incomingAddition.referenceId,incomingAddition.depth,new Sprite(incomingAddition.sprite));
+                 Addition passingAddition = new Addition(incomingAddition.viewType,incomingAddition.referenceId,incomingAddition.depth,incomingAddition.sprite);
                  passingAddition.tracker = incomingAddition.tracker-1;
                  additions.add(passingAddition);
 

@@ -31,7 +31,7 @@ public class SightCamera extends OrthographicCamera {
         this.update();
     }
 
-    public void setLocation(float _x,float _y){
+    public void setLocation(int _x,int _y){
         LOCATION = new Location(_x,_y);
         this.translate(LOCATION.x,LOCATION.y);
         this.update();

@@ -33,30 +33,30 @@ public class Inputs {
         }
 
         public static void inputAcquire(int _x, int _y){
-
+            boolean newInput = true;
             if(inputs.isEmpty()){
                 numberOfInputs++;
                 inputs.put(System.currentTimeMillis(),new Location(_x,_y));
                 return;
             }
             for(Long key: inputs.keySet()){
-                if(Location.getDistance(inputs.get(key),new Location(_x,_y))<INPUT_SEPARATOR){
+                if(Location.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
                     inputs.get(key).x = _x;
                     inputs.get(key).y = _y;
+                    newInput = false;
                     //System.out.println("INPUT UPDATED!");
-
-                }
+                 }
 
             }
+            if (newInput) {
                 numberOfInputs++;
                 inputs.put(System.currentTimeMillis(),new Location(_x,_y));
-
-
+            }
         }
 
         public static void inputRelease(int _x, int _y){
             for(Long key: inputs.keySet()){
-                        if(Location.getDistance(inputs.get(key),new Location(_x,_y))<INPUT_SEPARATOR){
+                        if(Location.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
                             inputs.remove(key);
                             numberOfInputs--;
                             //System.out.println("INPUT RELEASED!");

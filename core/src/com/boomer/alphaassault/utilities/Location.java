@@ -6,11 +6,11 @@ import sun.util.resources.cldr.byn.CalendarData_byn_ER;
  * Created by Omer on 11/24/2015.
  */
 public class Location {
-    public float x;
-    public float y;
+    public int x;
+    public int y;
 
 
-   public Location(float _x,float _y){
+   public Location(int _x,int _y){
         x = _x;
         y= _y;
 

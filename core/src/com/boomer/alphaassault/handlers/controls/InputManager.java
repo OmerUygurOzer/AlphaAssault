@@ -59,7 +59,7 @@ public class InputManager{
             if((!previousState[touchNumber].down) && currentState[touchNumber].down){ //TOUCH DOWN
                 touchDown(currentState[touchNumber].x,currentState[touchNumber].y);
             }
-            if((previousState[touchNumber].down) && currentState[touchNumber].down){ //DRAG
+            if((previousState[touchNumber].down) && currentState[touchNumber].down){ //KEEP PRESSING
                 touchDown(currentState[touchNumber].x,currentState[touchNumber].y);
             }
             if((previousState[touchNumber].down) && !currentState[touchNumber].down){ //TOUCH UP
@@ -84,9 +84,9 @@ public class InputManager{
     }
 
     private void touchUp(int _x, int _y){
-        int virtualX = _x* screenWidth /Gdx.graphics.getWidth();
-        int virtualY = screenHeight - _y* screenHeight /Gdx.graphics.getHeight();
-        Inputs.inputRelease(virtualX, virtualY);
+            int virtualX = _x* screenWidth /Gdx.graphics.getWidth();
+            int virtualY = screenHeight - _y* screenHeight /Gdx.graphics.getHeight();
+            Inputs.inputRelease(virtualX, virtualY);
     }
 
 
