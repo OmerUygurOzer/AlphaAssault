@@ -12,8 +12,6 @@ public class GameGraphics {
     public static final int VIRTUAL_WIDTH = 800;
     public static final int VIRTUAL_HEIGHT = 400;
 
-    public static final double VIRTUAL_ASPECT_RATIO = VIRTUAL_HEIGHT / VIRTUAL_WIDTH;
-    public static double REAL_ASPECT_RATIO = Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
-
+    public static final double VIRTUAL_ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
 
 }

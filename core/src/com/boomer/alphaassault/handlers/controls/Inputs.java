@@ -74,11 +74,4 @@ public class Inputs {
         public static boolean isEmtpy(){return inputs.isEmpty();}
 
 
-
-
-
-
-
-
-
 }

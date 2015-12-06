@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.*;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.GUI.GamePad;
 import com.boomer.alphaassault.graphics.GameGraphics;
+import com.boomer.alphaassault.graphics.views.HudViewport;
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 
@@ -19,7 +20,7 @@ public class Play extends GameStateBase {
     public static final int VIEW_TYPE_MAP = 1;
 
     private Viewport screenView;
-    private Viewport mapView;
+    private Viewport hudView;
 
     private OrthographicCamera screenCam;
     private OrthographicCamera mapCam;
@@ -38,12 +39,13 @@ public class Play extends GameStateBase {
         screenCam.update();
 
         mapCam = new OrthographicCamera();
-        mapView = new FitViewport(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT, mapCam);
-        mapView.apply();
+        hudView = new HudViewport(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT, mapCam);
+        hudView.apply();
+        //mapCam.translate(GameGraphics.VIRTUAL_HEIGHT/2,GameGraphics.VIRTUAL_HEIGHT/2);
         mapCam.update();
 
         RENDER_STATE.addView(VIEW_TYPE_SCREEN, screenView);
-        RENDER_STATE.addView(VIEW_TYPE_MAP, mapView);
+        RENDER_STATE.addView(VIEW_TYPE_MAP, hudView);
         RenderStateManager.setGameRenderState(RENDER_STATE);
 
         //ACTIVATE GAME PAD
@@ -85,6 +87,7 @@ public class Play extends GameStateBase {
     @Override
     public void reSize(int _width, int _height) {
       screenView.update(_width,_height);
-      mapView.update(_width,_height);
+      hudView.update(_width,_height);
+
     }
 }
