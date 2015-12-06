@@ -35,8 +35,8 @@ public class GameWorld implements Updateable,Renderable{
     }
 
     @Override
-    public void setCameraType(int _cameraType) {
-        gameMap.setCameraType(_cameraType);
+    public void setViewType(int _cameraType) {
+        gameMap.setViewType(_cameraType);
     }
 
     @Override

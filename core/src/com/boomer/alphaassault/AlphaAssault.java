@@ -2,6 +2,7 @@ package com.boomer.alphaassault;
 
 
 import com.boomer.alphaassault.handlers.GameStateManager;
+import com.boomer.alphaassault.handlers.controls.InputManager;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.threads.InputThread;
@@ -18,7 +19,7 @@ public class AlphaAssault extends RenderThread {
     private GameStateManager gameStateManager;
     private Resource gameResources;
 
-
+    private InputManager inputManager;
 
 
     @Override
@@ -31,11 +32,12 @@ public class AlphaAssault extends RenderThread {
 
         gameStateManager = new GameStateManager();
 
+        //DECLARE THREADS
         updateThread = new UpdateThread(gameStateManager);
-        inputThread = new InputThread();
+        inputManager = new InputManager();
+        inputThread = new InputThread(inputManager);
 
         setGameStateManager(gameStateManager);
-
 
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
     }
@@ -65,6 +67,8 @@ public class AlphaAssault extends RenderThread {
     @Override
     public void resize(int _width, int _height) {
         gameStateManager.reSize(_width,_height);
+        inputManager.setScreenBounds();
+
     }
 
 

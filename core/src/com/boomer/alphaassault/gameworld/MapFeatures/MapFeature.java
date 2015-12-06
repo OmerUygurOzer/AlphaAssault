@@ -116,7 +116,7 @@ public abstract class MapFeature implements Renderable{
     }
 
     @Override
-    public void setCameraType(int _cameraType) {
+    public void setViewType(int _cameraType) {
         CAMERA_TYPE = _cameraType;
     }
 

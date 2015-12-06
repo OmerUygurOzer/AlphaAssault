@@ -50,12 +50,12 @@ public class Play extends GameStateBase {
 
         //ACTIVATE GAME PAD
         gamePad = new GamePad(GamePad.BOTH);
-        gamePad.setCameraType(VIEW_TYPE_SCREEN);
+        gamePad.setViewType(VIEW_TYPE_SCREEN);
         gamePad.addToRenderState();
 
 
         gameWorld = new GameWorld();
-        gameWorld.setCameraType(VIEW_TYPE_MAP);
+        gameWorld.setViewType(VIEW_TYPE_MAP);
         gameWorld.setController(gamePad);
         gameWorld.addToRenderState();
 

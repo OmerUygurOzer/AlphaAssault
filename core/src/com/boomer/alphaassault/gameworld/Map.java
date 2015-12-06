@@ -132,5 +132,5 @@ public class Map implements Renderable{
     }
 
     @Override
-    public void setCameraType(int _cameraType) {cameraType = _cameraType;}
+    public void setViewType(int _cameraType) {cameraType = _cameraType;}
 }

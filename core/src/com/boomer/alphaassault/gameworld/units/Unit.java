@@ -177,5 +177,5 @@ public abstract class Unit implements Updateable,Renderable{
     @Override
     public long getReferenceID() {return referenceId;}
     @Override
-    public void setCameraType(int _cameraType) {cameraType = _cameraType;}
+    public void setViewType(int _cameraType) {cameraType = _cameraType;}
 }

@@ -21,18 +21,20 @@ public class InputThread implements Runnable {
 
 
 
-    public InputThread() {
+    public InputThread(InputManager _inputManager) {
         inputThread = new Thread(this);
+        inputManager = _inputManager;
+        inputManager.setLimit(GameSettings.INPUT_MAX);
+        inputManager.setScreenBounds();
+
         timeAccumulated = 0.0f;
         THREAD_RUNNING = true;
 
-        inputManager = new InputManager();
-        inputManager.setLimit(GameSettings.INPUT_MAX);
-        inputManager.setScreenBounds(GameGraphics.VIRTUAL_WIDTH,GameGraphics.VIRTUAL_HEIGHT);
         System.out.println("INPUT THREAD STARTED.");
         inputThread.start();
 
     }
+
 
     @Override
     public void run() {

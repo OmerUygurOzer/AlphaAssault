@@ -54,7 +54,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     private  long hudId;
 
     private long referenceId;
-    private int cameraType;
+    private int viewType;
 
     private boolean leftActive;
     private boolean rightActive;
@@ -108,14 +108,14 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     @Override
     public void addToRenderState() {
         if(TYPE == LEFT_ONLY || TYPE == BOTH) {
-            RenderStateManager.addElement(cameraType, leftButtonId, RenderState.DEPTH_GAME_SCREEN, leftButtonSprite);
-            RenderStateManager.addElement(cameraType, leftCircleId, RenderState.DEPTH_GAME_SCREEN,leftCircleSprite);
+            RenderStateManager.addElement(viewType, leftButtonId, RenderState.DEPTH_GAME_SCREEN, leftButtonSprite);
+            RenderStateManager.addElement(viewType, leftCircleId, RenderState.DEPTH_GAME_SCREEN,leftCircleSprite);
         }
         if(TYPE == RIGHT_ONLY || TYPE == BOTH) {
-            RenderStateManager.addElement(cameraType, rightButtonId,RenderState.DEPTH_GAME_SCREEN, rightButtonSprite);
-            RenderStateManager.addElement(cameraType, rightCircleId,RenderState.DEPTH_GAME_SCREEN, rightCircleSprite);
+            RenderStateManager.addElement(viewType, rightButtonId,RenderState.DEPTH_GAME_SCREEN, rightButtonSprite);
+            RenderStateManager.addElement(viewType, rightCircleId,RenderState.DEPTH_GAME_SCREEN, rightCircleSprite);
         }
-        RenderStateManager.addElement(cameraType, hudId, RenderState.DEPTH_GAME_SCREEN,gameFrame);
+        RenderStateManager.addElement(viewType, hudId, RenderState.DEPTH_GAME_SCREEN,gameFrame);
     }
 
 
@@ -125,8 +125,8 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     }
 
     @Override
-    public void setCameraType(int _cameraType) {
-        cameraType = _cameraType;
+    public void setViewType(int _viewType) {
+        viewType = _viewType;
     }
 
 

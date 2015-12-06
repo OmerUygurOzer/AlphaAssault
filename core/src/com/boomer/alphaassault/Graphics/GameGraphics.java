@@ -11,7 +11,8 @@ import com.badlogic.gdx.utils.viewport.*;
 public class GameGraphics {
     public static final int VIRTUAL_WIDTH = 800;
     public static final int VIRTUAL_HEIGHT = 400;
-
     public static final double VIRTUAL_ASPECT_RATIO = VIRTUAL_WIDTH / VIRTUAL_HEIGHT;
+
+
 
 }
