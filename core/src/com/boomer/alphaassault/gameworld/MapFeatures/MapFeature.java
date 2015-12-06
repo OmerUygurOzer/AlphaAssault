@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
@@ -9,13 +10,6 @@ import com.boomer.alphaassault.utilities.Renderable;
  * Created by Omer on 11/25/2015.
  */
 public abstract class MapFeature implements Renderable{
-    //TYPE DETAILS
-    public static final int FEATURE_TYPE_CRATE = 0;
-    public static final int FEATURE_TYPE_BUSH = 1;
-    public static final int FEATURE_TYPE_ROCKS = 2;
-    public static final int FEATURE_TYPE_TREE = 3;
-    public static final int FEATURE_TYPE_WATER = 4;
-
 
     //TYPE PROPERTIES
     public static final int CRATE_RADIUS = 5;
@@ -25,108 +19,59 @@ public abstract class MapFeature implements Renderable{
     public static final int WATER_RADIUS = 5;
 
     //BLOCKING TYPE
-    protected boolean BLOCKS_MOVEMENT;
-    protected boolean BLOCKS_BULLETS;
-    protected boolean BLOCKS_AERIAL; //Grenades ,flashbang etc...
-    protected boolean BLOCKS_DAMAGE;
+    protected boolean blocksMovement;
+    protected boolean blocksBullets;
+    protected boolean blocksAerial; //Grenades ,flashbang etc...
+    protected boolean blocksDamage;
 
-    protected int RADIUS;
+    protected int radius;
 
-    protected boolean DESTROYABLE;
+    protected boolean destroyable;
 
     //MECHANIC/GRAPHICAL DETAILS
-    protected Location LOCATION;
-    private long REFERENCE_ID;
-    private Sprite FEATURE_SPRITE;
-    private int CAMERA_TYPE;
+    protected Location location;
+    private long referenceId;
+    protected Sprite featureSprite;
+    private int viewType;
 
-    public MapFeature(int _type, Location _location) {
-
-        REFERENCE_ID = System.currentTimeMillis();
-        LOCATION = _location;
-
-        switch (_type){
-            case FEATURE_TYPE_CRATE:
-                DESTROYABLE = true;
-                BLOCKS_MOVEMENT = true;
-                BLOCKS_BULLETS = true;
-                BLOCKS_AERIAL = false;
-                BLOCKS_DAMAGE = false;
-                RADIUS = CRATE_RADIUS;
-                break;
-            case FEATURE_TYPE_BUSH:
-                DESTROYABLE = false;
-                BLOCKS_MOVEMENT = false;
-                BLOCKS_BULLETS = false;
-                BLOCKS_AERIAL = false;
-                BLOCKS_DAMAGE = false;
-                RADIUS = BUSH_RADIUS;
-                break;
-            case FEATURE_TYPE_ROCKS:
-                DESTROYABLE = false;
-                BLOCKS_MOVEMENT = true;
-                BLOCKS_BULLETS = true;
-                BLOCKS_AERIAL = false;
-                BLOCKS_DAMAGE = true;
-                RADIUS = ROCKS_RADIUS;
-                break;
-            case FEATURE_TYPE_TREE:
-                DESTROYABLE = false;
-                BLOCKS_MOVEMENT = true;
-                BLOCKS_BULLETS = true;
-                BLOCKS_AERIAL = true;
-                BLOCKS_DAMAGE = true;
-                RADIUS = TREE_RADIUS;
-                break;
-            case FEATURE_TYPE_WATER:
-                DESTROYABLE = false;
-                BLOCKS_MOVEMENT = true;
-                BLOCKS_BULLETS = false;
-                BLOCKS_AERIAL = false;
-                BLOCKS_DAMAGE = false;
-                RADIUS = WATER_RADIUS;
-                break;
-             default:
-                break;
-        }
-
-        addToRenderState();
+    public MapFeature(Location _location) {
+        referenceId = System.currentTimeMillis();
+        location = _location;
     }
-
     public boolean isDestroyable(){
-        return DESTROYABLE;
+        return destroyable;
     }
     public boolean doesBlockMovement(){
-        return BLOCKS_MOVEMENT;
+        return blocksMovement;
     }
     public boolean doesBlockBullets(){
-        return BLOCKS_BULLETS;
+        return blocksBullets;
     }
     public boolean doesBlockAerial(){
-        return BLOCKS_AERIAL;
+        return blocksAerial;
     }
     public boolean doesBlockDamage(){
-        return BLOCKS_DAMAGE;
+        return blocksDamage;
     }
     public Location getLocation(){
-        return LOCATION;
+        return location;
     }
     public int getRadius(){
-        return RADIUS;
+        return radius;
     }
 
     @Override
-    public void setViewType(int _cameraType) {
-        CAMERA_TYPE = _cameraType;
+    public void setViewType(int _viewType) {
+        viewType = _viewType;
     }
 
     @Override
     public void addToRenderState() {
-        //RenderStateManager.addElement(CAMERA_TYPE,REFERENCE_ID,FEATURE_SPRITE);
+        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_SURFACE, featureSprite);
     }
 
     @Override
     public long getReferenceID() {
-        return REFERENCE_ID;
+        return referenceId;
     }
 }

@@ -143,15 +143,18 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     private void updateLeft(){
         for (Long key : Inputs.getInputs().keySet()){
-            if(Location.getDistance(Inputs.getInputs().get(key), LEFT_BUTTON_CENTER)<= RADIUS){
-                leftCurrentLocation.x = Inputs.getInputs().get(key).x;
-                leftCurrentLocation.y = Inputs.getInputs().get(key).y;
-                set(LEFT_ANALOG,Location.getDistance(Inputs.getInputs().get(key), LEFT_BUTTON_CENTER)*1/90);
-                set(LEFT_ROTATION,Location.getAngle(Inputs.getInputs().get(key),LEFT_BUTTON_CENTER));
+            int inputX = Inputs.getInputs().get(key).x;
+            int inputY = Inputs.getInputs().get(key).y;
+            double distance = Location.getDistance(inputX,inputY, LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y);
+            if( distance<= RADIUS){
+                leftCurrentLocation.x = inputX;
+                leftCurrentLocation.y = inputY;
+                set(LEFT_ANALOG,distance*1/90);
+                set(LEFT_ROTATION,Location.getAngle(inputX,inputY,LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y));
+                //System.out.println("LEFT:"+get(LEFT_ROTATION).valueDouble);
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
                 leftActive = true;
-
                 return;
             }
 
@@ -169,16 +172,20 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     private void updateRight(){
         for (Long key : Inputs.getInputs().keySet()){
-            if(Location.getDistance(Inputs.getInputs().get(key), RIGHT_BUTTON_CENTER)<= RADIUS){
-                rightCurrentLocation.x = Inputs.getInputs().get(key).x;
-                rightCurrentLocation.y = Inputs.getInputs().get(key).y;
-                set(RIGHT_ANALOG,Location.getDistance(Inputs.getInputs().get(key).x,Inputs.getInputs().get(key).y, RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y)*1/90);
-                set(RIGHT_ROTATION,Location.getAngle(Inputs.getInputs().get(key),RIGHT_BUTTON_CENTER));
+            int inputX = Inputs.getInputs().get(key).x;
+            int inputY = Inputs.getInputs().get(key).y;
+            double distance = Location.getDistance(inputX,inputY, RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y);
+            if( distance<= RADIUS){
+                rightCurrentLocation.x = inputX;
+                rightCurrentLocation.y = inputY;
+                set(RIGHT_ANALOG,distance*1/90);
+                set(RIGHT_ROTATION,Location.getAngle(inputX,inputY,RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y));
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);
-                rightActive = true;
+                leftActive = true;
                 return;
             }
+
 
         }
         set(RIGHT_ANALOG,0);

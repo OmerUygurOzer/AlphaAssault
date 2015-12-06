@@ -3,11 +3,15 @@ package com.boomer.alphaassault.gameworld;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
+import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -35,6 +39,7 @@ public class Map implements Renderable{
 
 
     private Tile[][] backgroundTiles;
+    private List<MapFeature> mapFeatures;
 
     private int width;
     private int height;
@@ -71,6 +76,7 @@ public class Map implements Renderable{
 
     public Map(int _size){
         referenceId = System.currentTimeMillis()+1000;
+        mapFeatures = new ArrayList<MapFeature>();
         switch(_size){
             case SIZE_SMALL:
                 width = SIDE_SMALL * SCALE;
@@ -99,7 +105,7 @@ public class Map implements Renderable{
     }
 
     private void generateMap(){
-            Random random = new Random();//int randomNum = rand.nextInt((max - min) + 1) + min;
+            Random random = new Random();
             int min = 0;
             int max = 1;
             for(int x=0;x< width/Tile.TILE_SIZE;x++){
@@ -107,6 +113,27 @@ public class Map implements Renderable{
                         int type = random.nextInt((max-min)+1)+min;
                         backgroundTiles[x][y] = new Tile(type);
                         backgroundTiles[x][y].image.setPosition(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE);
+                        int feature = random.nextInt((10-1)+1)+1;
+                        switch (feature){
+                            case 1:
+                                Bush bush = new Bush(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                                mapFeatures.add(bush);
+                                break;
+                            case 2:
+                                Crate crate = new Crate(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                                mapFeatures.add(crate);
+                                break;
+                            case 3:
+                                Rocks rocks = new Rocks(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                                mapFeatures.add(rocks);
+                                break;
+                            case 4:
+                                Water water = new Water(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                                mapFeatures.add(water);
+                                break;
+                            default:
+                                break;
+                        }
                 }
             }
 
@@ -123,6 +150,10 @@ public class Map implements Renderable{
                 baseID++;
                 RenderStateManager.addElement(cameraType,baseID, RenderState.DEPTH_BASE,backgroundTiles[x][y].image);
             }
+        }
+        for(MapFeature mapFeature:mapFeatures){
+            mapFeature.setViewType(cameraType);
+            mapFeature.addToRenderState();
         }
     }
 

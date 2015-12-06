@@ -69,6 +69,7 @@ public class InputThread implements Runnable {
         long deltaLong = System.currentTimeMillis() - time;
         time = System.currentTimeMillis();
         float deltaFloat=  (float)deltaLong/1000f;
+        System.out.println(deltaFloat);
         return deltaFloat;
 
     }

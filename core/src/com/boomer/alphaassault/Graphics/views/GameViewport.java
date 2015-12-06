@@ -1,25 +1,24 @@
 package com.boomer.alphaassault.graphics.views;
 
 
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.boomer.alphaassault.graphics.GameGraphics;
-import com.sun.glass.ui.SystemClipboard;
+
 
 
 /**
  * Created by Omer on 12/5/2015.
  */
-public class HudViewport extends ScalingViewport {
-    public HudViewport(float worldWidth, float worldHeight, Camera camera) {
+public class GameViewport extends ScalingViewport {
+    public GameViewport(float worldWidth, float worldHeight, Camera camera) {
         super(Scaling.fit, worldWidth, worldHeight, camera);
     }
 
-    public HudViewport(float worldWidth, float worldHeight) {
+    public GameViewport(float worldWidth, float worldHeight) {
         super(Scaling.fit, worldWidth, worldHeight);
     }
 

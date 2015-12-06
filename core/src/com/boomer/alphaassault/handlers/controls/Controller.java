@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class Controller {
 
-    private class Value {
+    public class Value {
         public double valueDouble;
         public boolean valueBoolean;
         public Location valueLocation;

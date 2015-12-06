@@ -34,8 +34,9 @@ public class Resource {
     public static final int TEXTURE_HUD_CAM = 20;
     //MAP TEXTURES
 
-
     public static final int TEXTURE_BACKGROUND = 40;
+    public static final int TEXTURE_TREES  = 41;
+    public static final int TEXTURE_OTHERS = 42;
 
     public Resource() {
         textures = new HashMap<Integer, Texture>();
@@ -52,6 +53,8 @@ public class Resource {
         loadTexture(TEXTURE_RIGHT_BUTTON,"redbutton.png");
         loadTexture(TEXTURE_RIGHT_CIRCLE,"redcircle.png");
         loadTexture(TEXTURE_HUD_CAM,"hudcam.png");
+        loadTexture(TEXTURE_TREES,"map/trees.png");
+        loadTexture(TEXTURE_OTHERS,"map/others.png");
 
     }
 

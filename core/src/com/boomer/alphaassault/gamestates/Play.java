@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.*;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.GUI.GamePad;
+import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.graphics.GameGraphics;
-import com.boomer.alphaassault.graphics.views.HudViewport;
+import com.boomer.alphaassault.graphics.views.GameViewport;
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 
@@ -17,17 +18,21 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
 public class Play extends GameStateBase {
 
     public static final int VIEW_TYPE_SCREEN = 0;
-    public static final int VIEW_TYPE_MAP = 1;
+    public static final int VIEW_TYPE_GAME = 1;
 
     private Viewport screenView;
-    private Viewport hudView;
+    private Viewport gameView;
 
     private OrthographicCamera screenCam;
-    private OrthographicCamera mapCam;
+    private OrthographicCamera gameCam;
 
-
+    //ADD CONTROLLERS
     private GamePad gamePad;
+
+    //ADD IN-GAME FEATURES
     private GameWorld gameWorld;
+    private Player player;
+
 
 
     public Play(GameStateManager _gameStateManager) {
@@ -38,14 +43,13 @@ public class Play extends GameStateBase {
         screenCam.translate(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
         screenCam.update();
 
-        mapCam = new OrthographicCamera();
-        hudView = new HudViewport(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT, mapCam);
-        hudView.apply();
-        //mapCam.translate(GameGraphics.VIRTUAL_HEIGHT/2,GameGraphics.VIRTUAL_HEIGHT/2);
-        mapCam.update();
+        gameCam = new OrthographicCamera();
+        gameView = new GameViewport(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT, gameCam);
+        gameView.apply();
+        gameCam.update();
 
         RENDER_STATE.addView(VIEW_TYPE_SCREEN, screenView);
-        RENDER_STATE.addView(VIEW_TYPE_MAP, hudView);
+        RENDER_STATE.addView(VIEW_TYPE_GAME, gameView);
         RenderStateManager.setGameRenderState(RENDER_STATE);
 
         //ACTIVATE GAME PAD
@@ -55,10 +59,12 @@ public class Play extends GameStateBase {
 
 
         gameWorld = new GameWorld();
-        gameWorld.setViewType(VIEW_TYPE_MAP);
+        gameWorld.setViewType(VIEW_TYPE_GAME);
         gameWorld.setController(gamePad);
         gameWorld.addToRenderState();
 
+        player = new Player(gameCam);
+        player.setController(gamePad);
     }
 
     @Override
@@ -74,8 +80,9 @@ public class Play extends GameStateBase {
     }
 
     @Override
-    public void update(float deltaTime) {
-
+    public void update(float _deltaTime) {
+        //System.out.println(_deltaTime);
+        player.move(_deltaTime);
     }
 
 
@@ -87,7 +94,7 @@ public class Play extends GameStateBase {
     @Override
     public void reSize(int _width, int _height) {
       screenView.update(_width,_height);
-      hudView.update(_width,_height);
+      gameView.update(_width,_height);
 
     }
 }
