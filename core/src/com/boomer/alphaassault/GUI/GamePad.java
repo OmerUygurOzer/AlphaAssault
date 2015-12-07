@@ -125,6 +125,11 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     }
 
     @Override
+    public void setReferenceID(long _referenceId) {
+        //DO NOTHING
+    }
+
+    @Override
     public void setViewType(int _viewType) {
         viewType = _viewType;
     }

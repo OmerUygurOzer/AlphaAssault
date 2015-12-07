@@ -31,8 +31,6 @@ public class Play extends GameStateBase {
 
     //ADD IN-GAME FEATURES
     private GameWorld gameWorld;
-    private Player player;
-
 
 
     public Play(GameStateManager _gameStateManager) {
@@ -58,13 +56,12 @@ public class Play extends GameStateBase {
         gamePad.addToRenderState();
 
 
-        gameWorld = new GameWorld();
+        gameWorld = new GameWorld(gameCam);
         gameWorld.setViewType(VIEW_TYPE_GAME);
         gameWorld.setController(gamePad);
         gameWorld.addToRenderState();
 
-        player = new Player(gameCam);
-        player.setController(gamePad);
+
     }
 
     @Override
@@ -82,7 +79,7 @@ public class Play extends GameStateBase {
     @Override
     public void update(float _deltaTime) {
         //System.out.println(_deltaTime);
-        player.move(_deltaTime);
+       gameWorld.update(_deltaTime);
     }
 
 

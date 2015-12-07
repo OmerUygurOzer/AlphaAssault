@@ -22,7 +22,11 @@ public class Player {
     }
 
     public void move(float _deltaTime){
-        camera.position.set(camera.position.x+(float)controller.get(GamePad.LEFT_ANALOG).valueDouble,camera.position.y,camera.position.z);
+        double power = controller.get(GamePad.LEFT_ANALOG).valueDouble;
+        double angle = controller.get(GamePad.LEFT_ROTATION).valueDouble;
+        float x = camera.position.x + (float)(Math.sin(Math.toRadians(angle))*power);
+        float y = camera.position.y + (float)(Math.cos(Math.toRadians(angle))*power);
+        camera.position.set(x,y,camera.position.z);
     }
 
 

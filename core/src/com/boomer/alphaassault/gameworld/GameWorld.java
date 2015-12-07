@@ -1,5 +1,7 @@
 package com.boomer.alphaassault.gameworld;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.utilities.Renderable;
 import com.boomer.alphaassault.utilities.Updateable;
@@ -15,13 +17,20 @@ public class GameWorld implements Updateable,Renderable{
 
     Controller controller;
     private Map gameMap;
+    private long baseReference;
+    private Player player;
+    private Camera camera;
 
-    public GameWorld(){
-        gameMap = new Map(Map.SIZE_SMALL);
+    public GameWorld(Camera _camera){
+        gameMap = new Map(Map.SIZE_MEDIUM);
+        camera = _camera;
+        player = new Player(_camera);
+
     }
 
     public void setController(Controller _controller){
         controller = _controller;
+        player.setController(controller);
     }
 
     @Override
@@ -35,12 +44,17 @@ public class GameWorld implements Updateable,Renderable{
     }
 
     @Override
-    public void setViewType(int _cameraType) {
-        gameMap.setViewType(_cameraType);
+    public void setReferenceID(long _referenceId) {
+        baseReference = _referenceId;
     }
 
     @Override
-    public void update() {
+    public void setViewType(int _viewType) {
+        gameMap.setViewType(_viewType);
+    }
 
+    @Override
+    public void update(float _deltaTime) {
+        player.move(_deltaTime);
     }
 }

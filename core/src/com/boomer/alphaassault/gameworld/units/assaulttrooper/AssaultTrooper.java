@@ -63,10 +63,8 @@ public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
 
     //UPDATEABLE
     @Override
-    public void update() {
-        super.update();
-
-
+    public void update(float _deltaTime) {
+        //super.update();
 
     }
 

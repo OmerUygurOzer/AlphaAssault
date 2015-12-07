@@ -21,7 +21,7 @@ public class Map implements Renderable{
 
     //REFERENCE
     private long referenceId;
-    private int cameraType;
+    private int viewType;
 
     //MAP CONSTANTS
     private static final int SCALE = 2;
@@ -113,26 +113,29 @@ public class Map implements Renderable{
                         int type = random.nextInt((max-min)+1)+min;
                         backgroundTiles[x][y] = new Tile(type);
                         backgroundTiles[x][y].image.setPosition(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE);
-                        int feature = random.nextInt((10-1)+1)+1;
+                        int feature = random.nextInt((20-1)+1)+1;
                         switch (feature){
                             case 1:
-                                Bush bush = new Bush(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                                mapFeatures.add(bush);
+                               Bush bush = new Bush(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                               mapFeatures.add(bush);
                                 break;
                             case 2:
-                                Crate crate = new Crate(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                                mapFeatures.add(crate);
-                                break;
+                               Crate crate = new Crate(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                               mapFeatures.add(crate);
+                               break;
                             case 3:
-                                Rocks rocks = new Rocks(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                                mapFeatures.add(rocks);
-                                break;
+                               Rocks rocks = new Rocks(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                               mapFeatures.add(rocks);
+                               break;
                             case 4:
-                                Water water = new Water(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                                mapFeatures.add(water);
-                                break;
+                                Tree tree = new Tree(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                                mapFeatures.add(tree);
+                            case 5:
+                               Water water = new Water(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                               mapFeatures.add(water);
+                               break;
                             default:
-                                break;
+                               break;
                         }
                 }
             }
@@ -148,12 +151,15 @@ public class Map implements Renderable{
         for(int x=0;x< width/Tile.TILE_SIZE;x++){
             for(int y=0;y< height/Tile.TILE_SIZE;y++){
                 baseID++;
-                RenderStateManager.addElement(cameraType,baseID, RenderState.DEPTH_BASE,backgroundTiles[x][y].image);
+                RenderStateManager.addElement(viewType,baseID, RenderState.DEPTH_BASE,backgroundTiles[x][y].image);
             }
         }
         for(MapFeature mapFeature:mapFeatures){
-            mapFeature.setViewType(cameraType);
+            baseID++;
+            mapFeature.setViewType(viewType);
+            mapFeature.setReferenceID(baseID);
             mapFeature.addToRenderState();
+           // RenderStateManager.addElement(viewType,baseID, RenderState.DEPTH_SURFACE,mapFeature.featureSprite);
         }
     }
 
@@ -163,5 +169,11 @@ public class Map implements Renderable{
     }
 
     @Override
-    public void setViewType(int _cameraType) {cameraType = _cameraType;}
+    public void setReferenceID(long _referenceId) {
+        referenceId = _referenceId;
+    }
+
+    @Override
+    public void setViewType(int _cameraType) {
+        viewType = _cameraType;}
 }

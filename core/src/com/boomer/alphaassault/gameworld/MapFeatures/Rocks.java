@@ -17,7 +17,7 @@ public class Rocks extends MapFeature {
         blocksAerial = false;
         blocksDamage = true;
         radius = ROCKS_RADIUS;
-        TextureRegion textureRegion = new TextureRegion(Resource.getTexture(Resource.TEXTURE_OTHERS),32,0,32,33);
+        TextureRegion textureRegion = new TextureRegion(Resource.getTexture(Resource.TEXTURE_OTHERS),32,0,32,32);
         featureSprite = new Sprite(textureRegion);
         featureSprite.setSize(20,20);
         featureSprite.setPosition(_location.x,_location.y);

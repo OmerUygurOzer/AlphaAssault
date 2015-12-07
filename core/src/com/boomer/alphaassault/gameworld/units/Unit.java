@@ -83,7 +83,7 @@ public abstract class Unit implements Updateable,Renderable{
         location = _location;
         readyToFire = true;
         invisibility = false;
-        referenceId = System.currentTimeMillis();
+        //referenceId = System.currentTimeMillis();
 
 /*
         switch(type){
@@ -162,7 +162,7 @@ public abstract class Unit implements Updateable,Renderable{
 
     //UPDATEABLE
     @Override
-    public void update() {
+    public void update(float _deltaTime) {
         if (!readyToFire) {
             if(FIRE_TIMER + (1000/ firingSpeed) < System.currentTimeMillis()) {
                 readyToFire = true;
@@ -178,4 +178,8 @@ public abstract class Unit implements Updateable,Renderable{
     public long getReferenceID() {return referenceId;}
     @Override
     public void setViewType(int _cameraType) {cameraType = _cameraType;}
+    @Override
+    public void setReferenceID(long _referenceId) {
+    referenceId = _referenceId;
+    }
 }

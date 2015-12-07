@@ -17,7 +17,7 @@ public class Crate extends MapFeature {
         blocksAerial = false;
         blocksDamage = false;
         radius = CRATE_RADIUS;
-        TextureRegion textureRegion = new TextureRegion(Resource.getTexture(Resource.TEXTURE_OTHERS),0,0,32,33);
+        TextureRegion textureRegion = new TextureRegion(Resource.getTexture(Resource.TEXTURE_OTHERS),0,0,32,32);
         featureSprite = new Sprite(textureRegion);
         featureSprite.setSize(20,20);
         featureSprite.setPosition(_location.x,_location.y);

@@ -88,16 +88,16 @@ public class RenderState{
         }
     }
 
-    public void addElement(int _cameraType, long _referenceId,int _depth,Sprite _sprite){
-       additions.add(new Addition(_cameraType,_referenceId,_depth,_sprite));
+    public void addElement(int _viewType, long _referenceId,int _depth,Sprite _sprite){
+       additions.add(new Addition(_viewType,_referenceId,_depth,_sprite));
         sprites.get(_depth).put(_referenceId,new Sprite(_sprite));
-        if(!cameraMapping.get(_depth).containsKey(_cameraType)){
+        if(!cameraMapping.get(_depth).containsKey(_viewType)){
             List<Long> list = new CopyOnWriteArrayList<Long>();
             list.add(_referenceId);
-            cameraMapping.get(_depth).put(_cameraType,list);
+            cameraMapping.get(_depth).put(_viewType,list);
 
         }else{
-            cameraMapping.get(_depth).get(_cameraType).add(_referenceId);
+            cameraMapping.get(_depth).get(_viewType).add(_referenceId);
         }
     }
 
