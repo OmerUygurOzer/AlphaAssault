@@ -31,11 +31,11 @@ public abstract class MapFeature implements Renderable{
     //MECHANIC/GRAPHICAL DETAILS
     protected Location location;
     private long referenceId;
-    protected Sprite featureSprite;
+    public Sprite featureSprite;
     private int viewType;
 
     public MapFeature(Location _location) {
-        referenceId = System.currentTimeMillis();
+        //referenceId = System.currentTimeMillis();
         location = _location;
     }
     public boolean isDestroyable(){
@@ -73,5 +73,10 @@ public abstract class MapFeature implements Renderable{
     @Override
     public long getReferenceID() {
         return referenceId;
+    }
+
+    @Override
+    public void setReferenceID(long _referenceId){
+        referenceId=_referenceId;
     }
 }

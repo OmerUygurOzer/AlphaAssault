@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -55,35 +54,36 @@ public class RenderState{
     public static final int DEPTH_SURFACE = 1;
     public static final int DEPTH_AIR = 2;
     public static final int DEPTH_GAME_SCREEN = 3;
+    public static final int DEPTH_MAX = 4;
 
     public int CURRENT_STATE;
 
-    private Map<Integer,Map<Long,Sprite>> sprites;
-    private Map<Integer,Map<Integer,Viewport>> viewPorts;
-    private Map<Integer,Map<Integer,List<Long>>> cameraMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
+    private List<Map<Long,Sprite>> sprites;
+    private List<Map<Integer,Viewport>> viewPorts;
+    private List<Map<Integer,List<Long>>> cameraMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
 
     private List<Addition> additions;
     private List<Removal> removals;
 
     public RenderState(){
-        sprites = new HashMap<Integer, Map<Long, Sprite>>();
-        viewPorts = new HashMap<Integer, Map<Integer, Viewport>>();
-        cameraMapping = new HashMap<Integer, Map<Integer, List<Long>>>();
+        sprites = new ArrayList<Map<Long, Sprite>>();
+        viewPorts = new ArrayList<Map<Integer, Viewport>>();
+        cameraMapping = new ArrayList<Map<Integer, List<Long>>>();
 
         additions = new ArrayList<Addition>();
         removals = new ArrayList<Removal>();
 
-        for(int depth = 0;depth<4;depth++){
-            sprites.put(depth,new HashMap<Long, Sprite>());
-            viewPorts.put(depth,new HashMap<Integer, Viewport>());
-            cameraMapping.put(depth,new HashMap<Integer, List<Long>>());
+        for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
+            sprites.add(depth,new HashMap<Long, Sprite>());
+            viewPorts.add(depth,new HashMap<Integer, Viewport>());
+            cameraMapping.add(depth,new HashMap<Integer, List<Long>>());
         }
 
 
     }
 
     public void addView(int _viewType, Viewport _viewPort){
-        for(int depth: viewPorts.keySet()) {
+        for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
             viewPorts.get(depth).put(_viewType, _viewPort);
         }
     }
@@ -92,7 +92,7 @@ public class RenderState{
        additions.add(new Addition(_viewType,_referenceId,_depth,_sprite));
         sprites.get(_depth).put(_referenceId,new Sprite(_sprite));
         if(!cameraMapping.get(_depth).containsKey(_viewType)){
-            List<Long> list = new CopyOnWriteArrayList<Long>();
+            List<Long> list = new ArrayList<Long>();
             list.add(_referenceId);
             cameraMapping.get(_depth).put(_viewType,list);
 
@@ -118,7 +118,7 @@ public class RenderState{
     //DEPTH BASE IS DRAWN FIRST
     //GAME SCREEN IS DRAWN LAST
     public void  render(SpriteBatch _spriteBatch) {
-        for(int depth: sprites.keySet()) {
+        for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
             for (int key : viewPorts.get(depth).keySet()) {
                 viewPorts.get(depth).get(key).apply();
                 _spriteBatch.setProjectionMatrix(viewPorts.get(depth).get(key).getCamera().combined);
@@ -140,7 +140,7 @@ public class RenderState{
          for(Addition incomingAddition:_renderState.getAdditions()){
              sprites.get(incomingAddition.depth).put(incomingAddition.referenceId,new Sprite(incomingAddition.sprite));
              if(!cameraMapping.get(incomingAddition.depth).containsKey(incomingAddition.viewType)){
-                 List<Long> list = new CopyOnWriteArrayList<Long>();
+                 List<Long> list = new ArrayList<Long>();
                  list.add(incomingAddition.referenceId);
                  cameraMapping.get(incomingAddition.depth).put(incomingAddition.viewType,list);
 
@@ -174,7 +174,7 @@ public class RenderState{
      }
 
     public void set(RenderState _renderState){
-        for(int depth: sprites.keySet()) {
+        for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
             sprites.get(depth).clear();
             viewPorts.get(depth).clear();
             cameraMapping.get(depth).clear();
@@ -193,9 +193,9 @@ public class RenderState{
 
 
 
-    private Map<Integer,Map<Long,Sprite>> getSprites(){return sprites;}
-    private Map<Integer,Map<Integer,Viewport>> getViewPorts(){return viewPorts;}
-    private Map<Integer,Map<Integer,List<Long>>> getCameraMapping(){return cameraMapping;}
+    private List<Map<Long,Sprite>> getSprites(){return sprites;}
+    private List<Map<Integer,Viewport>> getViewPorts(){return viewPorts;}
+    private List<Map<Integer,List<Long>>> getCameraMapping(){return cameraMapping;}
     public int getCurrentState(){return CURRENT_STATE;}
     public void setCurrentState(int _state){CURRENT_STATE  = _state;}
 
