@@ -101,7 +101,6 @@ public class InputManager{
         if(fitsX && fitsY){
             virtualX   = Math.round((float)(_x - screenStartPoint.x)/(float)screenWidth*(float)GameGraphics.VIRTUAL_WIDTH);
             virtualY = Math.round((float)(_y - screenStartPoint.y)/(float)screenHeight*(float)GameGraphics.VIRTUAL_HEIGHT);
-            //System.out.println(virtualX+ "  X  "  +virtualY);
 
         }
             Inputs.inputAcquire(virtualX, virtualY);

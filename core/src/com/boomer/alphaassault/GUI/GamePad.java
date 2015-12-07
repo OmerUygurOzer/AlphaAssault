@@ -156,7 +156,6 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
                 leftCurrentLocation.y = inputY;
                 set(LEFT_ANALOG,distance*1/90);
                 set(LEFT_ROTATION,Location.getAngle(inputX,inputY,LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y));
-                //System.out.println("LEFT:"+get(LEFT_ROTATION).valueDouble);
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
                 leftActive = true;

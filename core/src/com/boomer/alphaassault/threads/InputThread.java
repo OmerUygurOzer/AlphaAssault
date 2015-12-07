@@ -38,17 +38,15 @@ public class InputThread implements Runnable {
 
     @Override
     public void run() {
-
+        float deltaTime;
         while(THREAD_RUNNING) {
             while (GameSettings.GAME_RUNNING_STATE) {
-                timeAccumulated += getDeltaTime();
-
+                deltaTime = getDeltaTime();
+                timeAccumulated += deltaTime;
                 while (timeAccumulated >= GameSettings.IPS) {
                     timeAccumulated -= GameSettings.IPS;
-
                     inputManager.poll();
 
-                    //System.out.println("INPUT");
                 }
                 wait(1);
 
@@ -69,7 +67,6 @@ public class InputThread implements Runnable {
         long deltaLong = System.currentTimeMillis() - time;
         time = System.currentTimeMillis();
         float deltaFloat=  (float)deltaLong/1000f;
-        //System.out.println(deltaFloat);
         return deltaFloat;
 
     }

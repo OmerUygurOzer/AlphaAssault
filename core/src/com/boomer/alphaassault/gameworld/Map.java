@@ -37,12 +37,20 @@ public class Map implements Renderable{
 
     //TILE CONSTANTS
 
-
-    private Tile[][] backgroundTiles;
+    private int[][] featureTiles;
+    private Tile[][] baseTiles;
     private List<MapFeature> mapFeatures;
 
     private int width;
     private int height;
+
+    //FEATURE CONSTANTS
+    private static final int FEATURE_EMPTY = 0;
+    private static final int FEATURE_BUSH = 1;
+    private static final int FEATURE_CRATE = 2;
+    private static final int FEATURE_ROCKS = 3;
+    private static final int FEATURE_TREE = 4;
+    private static final int FEATURE_WATER = 5;
 
     private class Tile{
         private static final int TILE_STANDARD = 0;
@@ -98,7 +106,13 @@ public class Map implements Renderable{
                 break;
         }
 
-        backgroundTiles = new Tile[width/Tile.TILE_SIZE][height/Tile.TILE_SIZE];
+        baseTiles = new Tile[width/Tile.TILE_SIZE][height/Tile.TILE_SIZE];
+        featureTiles = new int[width/Tile.TILE_SIZE][height/Tile.TILE_SIZE];
+        for(int x=0;x< width/Tile.TILE_SIZE;x++){
+            for(int y=0;y< height/Tile.TILE_SIZE;y++){
+                featureTiles[x][y]=FEATURE_EMPTY;
+            }
+        }
 
         generateMap();
 
@@ -109,34 +123,45 @@ public class Map implements Renderable{
             int min = 0;
             int max = 1;
             for(int x=0;x< width/Tile.TILE_SIZE;x++){
-                for(int y=0;y< height/Tile.TILE_SIZE;y++){
-                        int type = random.nextInt((max-min)+1)+min;
-                        backgroundTiles[x][y] = new Tile(type);
-                        backgroundTiles[x][y].image.setPosition(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE);
-                        int feature = random.nextInt((20-1)+1)+1;
-                        switch (feature){
-                            case 1:
-                               Bush bush = new Bush(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                               mapFeatures.add(bush);
-                                break;
-                            case 2:
-                               Crate crate = new Crate(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                               mapFeatures.add(crate);
-                               break;
-                            case 3:
-                               Rocks rocks = new Rocks(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                               mapFeatures.add(rocks);
-                               break;
-                            case 4:
-                                Tree tree = new Tree(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
+                for(int y=0;y< height/Tile.TILE_SIZE;y++) {
+                    int type = random.nextInt((max - min) + 1) + min;
+                    baseTiles[x][y] = new Tile(type);
+                    baseTiles[x][y].image.setPosition(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE);
+                    int feature = random.nextInt((20 - 1) + 1) + 1;
+                    if(featureTiles[x][y] == FEATURE_EMPTY){
+                    switch (feature) {
+                        case FEATURE_BUSH:
+                            Bush bush = new Bush(new Location(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE));
+                            mapFeatures.add(bush);
+                            featureTiles[x][y] = FEATURE_BUSH;
+                            break;
+                        case FEATURE_CRATE:
+                            Crate crate = new Crate(new Location(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE));
+                            mapFeatures.add(crate);
+                            featureTiles[x][y] = FEATURE_CRATE;
+                            break;
+                        case FEATURE_ROCKS:
+                            Rocks rocks = new Rocks(new Location(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE));
+                            mapFeatures.add(rocks);
+                            featureTiles[x][y] = FEATURE_ROCKS;
+                            break;
+                        case FEATURE_TREE:
+                            if(y+1<height/Tile.TILE_SIZE) {
+                                Tree tree = new Tree(new Location(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE));
                                 mapFeatures.add(tree);
-                            case 5:
-                               Water water = new Water(new Location(x*Tile.TILE_SIZE,y*Tile.TILE_SIZE));
-                               mapFeatures.add(water);
-                               break;
-                            default:
-                               break;
-                        }
+                                featureTiles[x][y] = FEATURE_TREE;
+                                featureTiles[x][y + 1] = FEATURE_TREE;
+                            }
+                            break;
+                        case FEATURE_WATER:
+                            Water water = new Water(new Location(x * Tile.TILE_SIZE, y * Tile.TILE_SIZE));
+                            mapFeatures.add(water);
+                            featureTiles[x][y] = FEATURE_WATER;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 }
             }
 
@@ -151,7 +176,7 @@ public class Map implements Renderable{
         for(int x=0;x< width/Tile.TILE_SIZE;x++){
             for(int y=0;y< height/Tile.TILE_SIZE;y++){
                 baseID++;
-                RenderStateManager.addElement(viewType,baseID, RenderState.DEPTH_BASE,backgroundTiles[x][y].image);
+                RenderStateManager.addElement(viewType,baseID, RenderState.DEPTH_BASE, baseTiles[x][y].image);
             }
         }
         for(MapFeature mapFeature:mapFeatures){

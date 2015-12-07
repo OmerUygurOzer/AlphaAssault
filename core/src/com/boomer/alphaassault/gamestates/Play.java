@@ -78,8 +78,7 @@ public class Play extends GameStateBase {
 
     @Override
     public void update(float _deltaTime) {
-        //System.out.println(_deltaTime);
-       gameWorld.update(_deltaTime);
+        gameWorld.update(_deltaTime);
     }
 
 
@@ -92,6 +91,5 @@ public class Play extends GameStateBase {
     public void reSize(int _width, int _height) {
       screenView.update(_width,_height);
       gameView.update(_width,_height);
-
     }
 }

@@ -44,7 +44,6 @@ public class Inputs {
                     inputs.get(key).x = _x;
                     inputs.get(key).y = _y;
                     newInput = false;
-                    //System.out.println("INPUT UPDATED!");
                  }
 
             }
@@ -59,7 +58,6 @@ public class Inputs {
                         if(Location.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
                             inputs.remove(key);
                             numberOfInputs--;
-                            //System.out.println("INPUT RELEASED!");
                             continue;
                         }
             }
