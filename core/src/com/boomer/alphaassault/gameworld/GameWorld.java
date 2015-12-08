@@ -24,7 +24,6 @@ public class GameWorld implements Updateable,Renderable{
     public GameWorld(Camera _camera){
         gameMap = new Map(Map.SIZE_MEDIUM);
         camera = _camera;
-        player = new Player(_camera);
 
     }
 
@@ -33,9 +32,14 @@ public class GameWorld implements Updateable,Renderable{
         player.setController(controller);
     }
 
+    public void addPlayer(Player _player){
+        player = _player;
+    }
+
     @Override
     public void addToRenderState() {
         gameMap.addToRenderState();
+        player.addToRenderState();
     }
 
     @Override
@@ -51,10 +55,12 @@ public class GameWorld implements Updateable,Renderable{
     @Override
     public void setViewType(int _viewType) {
         gameMap.setViewType(_viewType);
+        player.setViewType(_viewType);
     }
 
     @Override
     public void update(float _deltaTime) {
         player.move(_deltaTime);
+        player.update(_deltaTime);
     }
 }

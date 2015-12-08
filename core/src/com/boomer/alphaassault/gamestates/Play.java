@@ -31,6 +31,7 @@ public class Play extends GameStateBase {
 
     //ADD IN-GAME FEATURES
     private GameWorld gameWorld;
+    private Player player;
 
 
     public Play(GameStateManager _gameStateManager) {
@@ -55,11 +56,17 @@ public class Play extends GameStateBase {
         gamePad.setViewType(VIEW_TYPE_SCREEN);
         gamePad.addToRenderState();
 
+        //ADD PLAYER
+        player = new Player(gameCam);
 
+        //ACTIVATE GAMEWORLD
         gameWorld = new GameWorld(gameCam);
+        gameWorld.addPlayer(player);
         gameWorld.setViewType(VIEW_TYPE_GAME);
         gameWorld.setController(gamePad);
         gameWorld.addToRenderState();
+
+
 
 
     }

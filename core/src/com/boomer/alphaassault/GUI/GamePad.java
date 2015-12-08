@@ -26,14 +26,14 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     public static final int RIGHT_ONLY = 1;
     public static final int BOTH = 2;
 
-    private static final Location gameFrameCenter = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+    private static final Location GAME_FRAME_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
     //GAME PAD SPRITES
     private Sprite leftButtonSprite;
     private Sprite leftCircleSprite;
     private Sprite rightButtonSprite;
     private Sprite rightCircleSprite;
-    private Sprite gameFrame;
+    private Sprite gameFrameSprite;
 
 
     private static final int BUTTON_SIZE = 40;
@@ -96,9 +96,9 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         rightActive = false;
 
         //GAME HUD VIEW FRAME
-        gameFrame = new Sprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
-        gameFrame.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
-        gameFrame.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+        gameFrameSprite = new Sprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
+        gameFrameSprite.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
+        gameFrameSprite.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
 
         TYPE = _type;
@@ -115,7 +115,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
             RenderStateManager.addElement(viewType, rightButtonId,RenderState.DEPTH_GAME_SCREEN, rightButtonSprite);
             RenderStateManager.addElement(viewType, rightCircleId,RenderState.DEPTH_GAME_SCREEN, rightCircleSprite);
         }
-        RenderStateManager.addElement(viewType, hudId, RenderState.DEPTH_GAME_SCREEN,gameFrame);
+        RenderStateManager.addElement(viewType, hudId, RenderState.DEPTH_GAME_SCREEN, gameFrameSprite);
     }
 
 

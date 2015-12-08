@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.units;
 
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -16,16 +17,28 @@ import java.util.Random;
  */
 public abstract class Unit implements Updateable,Renderable{
 
+    //CONSTANTS
+    protected static final float UNIT_SIZE = 40;
+
 
     //MECHANICAL/GRAPHICAL DETAILS
     protected int radius;
     protected double facingAngle;
     protected Location location;
     private long referenceId;
-    protected Sprite unitSprite;
-    protected int cameraType;
+    protected int viewType;
+    protected Sprite currentSprite;
+    protected Animation animationWalkRight;
+    protected Animation animationWalkLeft;
+    protected Animation animationWalkUp;
+    protected Animation animationWalkDown;
+    protected Animation animationWalkUpRight;
+    protected Animation animationWalkUpLeft;
+    protected Animation animationWalkDownRight;
+    protected Animation animationWalkDownLeft;
+    protected float animationTimer;
 
-    //type PROPERTIES
+    //TYPE PROPERTIES
     //COMMON
     public static final int UNIT_RADIUS = 6;
 
@@ -83,7 +96,7 @@ public abstract class Unit implements Updateable,Renderable{
         location = _location;
         readyToFire = true;
         invisibility = false;
-        //referenceId = System.currentTimeMillis();
+        animationTimer = 0f;
 
 /*
         switch(type){
@@ -133,27 +146,38 @@ public abstract class Unit implements Updateable,Renderable{
         }
 
 */
-
-    }
-
-    public void fire(){
-        if(readyToFire){
-            FIRE_TIMER = System.currentTimeMillis();
-            readyToFire = false;
-            //FIRE
-        }
-
     }
 
 
+    protected enum Rotation{
+        RIGHT,
+        LEFT,
+        UP,
+        DOWN,
+        UP_RIGHT,
+        UP_LEFT,
+        DOWN_RIGHT,
+        DOWN_LEFT
+    }
 
-    public abstract void resupply();
-    public abstract void move(double _angle);
-
-
+    protected Rotation getRotation(double _angle){
+        if(_angle == 90){return Rotation.RIGHT;}
+        if(_angle == 270){return Rotation.LEFT;}
+        if(_angle == 0 || _angle == 360){return Rotation.UP;}
+        if(_angle == 180){return Rotation.DOWN;}
+        if(_angle < 90 && _angle >0){return Rotation.UP_RIGHT;}
+        if(_angle <180 && _angle >90){return Rotation.DOWN_RIGHT;}
+        if(_angle <270 && _angle >180){return Rotation.DOWN_LEFT;}
+        if(_angle <360 && _angle >270){return Rotation.UP_LEFT;}
+        return null;
+    }
 
 
     public Location getLocation(){return location;}
+    public void setLocation(int _x, int _y){
+        location.x = _x;
+        location.y = _y;
+    }
     public int getRadius(){return radius;}
     public boolean isInvisible(){return invisibility;}
     public boolean isAlive() {return (HP>0);}
@@ -162,24 +186,19 @@ public abstract class Unit implements Updateable,Renderable{
 
     //UPDATEABLE
     @Override
-    public void update(float _deltaTime) {
-        if (!readyToFire) {
-            if(FIRE_TIMER + (1000/ firingSpeed) < System.currentTimeMillis()) {
-                readyToFire = true;
-            }
-        }
-
-    }
-
+    public void update(float _deltaTime) {}
     //RENDERABLE
     @Override
-    public void addToRenderState() {RenderStateManager.addElement(cameraType, referenceId, RenderState.DEPTH_SURFACE, unitSprite);}
+    public void addToRenderState() {RenderStateManager.addElement(viewType, referenceId, RenderState.DEPTH_SURFACE, currentSprite);}
     @Override
     public long getReferenceID() {return referenceId;}
     @Override
-    public void setViewType(int _cameraType) {cameraType = _cameraType;}
+    public void setViewType(int _viewType) {viewType = _viewType;}
     @Override
     public void setReferenceID(long _referenceId) {
     referenceId = _referenceId;
     }
+    public abstract void fire();
+    public abstract void resupply();
+    public abstract void move(float _deltaTime,float _x,float _y,double _angle);
 }

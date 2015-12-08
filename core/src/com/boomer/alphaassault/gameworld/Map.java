@@ -51,6 +51,7 @@ public class Map implements Renderable{
     private static final int FEATURE_ROCKS = 3;
     private static final int FEATURE_TREE = 4;
     private static final int FEATURE_WATER = 5;
+    private static final int FEATURE_PLAYER_BASE = 6;
 
     private class Tile{
         private static final int TILE_STANDARD = 0;

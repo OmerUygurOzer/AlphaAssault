@@ -46,6 +46,19 @@ public class RenderState{
         }
     }
 
+    private class Update{
+        public long referenceId;
+        public int depth;
+        public Sprite sprite;
+        public int tracker;
+        public Update(long _referenceId,int _depth,Sprite _sprite){
+            referenceId = _referenceId;
+            depth = _depth;
+            sprite = _sprite;
+            tracker = 1;
+        }
+    }
+
     public static final int STATE_BEING_RENDERED = 0;
     public static final int STATE_BEING_UPDATED = 1;
     public static final int STATE_RECENTLY_UPDATED = 2;
@@ -64,6 +77,7 @@ public class RenderState{
 
     private List<Addition> additions;
     private List<Removal> removals;
+    private List<Update> updates;
 
     public RenderState(){
         sprites = new ArrayList<Map<Long, Sprite>>();
@@ -72,6 +86,7 @@ public class RenderState{
 
         additions = new ArrayList<Addition>();
         removals = new ArrayList<Removal>();
+        updates = new ArrayList<Update>();
 
         for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
             sprites.add(depth,new HashMap<Long, Sprite>());
@@ -111,6 +126,7 @@ public class RenderState{
         }
     }
     public void updateElement(long _referenceId,int _depth,Sprite _sprite){
+            updates.add(new Update(_referenceId, _depth, _sprite));
             sprites.get(_depth).get(_referenceId).set(_sprite);
     }
 
@@ -171,6 +187,17 @@ public class RenderState{
 
          }
 
+         for(Update incomingUpdate:_renderState.getUpdates()){
+             sprites.get(incomingUpdate.depth).get(incomingUpdate.referenceId).set(incomingUpdate.sprite);
+             if(incomingUpdate.tracker>0){
+                 Update passingUpdate = new Update(incomingUpdate.referenceId,incomingUpdate.depth,incomingUpdate.sprite);
+                 passingUpdate.tracker = passingUpdate.tracker-1;
+                 updates.add(passingUpdate);
+
+             }
+
+         }
+
      }
 
     public void set(RenderState _renderState){
@@ -209,6 +236,13 @@ public class RenderState{
         List<Removal> list = new ArrayList<Removal>();
         list.addAll(removals);
        removals.clear();
+        return list;
+    }
+
+    public List<Update> getUpdates(){
+        List<Update> list = new ArrayList<Update>();
+        list.addAll(updates);
+        updates.clear();
         return list;
     }
 
