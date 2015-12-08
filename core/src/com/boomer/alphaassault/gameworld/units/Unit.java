@@ -18,7 +18,7 @@ import java.util.Random;
 public abstract class Unit implements Updateable,Renderable{
 
     //CONSTANTS
-    protected static final float UNIT_SIZE = 40;
+    protected static final float UNIT_SIZE = 80;
 
 
     //MECHANICAL/GRAPHICAL DETAILS
@@ -161,14 +161,14 @@ public abstract class Unit implements Updateable,Renderable{
     }
 
     protected Rotation getRotation(double _angle){
-        if(_angle == 90){return Rotation.RIGHT;}
-        if(_angle == 270){return Rotation.LEFT;}
-        if(_angle == 0 || _angle == 360){return Rotation.UP;}
-        if(_angle == 180){return Rotation.DOWN;}
-        if(_angle < 90 && _angle >0){return Rotation.UP_RIGHT;}
-        if(_angle <180 && _angle >90){return Rotation.DOWN_RIGHT;}
-        if(_angle <270 && _angle >180){return Rotation.DOWN_LEFT;}
-        if(_angle <360 && _angle >270){return Rotation.UP_LEFT;}
+        if(_angle <= 100 && _angle >80){return Rotation.RIGHT;}
+        if(_angle <=280 && _angle > 260){return Rotation.LEFT;}
+        if((_angle >350 && _angle  <=360)||(_angle < 10 && _angle >= 0)){return Rotation.UP;}
+        if(_angle <= 190 && _angle > 170){return Rotation.DOWN;}
+        if(_angle <= 80 && _angle >=10) {return Rotation.UP_RIGHT;}
+        if(_angle <=170 && _angle >=100){return Rotation.DOWN_RIGHT;}
+        if(_angle <=260 && _angle >=190){return Rotation.DOWN_LEFT;}
+        if(_angle <=350 && _angle >=280){return Rotation.UP_LEFT;}
         return null;
     }
 

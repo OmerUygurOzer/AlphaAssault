@@ -17,9 +17,9 @@ import com.boomer.alphaassault.utilities.Renderable;
 public class GamePad extends Controller implements Renderable,InputReceiver {
 
     //GAMEPAD TYPE
-    //LEFT_ONLY : ONLY LEFT_ONLY CONSOLE
-    //RIGHT_ONLY: ONLY RIGHT_ONLY CONSOLE
-    //BOTH: RIGHT_ONLY AND LEFT_ONLY CONSOLES
+    //LEFT_ONLY : ONLY LEFTC ONSOLE
+    //RIGHT_ONLY: ONLY RIGHT CONSOLE
+    //BOTH: RIGHT AND LEFT CONSOLES
     private int TYPE;
 
     public static final int LEFT_ONLY = 0;
@@ -62,8 +62,10 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     //INPUT MAPPING
     public static final int LEFT_ANALOG = 0;
     public static final int LEFT_ROTATION = 1;
-    public static final int RIGHT_ANALOG = 2;
-    public static final int RIGHT_ROTATION = 3;
+    public static final int LEFT_ACTIVE = 2;
+    public static final int RIGHT_ANALOG = 3;
+    public static final int RIGHT_ROTATION = 4;
+    public static final int RIGHT_ACTIVE = 5;
 
 
     public GamePad(int _type) {
@@ -154,8 +156,9 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
             if( distance<= RADIUS){
                 leftCurrentLocation.x = inputX;
                 leftCurrentLocation.y = inputY;
-                set(LEFT_ANALOG,distance*1/90);
+                set(LEFT_ANALOG,distance*1/RADIUS);
                 set(LEFT_ROTATION,Location.getAngle(inputX,inputY,LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y));
+                set(LEFT_ACTIVE,true);
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
                 leftActive = true;
@@ -166,6 +169,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         }
         set(LEFT_ANALOG,0);
         set(LEFT_ROTATION,0);
+        set(LEFT_ACTIVE,false);
         leftActive = false;
         leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
         leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
@@ -182,8 +186,9 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
             if( distance<= RADIUS){
                 rightCurrentLocation.x = inputX;
                 rightCurrentLocation.y = inputY;
-                set(RIGHT_ANALOG,distance*1/90);
+                set(RIGHT_ANALOG,distance*1/RADIUS);
                 set(RIGHT_ROTATION,Location.getAngle(inputX,inputY,RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y));
+                set(RIGHT_ACTIVE,true);
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);
                 leftActive = true;
@@ -194,6 +199,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         }
         set(RIGHT_ANALOG,0);
         set(RIGHT_ROTATION,0);
+        set(RIGHT_ACTIVE,false);
         rightActive = false;
         rightCurrentLocation.x = RIGHT_BUTTON_CENTER.x;
         rightCurrentLocation.y = RIGHT_BUTTON_CENTER.y;

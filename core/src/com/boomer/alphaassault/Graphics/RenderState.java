@@ -3,6 +3,7 @@ package com.boomer.alphaassault.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
@@ -24,6 +25,7 @@ public class RenderState{
         public long referenceId;
         public int depth;
         public Sprite sprite;
+       // public TextureRegion region;
 
         public Addition(int _viewType,long _referenceId,int _depth,Sprite _sprite){
             viewType = _viewType;
@@ -32,6 +34,15 @@ public class RenderState{
             sprite = _sprite;
             tracker = 1;
         }
+/*
+        public Addition(int _viewType,long _referenceId,int _depth,TextureRegion _region){
+            viewType = _viewType;
+            referenceId = _referenceId;
+            depth = _depth;
+            region = _region;
+            tracker = 1;
+        }
+        */
     }
 
     private  class Removal{
@@ -51,12 +62,23 @@ public class RenderState{
         public int depth;
         public Sprite sprite;
         public int tracker;
+       // public TextureRegion region;
         public Update(long _referenceId,int _depth,Sprite _sprite){
             referenceId = _referenceId;
             depth = _depth;
             sprite = _sprite;
+            //region = null;
             tracker = 1;
         }
+        /*
+        public Update(long _referenceId,int _depth,TextureRegion _region){
+            referenceId = _referenceId;
+            depth = _depth;
+            sprite = null;
+            region = _region;
+            tracker = 1;
+        }
+        */
     }
 
     public static final int STATE_BEING_RENDERED = 0;
@@ -71,6 +93,7 @@ public class RenderState{
 
     public int CURRENT_STATE;
 
+    //private List<Map<Long,TextureRegion>> regions;
     private List<Map<Long,Sprite>> sprites;
     private List<Map<Integer,Viewport>> viewPorts;
     private List<Map<Integer,List<Long>>> cameraMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
@@ -80,6 +103,7 @@ public class RenderState{
     private List<Update> updates;
 
     public RenderState(){
+       // regions = new ArrayList<Map<Long, TextureRegion>>();
         sprites = new ArrayList<Map<Long, Sprite>>();
         viewPorts = new ArrayList<Map<Integer, Viewport>>();
         cameraMapping = new ArrayList<Map<Integer, List<Long>>>();
@@ -115,10 +139,30 @@ public class RenderState{
             cameraMapping.get(_depth).get(_viewType).add(_referenceId);
         }
     }
+/*
+    public void addElement(int _viewType, long _referenceId,int _depth,TextureRegion _region){
+        additions.add(new Addition(_viewType,_referenceId,_depth,_region));
+        regions.get(_depth).put(_referenceId,new TextureRegion(_region));
+        if(!cameraMapping.get(_depth).containsKey(_viewType)){
+            List<Long> list = new ArrayList<Long>();
+            list.add(_referenceId);
+            cameraMapping.get(_depth).put(_viewType,list);
 
+        }else{
+            cameraMapping.get(_depth).get(_viewType).add(_referenceId);
+        }
+    }
+*/
     public void removeElement(long _referenceId,int _depth){
        removals.add(new Removal(_referenceId,_depth));
-       sprites.get(_depth).remove(_referenceId);
+        if(sprites.get(_depth).containsKey(_referenceId)){
+            sprites.get(_depth).remove(_referenceId);
+        }
+        /*
+        if(regions.get(_depth).containsKey(_referenceId)){
+            regions.get(_depth).remove(_referenceId);
+        }
+        */
         for(int map: cameraMapping.get(_depth).keySet()){
             if(cameraMapping.get(_depth).get(map).contains(_referenceId)){
                 cameraMapping.get(_depth).get(map).remove(_referenceId);
@@ -129,7 +173,12 @@ public class RenderState{
             updates.add(new Update(_referenceId, _depth, _sprite));
             sprites.get(_depth).get(_referenceId).set(_sprite);
     }
-
+    /*
+    public void updateElement(long _referenceId,int _depth,TextureRegion _region){
+            updates.add(new Update(_referenceId, _depth, _region));
+            regions.get(_depth).get(_referenceId).setRegion(_region);
+    }
+*/
 
     //DEPTH BASE IS DRAWN FIRST
     //GAME SCREEN IS DRAWN LAST

@@ -3,6 +3,7 @@ package com.boomer.alphaassault.gameworld.gamelogic;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.boomer.alphaassault.GUI.GamePad;
+import com.boomer.alphaassault.gameworld.Map;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
 import com.boomer.alphaassault.handlers.controls.Controller;
@@ -20,8 +21,8 @@ public class Player implements Updateable,Renderable{
 
     private Camera camera;
     private Controller controller;
-
     private Unit playerUnit;
+    private Map map;
 
     public Player(Camera _camera) {
         camera = _camera;
@@ -34,12 +35,22 @@ public class Player implements Updateable,Renderable{
     }
 
     public void move(float _deltaTime){
-        double power = controller.get(GamePad.LEFT_ANALOG).valueDouble;
-        double angle = controller.get(GamePad.LEFT_ROTATION).valueDouble;
-        float x = camera.position.x + (float)(Math.sin(Math.toRadians(angle))*power);
-        float y = camera.position.y + (float)(Math.cos(Math.toRadians(angle))*power);
-        camera.position.set(x,y,camera.position.z);
-        playerUnit.move(_deltaTime,x,y,angle);
+        if(controller.get(GamePad.LEFT_ACTIVE).valueBoolean) {
+            double power = controller.get(GamePad.LEFT_ANALOG).valueDouble;
+            double angle = controller.get(GamePad.LEFT_ROTATION).valueDouble;
+            float x =  camera.position.x + (float) (Math.sin(Math.toRadians(angle)) * power);
+            x = x < map.getWidth() ? x : map.getWidth();
+            x = x < 0 ? 0 : x;
+            float y = camera.position.y + (float) (Math.cos(Math.toRadians(angle)) * power);
+            y = y < map.getHeight() ? y : map.getHeight();
+            y = y < 0 ? 0 : y;
+            camera.position.set(x, y, camera.position.z);
+            playerUnit.move(_deltaTime, x, y, angle);
+        }
+    }
+
+    public void setMap(Map _map){
+        map = _map;
     }
 
 

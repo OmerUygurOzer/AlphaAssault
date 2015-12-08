@@ -170,6 +170,14 @@ public class Map implements Renderable{
 
     }
 
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
 
     @Override
     public void addToRenderState() {

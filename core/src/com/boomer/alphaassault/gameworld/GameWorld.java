@@ -34,6 +34,7 @@ public class GameWorld implements Updateable,Renderable{
 
     public void addPlayer(Player _player){
         player = _player;
+        player.setMap(gameMap);
     }
 
     @Override
