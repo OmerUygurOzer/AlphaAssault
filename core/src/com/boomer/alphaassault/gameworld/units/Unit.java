@@ -1,9 +1,8 @@
 package com.boomer.alphaassault.gameworld.units;
 
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
@@ -18,7 +17,7 @@ import java.util.Random;
 public abstract class Unit implements Updateable,Renderable{
 
     //CONSTANTS
-    protected static final float UNIT_SIZE = 80;
+    protected static final float UNIT_SIZE = 20;
 
 
     //MECHANICAL/GRAPHICAL DETAILS
@@ -27,16 +26,7 @@ public abstract class Unit implements Updateable,Renderable{
     protected Location location;
     private long referenceId;
     protected int viewType;
-    protected Sprite currentSprite;
-    protected Animation animationWalkRight;
-    protected Animation animationWalkLeft;
-    protected Animation animationWalkUp;
-    protected Animation animationWalkDown;
-    protected Animation animationWalkUpRight;
-    protected Animation animationWalkUpLeft;
-    protected Animation animationWalkDownRight;
-    protected Animation animationWalkDownLeft;
-    protected float animationTimer;
+    protected BAnimation bAnimation;
 
     //TYPE PROPERTIES
     //COMMON
@@ -96,7 +86,7 @@ public abstract class Unit implements Updateable,Renderable{
         location = _location;
         readyToFire = true;
         invisibility = false;
-        animationTimer = 0f;
+
 
 /*
         switch(type){
@@ -149,32 +139,8 @@ public abstract class Unit implements Updateable,Renderable{
     }
 
 
-    protected enum Rotation{
-        RIGHT,
-        LEFT,
-        UP,
-        DOWN,
-        UP_RIGHT,
-        UP_LEFT,
-        DOWN_RIGHT,
-        DOWN_LEFT
-    }
-
-    protected Rotation getRotation(double _angle){
-        if(_angle <= 100 && _angle >80){return Rotation.RIGHT;}
-        if(_angle <=280 && _angle > 260){return Rotation.LEFT;}
-        if((_angle >350 && _angle  <=360)||(_angle < 10 && _angle >= 0)){return Rotation.UP;}
-        if(_angle <= 190 && _angle > 170){return Rotation.DOWN;}
-        if(_angle <= 80 && _angle >=10) {return Rotation.UP_RIGHT;}
-        if(_angle <=170 && _angle >=100){return Rotation.DOWN_RIGHT;}
-        if(_angle <=260 && _angle >=190){return Rotation.DOWN_LEFT;}
-        if(_angle <=350 && _angle >=280){return Rotation.UP_LEFT;}
-        return null;
-    }
-
-
     public Location getLocation(){return location;}
-    public void setLocation(int _x, int _y){
+    public void setLocation(float _x, float _y){
         location.x = _x;
         location.y = _y;
     }
@@ -189,7 +155,7 @@ public abstract class Unit implements Updateable,Renderable{
     public void update(float _deltaTime) {}
     //RENDERABLE
     @Override
-    public void addToRenderState() {RenderStateManager.addElement(viewType, referenceId, RenderState.DEPTH_SURFACE, currentSprite);}
+    public void addToRenderState() {RenderStateManager.addElement(viewType, referenceId, RenderState.DEPTH_SURFACE, bAnimation);}
     @Override
     public long getReferenceID() {return referenceId;}
     @Override

@@ -22,7 +22,7 @@ public class GameWorld implements Updateable,Renderable{
     private Camera camera;
 
     public GameWorld(Camera _camera){
-        gameMap = new Map(Map.SIZE_MEDIUM);
+        gameMap = new Map(Map.SIZE_SMALL);
         camera = _camera;
 
     }
@@ -45,7 +45,7 @@ public class GameWorld implements Updateable,Renderable{
 
     @Override
     public long getReferenceID() {
-        return 0;
+        return baseReference;
     }
 
     @Override

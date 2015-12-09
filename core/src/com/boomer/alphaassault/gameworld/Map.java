@@ -1,10 +1,10 @@
 package com.boomer.alphaassault.gameworld;
 
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
@@ -62,7 +62,7 @@ public class Map implements Renderable{
         private static final int TEXTURE_REGION_SIZE = 100;
         private TextureRegion[][] tileRegions;
 
-        public Sprite image;
+        public BSprite image;
         public int type;
 
         public Tile(int _type){
@@ -70,10 +70,10 @@ public class Map implements Renderable{
             type = _type;
             switch(_type){
                 case TILE_STANDARD:
-                    image = new Sprite(tileRegions[0][TILE_STANDARD]);
+                    image = new BSprite(tileRegions[0][TILE_STANDARD]);
                     break;
                 case TILE_BADLANDS:
-                    image = new Sprite(tileRegions[0][TILE_BADLANDS]);
+                    image = new BSprite(tileRegions[0][TILE_BADLANDS]);
                     break;
                 default:
                     //DO NOTHING

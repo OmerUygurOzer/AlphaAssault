@@ -1,7 +1,7 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Renderable;
@@ -31,7 +31,7 @@ public abstract class MapFeature implements Renderable{
     //MECHANIC/GRAPHICAL DETAILS
     protected Location location;
     private long referenceId;
-    public Sprite featureSprite;
+    public BDrawable bDrawable;
     private int viewType;
 
     public MapFeature(Location _location) {
@@ -67,7 +67,7 @@ public abstract class MapFeature implements Renderable{
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_SURFACE, featureSprite);
+        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_SURFACE, bDrawable);
     }
 
     @Override

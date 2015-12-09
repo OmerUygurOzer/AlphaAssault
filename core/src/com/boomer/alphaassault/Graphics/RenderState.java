@@ -1,11 +1,8 @@
 package com.boomer.alphaassault.graphics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
+import com.boomer.alphaassault.graphics.elements.BDrawable;
 
 
 import java.util.ArrayList;
@@ -24,25 +21,15 @@ public class RenderState{
         public int viewType;
         public long referenceId;
         public int depth;
-        public Sprite sprite;
-       // public TextureRegion region;
+        public BDrawable bDrawable;
 
-        public Addition(int _viewType,long _referenceId,int _depth,Sprite _sprite){
+        public Addition(int _viewType,long _referenceId,int _depth,BDrawable _bDrawable){
             viewType = _viewType;
             referenceId = _referenceId;
             depth = _depth;
-            sprite = _sprite;
+            bDrawable = _bDrawable;
             tracker = 1;
         }
-/*
-        public Addition(int _viewType,long _referenceId,int _depth,TextureRegion _region){
-            viewType = _viewType;
-            referenceId = _referenceId;
-            depth = _depth;
-            region = _region;
-            tracker = 1;
-        }
-        */
     }
 
     private  class Removal{
@@ -60,25 +47,17 @@ public class RenderState{
     private class Update{
         public long referenceId;
         public int depth;
-        public Sprite sprite;
+        public BDrawable bDrawable;
         public int tracker;
-       // public TextureRegion region;
-        public Update(long _referenceId,int _depth,Sprite _sprite){
+
+        public Update(long _referenceId,int _depth,BDrawable _bDrawable){
             referenceId = _referenceId;
             depth = _depth;
-            sprite = _sprite;
+            bDrawable = _bDrawable;
             //region = null;
             tracker = 1;
         }
-        /*
-        public Update(long _referenceId,int _depth,TextureRegion _region){
-            referenceId = _referenceId;
-            depth = _depth;
-            sprite = null;
-            region = _region;
-            tracker = 1;
-        }
-        */
+
     }
 
     public static final int STATE_BEING_RENDERED = 0;
@@ -93,8 +72,8 @@ public class RenderState{
 
     public int CURRENT_STATE;
 
-    //private List<Map<Long,TextureRegion>> regions;
-    private List<Map<Long,Sprite>> sprites;
+
+    private List<Map<Long,BDrawable>> bDrawables;
     private List<Map<Integer,Viewport>> viewPorts;
     private List<Map<Integer,List<Long>>> cameraMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
 
@@ -103,8 +82,8 @@ public class RenderState{
     private List<Update> updates;
 
     public RenderState(){
-       // regions = new ArrayList<Map<Long, TextureRegion>>();
-        sprites = new ArrayList<Map<Long, Sprite>>();
+
+        bDrawables = new ArrayList<Map<Long, BDrawable>>();
         viewPorts = new ArrayList<Map<Integer, Viewport>>();
         cameraMapping = new ArrayList<Map<Integer, List<Long>>>();
 
@@ -113,7 +92,7 @@ public class RenderState{
         updates = new ArrayList<Update>();
 
         for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
-            sprites.add(depth,new HashMap<Long, Sprite>());
+            bDrawables.add(depth,new HashMap<Long, BDrawable>());
             viewPorts.add(depth,new HashMap<Integer, Viewport>());
             cameraMapping.add(depth,new HashMap<Integer, List<Long>>());
         }
@@ -127,9 +106,9 @@ public class RenderState{
         }
     }
 
-    public void addElement(int _viewType, long _referenceId,int _depth,Sprite _sprite){
-       additions.add(new Addition(_viewType,_referenceId,_depth,_sprite));
-        sprites.get(_depth).put(_referenceId,new Sprite(_sprite));
+    public void addElement(int _viewType, long _referenceId,int _depth,BDrawable _bDrawable){
+       additions.add(new Addition(_viewType,_referenceId,_depth,_bDrawable));
+       bDrawables.get(_depth).put(_referenceId,_bDrawable.copy());
         if(!cameraMapping.get(_depth).containsKey(_viewType)){
             List<Long> list = new ArrayList<Long>();
             list.add(_referenceId);
@@ -139,46 +118,24 @@ public class RenderState{
             cameraMapping.get(_depth).get(_viewType).add(_referenceId);
         }
     }
-/*
-    public void addElement(int _viewType, long _referenceId,int _depth,TextureRegion _region){
-        additions.add(new Addition(_viewType,_referenceId,_depth,_region));
-        regions.get(_depth).put(_referenceId,new TextureRegion(_region));
-        if(!cameraMapping.get(_depth).containsKey(_viewType)){
-            List<Long> list = new ArrayList<Long>();
-            list.add(_referenceId);
-            cameraMapping.get(_depth).put(_viewType,list);
 
-        }else{
-            cameraMapping.get(_depth).get(_viewType).add(_referenceId);
-        }
-    }
-*/
     public void removeElement(long _referenceId,int _depth){
        removals.add(new Removal(_referenceId,_depth));
-        if(sprites.get(_depth).containsKey(_referenceId)){
-            sprites.get(_depth).remove(_referenceId);
+        if(bDrawables.get(_depth).containsKey(_referenceId)){
+            bDrawables.get(_depth).remove(_referenceId);
         }
-        /*
-        if(regions.get(_depth).containsKey(_referenceId)){
-            regions.get(_depth).remove(_referenceId);
-        }
-        */
+
         for(int map: cameraMapping.get(_depth).keySet()){
             if(cameraMapping.get(_depth).get(map).contains(_referenceId)){
                 cameraMapping.get(_depth).get(map).remove(_referenceId);
             }
         }
     }
-    public void updateElement(long _referenceId,int _depth,Sprite _sprite){
-            updates.add(new Update(_referenceId, _depth, _sprite));
-            sprites.get(_depth).get(_referenceId).set(_sprite);
+    public void updateElement(long _referenceId,int _depth,BDrawable bDrawable){
+            updates.add(new Update(_referenceId, _depth, bDrawable));
+            bDrawables.get(_depth).get(_referenceId).set(bDrawable);
     }
-    /*
-    public void updateElement(long _referenceId,int _depth,TextureRegion _region){
-            updates.add(new Update(_referenceId, _depth, _region));
-            regions.get(_depth).get(_referenceId).setRegion(_region);
-    }
-*/
+
 
     //DEPTH BASE IS DRAWN FIRST
     //GAME SCREEN IS DRAWN LAST
@@ -193,7 +150,7 @@ public class RenderState{
                     continue;
                 }
                 for (long MAPPER : cameraMapping.get(depth).get(key)) {
-                    sprites.get(depth).get(MAPPER).draw(_spriteBatch);
+                    bDrawables.get(depth).get(MAPPER).draw(_spriteBatch);
                 }
                 _spriteBatch.end();
             }
@@ -203,7 +160,7 @@ public class RenderState{
      public void getUpdates(RenderState _renderState) {
 
          for(Addition incomingAddition:_renderState.getAdditions()){
-             sprites.get(incomingAddition.depth).put(incomingAddition.referenceId,new Sprite(incomingAddition.sprite));
+             bDrawables.get(incomingAddition.depth).put(incomingAddition.referenceId,incomingAddition.bDrawable.copy());
              if(!cameraMapping.get(incomingAddition.depth).containsKey(incomingAddition.viewType)){
                  List<Long> list = new ArrayList<Long>();
                  list.add(incomingAddition.referenceId);
@@ -213,7 +170,7 @@ public class RenderState{
                  cameraMapping.get(incomingAddition.depth).get(incomingAddition.viewType).add(incomingAddition.referenceId);
              }
              if(incomingAddition.tracker>0){
-                 Addition passingAddition = new Addition(incomingAddition.viewType,incomingAddition.referenceId,incomingAddition.depth,incomingAddition.sprite);
+                 Addition passingAddition = new Addition(incomingAddition.viewType,incomingAddition.referenceId,incomingAddition.depth,incomingAddition.bDrawable);
                  passingAddition.tracker = incomingAddition.tracker-1;
                  additions.add(passingAddition);
 
@@ -221,7 +178,7 @@ public class RenderState{
          }
 
          for(Removal incomingRemoval:_renderState.getRemovals()){
-             sprites.get(incomingRemoval.depth).remove(incomingRemoval.referenceId);
+             bDrawables.get(incomingRemoval.depth).remove(incomingRemoval.referenceId);
              for(int map: cameraMapping.get(incomingRemoval.depth).keySet()){
                  if(cameraMapping.get(incomingRemoval.depth).get(map).contains(incomingRemoval.referenceId)){
                      cameraMapping.get(incomingRemoval.depth).get(map).remove(incomingRemoval.referenceId);
@@ -237,9 +194,9 @@ public class RenderState{
          }
 
          for(Update incomingUpdate:_renderState.getUpdates()){
-             sprites.get(incomingUpdate.depth).get(incomingUpdate.referenceId).set(incomingUpdate.sprite);
+             bDrawables.get(incomingUpdate.depth).get(incomingUpdate.referenceId).set(incomingUpdate.bDrawable);
              if(incomingUpdate.tracker>0){
-                 Update passingUpdate = new Update(incomingUpdate.referenceId,incomingUpdate.depth,incomingUpdate.sprite);
+                 Update passingUpdate = new Update(incomingUpdate.referenceId,incomingUpdate.depth,incomingUpdate.bDrawable);
                  passingUpdate.tracker = passingUpdate.tracker-1;
                  updates.add(passingUpdate);
 
@@ -251,11 +208,11 @@ public class RenderState{
 
     public void set(RenderState _renderState){
         for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
-            sprites.get(depth).clear();
+            bDrawables.get(depth).clear();
             viewPorts.get(depth).clear();
             cameraMapping.get(depth).clear();
-            for (Long key : _renderState.getSprites().get(depth).keySet()) {
-                sprites.get(depth).put(key, new Sprite(_renderState.getSprites().get(depth).get(key)));
+            for (Long key : _renderState.getDrawables().get(depth).keySet()) {
+              bDrawables.get(depth).put(key, _renderState.getDrawables().get(depth).get(key)).copy();
             }
 
             for (Integer map : _renderState.getCameraMapping().get(depth).keySet()) {
@@ -269,7 +226,7 @@ public class RenderState{
 
 
 
-    private List<Map<Long,Sprite>> getSprites(){return sprites;}
+    private List<Map<Long,BDrawable>> getDrawables(){return bDrawables;}
     private List<Map<Integer,Viewport>> getViewPorts(){return viewPorts;}
     private List<Map<Integer,List<Long>>> getCameraMapping(){return cameraMapping;}
     public int getCurrentState(){return CURRENT_STATE;}

@@ -1,8 +1,8 @@
 package com.boomer.alphaassault.GUI;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.Inputs;
@@ -29,11 +29,11 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     private static final Location GAME_FRAME_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
     //GAME PAD SPRITES
-    private Sprite leftButtonSprite;
-    private Sprite leftCircleSprite;
-    private Sprite rightButtonSprite;
-    private Sprite rightCircleSprite;
-    private Sprite gameFrameSprite;
+    private BSprite leftButtonSprite;
+    private BSprite leftCircleSprite;
+    private BSprite rightButtonSprite;
+    private BSprite rightCircleSprite;
+    private BSprite gameFrameSprite;
 
 
     private static final int BUTTON_SIZE = 40;
@@ -78,27 +78,27 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         hudId = referenceId +4;
 
         //LEFT_ONLY
-        leftButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
+        leftButtonSprite = new BSprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
         leftButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
         leftButtonSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
-        leftCircleSprite = new Sprite(Resource.getTexture(Resource.TEXTURE_LEFT_CIRCLE));
+        leftCircleSprite = new BSprite(Resource.getTexture(Resource.TEXTURE_LEFT_CIRCLE));
         leftCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         leftCircleSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
         leftCurrentLocation = new Location(LEFT_BUTTON_CENTER);
         leftActive = false;
 
         //RIGHT_ONLY
-        rightButtonSprite = new Sprite (Resource.getTexture(Resource.TEXTURE_RIGHT_BUTTON));
+        rightButtonSprite = new BSprite (Resource.getTexture(Resource.TEXTURE_RIGHT_BUTTON));
         rightButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
         rightButtonSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
-        rightCircleSprite = new Sprite(Resource.getTexture(Resource.TEXTURE_RIGHT_CIRCLE));
+        rightCircleSprite = new BSprite(Resource.getTexture(Resource.TEXTURE_RIGHT_CIRCLE));
         rightCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         rightCircleSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
         rightCurrentLocation = new Location(RIGHT_BUTTON_CENTER);
         rightActive = false;
 
         //GAME HUD VIEW FRAME
-        gameFrameSprite = new Sprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
+        gameFrameSprite = new BSprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
         gameFrameSprite.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
         gameFrameSprite.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
@@ -150,8 +150,8 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     private void updateLeft(){
         for (Long key : Inputs.getInputs().keySet()){
-            int inputX = Inputs.getInputs().get(key).x;
-            int inputY = Inputs.getInputs().get(key).y;
+            float inputX = Inputs.getInputs().get(key).x;
+            float inputY = Inputs.getInputs().get(key).y;
             double distance = Location.getDistance(inputX,inputY, LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y);
             if( distance<= RADIUS){
                 leftCurrentLocation.x = inputX;
@@ -180,8 +180,8 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
 
     private void updateRight(){
         for (Long key : Inputs.getInputs().keySet()){
-            int inputX = Inputs.getInputs().get(key).x;
-            int inputY = Inputs.getInputs().get(key).y;
+            float inputX = Inputs.getInputs().get(key).x;
+            float inputY = Inputs.getInputs().get(key).y;
             double distance = Location.getDistance(inputX,inputY, RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y);
             if( distance<= RADIUS){
                 rightCurrentLocation.x = inputX;

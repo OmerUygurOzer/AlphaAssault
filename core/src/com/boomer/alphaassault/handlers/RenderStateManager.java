@@ -1,11 +1,9 @@
 package com.boomer.alphaassault.handlers;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.settings.GameSettings;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Omer on 11/27/2015.
@@ -41,14 +39,18 @@ public class RenderStateManager {
     }
 
 
-    public static void addElement(int _viewType, long _referenceID,int _depth ,Sprite _sprite){
-        updatingState.addElement(_viewType,_referenceID,_depth,new Sprite(_sprite));
+    public static void addElement(int _viewType, long _referenceID,int _depth ,BDrawable _bDrawable){
+        updatingState.addElement(_viewType,_referenceID,_depth,_bDrawable);
 
     }
 
     public static void remove(long _referenceID, int _depth){
         updatingState.removeElement(_referenceID,_depth);
 
+    }
+
+    public static void updateElement(long _referenceId,int _depth,BDrawable _bDrawable){
+        updatingState.updateElement(_referenceId,_depth, _bDrawable);
     }
 
     public static void switchRenderState(){
