@@ -17,7 +17,7 @@ import java.util.Random;
 public abstract class Unit implements Updateable,Renderable{
 
     //CONSTANTS
-    protected static final float UNIT_SIZE = 20;
+    protected static final float UNIT_SIZE = 40;
 
 
     //MECHANICAL/GRAPHICAL DETAILS

@@ -34,7 +34,7 @@ public class Tree extends MapFeature {
                 break;
         }
         bDrawable = new BSprite(textureRegion);
-        ((BSprite)bDrawable).setSize(20,20);
+        ((BSprite)bDrawable).setSize(20,40);
         ((BSprite)bDrawable).setPosition(_location.x,_location.y);
     }
 

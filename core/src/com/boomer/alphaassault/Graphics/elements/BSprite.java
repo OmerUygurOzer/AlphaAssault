@@ -12,18 +12,19 @@ public class BSprite implements BDrawable {
 
     private Sprite sprite;
 
-    public BSprite(TextureRegion _textureRegion){
+    public BSprite(Sprite _sprite){
+        sprite = new Sprite(_sprite);
+    }
 
+    public BSprite(TextureRegion _textureRegion){
         sprite = new Sprite(_textureRegion);
     }
 
     public BSprite(Texture _texture){
-
         sprite = new Sprite(_texture);
     }
 
     public BSprite(BDrawable _bDrawable) {
-
         sprite = new Sprite(((BSprite)_bDrawable).getSprite());
     }
 

@@ -123,7 +123,7 @@ public class BAnimation implements BDrawable {
 
     @Override
     public void draw(SpriteBatch _spriteBatch) {
-            timer += Gdx.graphics.getDeltaTime();
+            //timer += Gdx.graphics.getDeltaTime();
             if(timer>SPF){currentFrame++;}
             if(currentFrame==frames){currentFrame = 0;}
             switch (rotation){
