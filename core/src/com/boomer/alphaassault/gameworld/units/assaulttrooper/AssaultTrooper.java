@@ -42,6 +42,7 @@ public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
         bAnimation.setSize(UNIT_SIZE,UNIT_SIZE);
         bAnimation.setCenter(0f,0f);
         bAnimation.setFacingAngle(facingAngle);
+        bAnimation.setSecondsPerFrame(1f/10f);
     }
 
     @Override
@@ -69,6 +70,7 @@ public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
         facingAngle = _angle;
         bAnimation.setFacingAngle(_angle);
         bAnimation.setCenter(_x,_y);
+        bAnimation.update(_deltaTime);
         RenderStateManager.updatingState.updateElement(getReferenceID(), RenderState.DEPTH_SURFACE, bAnimation);
     }
 

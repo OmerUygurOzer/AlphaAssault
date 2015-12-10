@@ -12,11 +12,10 @@ import com.boomer.alphaassault.utilities.Renderable;
 public abstract class MapFeature implements Renderable{
 
     //TYPE PROPERTIES
-    public static final int CRATE_RADIUS = 5;
-    public static final int BUSH_RADIUS = 8;
-    public static final int ROCKS_RADIUS = 5;
-    public static final int TREE_RADIUS = 10;
-    public static final int WATER_RADIUS = 5;
+
+
+
+
 
     //BLOCKING TYPE
     protected boolean blocksMovement;

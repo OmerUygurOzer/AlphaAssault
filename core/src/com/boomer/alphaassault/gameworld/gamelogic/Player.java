@@ -44,8 +44,11 @@ public class Player implements Updateable,Renderable{
             float y = camera.position.y + (float) (Math.cos(Math.toRadians(angle)) * power);
             y = y < map.getHeight() ? y : map.getHeight();
             y = y < 0 ? 0 : y;
-            camera.position.set(x, y, camera.position.z);
-            playerUnit.move(_deltaTime, x, y, angle);
+            if(map.isMoveable(x,y)){
+                camera.position.set(x, y, camera.position.z);
+                playerUnit.move(_deltaTime, x, y, angle);
+            }
+
         }
     }
 

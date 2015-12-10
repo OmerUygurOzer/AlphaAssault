@@ -51,7 +51,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     private  long leftCircleId;
     private  long rightButtonId;
     private  long rightCircleId;
-    private  long hudId;
+    private  long gameFrameId;
 
     private long referenceId;
     private int viewType;
@@ -72,10 +72,10 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
         super();
         referenceId = System.currentTimeMillis();
         leftButtonId = referenceId;
-        leftCircleId = referenceId+1;
-        rightButtonId = referenceId+2;
-        rightCircleId = referenceId+3;
-        hudId = referenceId +4;
+        leftCircleId = referenceId  +1;
+        rightButtonId = referenceId +2;
+        rightCircleId = referenceId +3;
+        gameFrameId = referenceId   +4;
 
         //LEFT_ONLY
         leftButtonSprite = new BSprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
@@ -117,7 +117,7 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
             RenderStateManager.addElement(viewType, rightButtonId,RenderState.DEPTH_GAME_SCREEN, rightButtonSprite);
             RenderStateManager.addElement(viewType, rightCircleId,RenderState.DEPTH_GAME_SCREEN, rightCircleSprite);
         }
-        RenderStateManager.addElement(viewType, hudId, RenderState.DEPTH_GAME_SCREEN, gameFrameSprite);
+        RenderStateManager.addElement(viewType, gameFrameId, RenderState.DEPTH_GAME_SCREEN, gameFrameSprite);
     }
 
 

@@ -51,7 +51,7 @@ public class Map implements Renderable{
     private static final int FEATURE_ROCKS = 3;
     private static final int FEATURE_TREE = 4;
     private static final int FEATURE_WATER = 5;
-    private static final int FEATURE_PLAYER_BASE = 6;
+    private static final int FEATURE_PLAYER_BASE = 10;
 
     private class Tile{
         private static final int TILE_STANDARD = 0;
@@ -178,6 +178,37 @@ public class Map implements Renderable{
         return height;
     }
 
+    public boolean isMoveable(float _x,float _y){
+        int tileX = Math.round(((_x - (_x % Tile.TILE_SIZE))/Tile.TILE_SIZE));
+        int tileY = Math.round(((_y - (_y % Tile.TILE_SIZE))/Tile.TILE_SIZE));
+        float centerX = (tileX * Tile.TILE_SIZE)+Tile.TILE_SIZE/2f;
+        float centerY = (tileY * Tile.TILE_SIZE)+Tile.TILE_SIZE/2f;
+        int radius = 0;
+        switch(featureTiles[tileX][tileY]){
+            case FEATURE_BUSH:
+                return true;
+            case FEATURE_CRATE:
+                radius = Crate.CRATE_RADIUS;
+                break;
+            case FEATURE_ROCKS:
+                radius = Rocks.ROCKS_RADIUS;
+                break;
+            case FEATURE_TREE:
+                radius = Tree.TREE_RADIUS;
+                break;
+            case FEATURE_WATER:
+                radius = Water.WATER_RADIUS;
+                break;
+        }
+        double distance = Location.getDistance(_x,_y,centerX,centerY);
+        if(distance < radius){
+            //System.out.println("in");
+            return false;
+        }
+
+        return true;
+    }
+
 
     @Override
     public void addToRenderState() {
@@ -193,7 +224,6 @@ public class Map implements Renderable{
             mapFeature.setViewType(viewType);
             mapFeature.setReferenceID(baseID);
             mapFeature.addToRenderState();
-           // RenderStateManager.addElement(viewType,baseID, RenderState.DEPTH_SURFACE,mapFeature.featureSprite);
         }
     }
 

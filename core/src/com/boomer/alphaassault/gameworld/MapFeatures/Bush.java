@@ -9,6 +9,8 @@ import com.boomer.alphaassault.utilities.Location;
  * Created by Omer on 11/25/2015.
  */
 public class Bush extends MapFeature {
+    public static final int BUSH_RADIUS = 8;
+
     public Bush(Location _location) {
         super(_location);
         destroyable = false;

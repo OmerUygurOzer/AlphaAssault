@@ -11,6 +11,8 @@ import java.util.Random;
  * Created by Omer on 11/25/2015.
  */
 public class Tree extends MapFeature {
+    public static final int TREE_RADIUS = 10;
+
     public Tree(Location _location) {
         super(_location);
         destroyable = false;

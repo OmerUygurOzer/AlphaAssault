@@ -100,10 +100,13 @@ public class BAnimation implements BDrawable {
         center.y = _y - height/2;
     }
 
+    public void update(float _deltaTime){
+        timer += _deltaTime;
+        if(timer>SPF){currentFrame++;timer=0f;}
+        if(currentFrame==frames){currentFrame = 0;}
 
-    public Rotation getRotation() {
-        return rotation;
     }
+
 
     @Override
     public void set(BDrawable _bDrawable) {
@@ -117,15 +120,13 @@ public class BAnimation implements BDrawable {
         width = incomingAnimation.getWidth();
         height = incomingAnimation.getHeight();
         rotation = incomingAnimation.getRotation();
+        SPF = incomingAnimation.getSPF();
 
 
     }
 
     @Override
     public void draw(SpriteBatch _spriteBatch) {
-            //timer += Gdx.graphics.getDeltaTime();
-            if(timer>SPF){currentFrame++;}
-            if(currentFrame==frames){currentFrame = 0;}
             switch (rotation){
                     case RIGHT:
                         currentSprite = spritesRight[currentFrame];
@@ -200,5 +201,9 @@ public class BAnimation implements BDrawable {
 
     public TextureRegion[][] getTextureRegions() {
         return textureRegions;
+    }
+
+    public Rotation getRotation() {
+        return rotation;
     }
 }
