@@ -13,10 +13,6 @@ public abstract class MapFeature implements Renderable{
 
     //TYPE PROPERTIES
 
-
-
-
-
     //BLOCKING TYPE
     protected boolean blocksMovement;
     protected boolean blocksBullets;

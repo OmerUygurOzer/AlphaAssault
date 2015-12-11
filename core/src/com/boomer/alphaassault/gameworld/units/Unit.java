@@ -66,9 +66,8 @@ public abstract class Unit implements Updateable,Renderable{
     protected int damage;
     protected int range;
     protected int movementSpeed;
-    protected int firingSpeed;
     protected int sight;
-    protected boolean readyToFire;
+
     protected boolean invisibility;
 
     //TIMERS
@@ -84,7 +83,7 @@ public abstract class Unit implements Updateable,Renderable{
         team = _team;
         radius = UNIT_RADIUS;
         location = _location;
-        readyToFire = true;
+        //readyToFire = true;
         invisibility = false;
 
 

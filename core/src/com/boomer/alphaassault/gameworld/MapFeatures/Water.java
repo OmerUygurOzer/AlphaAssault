@@ -9,6 +9,8 @@ import com.boomer.alphaassault.utilities.Location;
  * Created by Omer on 11/25/2015.
  */
 public class Water extends MapFeature {
+    public static final int WATER_RADIUS = 10;
+
     public Water(Location _location) {
         super(_location);
         destroyable = false;

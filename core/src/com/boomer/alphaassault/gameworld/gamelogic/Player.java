@@ -6,6 +6,7 @@ import com.boomer.alphaassault.GUI.GamePad;
 import com.boomer.alphaassault.gameworld.Map;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
+import com.boomer.alphaassault.graphics.cameras.SightCamera;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.utilities.Location;
@@ -19,15 +20,16 @@ import com.boomer.alphaassault.utilities.Updateable;
 public class Player implements Updateable,Renderable{
     private static final int PLAYER_REFERENCE = 1;
 
-    private Camera camera;
+    private SightCamera camera;
     private Controller controller;
     private Unit playerUnit;
     private Map map;
 
-    public Player(Camera _camera) {
+    public Player(SightCamera _camera) {
         camera = _camera;
         playerUnit = new AssaultTrooper(GameSettings.TEAM_BLUE,new Location(Math.round(camera.position.x),Math.round(camera.position.y)));
         playerUnit.setReferenceID(PLAYER_REFERENCE);
+        camera.setSight(AssaultTrooper.ASSAULT_TROOPER_SIGHT);
     }
 
     public void setController(Controller _controller){

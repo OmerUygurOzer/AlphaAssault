@@ -170,6 +170,10 @@ public class BAnimation implements BDrawable {
         return bAnimation;
     }
 
+    @Override
+    public Location getCenter() {
+        return center;
+    }
 
     public float getWidth() {
         return width;
@@ -179,9 +183,6 @@ public class BAnimation implements BDrawable {
         return height;
     }
 
-    public Location getCenter() {
-        return center;
-    }
 
     public double getFacingAngle() {
         return facingAngle;

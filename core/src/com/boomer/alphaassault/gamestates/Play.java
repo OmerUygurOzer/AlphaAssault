@@ -8,6 +8,7 @@ import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.GUI.GamePad;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.graphics.GameGraphics;
+import com.boomer.alphaassault.graphics.cameras.SightCamera;
 import com.boomer.alphaassault.graphics.views.GameViewport;
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -24,7 +25,7 @@ public class Play extends GameStateBase {
     private Viewport gameView;
 
     private OrthographicCamera screenCam;
-    private OrthographicCamera gameCam;
+    private SightCamera gameCam;
 
     //ADD CONTROLLERS
     private GamePad gamePad;
@@ -42,7 +43,7 @@ public class Play extends GameStateBase {
         screenCam.translate(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
         screenCam.update();
 
-        gameCam = new OrthographicCamera();
+        gameCam = new SightCamera();
         gameView = new GameViewport(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT, gameCam);
         gameView.apply();
         gameCam.update();

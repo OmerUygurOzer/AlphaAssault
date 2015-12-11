@@ -9,7 +9,7 @@ import com.boomer.alphaassault.utilities.Location;
  * Created by Omer on 11/25/2015.
  */
 public class Rocks extends MapFeature {
-    public static final int ROCKS_RADIUS = 5;
+    public static final int ROCKS_RADIUS = 8;
 
     public Rocks(Location _location) {
         super(_location);
