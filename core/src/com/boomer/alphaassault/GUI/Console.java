@@ -112,22 +112,22 @@ public class Console extends Controller implements Renderable,InputReceiver {
                             case BUTTON_ONE:
                                 buttonStates[BUTTON_ONE] = PRESSED;
                                 set(BUTTON_ONE_STATE,PRESSED);
-                                System.out.println("1");
+                               // System.out.println("1");
                                 break;
                             case BUTTON_TWO:
                                 buttonStates[BUTTON_TWO] = PRESSED;
                                 set(BUTTON_TWO_STATE,PRESSED);
-                                System.out.println("2");
+                               // System.out.println("2");
                                 break;
                             case BUTTON_THREE:
                                 buttonStates[BUTTON_THREE] = PRESSED;
                                 set(BUTTON_THREE_STATE,PRESSED);
-                                System.out.println("3");
+                               // System.out.println("3");
                                 break;
                             case BUTTON_FOUR:
                                 buttonStates[BUTTON_FOUR] = PRESSED;
                                 set(BUTTON_FOUR_STATE,PRESSED);
-                                System.out.println("4");
+                               // System.out.println("4");
                                 break;
                             default:
                                 //DO NOTHING
