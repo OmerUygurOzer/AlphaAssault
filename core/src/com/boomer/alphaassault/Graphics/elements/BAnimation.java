@@ -57,7 +57,7 @@ public class BAnimation implements BDrawable {
         spritesDownLeft = new Sprite[frames];
         spritesDownRight = new Sprite[frames];
 
-        for(int i=0;i<textureRegions[6].length;i++){
+        for(int i=0;i<textureRegions[0].length;i++){
             spritesRight[i] = new Sprite(textureRegions[6][i]);
             spritesLeft[i] = new Sprite(textureRegions[2][i]);
             spritesUp[i] = new Sprite(textureRegions[4][i]);
@@ -66,6 +66,17 @@ public class BAnimation implements BDrawable {
             spritesUpLeft[i] = new Sprite(textureRegions[3][i]);
             spritesDownRight[i] = new Sprite(textureRegions[7][i]);
             spritesDownLeft[i] = new Sprite(textureRegions[1][i]);
+            /*
+            spritesRight[i].setCenter(0f,0f);
+            spritesLeft[i].setCenter(0f,0f);
+            spritesUp[i].setCenter(0f,0f);
+            spritesDown[i].setCenter(0f,0f);
+            spritesUpRight[i].setCenter(0f,0f);
+            spritesUpLeft[i].setCenter(0f,0f);
+            spritesDownLeft[i].setCenter(0f,0f);
+            spritesDownRight[i].setCenter(0f,0f);
+            */
+
         }
 
         position = new Location();

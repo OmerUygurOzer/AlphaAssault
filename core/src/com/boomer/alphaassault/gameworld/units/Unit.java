@@ -5,7 +5,7 @@ import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
-import com.boomer.alphaassault.utilities.Renderable;
+import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.utilities.Updateable;
 
 

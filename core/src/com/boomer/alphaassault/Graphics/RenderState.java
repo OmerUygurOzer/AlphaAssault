@@ -3,6 +3,7 @@ package com.boomer.alphaassault.graphics;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
+import com.boomer.alphaassault.utilities.Location;
 
 
 import java.util.ArrayList;
@@ -150,7 +151,11 @@ public class RenderState{
                     continue;
                 }
                 for (long MAPPER : viewMapping.get(depth).get(key)) {
+                    //float x = bDrawables.get(depth).get(MAPPER).getCenter().x;
+                    //float y = bDrawables.get(depth).get(MAPPER).getCenter().y;
+                    //if(Location.getDistance(x,y,0f,0f)<80){
                     bDrawables.get(depth).get(MAPPER).draw(_spriteBatch);
+                    //}
                 }
                 _spriteBatch.end();
             }

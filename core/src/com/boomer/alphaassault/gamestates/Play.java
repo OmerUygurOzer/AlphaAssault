@@ -4,8 +4,9 @@ package com.boomer.alphaassault.gamestates;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.*;
+import com.boomer.alphaassault.GUI.Console;
 import com.boomer.alphaassault.gameworld.GameWorld;
-import com.boomer.alphaassault.GUI.GamePad;
+import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
@@ -28,7 +29,8 @@ public class Play extends GameStateBase {
     private SightCamera gameCam;
 
     //ADD CONTROLLERS
-    private GamePad gamePad;
+    private Analog analog;
+    private Console console;
 
     //ADD IN-GAME FEATURES
     private GameWorld gameWorld;
@@ -52,10 +54,13 @@ public class Play extends GameStateBase {
         RENDER_STATE.addView(VIEW_TYPE_GAME, gameView);
         RenderStateManager.setGameRenderState(RENDER_STATE);
 
-        //ACTIVATE GAME PAD
-        gamePad = new GamePad(GamePad.BOTH);
-        gamePad.setViewType(VIEW_TYPE_SCREEN);
-        gamePad.addToRenderState();
+        //ACTIVATE ANALOG CONTROLLER
+        analog = new Analog(Analog.LEFT_ONLY);
+        analog.setViewType(VIEW_TYPE_SCREEN);
+        analog.addToRenderState();
+
+        //ACTIVATE CONSOLE CONTROLLER
+        console = new Console();
 
         //ADD PLAYER
         player = new Player(gameCam);
@@ -64,7 +69,8 @@ public class Play extends GameStateBase {
         gameWorld = new GameWorld(gameCam);
         gameWorld.addPlayer(player);
         gameWorld.setViewType(VIEW_TYPE_GAME);
-        gameWorld.setController(gamePad);
+        gameWorld.setAnalog(analog);
+        gameWorld.setConsole(console);
         gameWorld.addToRenderState();
 
 
@@ -79,9 +85,8 @@ public class Play extends GameStateBase {
 
     @Override
     public void handleInput() {
-        gamePad.receiveInput();
-
-
+        analog.receiveInput();
+        console.receiveInput();
     }
 
     @Override

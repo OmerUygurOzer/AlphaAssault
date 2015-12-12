@@ -4,7 +4,7 @@ import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
-import com.boomer.alphaassault.utilities.Renderable;
+import com.boomer.alphaassault.graphics.Renderable;
 
 /**
  * Created by Omer on 11/25/2015.

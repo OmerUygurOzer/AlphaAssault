@@ -1,27 +1,27 @@
 package com.boomer.alphaassault.gameworld.gamelogic;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.boomer.alphaassault.GUI.GamePad;
+import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.gameworld.Map;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
+import com.boomer.alphaassault.handlers.controls.Controllable;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.utilities.Location;
-import com.boomer.alphaassault.utilities.Renderable;
+import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.utilities.Updateable;
 
 
 /**
  * Created by Omer on 12/6/2015.
  */
-public class Player implements Updateable,Renderable{
+public class Player implements Updateable,Renderable,Controllable{
     private static final int PLAYER_REFERENCE = 1;
 
     private SightCamera camera;
-    private Controller controller;
+    private Controller analog;
+    private Controller console;
     private Unit playerUnit;
     private Map map;
 
@@ -32,14 +32,11 @@ public class Player implements Updateable,Renderable{
         camera.setSight(AssaultTrooper.ASSAULT_TROOPER_SIGHT);
     }
 
-    public void setController(Controller _controller){
-        controller = _controller;
-    }
 
     public void move(float _deltaTime){
-        if(controller.get(GamePad.LEFT_ACTIVE).valueBoolean) {
-            double power = controller.get(GamePad.LEFT_ANALOG).valueDouble;
-            double angle = controller.get(GamePad.LEFT_ROTATION).valueDouble;
+        if(analog.get(Analog.LEFT_ACTIVE).valueBoolean) {
+            double power = analog.get(Analog.LEFT_ANALOG).valueDouble;
+            double angle = analog.get(Analog.LEFT_ROTATION).valueDouble;
             float x =  camera.position.x + (float) (Math.sin(Math.toRadians(angle)) * power);
             x = x < map.getWidth() ? x : map.getWidth();
             x = x < 0 ? 0 : x;
@@ -58,7 +55,6 @@ public class Player implements Updateable,Renderable{
         map = _map;
     }
 
-
     @Override
     public void addToRenderState() {
         playerUnit.addToRenderState();
@@ -70,9 +66,7 @@ public class Player implements Updateable,Renderable{
     }
 
     @Override
-    public void setReferenceID(long _referenceId) {
-
-    }
+    public void setReferenceID(long _referenceId) {}
 
     @Override
     public void setViewType(int _viewType) {
@@ -81,6 +75,22 @@ public class Player implements Updateable,Renderable{
 
     @Override
     public void update(float _deltaTime) {
+        control(_deltaTime);
         playerUnit.update(_deltaTime);
+    }
+
+    @Override
+    public void setAnalog(Controller _controller) {
+        analog = _controller;
+    }
+
+    @Override
+    public void setConsole(Controller _controller) {
+        console = _controller;
+    }
+
+    @Override
+    public void control(float _deltaTime) {
+        move(_deltaTime);
     }
 }

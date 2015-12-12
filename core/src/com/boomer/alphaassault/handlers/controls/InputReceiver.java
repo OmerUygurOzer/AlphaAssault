@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.utilities;
+package com.boomer.alphaassault.handlers.controls;
 
 /**
  * Created by Omer on 11/29/2015.

@@ -30,6 +30,8 @@ public class Resource {
     public static final int TEXTURE_LEFT_CIRCLE = 13;
     public static final int TEXTURE_RIGHT_BUTTON = 14;
     public static final int TEXTURE_RIGHT_CIRCLE = 15;
+
+    public static final int TEXTURE_BUTTON_BASE = 16;
     //OTHER TEXTURES
 
     public static final int TEXTURE_HUD_CAM = 20;
@@ -56,6 +58,7 @@ public class Resource {
         loadTexture(TEXTURE_HUD_CAM,"hudcam.png");
         loadTexture(TEXTURE_TREES,"map/trees.png");
         loadTexture(TEXTURE_OTHERS,"map/others.png");
+        loadTexture(TEXTURE_BUTTON_BASE,"button.png");
 
     }
 

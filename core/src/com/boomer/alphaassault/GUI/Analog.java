@@ -7,19 +7,19 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.Inputs;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.utilities.InputReceiver;
+import com.boomer.alphaassault.handlers.controls.InputReceiver;
 import com.boomer.alphaassault.utilities.Location;
-import com.boomer.alphaassault.utilities.Renderable;
+import com.boomer.alphaassault.graphics.Renderable;
 
 /**
  * Created by Omer on 11/25/2015.
  */
-public class GamePad extends Controller implements Renderable,InputReceiver {
+public class Analog extends Controller implements Renderable,InputReceiver {
 
     //GAMEPAD TYPE
-    //LEFT_ONLY : ONLY LEFTC ONSOLE
-    //RIGHT_ONLY: ONLY RIGHT CONSOLE
-    //BOTH: RIGHT AND LEFT CONSOLES
+    //LEFT_ONLY : ONLY LEFT ANALOG
+    //RIGHT_ONLY: ONLY RIGHT ANALOG
+    //BOTH: RIGHT AND LEFT ANALOGUES
     private int TYPE;
 
     public static final int LEFT_ONLY = 0;
@@ -60,15 +60,15 @@ public class GamePad extends Controller implements Renderable,InputReceiver {
     private boolean rightActive;
 
     //INPUT MAPPING
-    public static final int LEFT_ANALOG = 0;
-    public static final int LEFT_ROTATION = 1;
-    public static final int LEFT_ACTIVE = 2;
-    public static final int RIGHT_ANALOG = 3;
+    public static final int LEFT_ANALOG    = 0;
+    public static final int LEFT_ROTATION  = 1;
+    public static final int LEFT_ACTIVE    = 2;
+    public static final int RIGHT_ANALOG   = 3;
     public static final int RIGHT_ROTATION = 4;
-    public static final int RIGHT_ACTIVE = 5;
+    public static final int RIGHT_ACTIVE   = 5;
 
 
-    public GamePad(int _type) {
+    public Analog(int _type) {
         super();
         referenceId = System.currentTimeMillis();
         leftButtonId = referenceId;

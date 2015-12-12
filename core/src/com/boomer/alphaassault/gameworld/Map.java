@@ -8,7 +8,7 @@ import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
-import com.boomer.alphaassault.utilities.Renderable;
+import com.boomer.alphaassault.graphics.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;
