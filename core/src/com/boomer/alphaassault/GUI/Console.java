@@ -11,6 +11,7 @@ import com.boomer.alphaassault.handlers.controls.InputReceiver;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.handlers.controls.Inputs;
 import com.boomer.alphaassault.resources.Resource;
+import org.omg.CORBA.portable.IDLEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,30 +21,12 @@ import java.util.List;
  */
 public class Console extends Controller implements Renderable,InputReceiver {
 
+
     public static final int CONSOLE_BUTTON_WIDTH  = 180;
     public static final int CONSOLE_BUTTON_HEIGHT = 80;
 
     public static final int CONSOLE_BUTTON_X = GameGraphics.VIRTUAL_WIDTH - 100;
     public static final int CONSOLE_BUTTON_Y = 50;
-
-    private class Button{
-        private BSprite icon;
-
-        public float centerX;
-        public float centerY;
-
-        public int width;
-        public int height;
-
-        public Button(TextureRegion _textureRegion){
-            icon = new BSprite(_textureRegion);
-        }
-
-        public Button(Texture _texture){
-            icon = new BSprite(_texture);
-        }
-
-    }
 
     //INPUT MAPPING
     public static final int BUTTON_ONE_STATE = 0;
@@ -52,8 +35,8 @@ public class Console extends Controller implements Renderable,InputReceiver {
     public static final int BUTTON_FOUR_STATE = 3;
 
     //BUTTON STATES
-    public static final boolean IDLE    = false;
-    public static final boolean PRESSED = true;
+    public static final int IDLE    = 0;
+    public static final int PRESSED = 1;
 
     private int buttonNumber;
 
@@ -88,59 +71,61 @@ public class Console extends Controller implements Renderable,InputReceiver {
         addButton(Resource.getTexture(Resource.TEXTURE_BUTTON_BASE));
         addButton(Resource.getTexture(Resource.TEXTURE_BUTTON_BASE));
         addButton(Resource.getTexture(Resource.TEXTURE_BUTTON_BASE));
+        addToRenderState();
     }
 
     public void addButton(Texture _texture){
         //CREATE BUTTON
-        Button button = new Button(_texture);
+        TextureRegion[][] buttonStates = TextureRegion.split(_texture,287,144);
+        Button button = new Button(CONSOLE_BUTTON_X,CONSOLE_BUTTON_Y + buttonNumber*80,CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);
+        button.addState(IDLE,buttonStates[0][IDLE]);
+        button.addState(PRESSED,buttonStates[0][PRESSED]);
 
         //SET BUTTON PROPERTIES
-        button.width = CONSOLE_BUTTON_WIDTH;
-        button.height = CONSOLE_BUTTON_HEIGHT;
-        button.centerX = CONSOLE_BUTTON_X;
-        button.centerY = CONSOLE_BUTTON_Y + buttonNumber * 80;
-        button.icon.setCenter(button.centerX,button.centerY);
-        button.icon.setSize(CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);
+        button.setReferenceID(referenceId + buttonNumber);
+        button.setViewType(viewType);
+
 
         buttons.add(button);
-        RenderStateManager.updatingState.addElement(viewType,referenceId + buttonNumber, RenderState.DEPTH_GAME_SCREEN,button.icon);
+
         buttonNumber++;
 
     }
 
     @Override
     public void receiveInput() {
-        boolean buttonOneState   = IDLE;
-        boolean buttonTwoState   = IDLE;
-        boolean buttonThreeState = IDLE;
-        boolean buttonFourState  = IDLE;
+        int[] buttonStates = new int[buttons.size()];
+        for(int index = 0;index < buttons.size();index++){
+            buttonStates[index] = IDLE;
+        }
 
         for (Long key : Inputs.getInputs().keySet()){
             float inputX = Inputs.getInputs().get(key).x;
             float inputY = Inputs.getInputs().get(key).y;
             for(int index=0;index<buttons.size();index++) {
                 Button button = buttons.get(index);
-                boolean fitsX = Math.abs(button.centerX - inputX)<button.width/2;
-                boolean fitsY = Math.abs(button.centerY - inputY)<button.height/2;
+                boolean fitsX = Math.abs(button.getCenterX() - inputX)<button.getWidth()/2;
+                boolean fitsY = Math.abs(button.getCenterY() - inputY)<button.getHeight()/2;
                 if(fitsX && fitsY){
+                    button.setState(PRESSED);
                         switch (index){
                             case BUTTON_ONE:
-                                buttonOneState = PRESSED;
+                                buttonStates[BUTTON_ONE] = PRESSED;
                                 set(BUTTON_ONE_STATE,PRESSED);
                                 System.out.println("1");
                                 break;
                             case BUTTON_TWO:
-                                buttonTwoState = PRESSED;
+                                buttonStates[BUTTON_TWO] = PRESSED;
                                 set(BUTTON_TWO_STATE,PRESSED);
                                 System.out.println("2");
                                 break;
                             case BUTTON_THREE:
-                                buttonThreeState = PRESSED;
+                                buttonStates[BUTTON_THREE] = PRESSED;
                                 set(BUTTON_THREE_STATE,PRESSED);
                                 System.out.println("3");
                                 break;
                             case BUTTON_FOUR:
-                                buttonFourState = PRESSED;
+                                buttonStates[BUTTON_FOUR] = PRESSED;
                                 set(BUTTON_FOUR_STATE,PRESSED);
                                 System.out.println("4");
                                 break;
@@ -153,20 +138,25 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
         }
 
-        if(buttonOneState == IDLE){set(BUTTON_ONE_STATE,IDLE);}
-        if(buttonTwoState == IDLE){set(BUTTON_TWO_STATE,IDLE);}
-        if(buttonThreeState == IDLE){set(BUTTON_THREE_STATE,IDLE);}
-        if(buttonFourState == IDLE){set(BUTTON_FOUR_STATE,IDLE);}
+        for(int index = 0;index < buttons.size();index++){
+           if( buttonStates[index] == IDLE){
+                set(index,IDLE);
+               buttons.get(index).resetState();
+           }
+        }
+
     }
 
     @Override
     public void addToRenderState() {
-
+        for(Button button: buttons){
+            button.addToRenderState();
+        }
     }
 
     @Override
     public long getReferenceID() {
-        return 0;
+        return referenceId;
     }
 
     @Override

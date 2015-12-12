@@ -49,16 +49,16 @@ public class Resource {
     }
 
     public void initialize(){
-        loadTexture(TEXTURE_BACKGROUND,"tiles_background.png");
+        loadTexture(TEXTURE_BACKGROUND,"map/tiles_background.png");
         loadTexture(TEXTURE_ASSAULT_TROOPER,"character.png");
-        loadTexture(TEXTURE_LEFT_BUTTON,"greenbutton.png");
-        loadTexture(TEXTURE_LEFT_CIRCLE,"greencircle.png");
-        loadTexture(TEXTURE_RIGHT_BUTTON,"redbutton.png");
-        loadTexture(TEXTURE_RIGHT_CIRCLE,"redcircle.png");
-        loadTexture(TEXTURE_HUD_CAM,"hudcam.png");
+        loadTexture(TEXTURE_LEFT_BUTTON,"GUI/greenbutton.png");
+        loadTexture(TEXTURE_LEFT_CIRCLE,"GUI/greencircle.png");
+        loadTexture(TEXTURE_RIGHT_BUTTON,"GUI/redbutton.png");
+        loadTexture(TEXTURE_RIGHT_CIRCLE,"GUI/redcircle.png");
+        loadTexture(TEXTURE_HUD_CAM,"GUI/hudcam.png");
         loadTexture(TEXTURE_TREES,"map/trees.png");
         loadTexture(TEXTURE_OTHERS,"map/others.png");
-        loadTexture(TEXTURE_BUTTON_BASE,"button.png");
+        loadTexture(TEXTURE_BUTTON_BASE,"GUI/button.png");
 
     }
 
