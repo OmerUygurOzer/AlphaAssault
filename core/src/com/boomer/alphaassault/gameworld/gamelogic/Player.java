@@ -18,6 +18,7 @@ import com.boomer.alphaassault.utilities.Updateable;
  */
 public class Player implements Updateable,Renderable,Controllable{
     private static final int PLAYER_REFERENCE = 1;
+    private int viewType;
 
     private SightCamera camera;
     private Controller analog;
@@ -30,6 +31,8 @@ public class Player implements Updateable,Renderable,Controllable{
         playerUnit = new AssaultTrooper(GameSettings.TEAM_BLUE,new Location(Math.round(camera.position.x),Math.round(camera.position.y)));
         playerUnit.setReferenceID(PLAYER_REFERENCE);
         camera.setSight(AssaultTrooper.ASSAULT_TROOPER_SIGHT);
+
+
     }
 
 
@@ -58,6 +61,7 @@ public class Player implements Updateable,Renderable,Controllable{
     @Override
     public void addToRenderState() {
         playerUnit.addToRenderState();
+
     }
 
     @Override
@@ -71,6 +75,7 @@ public class Player implements Updateable,Renderable,Controllable{
     @Override
     public void setViewType(int _viewType) {
         playerUnit.setViewType(_viewType);
+        viewType = _viewType;
     }
 
     @Override

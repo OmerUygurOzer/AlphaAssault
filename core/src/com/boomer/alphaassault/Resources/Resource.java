@@ -35,6 +35,7 @@ public class Resource {
     //OTHER TEXTURES
 
     public static final int TEXTURE_HUD_CAM = 20;
+    //public static final int TEXTURE_SIGHT_CAM = 21;
     //MAP TEXTURES
 
     public static final int TEXTURE_BACKGROUND = 40;
@@ -59,6 +60,7 @@ public class Resource {
         loadTexture(TEXTURE_TREES,"map/trees.png");
         loadTexture(TEXTURE_OTHERS,"map/others.png");
         loadTexture(TEXTURE_BUTTON_BASE,"GUI/button.png");
+        //loadTexture(TEXTURE_SIGHT_CAM,"GUI/sightcamera.png");
 
     }
 

@@ -16,51 +16,7 @@ import java.util.Map;
  * Created by Omer on 11/27/2015.
  */
 public class RenderState{
-/*
-    private  class Addition{
-        public int tracker;
-        public int viewType;
-        public long referenceId;
-        public int depth;
-        public BDrawable bDrawable;
 
-        public Addition(int _viewType,long _referenceId,int _depth,BDrawable _bDrawable){
-            viewType = _viewType;
-            referenceId = _referenceId;
-            depth = _depth;
-            bDrawable = _bDrawable;
-            tracker = 1;
-        }
-    }
-
-    private  class Removal{
-        public int tracker;
-        public long referenceId;
-        public int depth;
-
-        public Removal(long _referenceId,int _depth){
-            referenceId = _referenceId;
-            depth = _depth;
-            tracker = 1;
-        }
-    }
-
-    private class Update{
-        public long referenceId;
-        public int depth;
-        public BDrawable bDrawable;
-        public int tracker;
-
-        public Update(long _referenceId,int _depth,BDrawable _bDrawable){
-            referenceId = _referenceId;
-            depth = _depth;
-            bDrawable = _bDrawable;
-            //region = null;
-            tracker = 1;
-        }
-
-    }
-*/
     public static final int STATE_BEING_RENDERED = 0;
     public static final int STATE_BEING_UPDATED = 1;
     public static final int STATE_RECENTLY_UPDATED = 2;
@@ -77,21 +33,13 @@ public class RenderState{
     private List<Map<Long,BDrawable>> bDrawables;
     private List<Map<Integer,Viewport>> viewPorts;
     private List<Map<Integer,List<Long>>> viewMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
-/*
-    private List<Addition> additions;
-    private List<Removal> removals;
-    private List<Update> updates;
-*/
+
     public RenderState(){
 
         bDrawables = new ArrayList<Map<Long, BDrawable>>();
         viewPorts = new ArrayList<Map<Integer, Viewport>>();
         viewMapping = new ArrayList<Map<Integer, List<Long>>>();
-/*
-        additions = new ArrayList<Addition>();
-        removals = new ArrayList<Removal>();
-        updates = new ArrayList<Update>();
-*/
+
         for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
             bDrawables.add(depth,new HashMap<Long, BDrawable>());
             viewPorts.add(depth,new HashMap<Integer, Viewport>());
@@ -108,7 +56,7 @@ public class RenderState{
     }
 
     public void addElement(int _viewType, long _referenceId,int _depth,BDrawable _bDrawable){
-       //additions.add(new Addition(_viewType,_referenceId,_depth,_bDrawable));
+
        bDrawables.get(_depth).put(_referenceId,_bDrawable.copy());
         if(!viewMapping.get(_depth).containsKey(_viewType)){
             List<Long> list = new ArrayList<Long>();
@@ -121,7 +69,6 @@ public class RenderState{
     }
 
     public void removeElement(long _referenceId,int _depth){
-      // removals.add(new Removal(_referenceId,_depth));
         if(bDrawables.get(_depth).containsKey(_referenceId)){
             bDrawables.get(_depth).remove(_referenceId);
         }
@@ -133,8 +80,7 @@ public class RenderState{
         }
     }
     public void updateElement(long _referenceId,int _depth,BDrawable bDrawable){
-           // updates.add(new Update(_referenceId, _depth, bDrawable));
-            bDrawables.get(_depth).get(_referenceId).set(bDrawable);
+           bDrawables.get(_depth).get(_referenceId).set(bDrawable);
     }
 
 
@@ -151,11 +97,8 @@ public class RenderState{
                     continue;
                 }
                 for (long MAPPER : viewMapping.get(depth).get(key)) {
-                    //float x = bDrawables.get(depth).get(MAPPER).getCenter().x;
-                    //float y = bDrawables.get(depth).get(MAPPER).getCenter().y;
-                    //if(Location.getDistance(x,y,0f,0f)<80){
                     bDrawables.get(depth).get(MAPPER).draw(_spriteBatch);
-                    //}
+
                 }
                 _spriteBatch.end();
             }
@@ -202,52 +145,7 @@ public class RenderState{
              }
          }
 
-/*
-         for(Addition incomingAddition:_renderState.getAdditions()){
-             bDrawables.get(incomingAddition.depth).put(incomingAddition.referenceId,incomingAddition.bDrawable.copy());
-             if(!viewMapping.get(incomingAddition.depth).containsKey(incomingAddition.viewType)){
-                 List<Long> list = new ArrayList<Long>();
-                 list.add(incomingAddition.referenceId);
-                 viewMapping.get(incomingAddition.depth).put(incomingAddition.viewType,list);
 
-             }else{
-                 viewMapping.get(incomingAddition.depth).get(incomingAddition.viewType).add(incomingAddition.referenceId);
-             }
-             if(incomingAddition.tracker>0){
-                 Addition passingAddition = new Addition(incomingAddition.viewType,incomingAddition.referenceId,incomingAddition.depth,incomingAddition.bDrawable);
-                 passingAddition.tracker = incomingAddition.tracker-1;
-                 additions.add(passingAddition);
-
-             }
-         }
-
-         for(Removal incomingRemoval:_renderState.getRemovals()){
-             bDrawables.get(incomingRemoval.depth).remove(incomingRemoval.referenceId);
-             for(int map: viewMapping.get(incomingRemoval.depth).keySet()){
-                 if(viewMapping.get(incomingRemoval.depth).get(map).contains(incomingRemoval.referenceId)){
-                     viewMapping.get(incomingRemoval.depth).get(map).remove(incomingRemoval.referenceId);
-                 }
-             }
-             if(incomingRemoval.tracker>0){
-                 Removal passingRemoval = new Removal(incomingRemoval.referenceId,incomingRemoval.depth);
-                 passingRemoval.tracker = passingRemoval.tracker-1;
-                 removals.add(passingRemoval);
-
-             }
-
-         }
-
-         for(Update incomingUpdate:_renderState.getUpdates()){
-             bDrawables.get(incomingUpdate.depth).get(incomingUpdate.referenceId).set(incomingUpdate.bDrawable);
-             if(incomingUpdate.tracker>0){
-                 Update passingUpdate = new Update(incomingUpdate.referenceId,incomingUpdate.depth,incomingUpdate.bDrawable);
-                 passingUpdate.tracker = passingUpdate.tracker-1;
-                 updates.add(passingUpdate);
-
-             }
-
-         }
-*/
      }
 
     public void set(RenderState _renderState){
@@ -275,26 +173,6 @@ public class RenderState{
     private List<Map<Integer,List<Long>>> getViewMapping(){return viewMapping;}
     public int getCurrentState(){return CURRENT_STATE;}
     public void setCurrentState(int _state){CURRENT_STATE  = _state;}
-/*
-    public List<Addition> getAdditions(){
-        List<Addition> list = new ArrayList<Addition>();
-        list.addAll(additions);
-        additions.clear();
-        return list;
-    }
-    public List<Removal> getRemovals(){
-        List<Removal> list = new ArrayList<Removal>();
-        list.addAll(removals);
-       removals.clear();
-        return list;
-    }
 
-    public List<Update> getUpdates(){
-        List<Update> list = new ArrayList<Update>();
-        list.addAll(updates);
-        updates.clear();
-        return list;
-    }
-*/
 
 }

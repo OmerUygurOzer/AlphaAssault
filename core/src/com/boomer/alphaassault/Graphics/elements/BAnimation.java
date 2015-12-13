@@ -66,16 +66,7 @@ public class BAnimation implements BDrawable {
             spritesUpLeft[i] = new Sprite(textureRegions[3][i]);
             spritesDownRight[i] = new Sprite(textureRegions[7][i]);
             spritesDownLeft[i] = new Sprite(textureRegions[1][i]);
-            /*
-            spritesRight[i].setCenter(0f,0f);
-            spritesLeft[i].setCenter(0f,0f);
-            spritesUp[i].setCenter(0f,0f);
-            spritesDown[i].setCenter(0f,0f);
-            spritesUpRight[i].setCenter(0f,0f);
-            spritesUpLeft[i].setCenter(0f,0f);
-            spritesDownLeft[i].setCenter(0f,0f);
-            spritesDownRight[i].setCenter(0f,0f);
-            */
+
 
         }
 
@@ -130,7 +121,7 @@ public class BAnimation implements BDrawable {
         center.y = incomingAnimation.getCenter().y;
         width = incomingAnimation.getWidth();
         height = incomingAnimation.getHeight();
-        rotation = incomingAnimation.getRotation();
+        rotation = Rotation.getRotation(facingAngle);
         SPF = incomingAnimation.getSPF();
 
 
@@ -169,8 +160,8 @@ public class BAnimation implements BDrawable {
 
 
             }
-        currentSprite.setCenter(center.x,center.y);
         currentSprite.setSize(width,height);
+        currentSprite.setCenter(center.x,center.y);
         currentSprite.draw(_spriteBatch);
     }
 
@@ -193,7 +184,6 @@ public class BAnimation implements BDrawable {
     public float getHeight() {
         return height;
     }
-
 
     public double getFacingAngle() {
         return facingAngle;

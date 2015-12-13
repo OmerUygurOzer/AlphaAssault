@@ -82,7 +82,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
         button.addState(PRESSED,buttonStates[0][PRESSED]);
 
         //SET BUTTON PROPERTIES
-        button.setReferenceID(referenceId + buttonNumber);
+        button.setReferenceID(referenceId + buttonNumber + 0);
         button.setViewType(viewType);
 
 
