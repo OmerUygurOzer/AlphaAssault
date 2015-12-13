@@ -40,7 +40,7 @@ public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
         range = ASSAULT_TROOPER_RANGE;
         sight = ASSAULT_TROOPER_SIGHT;
         damage = ASSAULT_TROOPER_DAMAGE;
-        movementSpeed = ASSAULT_TROOPER_MOVEMENT_SPEED;
+        baseMovementSpeed = ASSAULT_TROOPER_MOVEMENT_SPEED;
 
         //CALCULATE/LOAD ANIMATIONS
         TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_ASSAULT_TROOPER),138,192);

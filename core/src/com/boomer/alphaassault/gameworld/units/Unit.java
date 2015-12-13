@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.units;
 
 
+import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -9,6 +10,8 @@ import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.utilities.Updateable;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,7 +21,7 @@ public abstract class Unit implements Updateable,Renderable{
 
     //CONSTANTS
     protected static final float UNIT_SIZE = 40;
-
+    public static final int MAX_SPEED = 10;
 
     //MECHANICAL/GRAPHICAL DETAILS
     protected int radius;
@@ -65,8 +68,10 @@ public abstract class Unit implements Updateable,Renderable{
     private int team;
     protected int damage;
     protected int range;
-    protected int movementSpeed;
+    protected int baseMovementSpeed;
+    protected int adjustedMovementSpeed;
     protected int sight;
+    protected List<Buff> buffs;
 
     protected boolean invisibility;
 
@@ -85,56 +90,11 @@ public abstract class Unit implements Updateable,Renderable{
         location = _location;
         //readyToFire = true;
         invisibility = false;
+        adjustedMovementSpeed = 0;
+
+        buffs = new ArrayList<Buff>();
 
 
-/*
-        switch(type){
-            case UNIT_TYPE_ASSAULT:
-                HP = ASSAULT_HP;
-                range = ASSAULT_RANGE;
-                sight = ASSAULT_SIGHT;
-                firingSpeed = ASSAULT_FIRE_SPEED;
-                damage = ASSAULT_DAMAGE;
-                movementSpeed = ASSAULT_MOVEMENT_SPEED;
-                AMMO_S1 = ASSAULT_AMMO_S1;
-                AMMO_S2 = ASSAULT_AMMO_S2;
-                break;
-            case UNIT_TYPE_COMMANDO:
-                HP = COMMANDO_HP;
-                range = COMMANDO_RANGE;
-                sight = COMMANDO_SIGHT;
-                firingSpeed = COMMANDO_FIRE_SPEED;
-                damage = COMMANDO_DAMAGE;
-                movementSpeed = COMMANDO_MOVEMENT_SPEED;
-                AMMO_S1 = COMMANDO_AMMO_S1;
-                AMMO_S2 = COMMANDO_AMMO_S2;
-                break;
-            case UNIT_TYPE_ENGINEER:
-                HP = ENGINEER_HP;
-                range = ENGINEER_RANGE;
-                sight = ENGINEER_SIGHT;
-                firingSpeed = ENGINEER_FIRE_SPEED;
-                damage = ENGINEER_DAMAGE;
-                movementSpeed = ENGINEER_MOVEMENT_SPEED;
-                AMMO_S1 = ENGINEER_AMMO_S1;
-                AMMO_S2 = ENGINEER_AMMO_S2;
-                break;
-            case UNIT_TYPE_MEDIC:
-                HP =  MEDIC_HP;
-                range = MEDIC_RANGE;
-                sight = MEDIC_SIGHT;
-                firingSpeed = MEDIC_FIRE_SPEED;
-                damage = MEDIC_DAMAGE;
-                movementSpeed = MEDIC_MOVEMENT_SPEED;
-                AMMO_S1 = MEDIC_AMMO_S1;
-                AMMO_S2 = MEDIC_AMMO_S2;
-                break;
-            default:
-                break;
-
-        }
-
-*/
     }
 
 
@@ -166,4 +126,14 @@ public abstract class Unit implements Updateable,Renderable{
     public abstract void fire();
     public abstract void resupply();
     public abstract void move(float _deltaTime,float _x,float _y,double _angle);
+
+    //BUFFS
+    public void addBuff(Buff _buff){buffs.add(_buff);}
+    public void removeBuff(Buff _buff){buffs.remove(_buff);}
+
+    //MOVEMENT ADJUSTMENTS
+    public void adjustMovementSpeed(int _adjustment){adjustedMovementSpeed += _adjustment;}
+    public int getBaseMovementSpeed(){return baseMovementSpeed;}
+    public int getMovementSpeed(){return baseMovementSpeed + adjustedMovementSpeed;}
+
 }

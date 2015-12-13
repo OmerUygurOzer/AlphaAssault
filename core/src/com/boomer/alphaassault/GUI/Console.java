@@ -14,7 +14,9 @@ import com.boomer.alphaassault.resources.Resource;
 import org.omg.CORBA.portable.IDLEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Omer on 12/11/2015.
@@ -45,7 +47,8 @@ public class Console extends Controller implements Renderable,InputReceiver {
     public static final int BUTTON_THREE   = 2;
     public static final int BUTTON_FOUR    = 3;
 
-    private List<Button> buttons;
+    private Map<Integer,Button> buttons;
+    private Map<Integer,Integer> localStates;
 
     //REFERENCE IDS
     private long referenceId;
@@ -62,19 +65,15 @@ public class Console extends Controller implements Renderable,InputReceiver {
         buttonOneId = referenceId   + 0;
         buttonTwoId = referenceId   + 1;
         buttonThreeId = referenceId + 2;
-        buttonFourId = referenceId  + 3;
+        buttonFourId = referenceId  + 3 ;
 
 
-        buttons = new ArrayList<Button>();
+        buttons     = new HashMap<Integer,Button>();
+        localStates = new HashMap<Integer, Integer>();
         buttonNumber = 0;
-
-        addButton(Resource.getTexture(Resource.TEXTURE_BUTTON_BASE));
-        addButton(Resource.getTexture(Resource.TEXTURE_BUTTON_BASE));
-        addButton(Resource.getTexture(Resource.TEXTURE_BUTTON_BASE));
-        addToRenderState();
     }
 
-    public void addButton(Texture _texture){
+    public void addButton(int _key,Texture _texture){
         //CREATE BUTTON
         TextureRegion[][] buttonStates = TextureRegion.split(_texture,287,144);
         Button button = new Button(CONSOLE_BUTTON_X,CONSOLE_BUTTON_Y + buttonNumber*80,CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);
@@ -82,74 +81,51 @@ public class Console extends Controller implements Renderable,InputReceiver {
         button.addState(PRESSED,buttonStates[0][PRESSED]);
 
         //SET BUTTON PROPERTIES
-        button.setReferenceID(referenceId + buttonNumber + 0);
+        button.setReferenceID(referenceId + buttonNumber);
         button.setViewType(viewType);
 
-
-        buttons.add(button);
-
+        localStates.put(_key,IDLE);
+        buttons.put(_key,button);
         buttonNumber++;
 
     }
 
     @Override
     public void receiveInput() {
-        int[] buttonStates = new int[buttons.size()];
-        for(int index = 0;index < buttons.size();index++){
-            buttonStates[index] = IDLE;
-        }
+       for(Integer key: localStates.keySet()){
+           localStates.put(key,IDLE);
+       }
 
         for (Long key : Inputs.getInputs().keySet()){
             float inputX = Inputs.getInputs().get(key).x;
             float inputY = Inputs.getInputs().get(key).y;
-            for(int index=0;index<buttons.size();index++) {
+            for(int index : buttons.keySet()) {
                 Button button = buttons.get(index);
                 boolean fitsX = Math.abs(button.getCenterX() - inputX)<button.getWidth()/2;
                 boolean fitsY = Math.abs(button.getCenterY() - inputY)<button.getHeight()/2;
                 if(fitsX && fitsY){
                     button.setState(PRESSED);
-                        switch (index){
-                            case BUTTON_ONE:
-                                buttonStates[BUTTON_ONE] = PRESSED;
-                                set(BUTTON_ONE_STATE,PRESSED);
-                               // System.out.println("1");
-                                break;
-                            case BUTTON_TWO:
-                                buttonStates[BUTTON_TWO] = PRESSED;
-                                set(BUTTON_TWO_STATE,PRESSED);
-                               // System.out.println("2");
-                                break;
-                            case BUTTON_THREE:
-                                buttonStates[BUTTON_THREE] = PRESSED;
-                                set(BUTTON_THREE_STATE,PRESSED);
-                               // System.out.println("3");
-                                break;
-                            case BUTTON_FOUR:
-                                buttonStates[BUTTON_FOUR] = PRESSED;
-                                set(BUTTON_FOUR_STATE,PRESSED);
-                               // System.out.println("4");
-                                break;
-                            default:
-                                //DO NOTHING
-                                break;
-                        }
+                    set(index,PRESSED);
+                    localStates.put(index,PRESSED);
+                    System.out.println(index);
                 }
             }
 
         }
 
-        for(int index = 0;index < buttons.size();index++){
-           if( buttonStates[index] == IDLE){
-                set(index,IDLE);
-               buttons.get(index).resetState();
-           }
+        for(Integer key: localStates.keySet()){
+            if(localStates.get(key)==IDLE){
+                set(key,IDLE);
+                buttons.get(key).resetState();
+            }
         }
+
 
     }
 
     @Override
     public void addToRenderState() {
-        for(Button button: buttons){
+        for(Button button: buttons.values()){
             button.addToRenderState();
         }
     }

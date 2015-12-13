@@ -65,6 +65,7 @@ public class Play extends GameStateBase {
         //ADD PLAYER
         player = new Player(gameCam);
 
+
         //ACTIVATE GAMEWORLD
         gameWorld = new GameWorld(gameCam);
         gameWorld.addPlayer(player);
@@ -75,7 +76,7 @@ public class Play extends GameStateBase {
 
 
 
-
+        player.setRole(Player.ASSAULT_TROOPER);
     }
 
     @Override

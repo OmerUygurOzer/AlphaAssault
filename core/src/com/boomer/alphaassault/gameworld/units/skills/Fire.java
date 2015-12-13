@@ -1,12 +1,10 @@
 package com.boomer.alphaassault.gameworld.units.skills;
 
 /**
- * Created by Omer on 12/1/2015.
+ * Created by Omer on 12/12/2015.
  */
-public class Run extends Skill{
-    public static final int KEY = 1;
-
-    public static final long COOLDOWN = 12  * 1000; //5 SECONDS
+public class Fire extends Skill {
+    public static final int KEY = 0;
 
 
     @Override
