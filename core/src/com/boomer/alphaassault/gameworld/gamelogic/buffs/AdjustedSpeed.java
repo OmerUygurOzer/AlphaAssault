@@ -1,6 +1,9 @@
 package com.boomer.alphaassault.gameworld.gamelogic.buffs;
 
 import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.graphics.Renderable;
+import com.boomer.alphaassault.graphics.elements.BSprite;
+import com.boomer.alphaassault.resources.Resource;
 
 /**
  * Created by Omer on 12/12/2015.
@@ -15,10 +18,12 @@ public class AdjustedSpeed extends Buff {
 
     private int type;
 
-    public AdjustedSpeed(float _duration,int _type,int _adjustment) {
+    public AdjustedSpeed(long _duration,int _type,int _adjustment) {
         super(_duration);
         type = _type;
         adjustment = _adjustment;
+        icon = new BSprite(Resource.getTexture(Resource.TEXTURE_ADJUSTED_SPEED));
+        icon.setSize(Buff.WIDTH,Buff.HEIGHT);
     }
 
 
@@ -39,12 +44,14 @@ public class AdjustedSpeed extends Buff {
 
         }
         _unit.adjustMovementSpeed(finalAdjustment);
+        System.out.println(_unit.getMovementSpeed());
     }
 
     @Override
     public void deflict(Unit _unit) {
         super.deflict(_unit);
         _unit.adjustMovementSpeed(-finalAdjustment);
+        System.out.println(_unit.getMovementSpeed());
     }
 
 

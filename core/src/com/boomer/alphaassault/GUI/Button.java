@@ -71,6 +71,11 @@ public class Button implements Renderable {
     }
 
     @Override
+    public void removeFromRenderState() {
+
+    }
+
+    @Override
     public long getReferenceID() {
         return referenceId;
     }

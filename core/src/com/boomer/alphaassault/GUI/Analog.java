@@ -120,6 +120,11 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         RenderStateManager.addElement(viewType, gameFrameId, RenderState.DEPTH_GAME_SCREEN, gameFrameSprite);
     }
 
+    @Override
+    public void removeFromRenderState() {
+
+    }
+
 
     @Override
     public long getReferenceID() {

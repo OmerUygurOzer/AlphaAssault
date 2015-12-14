@@ -44,7 +44,7 @@ public class RenderStateManager {
 
     }
 
-    public static void remove(long _referenceID, int _depth){
+    public static void removeElement(long _referenceID, int _depth){
         updatingState.removeElement(_referenceID,_depth);
 
     }

@@ -1,12 +1,24 @@
 package com.boomer.alphaassault.gameworld.units.skills;
 
+import com.boomer.alphaassault.gameworld.gamelogic.buffs.AdjustedSpeed;
+import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.utilities.Location;
+
 /**
  * Created by Omer on 12/1/2015.
  */
 public class Run extends Skill{
-    public static final int KEY = 1;
 
-    public static final long COOLDOWN = 12  * 1000; //5 SECONDS
+
+    public static final long RUN_COOLDOWN = 12  * 1000; //12 SECONDS
+    public static final long DURATION  = 5 * 1000;//5 SECONDS
+    public static final int BOOST_PERCENTAGE = 100;
+
+    public Run(int _key){
+        super(_key);
+        targetType = Skill.TARGET_TYPE_SELF;
+        cooldown = RUN_COOLDOWN;
+    }
 
 
     @Override
@@ -16,11 +28,31 @@ public class Run extends Skill{
 
     @Override
     public void use() {
+        System.out.println("Run");
+    }
+
+    @Override
+    public void use(Unit _unit) {
+        if(ready){
+            ready = false;
+            timer = System.currentTimeMillis();
+            System.out.println("Run");
+            AdjustedSpeed runBoost = new AdjustedSpeed(DURATION,AdjustedSpeed.PERCENTAGE,BOOST_PERCENTAGE);
+            runBoost.inflict(user);
+        }
 
     }
 
     @Override
-    public void update() {
-
+    public void use(Location _target) {
+        System.out.println("Run");
     }
+
+    @Override
+    public void update() {
+        if(System.currentTimeMillis() - timer > cooldown){
+            ready = true;
+        }
+    }
+
 }

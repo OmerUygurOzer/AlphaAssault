@@ -2,6 +2,7 @@ package com.boomer.alphaassault.gameworld.units.assaulttrooper;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.gameworld.units.skills.Fire;
 import com.boomer.alphaassault.gameworld.units.skills.Flashbang;
 import com.boomer.alphaassault.gameworld.units.skills.Run;
 import com.boomer.alphaassault.graphics.RenderState;
@@ -14,7 +15,7 @@ import com.boomer.alphaassault.utilities.Location;
 /**
  * Created by Omer on 11/24/2015.
  */
-public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
+public class AssaultTrooper extends Unit {
 
     //ASSAULT TROOPER
     public static final int ASSAULT_TROOPER_HP = 12;
@@ -26,10 +27,6 @@ public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
     public static final int ASSAULT_TROOPER_AMMO_S1 = 2;
     public static final int ASSAULT_TROOPER_AMMO_S2 = 0;
 
-
-    //SKILLS
-    Flashbang flashbang  = new Flashbang();
-    Run run = new Run();
 
 
     public AssaultTrooper(int _team, Location _location) {
@@ -46,25 +43,23 @@ public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
         TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_ASSAULT_TROOPER),138,192);
         bAnimation = new BAnimation(framesAll);
         bAnimation.setSize(UNIT_SIZE,UNIT_SIZE);
-        bAnimation.setCenter(0f,0f);
+        bAnimation.setCenter(_location.x,_location.y);
         bAnimation.setFacingAngle(facingAngle);
         bAnimation.setSecondsPerFrame(1f/10f);
+
+        Fire fire = new Fire(0);
+        fire.setUser(this);
+        Run run = new Run(1);
+        run.setUser(this);
+        Flashbang flashbang = new Flashbang(2);
+        flashbang.setUser(this);
+
+       addSkill(0,fire);
+       addSkill(1,run);
+       addSkill(2,flashbang);
     }
 
-    @Override
-    public void fire() {
 
-    }
-
-    //ASSAULT TROOPER SKILL SET
-    @Override
-    public void flashbang() {
-    }
-
-    @Override
-    public void run() {
-
-    }
     //UNIT
     @Override
     public void resupply() {
@@ -83,7 +78,7 @@ public class AssaultTrooper extends Unit implements AssaultTrooperSkillSet {
     //UPDATEABLE
     @Override
     public void update(float _deltaTime) {
-        //super.update();
+        super.update(_deltaTime);
 
     }
 

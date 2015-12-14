@@ -228,6 +228,11 @@ public class Map implements Renderable{
     }
 
     @Override
+    public void removeFromRenderState() {
+
+    }
+
+    @Override
     public long getReferenceID() {
         return referenceId;
     }

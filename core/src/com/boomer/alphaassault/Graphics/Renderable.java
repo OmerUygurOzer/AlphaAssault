@@ -7,6 +7,7 @@ package com.boomer.alphaassault.graphics;
  */
 public interface Renderable {
     public void addToRenderState();
+    public void removeFromRenderState();
     public long getReferenceID();
     public void setReferenceID(long _referenceId);
     public void setViewType(int _viewType);

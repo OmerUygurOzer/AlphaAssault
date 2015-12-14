@@ -107,7 +107,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
                     button.setState(PRESSED);
                     set(index,PRESSED);
                     localStates.put(index,PRESSED);
-                    System.out.println(index);
+
                 }
             }
 
@@ -128,6 +128,11 @@ public class Console extends Controller implements Renderable,InputReceiver {
         for(Button button: buttons.values()){
             button.addToRenderState();
         }
+    }
+
+    @Override
+    public void removeFromRenderState() {
+
     }
 
     @Override

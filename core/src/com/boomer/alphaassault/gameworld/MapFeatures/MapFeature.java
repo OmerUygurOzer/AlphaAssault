@@ -66,6 +66,11 @@ public abstract class MapFeature implements Renderable{
     }
 
     @Override
+    public void removeFromRenderState() {
+        RenderStateManager.removeElement(referenceId,RenderState.DEPTH_SURFACE);
+    }
+
+    @Override
     public long getReferenceID() {
         return referenceId;
     }

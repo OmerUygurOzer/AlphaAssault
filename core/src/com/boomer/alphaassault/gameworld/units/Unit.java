@@ -1,7 +1,9 @@
 package com.boomer.alphaassault.gameworld.units;
 
 
+import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
+import com.boomer.alphaassault.gameworld.units.skills.Skill;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -10,9 +12,7 @@ import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.utilities.Updateable;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -30,6 +30,7 @@ public abstract class Unit implements Updateable,Renderable{
     private long referenceId;
     protected int viewType;
     protected BAnimation bAnimation;
+    protected Player player;
 
     //TYPE PROPERTIES
     //COMMON
@@ -71,13 +72,12 @@ public abstract class Unit implements Updateable,Renderable{
     protected int baseMovementSpeed;
     protected int adjustedMovementSpeed;
     protected int sight;
-    protected List<Buff> buffs;
+    protected List<Buff> activeBuffs;
+    protected List<Buff> expiredBuffs;
+    protected Map<Integer, Skill> skills;
+    protected Map<String, Integer> ammos;
 
     protected boolean invisibility;
-
-    //TIMERS
-    long FIRE_TIMER;
-
 
 
     protected Unit(int _team, Location _location){
@@ -92,11 +92,14 @@ public abstract class Unit implements Updateable,Renderable{
         invisibility = false;
         adjustedMovementSpeed = 0;
 
-        buffs = new ArrayList<Buff>();
-
-
+        activeBuffs = new ArrayList<Buff>();
+        expiredBuffs = new ArrayList<Buff>();
+        skills = new HashMap<Integer, Skill>();
+        ammos = new HashMap<String, Integer>();
     }
 
+    public void setPlayer(Player _player){player = _player;}
+    public Player getPlayer(){return player;}
 
     public Location getLocation(){return location;}
     public void setLocation(float _x, float _y){
@@ -111,10 +114,34 @@ public abstract class Unit implements Updateable,Renderable{
 
     //UPDATEABLE
     @Override
-    public void update(float _deltaTime) {}
+    public void update(float _deltaTime) {
+        for(Skill skill :  skills.values()){
+            skill.update();
+        }
+
+        for(Buff buff : activeBuffs){
+            buff.update(_deltaTime);
+            if(buff.isExpired()){
+                expiredBuffs.add(buff);
+            }
+        }
+
+        for(Buff buff :  expiredBuffs){
+            buff.deflict(this);
+        }
+
+        expiredBuffs.clear();
+
+    }
     //RENDERABLE
     @Override
     public void addToRenderState() {RenderStateManager.addElement(viewType, referenceId, RenderState.DEPTH_SURFACE, bAnimation);}
+
+    @Override
+    public void removeFromRenderState() {
+        RenderStateManager.removeElement(referenceId,RenderState.DEPTH_SURFACE);
+    }
+
     @Override
     public long getReferenceID() {return referenceId;}
     @Override
@@ -123,13 +150,24 @@ public abstract class Unit implements Updateable,Renderable{
     public void setReferenceID(long _referenceId) {
     referenceId = _referenceId;
     }
-    public abstract void fire();
+
+
     public abstract void resupply();
     public abstract void move(float _deltaTime,float _x,float _y,double _angle);
 
+    //AMMOS
+    public void setAmmo(String _name,int _count){ammos.put(_name,_count);}
+
     //BUFFS
-    public void addBuff(Buff _buff){buffs.add(_buff);}
-    public void removeBuff(Buff _buff){buffs.remove(_buff);}
+    public void addBuff(Buff _buff){activeBuffs.add(_buff);}
+    public void removeBuff(Buff _buff){activeBuffs.remove(_buff);}
+
+    //SKILLS
+    public void addSkill(int _key,Skill _skill){skills.put(_key,_skill);}
+    public void use(int _key){skills.get(_key).use(this);}
+    public void use(int _key,Location _location){skills.get(_key).use(_location);}
+    public void use(int _key,Unit _unit){skills.get(_key).use(_unit);}
+    public Map<Integer,Skill> getSkillSet(){return skills;}
 
     //MOVEMENT ADJUSTMENTS
     public void adjustMovementSpeed(int _adjustment){adjustedMovementSpeed += _adjustment;}

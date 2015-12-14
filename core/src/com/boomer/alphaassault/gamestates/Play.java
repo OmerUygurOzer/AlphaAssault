@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.*;
 import com.boomer.alphaassault.GUI.Console;
+import com.boomer.alphaassault.GUI.Hud;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
@@ -31,6 +32,9 @@ public class Play extends GameStateBase {
     //ADD CONTROLLERS
     private Analog analog;
     private Console console;
+
+    //ADD HUD
+    private Hud hud;
 
     //ADD IN-GAME FEATURES
     private GameWorld gameWorld;
@@ -62,21 +66,27 @@ public class Play extends GameStateBase {
         //ACTIVATE CONSOLE CONTROLLER
         console = new Console();
 
+        //ACTIVATE HUD
+        hud = new Hud("OMER",null);
+        hud.setViewType(VIEW_TYPE_SCREEN);
+
         //ADD PLAYER
         player = new Player(gameCam);
-
+        player.setAnalog(analog);
+        player.setConsole(console);
+        player.setHud(hud);
 
         //ACTIVATE GAMEWORLD
         gameWorld = new GameWorld(gameCam);
         gameWorld.addPlayer(player);
         gameWorld.setViewType(VIEW_TYPE_GAME);
-        gameWorld.setAnalog(analog);
-        gameWorld.setConsole(console);
-        gameWorld.addToRenderState();
+
 
 
 
         player.setRole(Player.ASSAULT_TROOPER);
+        gameWorld.addToRenderState();
+
     }
 
     @Override

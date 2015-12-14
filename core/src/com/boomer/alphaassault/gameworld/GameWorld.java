@@ -14,10 +14,7 @@ import com.boomer.alphaassault.utilities.Updateable;
     /*
     GAMEWORLD:  ALL IN-GAME OBJECTS ARE COLLECTED HERE
      */
-public class GameWorld implements Updateable,Renderable,Controllable{
-
-    private Controller analog;
-    private Controller console;
+public class GameWorld implements Updateable,Renderable{
 
     private Map gameMap;
     private long baseReference;
@@ -30,16 +27,7 @@ public class GameWorld implements Updateable,Renderable,Controllable{
 
     }
 
-    @Override
-    public void setAnalog(Controller _controller) {
-        analog = _controller;
-        player.setAnalog(_controller);
-    }
 
-    public void setConsole(Controller _controller){
-        console = _controller;
-        player.setConsole(_controller);
-    }
 
     public void addPlayer(Player _player){
         player = _player;
@@ -50,6 +38,11 @@ public class GameWorld implements Updateable,Renderable,Controllable{
     public void addToRenderState() {
         gameMap.addToRenderState();
         player.addToRenderState();
+    }
+
+    @Override
+    public void removeFromRenderState() {
+
     }
 
     @Override
@@ -73,8 +66,4 @@ public class GameWorld implements Updateable,Renderable,Controllable{
         player.update(_deltaTime);
     }
 
-    @Override
-    public void control(float _deltaTime) {
-
-    }
 }
