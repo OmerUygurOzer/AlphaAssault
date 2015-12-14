@@ -84,7 +84,6 @@ public class Map implements Renderable{
     }
 
     public Map(int _size){
-        referenceId = System.currentTimeMillis()+1000;
         mapFeatures = new ArrayList<MapFeature>();
         switch(_size){
             case SIZE_SMALL:

@@ -46,6 +46,9 @@ public class Resource {
     //ICONS
     public static final int TEXTURE_ADJUSTED_SPEED = 60;
 
+    //FONTS
+    public static final int TEXTURE_FONTS = 70;
+
     public Resource() {
         textures = new HashMap<Integer, Texture>();
         musics = new HashMap<Integer, Music>();
@@ -65,7 +68,7 @@ public class Resource {
         loadTexture(TEXTURE_OTHERS,"map/others.png");
         loadTexture(TEXTURE_BUTTON_BASE,"GUI/button.png");
         loadTexture(TEXTURE_ADJUSTED_SPEED,"game/adjustedspeed.gif");
-
+        loadTexture(TEXTURE_FONTS,"GUI/fonts.gif");
     }
 
     //TEXTURE HANDLERS

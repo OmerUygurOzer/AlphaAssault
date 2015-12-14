@@ -28,7 +28,7 @@ public class Run extends Skill{
 
     @Override
     public void use() {
-        System.out.println("Run");
+        ;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Run extends Skill{
 
     @Override
     public void use(Location _target) {
-        System.out.println("Run");
+
     }
 
     @Override

@@ -53,6 +53,7 @@ public class GameWorld implements Updateable,Renderable{
     @Override
     public void setReferenceID(long _referenceId) {
         baseReference = _referenceId;
+        gameMap.setReferenceID(baseReference + 1000);
     }
 
     @Override

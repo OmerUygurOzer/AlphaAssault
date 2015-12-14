@@ -61,11 +61,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
     public Console() {
         super();
-        referenceId = System.currentTimeMillis() + 100;
-        buttonOneId = referenceId   + 0;
-        buttonTwoId = referenceId   + 1;
-        buttonThreeId = referenceId + 2;
-        buttonFourId = referenceId  + 3 ;
+
 
 
         buttons     = new HashMap<Integer,Button>();
@@ -142,7 +138,11 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
     @Override
     public void setReferenceID(long _referenceId) {
-
+        referenceId = _referenceId + 100;
+        buttonOneId = referenceId   + 0;
+        buttonTwoId = referenceId   + 1;
+        buttonThreeId = referenceId + 2;
+        buttonFourId = referenceId  + 3 ;
     }
 
     @Override

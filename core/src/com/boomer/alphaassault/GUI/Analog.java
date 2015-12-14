@@ -70,12 +70,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
 
     public Analog(int _type) {
         super();
-        referenceId = System.currentTimeMillis();
-        leftButtonId = referenceId;
-        leftCircleId = referenceId  +1;
-        rightButtonId = referenceId +2;
-        rightCircleId = referenceId +3;
-        gameFrameId = referenceId   +4;
+
 
         //LEFT_ONLY
         leftButtonSprite = new BSprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
@@ -133,7 +128,12 @@ public class Analog extends Controller implements Renderable,InputReceiver {
 
     @Override
     public void setReferenceID(long _referenceId) {
-        //DO NOTHING
+        referenceId = _referenceId;
+        leftButtonId = referenceId;
+        leftCircleId = referenceId  +1;
+        rightButtonId = referenceId +2;
+        rightCircleId = referenceId +3;
+        gameFrameId = referenceId   +4;
     }
 
     @Override

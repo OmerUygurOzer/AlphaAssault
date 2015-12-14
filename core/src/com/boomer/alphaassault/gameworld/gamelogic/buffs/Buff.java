@@ -27,7 +27,6 @@ public abstract class Buff implements Updateable,Renderable {
 
     public Buff(long _duration){
         duration = _duration;
-        System.out.println(duration);
         startTime = System.currentTimeMillis();
         isExpired = false;
     }

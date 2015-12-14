@@ -11,9 +11,11 @@ import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
+import com.boomer.alphaassault.graphics.elements.BFont;
 import com.boomer.alphaassault.graphics.views.GameViewport;
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.boomer.alphaassault.utilities.Location;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -22,6 +24,8 @@ public class Play extends GameStateBase {
 
     public static final int VIEW_TYPE_SCREEN = 0;
     public static final int VIEW_TYPE_GAME = 1;
+
+    public static final long REFERENCE_POINT = 0;
 
     private Viewport screenView;
     private Viewport gameView;
@@ -61,14 +65,19 @@ public class Play extends GameStateBase {
         //ACTIVATE ANALOG CONTROLLER
         analog = new Analog(Analog.LEFT_ONLY);
         analog.setViewType(VIEW_TYPE_SCREEN);
+        analog.setReferenceID(REFERENCE_POINT + 1000);
         analog.addToRenderState();
 
         //ACTIVATE CONSOLE CONTROLLER
         console = new Console();
+        console.setReferenceID(REFERENCE_POINT + 2000);
 
         //ACTIVATE HUD
-        hud = new Hud("OMER",null);
+        hud = new Hud("Shakeah",null);
+        hud.setReferenceID(REFERENCE_POINT + 3000);
         hud.setViewType(VIEW_TYPE_SCREEN);
+        hud.addToRenderState();
+
 
         //ADD PLAYER
         player = new Player(gameCam);
@@ -78,10 +87,9 @@ public class Play extends GameStateBase {
 
         //ACTIVATE GAMEWORLD
         gameWorld = new GameWorld(gameCam);
+        gameWorld.setReferenceID(REFERENCE_POINT + 4000);
         gameWorld.addPlayer(player);
         gameWorld.setViewType(VIEW_TYPE_GAME);
-
-
 
 
         player.setRole(Player.ASSAULT_TROOPER);

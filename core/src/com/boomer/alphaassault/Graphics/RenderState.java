@@ -6,10 +6,7 @@ import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.utilities.Location;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -33,12 +30,14 @@ public class RenderState{
     private List<Map<Long,BDrawable>> bDrawables;
     private List<Map<Integer,Viewport>> viewPorts;
     private List<Map<Integer,List<Long>>> viewMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
+    private List<Long> removals;
 
     public RenderState(){
 
         bDrawables = new ArrayList<Map<Long, BDrawable>>();
         viewPorts = new ArrayList<Map<Integer, Viewport>>();
         viewMapping = new ArrayList<Map<Integer, List<Long>>>();
+        removals = new ArrayList<Long>();
 
         for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
             bDrawables.add(depth,new HashMap<Long, BDrawable>());
@@ -110,17 +109,23 @@ public class RenderState{
             for(long key : _renderState.getDrawables().get(depth).keySet()){
                  if(!bDrawables.get(depth).containsKey(key)){
                      bDrawables.get(depth).put(key,_renderState.getDrawables().get(depth).get(key).copy());
-                     //System.out.println("new");
+
                  }else{
                      bDrawables.get(depth).get(key).set(_renderState.getDrawables().get(depth).get(key));
-                     //System.out.println("update");
+
                  }
              }
+
              for(long key : bDrawables.get(depth).keySet()){
                  if(!_renderState.getDrawables().get(depth).containsKey(key)){
-                     bDrawables.get(depth).remove(key);
+                     removals.add(key);
                  }
              }
+             for(long key : removals){
+                 bDrawables.get(depth).remove(key);
+             }
+             removals.clear();
+
 
              for(int viewKey : _renderState.getViewMapping().get(depth).keySet()){
                 for(Long l : _renderState.getViewMapping().get(depth).get(viewKey)){
@@ -137,12 +142,20 @@ public class RenderState{
              for(int viewKey : viewMapping.get(depth).keySet()){
                  for(Long l : viewMapping.get(depth).get(viewKey)){
                      if (!_renderState.getViewMapping().get(depth).get(viewKey).contains(l)){
-                         viewMapping.get(depth).get(viewKey).remove(l);
-
+                        removals.add(l);
                      }
 
                  }
              }
+             for(int viewKey : viewMapping.get(depth).keySet()){
+                 for(Long l : removals){
+                     if(viewMapping.get(depth).get(viewKey).contains(l))
+                     viewMapping.get(depth).get(viewKey).remove(l);
+                 }
+             }
+             removals.clear();
+
+
          }
 
 
