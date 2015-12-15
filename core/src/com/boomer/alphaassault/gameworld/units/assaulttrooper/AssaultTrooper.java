@@ -24,10 +24,11 @@ public class AssaultTrooper extends Unit {
     public static final int ASSAULT_TROOPER_FIRE_SPEED = 4;
     public static final int ASSAULT_TROOPER_DAMAGE = 4;
     public static final int ASSAULT_TROOPER_MOVEMENT_SPEED = 8;
-    public static final int ASSAULT_TROOPER_AMMO_S1 = 2;
-    public static final int ASSAULT_TROOPER_AMMO_S2 = 0;
+    public static final int ASSAULT_TROOPER_FLASHBANG_MAX = 2;
 
-
+    private static final int FIRE_KEY = 0;
+    private static final int RUN_KEY = 1;
+    private static final int FLASHBANG_KEY = 2;
 
     public AssaultTrooper(int _team, Location _location) {
         super(_team, _location);
@@ -47,6 +48,7 @@ public class AssaultTrooper extends Unit {
         bAnimation.setFacingAngle(facingAngle);
         bAnimation.setSecondsPerFrame(1f/10f);
 
+        //ADD SKILLS
         Fire fire = new Fire(0);
         fire.setUser(this);
         Run run = new Run(1);
@@ -54,16 +56,25 @@ public class AssaultTrooper extends Unit {
         Flashbang flashbang = new Flashbang(2);
         flashbang.setUser(this);
 
-       addSkill(0,fire);
-       addSkill(1,run);
-       addSkill(2,flashbang);
+
+        addSkill(FIRE_KEY,fire);
+        addSkill(RUN_KEY,run);
+        addSkill(FLASHBANG_KEY,flashbang);
+
+        //ADD THE SUPPLIES
+        setSupplies(FLASHBANG_KEY,flashbang.getSupply());
+
+
+
     }
 
 
     //UNIT
     @Override
     public void resupply() {
-
+       for(int key: supplies.keySet()){
+           supplies.get(key).count = supplies.get(key).COUNT_MAX;
+       }
     }
 
     @Override

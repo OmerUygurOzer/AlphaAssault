@@ -21,8 +21,9 @@ public class RenderState{
     public static final int DEPTH_BASE = 0;
     public static final int DEPTH_SURFACE = 1;
     public static final int DEPTH_AIR = 2;
-    public static final int DEPTH_GAME_SCREEN = 3;
-    public static final int DEPTH_MAX = 4;
+    public static final int DEPTH_GAME_SCREEN_BASE = 3;
+    public static final int DEPTH_GAME_SCREEN_DYNAMIC = 4;
+    public static final int DEPTH_MAX = 5;
 
     public int CURRENT_STATE;
 

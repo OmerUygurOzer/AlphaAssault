@@ -11,11 +11,10 @@ import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
-import com.boomer.alphaassault.graphics.elements.BFont;
 import com.boomer.alphaassault.graphics.views.GameViewport;
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.utilities.Location;
+import com.boomer.alphaassault.resources.Resource;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -27,9 +26,11 @@ public class Play extends GameStateBase {
 
     public static final long REFERENCE_POINT = 0;
 
+    //VIEWPORTS
     private Viewport screenView;
     private Viewport gameView;
 
+    //CAMERAS
     private OrthographicCamera screenCam;
     private SightCamera gameCam;
 
@@ -73,16 +74,19 @@ public class Play extends GameStateBase {
         console.setReferenceID(REFERENCE_POINT + 2000);
 
         //ACTIVATE HUD
-        hud = new Hud("Shakeah",null);
+        hud = new Hud();
         hud.setReferenceID(REFERENCE_POINT + 3000);
         hud.setViewType(VIEW_TYPE_SCREEN);
-        hud.addToRenderState();
 
 
         //ADD PLAYER
         player = new Player(gameCam);
+        player.setViewType(VIEW_TYPE_GAME);
+        player.setName("PC PRINCIPAL");
+        player.setIcon(Resource.getTexture(Resource.TEXTURE_PLAYER));
         player.setAnalog(analog);
         player.setConsole(console);
+        player.setRole(Player.ASSAULT_TROOPER);
         player.setHud(hud);
 
         //ACTIVATE GAMEWORLD
@@ -92,7 +96,7 @@ public class Play extends GameStateBase {
         gameWorld.setViewType(VIEW_TYPE_GAME);
 
 
-        player.setRole(Player.ASSAULT_TROOPER);
+
         gameWorld.addToRenderState();
 
     }
@@ -111,6 +115,7 @@ public class Play extends GameStateBase {
     @Override
     public void update(float _deltaTime) {
         gameWorld.update(_deltaTime);
+        hud.update(_deltaTime);
     }
 
 

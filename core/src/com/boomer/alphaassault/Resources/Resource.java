@@ -45,6 +45,8 @@ public class Resource {
 
     //ICONS
     public static final int TEXTURE_ADJUSTED_SPEED = 60;
+    public static final int TEXTURE_PLAYER = 61;
+    public static final int TEXTURE_FLASHBANG = 62;
 
     //FONTS
     public static final int TEXTURE_FONTS = 70;
@@ -69,6 +71,8 @@ public class Resource {
         loadTexture(TEXTURE_BUTTON_BASE,"GUI/button.png");
         loadTexture(TEXTURE_ADJUSTED_SPEED,"game/adjustedspeed.gif");
         loadTexture(TEXTURE_FONTS,"GUI/fonts.gif");
+        loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
+        loadTexture(TEXTURE_FLASHBANG,"game/flashbang.png");
     }
 
     //TEXTURE HANDLERS

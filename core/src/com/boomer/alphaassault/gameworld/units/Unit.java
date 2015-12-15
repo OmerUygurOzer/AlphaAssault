@@ -23,6 +23,7 @@ public abstract class Unit implements Updateable,Renderable{
     protected static final float UNIT_SIZE = 40;
     public static final int MAX_SPEED = 10;
 
+
     //MECHANICAL/GRAPHICAL DETAILS
     protected int radius;
     protected double facingAngle;
@@ -75,7 +76,7 @@ public abstract class Unit implements Updateable,Renderable{
     protected List<Buff> activeBuffs;
     protected List<Buff> expiredBuffs;
     protected Map<Integer, Skill> skills;
-    protected Map<String, Integer> ammos;
+    protected Map<Integer, Skill.Supply> supplies;
 
     protected boolean invisibility;
 
@@ -84,18 +85,23 @@ public abstract class Unit implements Updateable,Renderable{
 
 
         Random RANDOM = new Random();
+        //BASIC COMMON PROPERTIES
         facingAngle = RANDOM.nextInt((359 - 0) + 1) + 0;
         team = _team;
         radius = UNIT_RADIUS;
         location = _location;
-        //readyToFire = true;
         invisibility = false;
         adjustedMovementSpeed = 0;
 
+        //BUFFS
         activeBuffs = new ArrayList<Buff>();
         expiredBuffs = new ArrayList<Buff>();
+
+        //SKILLS
         skills = new HashMap<Integer, Skill>();
-        ammos = new HashMap<String, Integer>();
+
+        //AMMOS
+        supplies = new HashMap<Integer, Skill.Supply>();
     }
 
     public void setPlayer(Player _player){player = _player;}
@@ -155,15 +161,17 @@ public abstract class Unit implements Updateable,Renderable{
     public abstract void resupply();
     public abstract void move(float _deltaTime,float _x,float _y,double _angle);
 
-    //AMMOS
-    public void setAmmo(String _name,int _count){ammos.put(_name,_count);}
+    //SUPPLIES
+    protected void setSupplies(int _key,Skill.Supply supply){supplies.put(_key,supply);}
+    public Map<Integer,Skill.Supply> getSupplies(){return supplies;}
 
     //BUFFS
     public void addBuff(Buff _buff){activeBuffs.add(_buff);}
     public void removeBuff(Buff _buff){activeBuffs.remove(_buff);}
+    public List<Buff> getActiveBuffs(){return activeBuffs;}
 
     //SKILLS
-    public void addSkill(int _key,Skill _skill){skills.put(_key,_skill);}
+    protected void addSkill(int _key,Skill _skill){skills.put(_key,_skill);}
     public void use(int _key){skills.get(_key).use(this);}
     public void use(int _key,Location _location){skills.get(_key).use(_location);}
     public void use(int _key,Unit _unit){skills.get(_key).use(_unit);}

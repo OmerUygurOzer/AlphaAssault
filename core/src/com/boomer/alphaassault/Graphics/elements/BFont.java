@@ -74,6 +74,8 @@ public class BFont implements BDrawable {
     @Override
     public void set(BDrawable _bDrawable) {
         BFont bFont = (BFont)_bDrawable;
+        String incomingText = bFont.getText();
+        if(incomingText.equals(text)){return;}
         setText(bFont.getText());
     }
 

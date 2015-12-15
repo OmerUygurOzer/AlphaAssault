@@ -59,7 +59,6 @@ public class GameWorld implements Updateable,Renderable{
     @Override
     public void setViewType(int _viewType) {
         gameMap.setViewType(_viewType);
-        player.setViewType(_viewType);
     }
 
     @Override

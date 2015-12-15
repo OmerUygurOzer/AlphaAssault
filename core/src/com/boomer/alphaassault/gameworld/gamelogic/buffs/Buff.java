@@ -44,24 +44,24 @@ public abstract class Buff implements Updateable,Renderable {
 
     public void inflict(Unit _unit){
         _unit.addBuff(this);
-        _unit.getPlayer().getHud().showBuff(this);
+
     }
 
     public void deflict(Unit _unit){
         _unit.removeBuff(this);
-        _unit.getPlayer().getHud().removeBuff(this);
+
     }
 
     public BSprite getIcon(){return icon;}
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN,icon);
+        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,icon);
     }
 
     @Override
     public void removeFromRenderState() {
-        RenderStateManager.removeElement(referenceId,RenderState.DEPTH_GAME_SCREEN);
+        RenderStateManager.removeElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE);
     }
 
     @Override

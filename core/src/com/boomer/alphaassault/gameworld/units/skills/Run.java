@@ -28,7 +28,7 @@ public class Run extends Skill{
 
     @Override
     public void use() {
-        ;
+
     }
 
     @Override

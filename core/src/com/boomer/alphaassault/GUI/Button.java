@@ -1,6 +1,5 @@
 package com.boomer.alphaassault.GUI;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
@@ -57,17 +56,17 @@ public class Button implements Renderable {
 
     public void setState(int _state){
         BSprite getState = states.get(_state);
-        RenderStateManager.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN,getState);
+        RenderStateManager.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
     }
 
     public void resetState(){
         BSprite getState = states.get(STATE_INIT);
-        RenderStateManager.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN,getState);
+        RenderStateManager.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
     }
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN,icon);
+        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,icon);
     }
 
     @Override

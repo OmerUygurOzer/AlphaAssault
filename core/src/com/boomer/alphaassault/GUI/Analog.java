@@ -105,14 +105,14 @@ public class Analog extends Controller implements Renderable,InputReceiver {
     @Override
     public void addToRenderState() {
         if(TYPE == LEFT_ONLY || TYPE == BOTH) {
-            RenderStateManager.addElement(viewType, leftButtonId, RenderState.DEPTH_GAME_SCREEN, leftButtonSprite);
-            RenderStateManager.addElement(viewType, leftCircleId, RenderState.DEPTH_GAME_SCREEN,leftCircleSprite);
+            RenderStateManager.addElement(viewType, leftButtonId, RenderState.DEPTH_GAME_SCREEN_BASE, leftButtonSprite);
+            RenderStateManager.addElement(viewType, leftCircleId, RenderState.DEPTH_GAME_SCREEN_BASE,leftCircleSprite);
         }
         if(TYPE == RIGHT_ONLY || TYPE == BOTH) {
-            RenderStateManager.addElement(viewType, rightButtonId,RenderState.DEPTH_GAME_SCREEN, rightButtonSprite);
-            RenderStateManager.addElement(viewType, rightCircleId,RenderState.DEPTH_GAME_SCREEN, rightCircleSprite);
+            RenderStateManager.addElement(viewType, rightButtonId,RenderState.DEPTH_GAME_SCREEN_BASE, rightButtonSprite);
+            RenderStateManager.addElement(viewType, rightCircleId,RenderState.DEPTH_GAME_SCREEN_BASE, rightCircleSprite);
         }
-        RenderStateManager.addElement(viewType, gameFrameId, RenderState.DEPTH_GAME_SCREEN, gameFrameSprite);
+        RenderStateManager.addElement(viewType, gameFrameId, RenderState.DEPTH_GAME_SCREEN_BASE, gameFrameSprite);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
                 set(LEFT_ROTATION,Location.getAngle(inputX,inputY,LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y));
                 set(LEFT_ACTIVE,true);
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-                RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
+                RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN_BASE,leftButtonSprite);
                 leftActive = true;
                 return;
             }
@@ -179,7 +179,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         leftCurrentLocation.x = LEFT_BUTTON_CENTER.x;
         leftCurrentLocation.y = LEFT_BUTTON_CENTER.y;
         leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
-        RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN,leftButtonSprite);
+        RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN_BASE,leftButtonSprite);
 
     }
 
@@ -195,7 +195,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
                 set(RIGHT_ROTATION,Location.getAngle(inputX,inputY,RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y));
                 set(RIGHT_ACTIVE,true);
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
-                RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);
+                RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN_BASE,rightButtonSprite);
                 leftActive = true;
                 return;
             }
@@ -209,7 +209,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         rightCurrentLocation.x = RIGHT_BUTTON_CENTER.x;
         rightCurrentLocation.y = RIGHT_BUTTON_CENTER.y;
         rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
-        RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN,rightButtonSprite);
+        RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN_BASE,rightButtonSprite);
 
     }
 

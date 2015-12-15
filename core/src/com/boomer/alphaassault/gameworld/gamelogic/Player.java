@@ -1,5 +1,6 @@
 package com.boomer.alphaassault.gameworld.gamelogic;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.GUI.Console;
 import com.boomer.alphaassault.GUI.Hud;
@@ -29,6 +30,9 @@ public class Player implements Updateable,Renderable,Controllable{
     public static final int COMMANDO        = 2;
     public static final int MEDIC           = 3;
 
+    private String name;
+    private Texture icon;
+
     private static final int PLAYER_REFERENCE = 1;
     private int viewType;
 
@@ -46,7 +50,11 @@ public class Player implements Updateable,Renderable,Controllable{
         camera = _camera;
     }
 
-
+    //NAME AND ICON
+    public void setName(String _name){name = _name;}
+    public String getName(){return name;}
+    public void setIcon(Texture _icon){icon = _icon;}
+    public Texture getIcon(){return icon;}
 
     public void move(float _deltaTime){
         if(analog.get(Analog.LEFT_ACTIVE).valueBoolean) {
@@ -106,6 +114,8 @@ public class Player implements Updateable,Renderable,Controllable{
 
     }
 
+    public Unit getPlayerUnit(){return playerUnit;}
+
 
     @Override
     public void addToRenderState() {
@@ -147,7 +157,7 @@ public class Player implements Updateable,Renderable,Controllable{
         console = _controller;
     }
 
-    public void setHud(Hud _hud){hud = _hud;}
+    public void setHud(Hud _hud){hud = _hud; hud.setPlayer(this);}
     public Hud getHud(){return hud;}
 
     @Override
