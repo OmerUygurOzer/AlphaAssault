@@ -89,7 +89,7 @@ public class Player implements Updateable,Renderable,Controllable{
 
                 //MAP SKILLS TO CONSOLE BUTTONS
                 for(Skill skill : playerUnit.getSkillSet().values()){
-                    ((Console)console).addButton(skill.getKey(), Resource.getTexture(Resource.TEXTURE_BUTTON_BASE));
+                    ((Console)console).addButton(skill.getKey(), Resource.getTexture(Resource.TEXTURE_BUTTON_BASE),skill.getIcon());
                 }
                 ((Console)console).addToRenderState();
 

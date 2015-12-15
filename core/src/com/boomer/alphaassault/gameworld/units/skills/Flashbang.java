@@ -23,6 +23,7 @@ public class Flashbang extends Skill {
             supply.icon = Resource.getTexture(Resource.TEXTURE_FLASHBANG);
             supply.COUNT_MAX = FLASHBANG_MAX;
             targetType = Skill.TARGET_TYPE_POINT;
+            icon = Resource.getTexture(Resource.TEXTURE_FLASHBANG);
     }
 
 

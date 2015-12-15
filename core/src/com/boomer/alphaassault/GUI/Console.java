@@ -3,19 +3,12 @@ package com.boomer.alphaassault.GUI;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.graphics.GameGraphics;
-import com.boomer.alphaassault.graphics.RenderState;
-import com.boomer.alphaassault.graphics.elements.BSprite;
-import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.InputReceiver;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.handlers.controls.Inputs;
-import com.boomer.alphaassault.resources.Resource;
-import org.omg.CORBA.portable.IDLEntity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +22,9 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
     public static final int CONSOLE_BUTTON_X = GameGraphics.VIRTUAL_WIDTH - 100;
     public static final int CONSOLE_BUTTON_Y = 50;
+
+    public static final int CONSOLE_BUTTON_ICON_WIDTH = 50;
+    public static final int CONSOLE_BUTTON_ICON_HEIGHT = 50;
 
     //INPUT MAPPING
     public static final int BUTTON_ONE_STATE = 0;
@@ -69,15 +65,16 @@ public class Console extends Controller implements Renderable,InputReceiver {
         buttonNumber = 0;
     }
 
-    public void addButton(int _key,Texture _texture){
+    public void addButton(int _key,Texture _states,Texture _icon){
         //CREATE BUTTON
-        TextureRegion[][] buttonStates = TextureRegion.split(_texture,287,144);
+        TextureRegion[][] buttonStates = TextureRegion.split(_states,287,144);
         Button button = new Button(CONSOLE_BUTTON_X,CONSOLE_BUTTON_Y + buttonNumber*80,CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);
         button.addState(IDLE,buttonStates[0][IDLE]);
         button.addState(PRESSED,buttonStates[0][PRESSED]);
 
         //SET BUTTON PROPERTIES
         button.setReferenceID(referenceId + buttonNumber);
+        button.setIcon(_icon, CONSOLE_BUTTON_ICON_WIDTH, CONSOLE_BUTTON_ICON_HEIGHT);
         button.setViewType(viewType);
 
         localStates.put(_key,IDLE);

@@ -1,10 +1,12 @@
 package com.boomer.alphaassault.GUI;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages_ca;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,7 @@ import java.util.Map;
  */
 public class Button implements Renderable {
     private BSprite icon;
+    private BSprite base;
 
     private float centerX;
     private float centerY;
@@ -47,11 +50,17 @@ public class Button implements Renderable {
 
     public void addState(int _state,TextureRegion _textureRegion){
         BSprite Bsprite = new BSprite(_textureRegion);
-        if(numberOfStates == 0){icon = Bsprite;}
+        if(numberOfStates == 0){base = Bsprite;}
         Bsprite.setSize(width,height);
         Bsprite.setCenter(centerX,centerY);
         states.put(_state,Bsprite);
         numberOfStates++;
+    }
+
+    public void setIcon(Texture _icon,float _width,float _height){
+        icon = new BSprite(_icon);
+        icon.setCenter(centerX,centerY);
+        icon.setSize(_width,_height);
     }
 
     public void setState(int _state){
@@ -66,7 +75,8 @@ public class Button implements Renderable {
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,icon);
+        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,base);
+        RenderStateManager.addElement(viewType,referenceId+1,RenderState.DEPTH_GAME_SCREEN_DYNAMIC,icon);
     }
 
     @Override

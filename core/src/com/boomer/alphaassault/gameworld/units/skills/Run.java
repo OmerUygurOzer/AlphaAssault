@@ -2,6 +2,7 @@ package com.boomer.alphaassault.gameworld.units.skills;
 
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.AdjustedSpeed;
 import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
 
 /**
@@ -18,6 +19,7 @@ public class Run extends Skill{
         super(_key);
         targetType = Skill.TARGET_TYPE_SELF;
         cooldown = RUN_COOLDOWN;
+        icon = Resource.getTexture(Resource.TEXTURE_ADJUSTED_SPEED);
     }
 
 
