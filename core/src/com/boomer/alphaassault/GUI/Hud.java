@@ -103,7 +103,7 @@ public class Hud implements Renderable,Updateable {
         }
 
 
-        addToRenderState();
+      addToRenderState();
     }
 
     public void showBuff(Buff _buff){

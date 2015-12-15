@@ -1,5 +1,6 @@
 package com.boomer.alphaassault.gameworld.units.skills;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
@@ -17,13 +18,17 @@ public class Flashbang extends Skill {
     public Flashbang(int _key)
     {
             super(_key);
+
+
+            icon = Resource.getTextureRegions(Resource.TEXTURE_REGION_SKILL_ICONS)[0][2];
+
             supply = new Supply();
             supply.name  = "Flashbang";
             supply.count = FLASHBANG_MAX;
-            supply.icon = Resource.getTexture(Resource.TEXTURE_FLASHBANG);
+            supply.icon = icon;
             supply.COUNT_MAX = FLASHBANG_MAX;
             targetType = Skill.TARGET_TYPE_POINT;
-            icon = Resource.getTexture(Resource.TEXTURE_FLASHBANG);
+
     }
 
 

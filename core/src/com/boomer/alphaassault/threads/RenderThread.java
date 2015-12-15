@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.boomer.alphaassault.handlers.GameStateManager;
+import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.settings.GameSettings;
 
 /**
@@ -31,6 +32,7 @@ public class RenderThread extends Game {
     public void dispose() {
         super.dispose();
         spriteBatch.dispose();
+        RenderStateManager.dispose();
         System.out.println("RENDER THREAD FINISHED.");
     }
 
@@ -44,13 +46,18 @@ public class RenderThread extends Game {
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 timeAccumulated -= GameSettings.RPS;
                 //System.out.println(Thread.currentThread().getId());
-                //System.out.println("RENDER THREAD");
-                gameStateManager.getGameState().render(spriteBatch);
-
-
-
+                gameStateManager.getGameState().render(null);
 
             }
+            wait(1);
+        }
+    }
+
+    private void wait(int _time){
+        try {
+            Thread.sleep(_time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

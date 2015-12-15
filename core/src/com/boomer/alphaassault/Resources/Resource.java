@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.boomer.alphaassault.settings.GameSettings;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
 
@@ -16,9 +15,10 @@ public class Resource {
     private static HashMap<Integer,Texture> textures;
     private static HashMap<Integer,Sound> sounds;
     private static HashMap<Integer,Music> musics;
+    private static HashMap<Integer,TextureRegion[][]> textureRegions;
 
 
-    public static final int TEXTURE_ASSAULT_TROOPER = 0;
+    public static final int TEXTURE_REGION_ASSAULT_TROOPER = 0;
 /*
 * OTHER TEXTURES
 *
@@ -44,16 +44,16 @@ public class Resource {
 
 
     //ICONS
-    public static final int TEXTURE_ADJUSTED_SPEED = 60;
-    public static final int TEXTURE_PLAYER = 61;
-    public static final int TEXTURE_FLASHBANG = 62;
-    public static final int TEXTURE_FIRE = 63;
+    public static final int TEXTURE_PLAYER = 60;
+    public static final int TEXTURE_REGION_SKILL_ICONS = 61;
+
 
     //FONTS
     public static final int TEXTURE_FONTS = 70;
 
     public Resource() {
         textures = new HashMap<Integer, Texture>();
+        textureRegions = new HashMap<Integer, TextureRegion[][]>();
         musics = new HashMap<Integer, Music>();
         sounds = new HashMap<Integer, Sound>();
 
@@ -61,7 +61,7 @@ public class Resource {
 
     public void initialize(){
         loadTexture(TEXTURE_BACKGROUND,"map/tiles_background.png");
-        loadTexture(TEXTURE_ASSAULT_TROOPER,"character.png");
+        loadTexture(TEXTURE_REGION_ASSAULT_TROOPER,"character.png");
         loadTexture(TEXTURE_LEFT_BUTTON,"GUI/greenbutton.png");
         loadTexture(TEXTURE_LEFT_CIRCLE,"GUI/greencircle.png");
         loadTexture(TEXTURE_RIGHT_BUTTON,"GUI/redbutton.png");
@@ -70,11 +70,9 @@ public class Resource {
         loadTexture(TEXTURE_TREES,"map/trees.png");
         loadTexture(TEXTURE_OTHERS,"map/others.png");
         loadTexture(TEXTURE_BUTTON_BASE,"GUI/button.png");
-        loadTexture(TEXTURE_ADJUSTED_SPEED,"game/adjustedspeed.gif");
         loadTexture(TEXTURE_FONTS,"GUI/fonts.gif");
         loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
-        loadTexture(TEXTURE_FLASHBANG,"game/flashbang.png");
-        loadTexture(TEXTURE_FIRE,"game/fire.png");
+        loadTextureRegion(TEXTURE_REGION_SKILL_ICONS,"game/skillicons.png",50,50);
     }
 
     //TEXTURE HANDLERS
@@ -86,6 +84,21 @@ public class Resource {
     public static Texture getTexture(int _key){
         return textures.get(_key);
     }
+
+    public void loadTextureRegion(int _key,String _path,int _width,int _height){
+        TextureRegion[][] splitRegions = TextureRegion.split(new Texture(Gdx.files.internal(_path)),_width,_height);
+        textureRegions.put(_key,splitRegions);
+    }
+
+    //TEXTURE REGION HANDLERS
+    public void removeTextureRegion(int _key){
+        TextureRegion[][] splitRegions = textureRegions.get(_key);
+        if(splitRegions !=null){
+            textureRegions.remove(_key);
+        }
+    }
+
+    public static TextureRegion[][] getTextureRegions(int _key){return textureRegions.get(_key);}
 
     public void removeTexture(int _key){
         Texture texture = textures.get(_key);

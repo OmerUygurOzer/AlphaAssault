@@ -1,5 +1,6 @@
 package com.boomer.alphaassault.gameworld.units.skills;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
@@ -12,7 +13,7 @@ public class Fire extends Skill {
    public Fire(int _key){
         super(_key);
        targetType = Skill.TARGET_TYPE_POINT;
-       icon = Resource.getTexture(Resource.TEXTURE_FIRE);
+       icon = Resource.getTextureRegions(Resource.TEXTURE_REGION_SKILL_ICONS)[0][0];
    }
 
 

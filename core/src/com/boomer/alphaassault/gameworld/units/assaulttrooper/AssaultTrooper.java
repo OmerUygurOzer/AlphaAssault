@@ -7,7 +7,6 @@ import com.boomer.alphaassault.gameworld.units.skills.Flashbang;
 import com.boomer.alphaassault.gameworld.units.skills.Run;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
-import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
@@ -41,7 +40,7 @@ public class AssaultTrooper extends Unit {
         baseMovementSpeed = ASSAULT_TROOPER_MOVEMENT_SPEED;
 
         //CALCULATE/LOAD ANIMATIONS
-        TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_ASSAULT_TROOPER),138,192);
+        TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_REGION_ASSAULT_TROOPER),138,192);
         bAnimation = new BAnimation(framesAll);
         bAnimation.setSize(UNIT_SIZE,UNIT_SIZE);
         bAnimation.setCenter(_location.x,_location.y);

@@ -57,7 +57,7 @@ public class Button implements Renderable {
         numberOfStates++;
     }
 
-    public void setIcon(Texture _icon,float _width,float _height){
+    public void setIcon(TextureRegion _icon,float _width,float _height){
         icon = new BSprite(_icon);
         icon.setCenter(centerX,centerY);
         icon.setSize(_width,_height);

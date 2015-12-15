@@ -85,6 +85,12 @@ public class RenderStateManager {
 
     }
 
+    public static void dispose(){
+        renderStateOne.dispose();
+        renderStateTwo.dispose();
+        renderStateThree.dispose();
+    }
+
 
 
 

@@ -65,7 +65,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
         buttonNumber = 0;
     }
 
-    public void addButton(int _key,Texture _states,Texture _icon){
+    public void addButton(int _key,Texture _states,TextureRegion _icon){
         //CREATE BUTTON
         TextureRegion[][] buttonStates = TextureRegion.split(_states,287,144);
         Button button = new Button(CONSOLE_BUTTON_X,CONSOLE_BUTTON_Y + buttonNumber*80,CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);

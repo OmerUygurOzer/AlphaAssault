@@ -103,7 +103,7 @@ public class Play extends GameStateBase {
 
     @Override
     public void render(SpriteBatch _spriteBatch) {
-        RenderStateManager.renderingState.render(_spriteBatch);
+        RenderStateManager.renderingState.render();
     }
 
     @Override
