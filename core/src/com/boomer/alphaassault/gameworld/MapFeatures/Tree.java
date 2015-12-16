@@ -22,19 +22,8 @@ public class Tree extends MapFeature {
         blocksDamage = true;
         radius = TREE_RADIUS;
         Random random = new Random();
-        int treeType = random.nextInt((3-1)+1)+1;
-        TextureRegion textureRegion = null;
-        switch (treeType){
-            case 1:
-                textureRegion = new TextureRegion(Resource.getTexture(Resource.TEXTURE_TREES),0,0,90,130);
-                break;
-            case 2:
-                textureRegion = new TextureRegion(Resource.getTexture(Resource.TEXTURE_TREES),90,0,90,130);
-                break;
-            case 3:
-                textureRegion = new TextureRegion(Resource.getTexture(Resource.TEXTURE_TREES),180,0,90,130);
-                break;
-        }
+        int treeType = random.nextInt((2-1)+1)+1;
+        TextureRegion textureRegion = Resource.getTextureRegions(Resource.TEXTURE_REGION_TREES)[0][treeType];
         bDrawable = new BSprite(textureRegion);
         ((BSprite)bDrawable).setSize(20,40);
         ((BSprite)bDrawable).setPosition(_location.x,_location.y);

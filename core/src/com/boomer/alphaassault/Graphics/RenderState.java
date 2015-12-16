@@ -89,18 +89,18 @@ public class RenderState{
     //GAME SCREEN IS DRAWN LAST
     public void  render() {
 
-        for(int key: viewPorts.keySet()){
-            spriteBatch.setProjectionMatrix(viewPorts.get(key).getCamera().combined);
-            spriteBatch.begin();
-            viewPorts.get(key).apply();
-            for( int depth = DEPTH_BASE ; depth<DEPTH_MAX;depth++){
+        for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++){
+            for(int key: viewPorts.keySet()){
+                spriteBatch.setProjectionMatrix(viewPorts.get(key).getCamera().combined);
+                spriteBatch.begin();
+                viewPorts.get(key).apply();
                 if(viewMapping.get(depth).get(key)!=null) {
                     for (long MAPPER : viewMapping.get(depth).get(key)) {
                         bDrawables.get(depth).get(MAPPER).draw(spriteBatch);
                     }
                 }
+                spriteBatch.end();
             }
-            spriteBatch.end();
         }
 
 

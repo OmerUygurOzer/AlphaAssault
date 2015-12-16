@@ -38,9 +38,9 @@ public class Resource {
 
     //MAP TEXTURES
 
-    public static final int TEXTURE_BACKGROUND = 40;
-    public static final int TEXTURE_TREES  = 41;
-    public static final int TEXTURE_OTHERS = 42;
+    public static final int TEXTURE_REGION_BACKGROUND = 40;
+    public static final int TEXTURE_REGION_TREES = 41;
+    public static final int TEXTURE_REGION_OTHERS = 42;
 
 
     //ICONS
@@ -60,18 +60,18 @@ public class Resource {
     }
 
     public void initialize(){
-        loadTexture(TEXTURE_BACKGROUND,"map/tiles_background.png");
         loadTexture(TEXTURE_REGION_ASSAULT_TROOPER,"character.png");
         loadTexture(TEXTURE_LEFT_BUTTON,"GUI/greenbutton.png");
         loadTexture(TEXTURE_LEFT_CIRCLE,"GUI/greencircle.png");
         loadTexture(TEXTURE_RIGHT_BUTTON,"GUI/redbutton.png");
         loadTexture(TEXTURE_RIGHT_CIRCLE,"GUI/redcircle.png");
         loadTexture(TEXTURE_HUD_CAM,"GUI/hudcam.png");
-        loadTexture(TEXTURE_TREES,"map/trees.png");
-        loadTexture(TEXTURE_OTHERS,"map/others.png");
         loadTexture(TEXTURE_BUTTON_BASE,"GUI/button.png");
         loadTexture(TEXTURE_FONTS,"GUI/fonts.gif");
         loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
+        loadTextureRegion(TEXTURE_REGION_TREES,"map/trees.png",90,130);
+        loadTextureRegion(TEXTURE_REGION_OTHERS,"map/others.png",32,32);
+        loadTextureRegion(TEXTURE_REGION_BACKGROUND,"map/tiles_background.png",100,100);
         loadTextureRegion(TEXTURE_REGION_SKILL_ICONS,"game/skillicons.png",50,50);
     }
 

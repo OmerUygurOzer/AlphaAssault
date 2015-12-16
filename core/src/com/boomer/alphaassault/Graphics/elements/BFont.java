@@ -82,7 +82,7 @@ public class BFont implements BDrawable {
     @Override
     public void draw(SpriteBatch _spriteBatch) {
         for(Sprite sprite: spriteText){
-            sprite.draw(_spriteBatch);
+           sprite.draw(_spriteBatch);
         }
     }
 

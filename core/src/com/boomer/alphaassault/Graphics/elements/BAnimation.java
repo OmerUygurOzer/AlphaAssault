@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.utilities.Rotation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Omer on 12/8/2015.
  */
@@ -14,14 +17,7 @@ public class BAnimation implements BDrawable {
     private Sprite currentSprite;
     private TextureRegion[][] textureRegions;
 
-    private Sprite[] spritesRight;
-    private Sprite[] spritesLeft;
-    private Sprite[] spritesUp;
-    private Sprite[] spritesDown;
-    private Sprite[] spritesUpRight;
-    private Sprite[] spritesUpLeft;
-    private Sprite[] spritesDownRight;
-    private Sprite[] spritesDownLeft;
+    private Map<Rotation,Sprite[]> spriteSheet;
 
     private int currentFrame;
     private int frames;
@@ -37,6 +33,7 @@ public class BAnimation implements BDrawable {
     private float timer;
 
     public BAnimation(TextureRegion[][] _textureRegions) {
+        spriteSheet = new HashMap<Rotation, Sprite[]>();
         currentFrame = 0;
         timer = 0f;
 
@@ -48,17 +45,17 @@ public class BAnimation implements BDrawable {
 
     private void generate(){
         frames = textureRegions[0].length;
-        spritesRight = new Sprite[frames];
-        spritesLeft = new Sprite[frames];
-        spritesUp = new Sprite[frames];
-        spritesDown = new Sprite[frames];
-        spritesUpRight = new Sprite[frames];
-        spritesUpLeft = new Sprite[frames];
-        spritesDownLeft = new Sprite[frames];
-        spritesDownRight = new Sprite[frames];
+        Sprite [] spritesRight = new Sprite[frames];
+        Sprite [] spritesLeft = new Sprite[frames];
+        Sprite [] spritesUp = new Sprite[frames];
+        Sprite [] spritesDown = new Sprite[frames];
+        Sprite [] spritesUpRight = new Sprite[frames];
+        Sprite [] spritesUpLeft = new Sprite[frames];
+        Sprite [] spritesDownLeft = new Sprite[frames];
+        Sprite [] spritesDownRight = new Sprite[frames];
 
         for(int i=0;i<textureRegions[0].length;i++){
-            spritesRight[i] = new Sprite(textureRegions[6][i]);
+            spritesRight[i] =new Sprite(textureRegions[6][i]);
             spritesLeft[i] = new Sprite(textureRegions[2][i]);
             spritesUp[i] = new Sprite(textureRegions[4][i]);
             spritesDown[i] = new Sprite(textureRegions[0][i]);
@@ -69,7 +66,14 @@ public class BAnimation implements BDrawable {
 
 
         }
-
+        spriteSheet.put(Rotation.RIGHT,spritesRight);
+        spriteSheet.put(Rotation.LEFT,spritesLeft);
+        spriteSheet.put(Rotation.UP,spritesUp);
+        spriteSheet.put(Rotation.DOWN,spritesDown);
+        spriteSheet.put(Rotation.UP_RIGHT,spritesUpRight);
+        spriteSheet.put(Rotation.UP_LEFT,spritesUpLeft);
+        spriteSheet.put(Rotation.DOWN_RIGHT,spritesDownRight);
+        spriteSheet.put(Rotation.DOWN_LEFT,spritesDownLeft);
         position = new Location();
         center = new Location();
     }
@@ -81,6 +85,12 @@ public class BAnimation implements BDrawable {
     public void setSize(float _width,float _height){
         width = _width;
         height = _height;
+        for(Rotation rotation : spriteSheet.keySet()){
+            for(int i= 0 ;i < spriteSheet.get(Rotation.LEFT).length;i++){
+                spriteSheet.get(rotation)[i].setSize(width,height);
+
+            }
+        }
     }
 
     public void setFacingAngle(double _facingAngle){
@@ -119,50 +129,25 @@ public class BAnimation implements BDrawable {
         position.y = incomingAnimation.getPosition().y;
         center.x = incomingAnimation.getCenter().x;
         center.y = incomingAnimation.getCenter().y;
-        width = incomingAnimation.getWidth();
-        height = incomingAnimation.getHeight();
         rotation = Rotation.getRotation(facingAngle);
         SPF = incomingAnimation.getSPF();
 
+
+        if(width != ((BAnimation) _bDrawable).getWidth() || height != ((BAnimation) _bDrawable).getHeight()){
+            width = incomingAnimation.getWidth();
+            height = incomingAnimation.getHeight();
+            setSize(width,height);
+        }
 
     }
 
     @Override
     public void draw(SpriteBatch _spriteBatch) {
-            switch (rotation){
-                    case RIGHT:
-                        currentSprite = spritesRight[currentFrame];
-                        break;
-                    case LEFT:
-                        currentSprite = spritesLeft[currentFrame];
-                        break;
-                    case UP:
-                        currentSprite = spritesUp[currentFrame];
-                        break;
-                    case DOWN:
-                        currentSprite = spritesDown[currentFrame];
-                        break;
-                    case UP_RIGHT:
-                        currentSprite = spritesUpRight[currentFrame];
-                        break;
-                    case UP_LEFT:
-                        currentSprite = spritesUpLeft[currentFrame];
-                        break;
-                    case DOWN_RIGHT:
-                        currentSprite = spritesDownRight[currentFrame];
-                        break;
-                    case DOWN_LEFT:
-                        currentSprite = spritesDownLeft[currentFrame];
-                        break;
-                    default:
-                        //DO NOTHING
-                        break;
 
-
-            }
-        currentSprite.setSize(width,height);
+        currentSprite = spriteSheet.get(rotation)[currentFrame];
         currentSprite.setCenter(center.x,center.y);
         currentSprite.draw(_spriteBatch);
+
     }
 
     @Override
