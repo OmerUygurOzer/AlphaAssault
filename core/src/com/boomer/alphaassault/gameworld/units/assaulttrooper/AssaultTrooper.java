@@ -40,7 +40,7 @@ public class AssaultTrooper extends Unit {
         baseMovementSpeed = ASSAULT_TROOPER_MOVEMENT_SPEED;
 
         //CALCULATE/LOAD ANIMATIONS
-        TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_REGION_ASSAULT_TROOPER),138,192);
+        TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_REGION_ASSAULT_TROOPER),1024/6,2048/8);
         bAnimation = new BAnimation(framesAll);
         bAnimation.setSize(UNIT_SIZE,UNIT_SIZE);
         bAnimation.setCenter(_location.x,_location.y);
@@ -56,9 +56,9 @@ public class AssaultTrooper extends Unit {
         flashbang.setUser(this);
 
 
-        addSkill(FIRE_KEY,fire);
-        addSkill(RUN_KEY,run);
-        addSkill(FLASHBANG_KEY,flashbang);
+        addSkill(fire);
+        addSkill(run);
+        addSkill(flashbang);
 
         //ADD THE SUPPLIES
         setSupplies(FLASHBANG_KEY,flashbang.getSupply());

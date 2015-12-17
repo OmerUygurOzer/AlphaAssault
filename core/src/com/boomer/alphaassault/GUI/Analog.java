@@ -73,27 +73,27 @@ public class Analog extends Controller implements Renderable,InputReceiver {
 
 
         //LEFT_ONLY
-        leftButtonSprite = new BSprite (Resource.getTexture(Resource.TEXTURE_LEFT_BUTTON));
+        leftButtonSprite = new BSprite (Resource.getTextureRegions(Resource.ANALOG)[0][2]);
         leftButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
         leftButtonSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
-        leftCircleSprite = new BSprite(Resource.getTexture(Resource.TEXTURE_LEFT_CIRCLE));
+        leftCircleSprite = new BSprite(Resource.getTextureRegions(Resource.ANALOG)[0][3]);
         leftCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         leftCircleSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
         leftCurrentLocation = new Location(LEFT_BUTTON_CENTER);
         leftActive = false;
 
         //RIGHT_ONLY
-        rightButtonSprite = new BSprite (Resource.getTexture(Resource.TEXTURE_RIGHT_BUTTON));
+        rightButtonSprite = new BSprite (Resource.getTextureRegions(Resource.ANALOG)[0][0]);
         rightButtonSprite.setSize(BUTTON_SIZE, BUTTON_SIZE);
         rightButtonSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
-        rightCircleSprite = new BSprite(Resource.getTexture(Resource.TEXTURE_RIGHT_CIRCLE));
+        rightCircleSprite = new BSprite(Resource.getTextureRegions(Resource.ANALOG)[0][1]);
         rightCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         rightCircleSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
         rightCurrentLocation = new Location(RIGHT_BUTTON_CENTER);
         rightActive = false;
 
-        //GAME HUD VIEW FRAME
-        gameFrameSprite = new BSprite(Resource.getTexture(Resource.TEXTURE_HUD_CAM));
+        //GAME VIEW FRAME
+        gameFrameSprite = new BSprite(Resource.getTextureRegions(Resource.GAME_FRAME)[0][0]);
         gameFrameSprite.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
         gameFrameSprite.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 

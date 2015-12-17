@@ -37,7 +37,7 @@ public class BFont implements BDrawable {
 
         //INITIALIZE FONTS
         ascii = new TextureRegion[6 * 16];
-        TextureRegion[][] textureRegions = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_FONTS),32,31);
+        TextureRegion[][] textureRegions = Resource.getTextureRegions(Resource.FONTS);
         int index = 0;
         for(int y = 0;y<6;y++){
                 for(int x = 0;x<16;x++){

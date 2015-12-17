@@ -65,9 +65,9 @@ public class Console extends Controller implements Renderable,InputReceiver {
         buttonNumber = 0;
     }
 
-    public void addButton(int _key,Texture _states,TextureRegion _icon){
+    public void addButton(int _key,TextureRegion[][] _states,TextureRegion _icon){
         //CREATE BUTTON
-        TextureRegion[][] buttonStates = TextureRegion.split(_states,287,144);
+        TextureRegion[][] buttonStates = _states;
         Button button = new Button(CONSOLE_BUTTON_X,CONSOLE_BUTTON_Y + buttonNumber*80,CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);
         button.addState(IDLE,buttonStates[0][IDLE]);
         button.addState(PRESSED,buttonStates[0][PRESSED]);
@@ -135,7 +135,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
     @Override
     public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId + 100;
+        referenceId = _referenceId;
         buttonOneId = referenceId   + 0;
         buttonTwoId = referenceId   + 1;
         buttonThreeId = referenceId + 2;

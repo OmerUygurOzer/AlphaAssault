@@ -25,7 +25,7 @@ public class Tree extends MapFeature {
         int treeType = random.nextInt((2-1)+1)+1;
         TextureRegion textureRegion = Resource.getTextureRegions(Resource.TEXTURE_REGION_TREES)[0][treeType];
         bDrawable = new BSprite(textureRegion);
-        ((BSprite)bDrawable).setSize(20,40);
+        ((BSprite)bDrawable).setSize(16,32);
         ((BSprite)bDrawable).setPosition(_location.x,_location.y);
     }
 

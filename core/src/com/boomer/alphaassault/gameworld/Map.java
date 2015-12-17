@@ -34,11 +34,11 @@ public class Map implements Renderable{
     public static final int SIZE_MEDIUM = 1;
     public static final int SIZE_LARGE = 2;
 
-    private static final int SIDE_SMALL = 200;
-    private static final int SIDE_MEDIUM = 300;
-    private static final int SIDE_LARGE = 400;
+    private static final int SIDE_SMALL = 128;
+    private static final int SIDE_MEDIUM = 256;
+    private static final int SIDE_LARGE = 512;
 
-    private static final int TILE_SIZE = 20;
+    private static final int TILE_SIZE = 16;
 
     //MAP BASE CONSTANTS
 
@@ -102,8 +102,8 @@ public class Map implements Renderable{
             int tileTextureWidth = Resource.getTextureRegions(Resource.TEXTURE_REGION_BACKGROUND)[0][0].getRegionWidth();
             int tileTextureHeight =  Resource.getTextureRegions(Resource.TEXTURE_REGION_BACKGROUND)[0][0].getRegionHeight();
 
-            Pixmap tileGrass = new Pixmap(100,100, Pixmap.Format.RGBA8888);
-            Pixmap tileBadLands = new Pixmap(100,100,Pixmap.Format.RGBA8888);
+            Pixmap tileGrass = new Pixmap(128,128, Pixmap.Format.RGBA8888);
+            Pixmap tileBadLands = new Pixmap(128,128,Pixmap.Format.RGBA8888);
             Pixmap tilesAll = new Pixmap(Gdx.files.internal("map/tiles_background.png"));
 
             for(int x = 0;x<tileTextureWidth;x++){
@@ -114,10 +114,10 @@ public class Map implements Renderable{
                 }
             }
 
-            for(int x = 100;x<tileTextureWidth+100;x++){
+            for(int x = 128;x<tileTextureWidth+128;x++){
                 for(int y = 0;y < tileTextureHeight;y++){
                 int pixel = tilesAll.getPixel(x,y);
-                tileBadLands.drawPixel(x-100,y,pixel);
+                tileBadLands.drawPixel(x-128,y,pixel);
                 }
             }
 

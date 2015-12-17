@@ -88,8 +88,8 @@ public class Player implements Updateable,Renderable,Controllable{
                 camera.setSight(AssaultTrooper.ASSAULT_TROOPER_SIGHT);
 
                 //MAP SKILLS TO CONSOLE BUTTONS
-                for(Skill skill : playerUnit.getSkillSet().values()){
-                    ((Console)console).addButton(skill.getKey(), Resource.getTexture(Resource.TEXTURE_BUTTON_BASE),skill.getIcon());
+                for(Skill skill : playerUnit.getSkillSet()){
+                    ((Console)console).addButton(skill.getKey(), Resource.getTextureRegions(Resource.BUTTONS),skill.getIcon());
                 }
                 ((Console)console).addToRenderState();
 
@@ -163,7 +163,7 @@ public class Player implements Updateable,Renderable,Controllable{
     @Override
     public void control(float _deltaTime) {
         move(_deltaTime);
-        for(Skill skill : playerUnit.getSkillSet().values()){
+        for(Skill skill : playerUnit.getSkillSet()){
             if(console.get(skill.getKey()).valueDouble==Console.PRESSED){
                 switch (skill.getTargetType()) {
                     case Skill.TARGET_TYPE_SELF:

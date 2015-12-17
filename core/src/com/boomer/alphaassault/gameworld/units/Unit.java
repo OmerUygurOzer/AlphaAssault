@@ -75,7 +75,7 @@ public abstract class Unit implements Updateable,Renderable{
     protected int sight;
     protected List<Buff> activeBuffs;
     protected List<Buff> expiredBuffs;
-    protected Map<Integer, Skill> skills;
+    protected List<Skill> skills;
     protected Map<Integer, Skill.Supply> supplies;
 
     protected boolean invisibility;
@@ -98,7 +98,7 @@ public abstract class Unit implements Updateable,Renderable{
         expiredBuffs = new ArrayList<Buff>();
 
         //SKILLS
-        skills = new HashMap<Integer, Skill>();
+        skills = new ArrayList<Skill>();
 
         //AMMOS
         supplies = new HashMap<Integer, Skill.Supply>();
@@ -121,7 +121,7 @@ public abstract class Unit implements Updateable,Renderable{
     //UPDATEABLE
     @Override
     public void update(float _deltaTime) {
-        for(Skill skill :  skills.values()){
+        for(Skill skill :  skills){
             skill.update();
         }
 
@@ -171,11 +171,11 @@ public abstract class Unit implements Updateable,Renderable{
     public List<Buff> getActiveBuffs(){return activeBuffs;}
 
     //SKILLS
-    protected void addSkill(int _key,Skill _skill){skills.put(_key,_skill);}
+    protected void addSkill(Skill _skill){skills.add(_skill);}
     public void use(int _key){skills.get(_key).use(this);}
     public void use(int _key,Location _location){skills.get(_key).use(_location);}
     public void use(int _key,Unit _unit){skills.get(_key).use(_unit);}
-    public Map<Integer,Skill> getSkillSet(){return skills;}
+    public List<Skill> getSkillSet(){return skills;}
 
     //MOVEMENT ADJUSTMENTS
     public void adjustMovementSpeed(int _adjustment){adjustedMovementSpeed += _adjustment;}

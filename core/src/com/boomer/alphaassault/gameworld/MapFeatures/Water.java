@@ -21,7 +21,7 @@ public class Water extends MapFeature {
         radius = WATER_RADIUS;
         TextureRegion textureRegion = Resource.getTextureRegions(Resource.TEXTURE_REGION_OTHERS)[0][3];
         bDrawable = new BSprite(textureRegion);
-        ((BSprite)bDrawable).setSize(20,20);
+        ((BSprite)bDrawable).setSize(16,16);
         ((BSprite)bDrawable).setPosition(_location.x,_location.y);
     }
 
