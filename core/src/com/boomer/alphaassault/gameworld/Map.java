@@ -99,12 +99,13 @@ public class Map implements Renderable{
             int min = 0;
             int max = 1;
 
-            int tileTextureWidth = Resource.getTextureRegions(Resource.TEXTURE_REGION_BACKGROUND)[0][0].getRegionWidth();
-            int tileTextureHeight =  Resource.getTextureRegions(Resource.TEXTURE_REGION_BACKGROUND)[0][0].getRegionHeight();
+            int tileTextureWidth = Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getRegionWidth();
+            int tileTextureHeight =  Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getRegionHeight();
 
             Pixmap tileGrass = new Pixmap(128,128, Pixmap.Format.RGBA8888);
             Pixmap tileBadLands = new Pixmap(128,128,Pixmap.Format.RGBA8888);
-            Pixmap tilesAll = new Pixmap(Gdx.files.internal("map/tiles_background.png"));
+            Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getTexture().getTextureData().prepare();
+            Pixmap tilesAll = Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getTexture().getTextureData().consumePixmap();
 
             for(int x = 0;x<tileTextureWidth;x++){
                 for(int y = 0;y < tileTextureHeight;y++){
@@ -126,8 +127,8 @@ public class Map implements Renderable{
 
             Texture base = new Texture(width*scaler,height*scaler, Pixmap.Format.RGBA8888);
 
-            for(int x=0;x< width/TILE_SIZE;x++){
-                for(int y=0;y< height/TILE_SIZE;y++) {
+            for(int x=0;x<= width/TILE_SIZE;x++){
+                for(int y=0;y<= height/TILE_SIZE;y++) {
                     int type = random.nextInt((max - min) + 1) + min;
                     switch(type){
                         case 0:

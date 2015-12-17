@@ -19,7 +19,7 @@ public class Crate extends MapFeature {
         blocksAerial = false;
         blocksDamage = false;
         radius = CRATE_RADIUS;
-        TextureRegion textureRegion = Resource.getTextureRegions(Resource.TEXTURE_REGION_OTHERS)[0][0];
+        TextureRegion textureRegion = Resource.getTextureRegions(Resource.DOODADS)[0][0];
         bDrawable = new BSprite(textureRegion);
         ((BSprite)bDrawable).setSize(16,16);
         ((BSprite)bDrawable).setPosition(_location.x,_location.y);

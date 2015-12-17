@@ -12,7 +12,7 @@ public class TextureSplitter {
 
        for(int y = 0; y < _yNumber;y++){
            for(int x = 0;x<_xNumber;x++){
-               TextureRegion textureRegion = new TextureRegion(_texture,_x+x*_width,_y+y*_width,_width,_height);
+               TextureRegion textureRegion = new TextureRegion(_texture,_x+x*_width,_y+y*_height,_width,_height);
                textureRegions[y][x] = textureRegion;
            }
        }

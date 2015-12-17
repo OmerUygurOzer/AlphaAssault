@@ -19,7 +19,7 @@ public class Rocks extends MapFeature {
         blocksAerial = false;
         blocksDamage = true;
         radius = ROCKS_RADIUS;
-        TextureRegion textureRegion = Resource.getTextureRegions(Resource.TEXTURE_REGION_OTHERS)[0][1];
+        TextureRegion textureRegion = Resource.getTextureRegions(Resource.DOODADS)[0][1];
         bDrawable = new BSprite(textureRegion);
         ((BSprite)bDrawable).setSize(16,16);
         ((BSprite)bDrawable).setPosition(_location.x,_location.y);

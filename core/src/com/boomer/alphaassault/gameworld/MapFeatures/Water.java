@@ -19,7 +19,7 @@ public class Water extends MapFeature {
         blocksAerial = false;
         blocksDamage = false;
         radius = WATER_RADIUS;
-        TextureRegion textureRegion = Resource.getTextureRegions(Resource.TEXTURE_REGION_OTHERS)[0][3];
+        TextureRegion textureRegion = Resource.getTextureRegions(Resource.DOODADS)[0][3];
         bDrawable = new BSprite(textureRegion);
         ((BSprite)bDrawable).setSize(16,16);
         ((BSprite)bDrawable).setPosition(_location.x,_location.y);

@@ -34,11 +34,11 @@ public class Resource {
     public static final int FONTS = 5;
     public static final int BUTTONS = 6;
 
-    //MAP TEXTURES
-
-    public static final int TEXTURE_REGION_BACKGROUND = 40;
-    public static final int TEXTURE_REGION_TREES = 41;
-    public static final int TEXTURE_REGION_OTHERS = 42;
+    //MAP
+    public static final int MAP_ALL = 20;
+    public static final int BACKGROUND = 21;
+    public static final int TREES = 21;
+    public static final int DOODADS = 22;
 
 
     //ICONS
@@ -58,16 +58,19 @@ public class Resource {
         loadTexture(TEXTURE_REGION_ASSAULT_TROOPER,"character.png");
         loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
         loadTexture(GUI_ALL,"GUI/gui.png");
-        loadTextureRegion(TEXTURE_REGION_TREES,"map/trees.png",256/3,128);
-        loadTextureRegion(TEXTURE_REGION_OTHERS,"map/others.png",32,32);
-        loadTextureRegion(TEXTURE_REGION_BACKGROUND,"map/tiles_background.png",128,128);
+        loadTexture(MAP_ALL,"map/map.png");
         loadTextureRegion(TEXTURE_REGION_SKILL_ICONS,"game/skillicons.png",512/7,64);
 
 
         loadTextureRegion(ANALOG,getTexture(GUI_ALL),512,128,128,128,4,1);
-        loadTextureRegion(GAME_FRAME,getTexture(GUI_ALL),0,256,128,128,1,1);
+        loadTextureRegion(GAME_FRAME,getTexture(GUI_ALL),0,258,128,128,1,1);
         loadTextureRegion(FONTS,getTexture(GUI_ALL),0,0,32,43,16,6);
         loadTextureRegion(BUTTONS,getTexture(GUI_ALL),512,0,256,128,2,1);
+
+        loadTextureRegion(BACKGROUND,getTexture(MAP_ALL),0,0,128,128,2,1);
+        loadTextureRegion(TREES,getTexture(MAP_ALL),0,128,128,84,3,1);
+        loadTextureRegion(DOODADS,getTexture(MAP_ALL),256,0,32,32,4,1);
+
     }
 
     //TEXTURE HANDLERS
