@@ -5,7 +5,7 @@ import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.utilities.Updateable;
+import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
 /**
  * Created by Omer on 12/12/2015.

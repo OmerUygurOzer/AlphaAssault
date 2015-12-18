@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.utilities;
+package com.boomer.alphaassault.gameworld.gamelogic;
 
 /**
  * Created by Omer on 11/24/2015.

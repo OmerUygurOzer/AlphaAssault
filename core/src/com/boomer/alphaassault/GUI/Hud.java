@@ -10,7 +10,7 @@ import com.boomer.alphaassault.graphics.elements.BFont;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
-import com.boomer.alphaassault.utilities.Updateable;
+import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
 import java.util.ArrayList;
 import java.util.List;

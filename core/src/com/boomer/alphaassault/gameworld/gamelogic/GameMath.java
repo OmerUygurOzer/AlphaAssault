@@ -1,40 +1,15 @@
-package com.boomer.alphaassault.utilities;
-
+package com.boomer.alphaassault.gameworld.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
-import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 
 /**
- * Created by Omer on 11/24/2015.
+ * Created by Omer on 12/17/2015.
  */
-public class Location {
-    public float x;
-    public float y;
-
-
-   public Location(float _x,float _y){
-        x = _x;
-        y= _y;
-
-    }
-
-    public Location(Location _location){
-        x = _location.x;
-        y = _location.y;
-    }
-
-    public Location(){
-        x = 0f;
-        y = 0f;
-    }
-
-    public boolean equals(Location _location){
-        return x==_location.x && y==_location.y;
-    }
+public class GameMath {
 
     public static boolean doesCollide(Entity _first, Entity _second){
         double radiant = _first.getRadius() + _second.getRadius();
-        double distance = Location.getDistance(_first.getCenter(),_second.getCenter());
+        double distance = GameMath.getDistance(_first.getCenter(),_second.getCenter());
         if(radiant >= distance){return true;}
         return false;
     }
@@ -52,5 +27,4 @@ public class Location {
         if(angle<0){angle+=360;}
         return angle;
     }
-
 }

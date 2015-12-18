@@ -11,7 +11,7 @@ import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.graphics.Renderable;
-import com.boomer.alphaassault.utilities.Updateable;
+import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
 
 import java.util.*;
@@ -73,6 +73,7 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     protected int baseMovementSpeed;
     protected int adjustedMovementSpeed;
     protected int sight;
+
     protected List<Buff> activeBuffs;
     protected List<Buff> expiredBuffs;
     protected List<Skill> skills;

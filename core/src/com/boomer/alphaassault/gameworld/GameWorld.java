@@ -2,10 +2,8 @@ package com.boomer.alphaassault.gameworld;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
-import com.boomer.alphaassault.handlers.controls.Controllable;
-import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.graphics.Renderable;
-import com.boomer.alphaassault.utilities.Updateable;
+import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
 /**
  * Created by Omer on 11/24/2015.

@@ -2,6 +2,7 @@ package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -18,8 +19,7 @@ public class Button implements Renderable {
     private BSprite icon;
     private BSprite base;
 
-    private float centerX;
-    private float centerY;
+    private Vector2 center;
 
     private int width;
     private int height;
@@ -35,15 +35,13 @@ public class Button implements Renderable {
     public Button(float _x,float _y,int _width,int _height){
         numberOfStates = 0;
         states = new HashMap<Integer, BSprite>();
-        centerX = _x;
-        centerY = _y;
+        center = new Vector2(_x,_y);
         width = _width;
         height = _height;
     }
 
 
-    public float getCenterX(){return centerX;}
-    public float getCenterY(){return centerY;}
+    public Vector2 getCenter(){return center;}
 
     public int getWidth(){return width;}
     public int getHeight(){return height;}
@@ -52,14 +50,14 @@ public class Button implements Renderable {
         BSprite Bsprite = new BSprite(_textureRegion);
         if(numberOfStates == 0){base = Bsprite;}
         Bsprite.setSize(width,height);
-        Bsprite.setCenter(centerX,centerY);
+        Bsprite.setCenter(center.x ,center.y);
         states.put(_state,Bsprite);
         numberOfStates++;
     }
 
     public void setIcon(TextureRegion _icon,float _width,float _height){
         icon = new BSprite(_icon);
-        icon.setCenter(centerX,centerY);
+        icon.setCenter(center.x,center.y);
         icon.setSize(_width,_height);
     }
 

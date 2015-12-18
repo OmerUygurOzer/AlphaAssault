@@ -1,5 +1,6 @@
 package com.boomer.alphaassault.GUI;
 
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -26,7 +27,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
     public static final int RIGHT_ONLY = 1;
     public static final int BOTH = 2;
 
-    private static final Location GAME_FRAME_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
+    private static final Vector2 GAME_FRAME_CENTER = new Vector2(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
     //GAME PAD SPRITES
     private BSprite leftButtonSprite;
@@ -40,11 +41,11 @@ public class Analog extends Controller implements Renderable,InputReceiver {
     private static final int CIRCLE_SIZE = 180;
     private static final int RADIUS = 90;
 
-    private static final Location LEFT_BUTTON_CENTER = new Location(100,100);
-    private static final Location RIGHT_BUTTON_CENTER = new Location(GameGraphics.VIRTUAL_WIDTH-100,100);
+    private static final Vector2 LEFT_BUTTON_CENTER = new Vector2(100,100);
+    private static final Vector2 RIGHT_BUTTON_CENTER = new Vector2(GameGraphics.VIRTUAL_WIDTH-100,100);
 
-    private Location leftCurrentLocation;
-    private Location rightCurrentLocation;
+    private Vector2 leftCurrentLocation;
+    private Vector2 rightCurrentLocation;
 
     //REFERENCE IDS
     private  long leftButtonId;
@@ -79,7 +80,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         leftCircleSprite = new BSprite(Resource.getTextureRegions(Resource.ANALOG)[0][3]);
         leftCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         leftCircleSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
-        leftCurrentLocation = new Location(LEFT_BUTTON_CENTER);
+        leftCurrentLocation = new Vector2(LEFT_BUTTON_CENTER);
         leftActive = false;
 
         //RIGHT_ONLY
@@ -89,7 +90,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         rightCircleSprite = new BSprite(Resource.getTextureRegions(Resource.ANALOG)[0][1]);
         rightCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         rightCircleSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
-        rightCurrentLocation = new Location(RIGHT_BUTTON_CENTER);
+        rightCurrentLocation = new Vector2(RIGHT_BUTTON_CENTER);
         rightActive = false;
 
         //GAME VIEW FRAME

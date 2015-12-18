@@ -94,8 +94,8 @@ public class Console extends Controller implements Renderable,InputReceiver {
             float inputY = Inputs.getInputs().get(key).y;
             for(int index : buttons.keySet()) {
                 Button button = buttons.get(index);
-                boolean fitsX = Math.abs(button.getCenterX() - inputX)<button.getWidth()/2;
-                boolean fitsY = Math.abs(button.getCenterY() - inputY)<button.getHeight()/2;
+                boolean fitsX = Math.abs(button.getCenter().x - inputX)<button.getWidth()/2;
+                boolean fitsY = Math.abs(button.getCenter().y - inputY)<button.getHeight()/2;
                 if(fitsX && fitsY){
                     button.setState(PRESSED);
                     set(index,PRESSED);

@@ -1,14 +1,7 @@
 package com.boomer.alphaassault.graphics.cameras;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.boomer.alphaassault.graphics.RenderState;
-import com.boomer.alphaassault.graphics.Renderable;
-import com.boomer.alphaassault.graphics.elements.BSprite;
-import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
-import com.boomer.alphaassault.utilities.Updateable;
 
 /**
  * Created by Omer on 11/27/2015.
