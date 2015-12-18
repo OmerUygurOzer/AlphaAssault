@@ -57,7 +57,7 @@ public class Map implements Renderable{
     private static final int FEATURE_ROCKS = 3;
     private static final int FEATURE_TREE = 4;
     private static final int FEATURE_WATER = 5;
-    private static final int FEATURE_PLAYER_BASE = 10;
+    private static final int FEATURE_PLAYER_HQ = 10;
 
 
     public Map(int _size){
@@ -126,9 +126,10 @@ public class Map implements Renderable{
 
 
             Texture base = new Texture(width*scaler,height*scaler, Pixmap.Format.RGBA8888);
+            base.draw(tileBadLands,0,0);
 
-            for(int x=0;x<= width/TILE_SIZE;x++){
-                for(int y=0;y<= height/TILE_SIZE;y++) {
+            for(int x=0;x< width/TILE_SIZE;x++){
+                for(int y=0;y< height/TILE_SIZE;y++) {
                     int type = random.nextInt((max - min) + 1) + min;
                     switch(type){
                         case 0:

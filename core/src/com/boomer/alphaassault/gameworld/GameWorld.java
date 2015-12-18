@@ -22,7 +22,7 @@ public class GameWorld implements Updateable,Renderable{
     private Camera camera;
 
     public GameWorld(Camera _camera){
-        gameMap = new Map(Map.SIZE_SMALL);
+        gameMap = new Map(Map.SIZE_MEDIUM);
         camera = _camera;
 
     }

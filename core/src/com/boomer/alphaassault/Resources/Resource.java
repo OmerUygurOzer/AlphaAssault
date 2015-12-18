@@ -37,8 +37,8 @@ public class Resource {
     //MAP
     public static final int MAP_ALL = 20;
     public static final int BACKGROUND = 21;
-    public static final int TREES = 21;
-    public static final int DOODADS = 22;
+    public static final int TREES = 22;
+    public static final int DOODADS = 23;
 
 
     //ICONS
@@ -68,7 +68,7 @@ public class Resource {
         loadTextureRegion(BUTTONS,getTexture(GUI_ALL),512,0,256,128,2,1);
 
         loadTextureRegion(BACKGROUND,getTexture(MAP_ALL),0,0,128,128,2,1);
-        loadTextureRegion(TREES,getTexture(MAP_ALL),0,128,128,84,3,1);
+        loadTextureRegion(TREES,getTexture(MAP_ALL),0,128,85,128,3,1);
         loadTextureRegion(DOODADS,getTexture(MAP_ALL),256,0,32,32,4,1);
 
     }
