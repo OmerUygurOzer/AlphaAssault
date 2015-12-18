@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.units.assaulttrooper;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.skills.Fire;
 import com.boomer.alphaassault.gameworld.units.skills.Flashbang;
@@ -29,9 +30,8 @@ public class AssaultTrooper extends Unit {
     private static final int RUN_KEY = 1;
     private static final int FLASHBANG_KEY = 2;
 
-    public AssaultTrooper(int _team, Location _location) {
-        super(_team, _location);
-        setLocation(_location.x,_location.y);
+    public AssaultTrooper(int _team, Vector2 _center) {
+        super(_team, _center);
 
         HP = ASSAULT_TROOPER_HP;
         range = ASSAULT_TROOPER_RANGE;
@@ -43,7 +43,7 @@ public class AssaultTrooper extends Unit {
         TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_REGION_ASSAULT_TROOPER),1024/6,2048/8);
         bAnimation = new BAnimation(framesAll);
         bAnimation.setSize(UNIT_SIZE,UNIT_SIZE);
-        bAnimation.setCenter(_location.x,_location.y);
+        bAnimation.setCenter(center.x,center.y);
         bAnimation.setFacingAngle(facingAngle);
         bAnimation.setSecondsPerFrame(1f/10f);
 

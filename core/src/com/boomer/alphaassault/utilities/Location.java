@@ -1,6 +1,8 @@
 package com.boomer.alphaassault.utilities;
 
-import sun.util.resources.cldr.byn.CalendarData_byn_ER;
+
+import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -28,6 +30,17 @@ public class Location {
 
     public boolean equals(Location _location){
         return x==_location.x && y==_location.y;
+    }
+
+    public static boolean doesCollide(Entity _first, Entity _second){
+        double radiant = _first.getRadius() + _second.getRadius();
+        double distance = Location.getDistance(_first.getCenter(),_second.getCenter());
+        if(radiant >= distance){return true;}
+        return false;
+    }
+
+    public static double getDistance(Vector2 _first, Vector2 _second){
+        return Math.sqrt(((_first.x-_second.x)*(_first.x-_second.x)) + ((_first.y-_second.y)*(_first.y-_second.y)) );
     }
 
     public static double getDistance(int _x1,int _y1,int _x2,int _y2){

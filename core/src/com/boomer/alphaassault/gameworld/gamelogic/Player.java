@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.gamelogic;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.GUI.Console;
 import com.boomer.alphaassault.GUI.Hud;
@@ -81,7 +82,7 @@ public class Player implements Updateable,Renderable,Controllable{
     public void setRole(int _role){
         switch (_role){
             case ASSAULT_TROOPER:
-                playerUnit = new AssaultTrooper(GameSettings.TEAM_BLUE,new Location(Math.round(camera.position.x),Math.round(camera.position.y)));
+                playerUnit = new AssaultTrooper(GameSettings.TEAM_BLUE,new Vector2(Math.round(camera.position.x),Math.round(camera.position.y)));
                 playerUnit.setReferenceID(PLAYER_REFERENCE);
                 playerUnit.setViewType(viewType);
                 playerUnit.setPlayer(this);

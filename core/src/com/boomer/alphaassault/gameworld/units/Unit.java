@@ -1,6 +1,8 @@
 package com.boomer.alphaassault.gameworld.units;
 
 
+import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
 import com.boomer.alphaassault.gameworld.units.skills.Skill;
@@ -17,7 +19,7 @@ import java.util.*;
 /**
  * Created by Omer on 11/24/2015.
  */
-public abstract class Unit implements Updateable,Renderable{
+public abstract class Unit extends Entity implements Updateable,Renderable{
 
     //CONSTANTS
     protected static final float UNIT_SIZE = 40;
@@ -25,9 +27,7 @@ public abstract class Unit implements Updateable,Renderable{
 
 
     //MECHANICAL/GRAPHICAL DETAILS
-    protected int radius;
     protected double facingAngle;
-    protected Location location;
     private long referenceId;
     protected int viewType;
     protected BAnimation bAnimation;
@@ -81,15 +81,13 @@ public abstract class Unit implements Updateable,Renderable{
     protected boolean invisibility;
 
 
-    protected Unit(int _team, Location _location){
-
-
+    protected Unit(int _team, Vector2 _center){
+        super(_center);
         Random RANDOM = new Random();
         //BASIC COMMON PROPERTIES
         facingAngle = RANDOM.nextInt((359 - 0) + 1) + 0;
         team = _team;
         radius = UNIT_RADIUS;
-        location = _location;
         invisibility = false;
         adjustedMovementSpeed = 0;
 
@@ -106,13 +104,6 @@ public abstract class Unit implements Updateable,Renderable{
 
     public void setPlayer(Player _player){player = _player;}
     public Player getPlayer(){return player;}
-
-    public Location getLocation(){return location;}
-    public void setLocation(float _x, float _y){
-        location.x = _x;
-        location.y = _y;
-    }
-    public int getRadius(){return radius;}
     public boolean isInvisible(){return invisibility;}
     public boolean isAlive() {return (HP>0);}
     public int getHP(){return HP;}

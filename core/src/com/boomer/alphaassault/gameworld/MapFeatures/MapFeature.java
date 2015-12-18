@@ -1,5 +1,7 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
+import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -9,7 +11,7 @@ import com.boomer.alphaassault.graphics.Renderable;
 /**
  * Created by Omer on 11/25/2015.
  */
-public abstract class MapFeature implements Renderable{
+public abstract class MapFeature extends Entity implements Renderable{
 
     //TYPE PROPERTIES
 
@@ -24,14 +26,12 @@ public abstract class MapFeature implements Renderable{
     protected boolean destroyable;
 
     //MECHANIC/GRAPHICAL DETAILS
-    protected Location location;
     private long referenceId;
     public BDrawable bDrawable;
     private int viewType;
 
-    public MapFeature(Location _location) {
-        //referenceId = System.currentTimeMillis();
-        location = _location;
+    public MapFeature(Vector2 _center) {
+        super(_center);
     }
     public boolean isDestroyable(){
         return destroyable;
@@ -48,12 +48,7 @@ public abstract class MapFeature implements Renderable{
     public boolean doesBlockDamage(){
         return blocksDamage;
     }
-    public Location getLocation(){
-        return location;
-    }
-    public int getRadius(){
-        return radius;
-    }
+
 
     @Override
     public void setViewType(int _viewType) {

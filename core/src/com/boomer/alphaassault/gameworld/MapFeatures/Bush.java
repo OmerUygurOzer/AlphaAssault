@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
@@ -11,8 +12,8 @@ import com.boomer.alphaassault.utilities.Location;
 public class Bush extends MapFeature {
     public static final int BUSH_RADIUS = 8;
 
-    public Bush(Location _location) {
-        super(_location);
+    public Bush(Vector2 _center) {
+        super(_center);
         destroyable = false;
         blocksMovement = false;
         blocksBullets = false;
@@ -22,7 +23,7 @@ public class Bush extends MapFeature {
         TextureRegion textureRegion = Resource.getTextureRegions(Resource.DOODADS)[0][2];
         bDrawable = new BSprite(textureRegion);
         ((BSprite)bDrawable).setSize(16,16);
-        ((BSprite)bDrawable).setPosition(_location.x,_location.y);
+        ((BSprite)bDrawable).setPosition(center.x,center.y);
     }
 
 

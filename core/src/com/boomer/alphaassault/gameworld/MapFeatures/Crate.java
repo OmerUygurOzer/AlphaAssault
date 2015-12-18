@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.utilities.Location;
@@ -11,8 +12,8 @@ import com.boomer.alphaassault.utilities.Location;
 public class Crate extends MapFeature {
     public static final int CRATE_RADIUS = 10;
 
-    public Crate(Location _location) {
-        super(_location);
+    public Crate(Vector2 _center) {
+        super(_center);
         destroyable = true;
         blocksMovement = true;
         blocksBullets = true;
@@ -22,6 +23,6 @@ public class Crate extends MapFeature {
         TextureRegion textureRegion = Resource.getTextureRegions(Resource.DOODADS)[0][0];
         bDrawable = new BSprite(textureRegion);
         ((BSprite)bDrawable).setSize(16,16);
-        ((BSprite)bDrawable).setPosition(_location.x,_location.y);
+        ((BSprite)bDrawable).setPosition(_center.x,_center.y);
     }
 }

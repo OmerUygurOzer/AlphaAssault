@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -159,30 +160,30 @@ public class Map implements Renderable{
                     if(featureTiles[x][y] == FEATURE_EMPTY){
                     switch (feature) {
                         case FEATURE_BUSH:
-                            Bush bush = new Bush(new Location(x * TILE_SIZE, y * TILE_SIZE));
+                            Bush bush = new Bush(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
                             mapFeatures.add(bush);
                             featureTiles[x][y] = FEATURE_BUSH;
                             break;
                         case FEATURE_CRATE:
-                            Crate crate = new Crate(new Location(x * TILE_SIZE, y * TILE_SIZE));
+                            Crate crate = new Crate(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
                             mapFeatures.add(crate);
                             featureTiles[x][y] = FEATURE_CRATE;
                             break;
                         case FEATURE_ROCKS:
-                            Rocks rocks = new Rocks(new Location(x * TILE_SIZE, y * TILE_SIZE));
+                            Rocks rocks = new Rocks(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
                             mapFeatures.add(rocks);
                             featureTiles[x][y] = FEATURE_ROCKS;
                             break;
                         case FEATURE_TREE:
                             if(y+1<height/TILE_SIZE) {
-                                Tree tree = new Tree(new Location(x * TILE_SIZE, y * TILE_SIZE));
+                                Tree tree = new Tree(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
                                 mapFeatures.add(tree);
                                 featureTiles[x][y] = FEATURE_TREE;
                                 featureTiles[x][y + 1] = FEATURE_TREE;
                             }
                             break;
                         case FEATURE_WATER:
-                            Water water = new Water(new Location(x * TILE_SIZE, y * TILE_SIZE));
+                            Water water = new Water(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
                             mapFeatures.add(water);
                             featureTiles[x][y] = FEATURE_WATER;
                             break;
