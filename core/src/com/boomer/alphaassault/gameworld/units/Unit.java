@@ -27,7 +27,6 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
 
     //MECHANICAL/GRAPHICAL DETAILS
     protected double facingAngle;
-    private long referenceId;
     protected int viewType;
     protected BAnimation bAnimation;
     protected Player player;
@@ -82,7 +81,7 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
 
 
     protected Unit(int _team, Vector2 _center){
-        super(_center);
+        super(_center,RenderState.DEPTH_SURFACE);
         Random RANDOM = new Random();
         //BASIC COMMON PROPERTIES
         facingAngle = RANDOM.nextInt((359 - 0) + 1) + 0;

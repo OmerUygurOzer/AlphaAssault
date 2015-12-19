@@ -5,7 +5,6 @@ import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.graphics.Renderable;
 
 /**
@@ -31,7 +30,7 @@ public abstract class MapFeature extends Entity implements Renderable{
     private int viewType;
 
     public MapFeature(Vector2 _center) {
-        super(_center);
+        super(_center,RenderState.DEPTH_SURFACE);
     }
     public boolean isDestroyable(){
         return destroyable;

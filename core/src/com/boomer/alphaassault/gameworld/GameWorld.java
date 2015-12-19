@@ -1,9 +1,14 @@
 package com.boomer.alphaassault.gameworld;
 
 import com.badlogic.gdx.graphics.Camera;
+import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
+import com.boomer.alphaassault.handlers.RenderStateManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -18,18 +23,32 @@ public class GameWorld implements Updateable,Renderable{
     private long baseReference;
     private Player player;
     private Camera camera;
+    private List<Entity> entities;
 
     public GameWorld(Camera _camera){
         gameMap = new Map(Map.SIZE_MEDIUM);
+        entities = new ArrayList<Entity>();
         camera = _camera;
 
     }
 
-
-
     public void addPlayer(Player _player){
         player = _player;
         player.setMap(gameMap);
+    }
+
+    public void addEntity(Entity _entity){
+        entities.add(_entity);
+        if(_entity instanceof Renderable){
+            ((Renderable) _entity).addToRenderState();
+        }
+    }
+
+    public void removeEntity(Entity _entity){
+        if(_entity instanceof Renderable){
+            RenderStateManager.removeElement(_entity.getReferenceId(),_entity.getDepth());
+        }
+        entities.remove(_entity);
     }
 
     @Override

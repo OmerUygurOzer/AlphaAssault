@@ -1,10 +1,9 @@
 package com.boomer.alphaassault.graphics.elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.boomer.alphaassault.utilities.Location;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.utilities.Rotation;
 
 import java.util.HashMap;
@@ -25,8 +24,8 @@ public class BAnimation implements BDrawable {
 
     private float width;
     private float height;
-    private Location position;
-    private Location center;
+    private Vector2 position;
+    private Vector2 center;
     private Rotation rotation;
     private double facingAngle;
 
@@ -74,8 +73,8 @@ public class BAnimation implements BDrawable {
         spriteSheet.put(Rotation.UP_LEFT,spritesUpLeft);
         spriteSheet.put(Rotation.DOWN_RIGHT,spritesDownRight);
         spriteSheet.put(Rotation.DOWN_LEFT,spritesDownLeft);
-        position = new Location();
-        center = new Location();
+        position = new Vector2();
+        center = new Vector2();
     }
 
     public void setSecondsPerFrame(float _spf){
@@ -158,7 +157,7 @@ public class BAnimation implements BDrawable {
     }
 
     @Override
-    public Location getCenter() {
+    public Vector2 getCenter() {
         return center;
     }
 
@@ -178,7 +177,7 @@ public class BAnimation implements BDrawable {
         return currentFrame;
     }
 
-    public Location getPosition() {
+    public Vector2 getPosition() {
         return position;
     }
 

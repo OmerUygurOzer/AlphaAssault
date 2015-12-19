@@ -1,11 +1,10 @@
 package com.boomer.alphaassault.graphics.elements;
 
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.utilities.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,14 @@ public class BFont implements BDrawable {
 
     private int fontSize;
 
-    private Location location;
+    private Vector2 location;
 
     private String text;
     private TextureRegion[] ascii;
     private List<Sprite> spriteText;
 
 
-    public BFont(Location _location,String _text,int _fontSize){
+    public BFont(Vector2 _location,String _text,int _fontSize){
         text = new String(_text);
         fontSize = _fontSize;
         location = _location;
@@ -88,12 +87,12 @@ public class BFont implements BDrawable {
 
     @Override
     public BDrawable copy() {
-        BFont bFont  = new BFont(new Location(location.x,location.y),text,fontSize);
+        BFont bFont  = new BFont(new Vector2(location.x,location.y),text,fontSize);
         return  bFont;
     }
 
     @Override
-    public Location getCenter() {
+    public Vector2 getCenter() {
         return location;
     }
 }

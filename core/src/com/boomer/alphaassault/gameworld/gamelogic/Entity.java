@@ -9,11 +9,15 @@ public abstract class Entity {
     protected Vector2 center;
     protected boolean removed;
     protected float radius;
+    protected long referenceId;
+    protected int depth;
 
 
-    protected Entity(Vector2 _center){
+    protected Entity(Vector2 _center,int _depth){
         center = _center;
         removed = false;
+        depth = _depth;
+        referenceId = System.nanoTime();
     }
 
     public void setCenter(float _x,float _y){
@@ -30,4 +34,7 @@ public abstract class Entity {
         if(radiant >= distance){return true;}
         return false;
     }
+
+    public long getReferenceId(){return referenceId;}
+    public int getDepth(){return depth;}
 }

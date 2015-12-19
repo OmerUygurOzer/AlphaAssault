@@ -3,7 +3,6 @@ package com.boomer.alphaassault.graphics;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
-import com.boomer.alphaassault.utilities.Location;
 
 
 import java.util.*;
