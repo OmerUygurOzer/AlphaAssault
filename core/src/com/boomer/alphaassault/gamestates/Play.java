@@ -96,7 +96,6 @@ public class Play extends GameStateBase {
         gameWorld.setViewType(VIEW_TYPE_GAME);
 
 
-
         gameWorld.addToRenderState();
 
     }

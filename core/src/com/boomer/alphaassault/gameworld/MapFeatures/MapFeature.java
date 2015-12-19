@@ -25,7 +25,6 @@ public abstract class MapFeature extends Entity implements Renderable{
     protected boolean destroyable;
 
     //MECHANIC/GRAPHICAL DETAILS
-    private long referenceId;
     public BDrawable bDrawable;
     private int viewType;
 

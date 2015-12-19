@@ -26,8 +26,8 @@ public class GameWorld implements Updateable,Renderable{
     private List<Entity> entities;
 
     public GameWorld(Camera _camera){
-        gameMap = new Map(Map.SIZE_MEDIUM);
         entities = new ArrayList<Entity>();
+        gameMap = new Map(Map.SIZE_MEDIUM,this);
         camera = _camera;
 
     }

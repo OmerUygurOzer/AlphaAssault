@@ -40,6 +40,9 @@ public class Map implements Renderable{
 
     private static final int TILE_SIZE = 16;
 
+    //WORLD INSTANCE
+    GameWorld world;
+
     //MAP BASE CONSTANTS
 
     private int[][] featureTiles;
@@ -60,7 +63,8 @@ public class Map implements Renderable{
     private static final int FEATURE_PLAYER_HQ = 10;
 
 
-    public Map(int _size){
+    public Map(int _size,GameWorld _world){
+        world = _world;
         mapFeatures = new ArrayList<MapFeature>();
         switch(_size){
             case SIZE_SMALL:
@@ -197,6 +201,7 @@ public class Map implements Renderable{
 
     }
 
+
     public int getWidth(){
         return width;
     }
@@ -238,13 +243,11 @@ public class Map implements Renderable{
 
     @Override
     public void addToRenderState() {
-        long baseID = referenceId;
-        RenderStateManager.addElement(viewType,baseID,RenderState.DEPTH_BASE,mapBase);
+        RenderStateManager.addElement(viewType,referenceId,RenderState.DEPTH_BASE,mapBase);
         for(MapFeature mapFeature:mapFeatures){
-            baseID++;
             mapFeature.setViewType(viewType);
-            mapFeature.setReferenceID(baseID);
-            mapFeature.addToRenderState();
+            world.addEntity(mapFeature);
+            //mapFeature.addToRenderState();
         }
     }
 
