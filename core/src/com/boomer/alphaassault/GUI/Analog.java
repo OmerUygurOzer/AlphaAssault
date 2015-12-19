@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.gamelogic.GameMath;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -9,7 +10,6 @@ import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.Inputs;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.handlers.controls.InputReceiver;
-import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.graphics.Renderable;
 
 /**
@@ -158,12 +158,12 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         for (Long key : Inputs.getInputs().keySet()){
             float inputX = Inputs.getInputs().get(key).x;
             float inputY = Inputs.getInputs().get(key).y;
-            double distance = Location.getDistance(inputX,inputY, LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y);
+            double distance = GameMath.getDistance(inputX,inputY, LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y);
             if( distance<= RADIUS){
                 leftCurrentLocation.x = inputX;
                 leftCurrentLocation.y = inputY;
                 set(LEFT_ANALOG,distance*1/RADIUS);
-                set(LEFT_ROTATION,Location.getAngle(inputX,inputY,LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y));
+                set(LEFT_ROTATION,GameMath.getAngle(inputX,inputY,LEFT_BUTTON_CENTER.x,LEFT_BUTTON_CENTER.y));
                 set(LEFT_ACTIVE,true);
                 leftButtonSprite.setCenter(leftCurrentLocation.x, leftCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(leftButtonId,RenderState.DEPTH_GAME_SCREEN_BASE,leftButtonSprite);
@@ -188,12 +188,12 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         for (Long key : Inputs.getInputs().keySet()){
             float inputX = Inputs.getInputs().get(key).x;
             float inputY = Inputs.getInputs().get(key).y;
-            double distance = Location.getDistance(inputX,inputY, RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y);
+            double distance = GameMath.getDistance(inputX,inputY, RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y);
             if( distance<= RADIUS){
                 rightCurrentLocation.x = inputX;
                 rightCurrentLocation.y = inputY;
                 set(RIGHT_ANALOG,distance*1/RADIUS);
-                set(RIGHT_ROTATION,Location.getAngle(inputX,inputY,RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y));
+                set(RIGHT_ROTATION,GameMath.getAngle(inputX,inputY,RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y));
                 set(RIGHT_ACTIVE,true);
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
                 RenderStateManager.updatingState.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN_BASE,rightButtonSprite);

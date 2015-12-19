@@ -7,13 +7,6 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class GameMath {
 
-    public static boolean doesCollide(Entity _first, Entity _second){
-        double radiant = _first.getRadius() + _second.getRadius();
-        double distance = GameMath.getDistance(_first.getCenter(),_second.getCenter());
-        if(radiant >= distance){return true;}
-        return false;
-    }
-
     public static double getDistance(Vector2 _first, Vector2 _second){
         return Math.sqrt(((_first.x-_second.x)*(_first.x-_second.x)) + ((_first.y-_second.y)*(_first.y-_second.y)) );
     }

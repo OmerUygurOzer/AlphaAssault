@@ -10,7 +10,6 @@ import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.utilities.Location;
 
 /**
  * Created by Omer on 11/24/2015.

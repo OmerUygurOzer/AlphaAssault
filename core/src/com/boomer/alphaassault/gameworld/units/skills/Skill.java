@@ -2,8 +2,8 @@ package com.boomer.alphaassault.gameworld.units.skills;
 
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.utilities.Location;
 
 /**
  * Created by Omer on 12/1/2015.
@@ -44,7 +44,7 @@ public abstract class Skill {
     public abstract void resupply();
     public abstract void use();
     public abstract void use(Unit _unit);
-    public abstract void use(Location _target);
+    public abstract void use(Vector2 _target);
     public abstract void update();
     public boolean isReady(){return ready;}
     public int getKey(){return key;}

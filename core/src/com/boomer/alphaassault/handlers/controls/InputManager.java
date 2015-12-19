@@ -1,9 +1,8 @@
 package com.boomer.alphaassault.handlers.controls;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.graphics.GameGraphics;
-import com.boomer.alphaassault.utilities.Location;
 
 
 /**
@@ -16,7 +15,7 @@ public class InputManager{
     private int screenHeight;
     private Touch [] previousState;
     private Touch [] currentState;
-    private Location screenStartPoint = new Location(0,0);
+    private Vector2 screenStartPoint = new Vector2(0,0);
 
     private class Touch{
         public int x;

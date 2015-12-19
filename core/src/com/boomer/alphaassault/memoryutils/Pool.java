@@ -13,7 +13,6 @@ import java.util.Stack;
  * Created by Omer on 12/17/2015.
  */
 public abstract class Pool<T> {
-    private static final int MAX_ALLOC = 32;
     private Stack<T> memStack;
 
     public Pool(){

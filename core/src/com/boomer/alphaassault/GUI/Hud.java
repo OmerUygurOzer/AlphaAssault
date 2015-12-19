@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
 import com.boomer.alphaassault.graphics.GameGraphics;
@@ -9,7 +10,6 @@ import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BFont;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
 import java.util.ArrayList;
@@ -85,14 +85,14 @@ public class Hud implements Renderable,Updateable {
         //PRINT PLAYERNAME
         String playerNameString = new String(player.getName());
         int scaledFont = FONT_BASE - Math.round(5*playerNameString.length()/ MAX_FONT_LENGTH);
-        playerName = new BFont(new Location(PLAYER_NAME_X,PLAYER_NAME_Y),playerNameString,scaledFont);
+        playerName = new BFont(new Vector2(PLAYER_NAME_X,PLAYER_NAME_Y),playerNameString,scaledFont);
 
         //PRINT AMMO FONTS AND ICONS
         int supplyIndex = 0;
         for(int supplyKey : player.getPlayerUnit().getSupplies().keySet()){
             String ammoString =  " x " + player.getPlayerUnit().getSupplies().get(supplyKey).count;
             int scaledAmmoFont = FONT_BASE - Math.round(6*ammoString.length()/ MAX_FONT_LENGTH);
-            BFont bFont = new BFont(new Location(SUPPLY_X + SUPPLY_ICON_SIZE, SUPPLY_Y - SUPPLY_FONT_BASE *supplyIndex),ammoString,scaledAmmoFont);
+            BFont bFont = new BFont(new Vector2(SUPPLY_X + SUPPLY_ICON_SIZE, SUPPLY_Y - SUPPLY_FONT_BASE *supplyIndex),ammoString,scaledAmmoFont);
             supplyFonts.add(bFont);
 
             BSprite bSprite = new BSprite(player.getPlayerUnit().getSupplies().get(supplyKey).icon);

@@ -23,4 +23,11 @@ public abstract class Entity {
     public boolean isRemoved(){return removed;}
     public Vector2 getCenter(){return center;}
     public float getRadius(){return radius;}
+
+    public static boolean doesCollide(Entity _first, Entity _second){
+        double radiant = _first.getRadius() + _second.getRadius();
+        double distance = GameMath.getDistance(_first.getCenter(),_second.getCenter());
+        if(radiant >= distance){return true;}
+        return false;
+    }
 }

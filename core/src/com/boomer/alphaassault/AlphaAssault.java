@@ -8,9 +8,6 @@ import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.threads.InputThread;
 import com.boomer.alphaassault.threads.RenderThread;
 import com.boomer.alphaassault.threads.UpdateThread;
-import com.boomer.alphaassault.utilities.Location;
-
-import java.util.HashMap;
 
 public class AlphaAssault extends RenderThread {
     private UpdateThread updateThread;

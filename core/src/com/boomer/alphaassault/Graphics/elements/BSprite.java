@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.boomer.alphaassault.utilities.Location;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Omer on 12/8/2015.
@@ -12,26 +12,26 @@ import com.boomer.alphaassault.utilities.Location;
 public class BSprite implements BDrawable {
 
     private Sprite sprite;
-    private Location center;
+    private Vector2 center;
 
     public BSprite(Sprite _sprite){
         sprite = new Sprite(_sprite);
-        center = new Location();
+        center = new Vector2();
     }
 
     public BSprite(TextureRegion _textureRegion){
         sprite = new Sprite(_textureRegion);
-        center = new Location();
+        center = new Vector2();
     }
 
     public BSprite(Texture _texture){
         sprite = new Sprite(_texture);
-        center = new Location();
+        center = new Vector2();
     }
 
     public BSprite(BDrawable _bDrawable) {
         sprite = new Sprite(((BSprite)_bDrawable).getSprite());
-        center = new Location();
+        center = new Vector2();
     }
 
     @Override
@@ -71,6 +71,6 @@ public class BSprite implements BDrawable {
         sprite.setSize(_width,_height);
     }
 
-    public Location getCenter(){return center;}
+    public Vector2 getCenter(){return center;}
 }
 

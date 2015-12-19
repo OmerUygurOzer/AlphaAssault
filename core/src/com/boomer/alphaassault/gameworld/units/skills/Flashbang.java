@@ -1,9 +1,8 @@
 package com.boomer.alphaassault.gameworld.units.skills;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.utilities.Location;
 
 /**
  * Created by Omer on 12/1/2015.
@@ -53,7 +52,7 @@ public class Flashbang extends Skill {
     }
 
     @Override
-    public void use(Location _target) {
+    public void use(Vector2 _target) {
 
     }
 

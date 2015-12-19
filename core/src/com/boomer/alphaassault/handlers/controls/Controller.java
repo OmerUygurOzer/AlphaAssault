@@ -1,7 +1,6 @@
 package com.boomer.alphaassault.handlers.controls;
 
-import com.boomer.alphaassault.utilities.Location;
-import sun.util.resources.cldr.lag.CalendarData_lag_TZ;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 
@@ -13,7 +12,7 @@ public class Controller {
     public class Value {
         public double valueDouble;
         public boolean valueBoolean;
-        public Location valueLocation;
+        public Vector2 valueLocation;
 
         public Value(double _value) {
             valueBoolean = false;
@@ -27,10 +26,10 @@ public class Controller {
             valueLocation = null;
         }
 
-        public Value(Location _value) {
+        public Value(Vector2 _value) {
             valueBoolean = false;
             valueDouble = 0;
-            valueLocation = new Location(_value);
+            valueLocation = new Vector2(_value);
         }
     }
 
@@ -60,7 +59,7 @@ public class Controller {
         }
     }
 
-    public void set(Integer _key, Location _value) {
+    public void set(Integer _key, Vector2 _value) {
         if(values.containsKey(_key)){
             values.get(_key).valueLocation.x = _value.x;
             values.get(_key).valueLocation.y = _value.y;

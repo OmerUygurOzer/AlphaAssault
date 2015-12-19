@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.handlers.controls;
 
-import com.boomer.alphaassault.utilities.Location;
+import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.gamelogic.GameMath;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,16 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Inputs {
 
 
-        private static volatile Location hover;
+        private static volatile Vector2 hover;
         private static int numberOfInputs;
-        private static Map<Long,Location> inputs;
+        private static Map<Long,Vector2> inputs;
         public static final int INPUT_SEPARATOR;
 
 
         static{
-            hover = new Location(0,0);
+            hover = new Vector2(0,0);
             numberOfInputs = 0;
-            inputs = new ConcurrentHashMap<Long, Location>();
+            inputs = new ConcurrentHashMap<Long, Vector2>();
             INPUT_SEPARATOR = 90;
            }
 
@@ -36,11 +37,11 @@ public class Inputs {
             boolean newInput = true;
             if(inputs.isEmpty()){
                 numberOfInputs++;
-                inputs.put(System.currentTimeMillis(),new Location(_x,_y));
+                inputs.put(System.nanoTime(),new Vector2(_x,_y));
                 return;
             }
             for(Long key: inputs.keySet()){
-                if(Location.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
+                if(GameMath.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
                     inputs.get(key).x = _x;
                     inputs.get(key).y = _y;
                     newInput = false;
@@ -49,13 +50,13 @@ public class Inputs {
             }
             if (newInput) {
                 numberOfInputs++;
-                inputs.put(System.currentTimeMillis(),new Location(_x,_y));
+                inputs.put(System.nanoTime(),new Vector2(_x,_y));
             }
         }
 
         public static void inputRelease(int _x, int _y){
             for(Long key: inputs.keySet()){
-                        if(Location.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
+                        if(GameMath.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
                             inputs.remove(key);
                             numberOfInputs--;
                             continue;
@@ -65,10 +66,10 @@ public class Inputs {
 
         }
 
-        public static Location getHoverLocation(){
+        public static Vector2 getHoverLocation(){
            return hover;
         }
-        public static Map<Long,Location> getInputs(){return inputs;}
+        public static Map<Long,Vector2> getInputs(){return inputs;}
         public static boolean isEmtpy(){return inputs.isEmpty();}
 
 

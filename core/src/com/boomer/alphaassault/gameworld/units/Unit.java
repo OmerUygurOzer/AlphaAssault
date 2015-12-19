@@ -9,7 +9,6 @@ import com.boomer.alphaassault.gameworld.units.skills.Skill;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
@@ -98,7 +97,6 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
 
         //SKILLS
         skills = new ArrayList<Skill>();
-
         //AMMOS
         supplies = new HashMap<Integer, Skill.Supply>();
     }
@@ -165,7 +163,7 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     //SKILLS
     protected void addSkill(Skill _skill){skills.add(_skill);}
     public void use(int _key){skills.get(_key).use(this);}
-    public void use(int _key,Location _location){skills.get(_key).use(_location);}
+    public void use(int _key,Vector2 _location){skills.get(_key).use(_location);}
     public void use(int _key,Unit _unit){skills.get(_key).use(_unit);}
     public List<Skill> getSkillSet(){return skills;}
 

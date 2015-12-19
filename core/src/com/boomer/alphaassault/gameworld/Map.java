@@ -1,17 +1,16 @@
 package com.boomer.alphaassault.gameworld;
 
 
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.gamelogic.GameMath;
 import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.utilities.Location;
 import com.boomer.alphaassault.graphics.Renderable;
 
 import java.util.ArrayList;
@@ -228,7 +227,7 @@ public class Map implements Renderable{
                 radius = Water.WATER_RADIUS;
                 break;
         }
-        double distance = Location.getDistance(_x,_y,centerX,centerY);
+        double distance = GameMath.getDistance(_x,_y,centerX,centerY);
         if(distance < radius){
             return false;
         }
