@@ -36,6 +36,8 @@ public class RenderState{
 
     private SpriteBatch spriteBatch;
 
+    private List<Long> bufferList;
+
     public RenderState(){
 
         spriteBatch = new SpriteBatch();
@@ -51,6 +53,7 @@ public class RenderState{
         }
 
 
+        bufferList = new ArrayList<Long>();
     }
 
     public void addView(int _viewType, Viewport _viewPort){
@@ -58,7 +61,7 @@ public class RenderState{
     }
 
     public void addElement(int _viewType, long _referenceId,int _depth,BDrawable _bDrawable){
-            synchronized (viewMapping) {
+
                 bDrawables.get(_depth).put(_referenceId, _bDrawable.copy());
                 if (!viewMapping.get(_depth).containsKey(_viewType)) {
                     List<Long> list = new ArrayList<Long>();
@@ -68,7 +71,7 @@ public class RenderState{
                 } else {
                     viewMapping.get(_depth).get(_viewType).add(_referenceId);
                 }
-            }
+
     }
 
 
@@ -100,11 +103,11 @@ public class RenderState{
                     spriteBatch.begin();
                     viewPorts.get(key).apply();
                     if (viewMapping.get(depth).get(key) != null) {
-                        synchronized (viewMapping) {
-                            for (long MAPPER : (viewMapping.get(depth).get(key))) {
+                            bufferList.addAll(viewMapping.get(depth).get(key));
+                            for (long MAPPER : bufferList) {
                                 bDrawables.get(depth).get(MAPPER).draw(spriteBatch);
                             }
-                        }
+                        bufferList.clear();
                     }
                     spriteBatch.end();
                 }
