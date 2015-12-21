@@ -38,7 +38,6 @@ public class Flashbang extends Skill {
 
     @Override
     public void use() {
-        System.out.println("Flashbang");
             if(isReady()){
                 if(supply.count >0){
                     //use
@@ -53,6 +52,11 @@ public class Flashbang extends Skill {
 
     @Override
     public void use(Vector2 _target) {
+
+    }
+
+    @Override
+    public void use(float _angle) {
 
     }
 

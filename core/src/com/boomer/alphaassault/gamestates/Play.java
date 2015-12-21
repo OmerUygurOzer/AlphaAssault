@@ -78,9 +78,14 @@ public class Play extends GameStateBase {
         hud.setReferenceID(REFERENCE_POINT + 3000);
         hud.setViewType(VIEW_TYPE_SCREEN);
 
+        //ACTIVATE GAMEWORLD
+        gameWorld = new GameWorld(gameCam);
+        gameWorld.setReferenceID(REFERENCE_POINT + 4000);
+        gameWorld.setViewType(VIEW_TYPE_GAME);
 
         //ADD PLAYER
         player = new Player(gameCam);
+        player.setWorld(gameWorld);
         player.setViewType(VIEW_TYPE_GAME);
         player.setName("PC PRINCIPAL");
         player.setIcon(Resource.getTexture(Resource.TEXTURE_PLAYER));
@@ -89,13 +94,7 @@ public class Play extends GameStateBase {
         player.setRole(Player.ASSAULT_TROOPER);
         player.setHud(hud);
 
-        //ACTIVATE GAMEWORLD
-        gameWorld = new GameWorld(gameCam);
-        gameWorld.setReferenceID(REFERENCE_POINT + 4000);
         gameWorld.addPlayer(player);
-        gameWorld.setViewType(VIEW_TYPE_GAME);
-
-
         gameWorld.addToRenderState();
 
     }

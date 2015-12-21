@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
@@ -28,22 +29,22 @@ public abstract class MapFeature extends Entity implements Renderable{
     public BDrawable bDrawable;
     private int viewType;
 
-    public MapFeature(Vector2 _center) {
-        super(_center,RenderState.DEPTH_SURFACE);
+    public MapFeature(Vector2 _center,GameWorld _world) {
+        super(_center,RenderState.DEPTH_SURFACE,_world);
     }
-    public boolean isDestroyable(){
+    public final boolean isDestroyable(){
         return destroyable;
     }
-    public boolean doesBlockMovement(){
+    public final boolean doesBlockMovement(){
         return blocksMovement;
     }
-    public boolean doesBlockBullets(){
+    public final boolean doesBlockBullets(){
         return blocksBullets;
     }
-    public boolean doesBlockAerial(){
+    public final boolean doesBlockAerial(){
         return blocksAerial;
     }
-    public boolean doesBlockDamage(){
+    public final boolean doesBlockDamage(){
         return blocksDamage;
     }
 

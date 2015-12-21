@@ -2,6 +2,7 @@ package com.boomer.alphaassault.gameworld.units.assaulttrooper;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.skills.Fire;
 import com.boomer.alphaassault.gameworld.units.skills.Flashbang;
@@ -29,9 +30,8 @@ public class AssaultTrooper extends Unit {
     private static final int RUN_KEY = 1;
     private static final int FLASHBANG_KEY = 2;
 
-    public AssaultTrooper(int _team, Vector2 _center) {
-        super(_team, _center);
-
+    public AssaultTrooper(int _team, Vector2 _center,GameWorld _world) {
+        super(_team, _center,_world);
         HP = ASSAULT_TROOPER_HP;
         range = ASSAULT_TROOPER_RANGE;
         sight = ASSAULT_TROOPER_SIGHT;
@@ -40,7 +40,7 @@ public class AssaultTrooper extends Unit {
 
         //CALCULATE/LOAD ANIMATIONS
         TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_REGION_ASSAULT_TROOPER),1024/6,2048/8);
-        bAnimation = new BAnimation(framesAll);
+        bAnimation = new BAnimation(framesAll, BAnimation.Type.DIRECTIONAL);
         bAnimation.setSize(UNIT_SIZE,UNIT_SIZE);
         bAnimation.setCenter(center.x,center.y);
         bAnimation.setFacingAngle(facingAngle);
@@ -54,6 +54,9 @@ public class AssaultTrooper extends Unit {
         Flashbang flashbang = new Flashbang(2);
         flashbang.setUser(this);
 
+        fire.setWorld(_world);
+        run.setWorld(_world);
+        flashbang.setWorld(_world);
 
         addSkill(fire);
         addSkill(run);

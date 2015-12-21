@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.utilities.Rotation;
 
 import java.util.HashMap;
@@ -15,12 +16,15 @@ import java.util.Map;
 public class BAnimation implements BDrawable {
     private Sprite currentSprite;
     private TextureRegion[][] textureRegions;
+    private Type type;
 
-    private Map<Rotation,Sprite[]> spriteSheet;
+    private Map<Rotation,Sprite[]> spriteSheetDirectional;
+    private Sprite[] spriteSheetStill;
 
     private int currentFrame;
     private int frames;
     private float SPF; //SECONDS PER FRAME
+
 
     private float width;
     private float height;
@@ -31,12 +35,24 @@ public class BAnimation implements BDrawable {
 
     private float timer;
 
-    public BAnimation(TextureRegion[][] _textureRegions) {
-        spriteSheet = new HashMap<Rotation, Sprite[]>();
+
+    public BAnimation(TextureRegion[][] _textureRegions,Type _type) {
+        type = _type;
         currentFrame = 0;
         timer = 0f;
 
+
         textureRegions = _textureRegions;
+        switch (type){
+            case DIRECTIONAL:
+                spriteSheetDirectional = new HashMap<Rotation, Sprite[]>();
+                break;
+            case STILL:
+                facingAngle = 0;
+                break;
+        }
+
+
         generate();
 
     }
@@ -44,35 +60,56 @@ public class BAnimation implements BDrawable {
 
     private void generate(){
         frames = textureRegions[0].length;
-        Sprite [] spritesRight = new Sprite[frames];
-        Sprite [] spritesLeft = new Sprite[frames];
-        Sprite [] spritesUp = new Sprite[frames];
-        Sprite [] spritesDown = new Sprite[frames];
-        Sprite [] spritesUpRight = new Sprite[frames];
-        Sprite [] spritesUpLeft = new Sprite[frames];
-        Sprite [] spritesDownLeft = new Sprite[frames];
-        Sprite [] spritesDownRight = new Sprite[frames];
+        switch (type){
+            case DIRECTIONAL:
 
-        for(int i=0;i<textureRegions[0].length;i++){
-            spritesRight[i] =new Sprite(textureRegions[6][i]);
-            spritesLeft[i] = new Sprite(textureRegions[2][i]);
-            spritesUp[i] = new Sprite(textureRegions[4][i]);
-            spritesDown[i] = new Sprite(textureRegions[0][i]);
-            spritesUpRight[i] = new Sprite(textureRegions[5][i]);
-            spritesUpLeft[i] = new Sprite(textureRegions[3][i]);
-            spritesDownRight[i] = new Sprite(textureRegions[7][i]);
-            spritesDownLeft[i] = new Sprite(textureRegions[1][i]);
+                Sprite [] spritesRight = new Sprite[frames];
+                Sprite [] spritesLeft = new Sprite[frames];
+                Sprite [] spritesUp = new Sprite[frames];
+                Sprite [] spritesDown = new Sprite[frames];
+                Sprite [] spritesUpRight = new Sprite[frames];
+                Sprite [] spritesUpLeft = new Sprite[frames];
+                Sprite [] spritesDownLeft = new Sprite[frames];
+                Sprite [] spritesDownRight = new Sprite[frames];
+
+                for(int i=0;i<textureRegions[0].length;i++){
+                    spritesRight[i] =new Sprite(textureRegions[6][i]);
+                    spritesLeft[i] = new Sprite(textureRegions[2][i]);
+                    spritesUp[i] = new Sprite(textureRegions[4][i]);
+                    spritesDown[i] = new Sprite(textureRegions[0][i]);
+                    spritesUpRight[i] = new Sprite(textureRegions[5][i]);
+                    spritesUpLeft[i] = new Sprite(textureRegions[3][i]);
+                    spritesDownRight[i] = new Sprite(textureRegions[7][i]);
+                    spritesDownLeft[i] = new Sprite(textureRegions[1][i]);
 
 
+                }
+                spriteSheetDirectional.put(Rotation.RIGHT,spritesRight);
+                spriteSheetDirectional.put(Rotation.LEFT,spritesLeft);
+                spriteSheetDirectional.put(Rotation.UP,spritesUp);
+                spriteSheetDirectional.put(Rotation.DOWN,spritesDown);
+                spriteSheetDirectional.put(Rotation.UP_RIGHT,spritesUpRight);
+                spriteSheetDirectional.put(Rotation.UP_LEFT,spritesUpLeft);
+                spriteSheetDirectional.put(Rotation.DOWN_RIGHT,spritesDownRight);
+                spriteSheetDirectional.put(Rotation.DOWN_LEFT,spritesDownLeft);
+
+                break;
+            case STILL:
+                spriteSheetStill = new Sprite[frames];
+
+                for(int i=0;i<textureRegions[0].length;i++){
+                   spriteSheetStill[i] = new Sprite(textureRegions[0][i]);
+                }
+
+
+
+
+                break;
+            default:
+                break;
         }
-        spriteSheet.put(Rotation.RIGHT,spritesRight);
-        spriteSheet.put(Rotation.LEFT,spritesLeft);
-        spriteSheet.put(Rotation.UP,spritesUp);
-        spriteSheet.put(Rotation.DOWN,spritesDown);
-        spriteSheet.put(Rotation.UP_RIGHT,spritesUpRight);
-        spriteSheet.put(Rotation.UP_LEFT,spritesUpLeft);
-        spriteSheet.put(Rotation.DOWN_RIGHT,spritesDownRight);
-        spriteSheet.put(Rotation.DOWN_LEFT,spritesDownLeft);
+
+
         position = new Vector2();
         center = new Vector2();
     }
@@ -84,12 +121,23 @@ public class BAnimation implements BDrawable {
     public void setSize(float _width,float _height){
         width = _width;
         height = _height;
-        for(Rotation rotation : spriteSheet.keySet()){
-            for(int i= 0 ;i < spriteSheet.get(Rotation.LEFT).length;i++){
-                spriteSheet.get(rotation)[i].setSize(width,height);
+        switch (type){
+            case DIRECTIONAL:
+                for(Rotation rotation : spriteSheetDirectional.keySet()){
+                    for(int i = 0; i < frames; i++){
+                        spriteSheetDirectional.get(rotation)[i].setSize(width,height);
 
-            }
+                    }
+                }
+                break;
+            case STILL:
+                for(int i = 0; i < frames; i++){
+                    spriteSheetStill[i].setSize(width,height);
+
+                }
+                break;
         }
+
     }
 
     public void setFacingAngle(double _facingAngle){
@@ -112,7 +160,7 @@ public class BAnimation implements BDrawable {
     }
 
     public void update(float _deltaTime){
-        timer += _deltaTime;
+        timer += GameSettings.UPS;
         if(timer>SPF){currentFrame++;timer=0f;}
         if(currentFrame==frames){currentFrame = 0;}
 
@@ -143,7 +191,15 @@ public class BAnimation implements BDrawable {
     @Override
     public void draw(SpriteBatch _spriteBatch) {
 
-        currentSprite = spriteSheet.get(rotation)[currentFrame];
+        switch (type){
+            case DIRECTIONAL:
+                currentSprite = spriteSheetDirectional.get(rotation)[currentFrame];
+                break;
+            case STILL:
+                currentSprite = spriteSheetStill[currentFrame];
+                break;
+        }
+
         currentSprite.setCenter(center.x,center.y);
         currentSprite.draw(_spriteBatch);
 
@@ -151,7 +207,7 @@ public class BAnimation implements BDrawable {
 
     @Override
     public BDrawable copy() {
-        BAnimation bAnimation = new BAnimation(textureRegions);
+        BAnimation bAnimation = new BAnimation(textureRegions,type);
         bAnimation.set(this);
         return bAnimation;
     }
@@ -191,5 +247,10 @@ public class BAnimation implements BDrawable {
 
     public Rotation getRotation() {
         return rotation;
+    }
+
+    public enum Type{
+        DIRECTIONAL,
+        STILL;
     }
 }

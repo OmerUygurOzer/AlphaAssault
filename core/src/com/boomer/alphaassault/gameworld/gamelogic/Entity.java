@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.GameWorld;
 
 /**
  * Created by Omer on 12/17/2015.
@@ -11,12 +12,13 @@ public abstract class Entity {
     protected float radius;
     protected long referenceId;
     protected int depth;
+    protected GameWorld world;
 
-
-    protected Entity(Vector2 _center,int _depth){
+    protected Entity(Vector2 _center,int _depth,GameWorld _world){
         center = _center;
         removed = false;
         depth = _depth;
+        world = _world;
         referenceId = System.nanoTime();
     }
 
@@ -24,9 +26,11 @@ public abstract class Entity {
         center.x  = _x;
         center.y = _y;
     }
-    public boolean isRemoved(){return removed;}
-    public Vector2 getCenter(){return center;}
-    public float getRadius(){return radius;}
+    public final boolean isRemoved(){return removed;}
+    public final Vector2 getCenter(){return center;}
+    public final float getRadius(){return radius;}
+    public final long getReferenceId(){return referenceId;}
+    public final int getDepth(){return depth;}
 
     public static boolean doesCollide(Entity _first, Entity _second){
         double radiant = _first.getRadius() + _second.getRadius();
@@ -34,7 +38,4 @@ public abstract class Entity {
         if(radiant >= distance){return true;}
         return false;
     }
-
-    public long getReferenceId(){return referenceId;}
-    public int getDepth(){return depth;}
 }

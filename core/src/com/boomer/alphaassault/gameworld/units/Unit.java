@@ -2,6 +2,7 @@ package com.boomer.alphaassault.gameworld.units;
 
 
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
@@ -80,9 +81,10 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     protected boolean invisibility;
 
 
-    protected Unit(int _team, Vector2 _center){
-        super(_center,RenderState.DEPTH_SURFACE);
+    protected Unit(int _team, Vector2 _center,GameWorld _world){
+        super(_center,RenderState.DEPTH_SURFACE,_world);
         Random RANDOM = new Random();
+
         //BASIC COMMON PROPERTIES
         facingAngle = RANDOM.nextInt((359 - 0) + 1) + 0;
         team = _team;
@@ -106,6 +108,7 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     public boolean isAlive() {return (HP>0);}
     public int getHP(){return HP;}
     public int getTeam(){return team;}
+    public double getFacingAngle(){return facingAngle;}
 
     //UPDATEABLE
     @Override

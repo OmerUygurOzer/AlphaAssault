@@ -1,10 +1,12 @@
 package com.boomer.alphaassault.gameworld.gamelogic;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.GUI.Console;
 import com.boomer.alphaassault.GUI.Hud;
+import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.Map;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
@@ -40,7 +42,7 @@ public class Player implements Updateable,Renderable,Controllable{
 
     //IN-GAME
     private Unit playerUnit;
-    private Map map;
+    private GameWorld world;
 
     public Player(SightCamera _camera) {
         camera = _camera;
@@ -57,12 +59,12 @@ public class Player implements Updateable,Renderable,Controllable{
             double power = analog.get(Analog.LEFT_ANALOG).valueDouble * playerUnit.getMovementSpeed() / Unit.MAX_SPEED;
             double angle = analog.get(Analog.LEFT_ROTATION).valueDouble;
             float x =  camera.position.x + (float) (Math.sin(Math.toRadians(angle)) * power);
-            x = x < map.getWidth() ? x : map.getWidth();
+            x = x < world.getGameMap().getWidth() ? x : world.getGameMap().getWidth();
             x = x < 0 ? 0 : x;
             float y = camera.position.y + (float) (Math.cos(Math.toRadians(angle)) * power);
-            y = y < map.getHeight() ? y : map.getHeight();
+            y = y < world.getGameMap().getHeight() ? y : world.getGameMap().getHeight();
             y = y < 0 ? 0 : y;
-            if(map.isMoveable(x,y)){
+            if(world.getGameMap().isMoveable(x,y)){
                 camera.position.set(x, y, camera.position.z);
                 playerUnit.move(_deltaTime, x, y, angle);
             }
@@ -70,14 +72,14 @@ public class Player implements Updateable,Renderable,Controllable{
         }
     }
 
-    public void setMap(Map _map){
-        map = _map;
+    public void setWorld(GameWorld _world){
+        world = _world;
     }
 
     public void setRole(int _role){
         switch (_role){
             case ASSAULT_TROOPER:
-                playerUnit = new AssaultTrooper(GameSettings.TEAM_BLUE,new Vector2(Math.round(camera.position.x),Math.round(camera.position.y)));
+                playerUnit = new AssaultTrooper(GameSettings.TEAM_BLUE,new Vector2(Math.round(camera.position.x),Math.round(camera.position.y)),world);
                 playerUnit.setReferenceID(PLAYER_REFERENCE);
                 playerUnit.setViewType(viewType);
                 playerUnit.setPlayer(this);
@@ -164,12 +166,16 @@ public class Player implements Updateable,Renderable,Controllable{
                 switch (skill.getTargetType()) {
                     case Skill.TARGET_TYPE_SELF:
                         playerUnit.use(skill.getKey());
+                        System.out.println("SELF");
                         break;
                     case Skill.TARGET_TYPE_POINT:
-
+                        System.out.println("POINT");
                         break;
                     case Skill.TARGET_TYPE_UNIT:
-
+                        System.out.println("UNIT");
+                        break;
+                    case Skill.TARGET_TYPE_ANGLE:
+                        System.out.println("ANGLE");
                         break;
                     default:
                         break;

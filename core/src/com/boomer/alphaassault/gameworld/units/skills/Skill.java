@@ -3,6 +3,7 @@ package com.boomer.alphaassault.gameworld.units.skills;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.units.Unit;
 
 /**
@@ -13,6 +14,7 @@ public abstract class Skill {
     public static final int TARGET_TYPE_SELF = 0;
     public static final int TARGET_TYPE_UNIT = 1;
     public static final int TARGET_TYPE_POINT = 2;
+    public static final int TARGET_TYPE_ANGLE  = 3;
 
     protected TextureRegion icon;
 
@@ -26,6 +28,9 @@ public abstract class Skill {
     protected Supply supply;
     protected String supplyName;
     protected boolean ready;
+
+    //REFERENCE TO THE GAMEWORLD
+    protected GameWorld world;
 
     public class Supply{
         public int COUNT_MAX;
@@ -41,15 +46,21 @@ public abstract class Skill {
     }
 
     //METHODS
+
+    public final void setWorld(GameWorld _world){world = _world;}
+
+
     public abstract void resupply();
     public abstract void use();
     public abstract void use(Unit _unit);
     public abstract void use(Vector2 _target);
+    public abstract void use(float _angle);
     public abstract void update();
-    public boolean isReady(){return ready;}
-    public int getKey(){return key;}
-    public int getTargetType(){return targetType;}
-    public void setUser(Unit _unit){user = _unit;}
-    public TextureRegion getIcon(){return icon;}
-    public Supply getSupply(){return supply;}
+    public final boolean isReady(){return ready;}
+    public final int getKey(){return key;}
+    public final int getTargetType(){return targetType;}
+    public final void setUser(Unit _unit){user = _unit;}
+    public final TextureRegion getIcon(){return icon;}
+    public final Supply getSupply(){return supply;}
+
 }

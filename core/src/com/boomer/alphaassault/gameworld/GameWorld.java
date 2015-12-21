@@ -34,7 +34,7 @@ public class GameWorld implements Updateable,Renderable{
 
     public void addPlayer(Player _player){
         player = _player;
-        player.setMap(gameMap);
+        player.setWorld(this);
     }
 
     public void addEntity(Entity _entity){
@@ -50,6 +50,8 @@ public class GameWorld implements Updateable,Renderable{
         }
         entities.remove(_entity);
     }
+
+    public Map getGameMap(){return gameMap;}
 
     @Override
     public void addToRenderState() {

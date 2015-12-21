@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.gameworld.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.settings.GameSettings;
 
 /**
  * Created by Omer on 12/17/2015.
@@ -20,4 +21,5 @@ public class GameMath {
         if(angle<0){angle+=360;}
         return angle;
     }
+
 }

@@ -40,7 +40,6 @@ public class Run extends Skill{
         if(ready){
             ready = false;
             timer = System.currentTimeMillis();
-            System.out.println("Run");
             AdjustedSpeed runBoost = new AdjustedSpeed(DURATION,AdjustedSpeed.PERCENTAGE,BOOST_PERCENTAGE);
             runBoost.inflict(user);
         }
@@ -49,6 +48,11 @@ public class Run extends Skill{
 
     @Override
     public void use(Vector2 _target) {
+
+    }
+
+    @Override
+    public void use(float _angle) {
 
     }
 

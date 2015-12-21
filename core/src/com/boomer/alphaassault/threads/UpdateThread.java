@@ -36,7 +36,7 @@ public class UpdateThread implements Runnable {
                 timeAccumulated += deltaTime;
                 while (timeAccumulated >= GameSettings.UPS) {
                     gameStateManager.getGameState().handleInput();
-                    gameStateManager.getGameState().update(timeAccumulated);
+                    gameStateManager.getGameState().update(deltaTime);
                     RenderStateManager.switchRenderState();
                     timeAccumulated -= GameSettings.UPS;
                 }

@@ -163,30 +163,30 @@ public class Map implements Renderable{
                     if(featureTiles[x][y] == FEATURE_EMPTY){
                     switch (feature) {
                         case FEATURE_BUSH:
-                            Bush bush = new Bush(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                            Bush bush = new Bush(new Vector2(x * TILE_SIZE, y * TILE_SIZE),world);
                             mapFeatures.add(bush);
                             featureTiles[x][y] = FEATURE_BUSH;
                             break;
                         case FEATURE_CRATE:
-                            Crate crate = new Crate(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                            Crate crate = new Crate(new Vector2(x * TILE_SIZE, y * TILE_SIZE),world);
                             mapFeatures.add(crate);
                             featureTiles[x][y] = FEATURE_CRATE;
                             break;
                         case FEATURE_ROCKS:
-                            Rocks rocks = new Rocks(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                            Rocks rocks = new Rocks(new Vector2(x * TILE_SIZE, y * TILE_SIZE),world);
                             mapFeatures.add(rocks);
                             featureTiles[x][y] = FEATURE_ROCKS;
                             break;
                         case FEATURE_TREE:
                             if(y+1<height/TILE_SIZE) {
-                                Tree tree = new Tree(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                                Tree tree = new Tree(new Vector2(x * TILE_SIZE, y * TILE_SIZE),world);
                                 mapFeatures.add(tree);
                                 featureTiles[x][y] = FEATURE_TREE;
                                 featureTiles[x][y + 1] = FEATURE_TREE;
                             }
                             break;
                         case FEATURE_WATER:
-                            Water water = new Water(new Vector2(x * TILE_SIZE, y * TILE_SIZE));
+                            Water water = new Water(new Vector2(x * TILE_SIZE, y * TILE_SIZE),world);
                             mapFeatures.add(water);
                             featureTiles[x][y] = FEATURE_WATER;
                             break;

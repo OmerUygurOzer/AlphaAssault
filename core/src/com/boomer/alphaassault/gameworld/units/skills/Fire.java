@@ -11,7 +11,7 @@ public class Fire extends Skill {
 
    public Fire(int _key){
         super(_key);
-       targetType = Skill.TARGET_TYPE_POINT;
+       targetType = Skill.TARGET_TYPE_ANGLE;
        icon = Resource.getTextureRegions(Resource.TEXTURE_REGION_SKILL_ICONS)[0][0];
    }
 
@@ -23,7 +23,7 @@ public class Fire extends Skill {
 
     @Override
     public void use() {
-        System.out.println("Fire");
+
     }
 
     @Override
@@ -33,6 +33,11 @@ public class Fire extends Skill {
 
     @Override
     public void use(Vector2 _target) {
+
+    }
+
+    @Override
+    public void use(float _angle) {
 
     }
 
