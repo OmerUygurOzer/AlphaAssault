@@ -110,6 +110,7 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     public int getTeam(){return team;}
     public double getFacingAngle(){return facingAngle;}
 
+
     //UPDATEABLE
     @Override
     public void update(float _deltaTime) {
@@ -167,6 +168,7 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     public void use(int _key){skills.get(_key).use(this);}
     public void use(int _key,Vector2 _location){skills.get(_key).use(_location);}
     public void use(int _key,Unit _unit){skills.get(_key).use(_unit);}
+    public void use(int _key,float _angle){skills.get(_key).use(_angle);}
     public List<Skill> getSkillSet(){return skills;}
 
     //MOVEMENT ADJUSTMENTS

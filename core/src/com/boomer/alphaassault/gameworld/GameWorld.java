@@ -25,8 +25,13 @@ public class GameWorld implements Updateable,Renderable{
     private Camera camera;
     private List<Entity> entities;
 
+    public int viewType;
+
+    private List<Entity> removals;
+
     public GameWorld(Camera _camera){
         entities = new ArrayList<Entity>();
+        removals = new ArrayList<Entity>();
         gameMap = new Map(Map.SIZE_MEDIUM,this);
         camera = _camera;
 
@@ -77,12 +82,25 @@ public class GameWorld implements Updateable,Renderable{
 
     @Override
     public void setViewType(int _viewType) {
+        viewType = _viewType;
         gameMap.setViewType(_viewType);
     }
 
     @Override
     public void update(float _deltaTime) {
         player.update(_deltaTime);
+        for(Entity entity : entities){
+            entity.update(_deltaTime);
+            if(entity.isRemoved()){
+                removals.add(entity);
+            }
+        }
+
+      for(Entity entity : removals){
+         removeEntity(entity);
+      }
+        removals.clear();
+
     }
 
 }

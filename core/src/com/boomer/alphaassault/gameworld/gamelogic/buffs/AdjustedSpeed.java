@@ -1,8 +1,6 @@
 package com.boomer.alphaassault.gameworld.gamelogic.buffs;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.resources.Resource;
 
@@ -23,7 +21,7 @@ public class AdjustedSpeed extends Buff {
         super(_duration);
         type = _type;
         adjustment = _adjustment;
-        icon = new BSprite(Resource.getTextureRegions(Resource.TEXTURE_REGION_SKILL_ICONS)[0][1]);
+        icon = new BSprite(Resource.getTextureRegions(Resource.ICONS)[0][1]);
         icon.setSize(Buff.WIDTH,Buff.HEIGHT);
     }
 
@@ -45,14 +43,13 @@ public class AdjustedSpeed extends Buff {
 
         }
         _unit.adjustMovementSpeed(finalAdjustment);
-        System.out.println(_unit.getMovementSpeed());
     }
 
     @Override
     public void deflict(Unit _unit) {
         super.deflict(_unit);
         _unit.adjustMovementSpeed(-finalAdjustment);
-        System.out.println(_unit.getMovementSpeed());
+        //System.out.println(_unit.getMovementSpeed());
     }
 
 

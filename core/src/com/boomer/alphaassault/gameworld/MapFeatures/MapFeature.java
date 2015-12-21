@@ -13,8 +13,8 @@ import com.boomer.alphaassault.graphics.Renderable;
  */
 public abstract class MapFeature extends Entity implements Renderable{
 
-    //TYPE PROPERTIES
 
+    //TYPE PROPERTIES:
     //BLOCKING TYPE
     protected boolean blocksMovement;
     protected boolean blocksBullets;
@@ -48,6 +48,15 @@ public abstract class MapFeature extends Entity implements Renderable{
         return blocksDamage;
     }
 
+    @Override
+    public void uponCollision(Entity _entity) {
+    }
+
+
+    @Override
+    public void update(float _deltaTime) {
+
+    }
 
     @Override
     public void setViewType(int _viewType) {

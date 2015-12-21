@@ -247,7 +247,7 @@ public class Map implements Renderable{
         for(MapFeature mapFeature:mapFeatures){
             mapFeature.setViewType(viewType);
             world.addEntity(mapFeature);
-            //mapFeature.addToRenderState();
+           // mapFeature.addToRenderState();
         }
     }
 

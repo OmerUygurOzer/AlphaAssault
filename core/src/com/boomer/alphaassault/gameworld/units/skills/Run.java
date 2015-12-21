@@ -19,7 +19,7 @@ public class Run extends Skill{
         super(_key);
         targetType = Skill.TARGET_TYPE_SELF;
         cooldown = RUN_COOLDOWN;
-        icon = Resource.getTextureRegions(Resource.TEXTURE_REGION_SKILL_ICONS)[0][1];
+        icon = Resource.getTextureRegions(Resource.ICONS)[0][1];
 
 
     }

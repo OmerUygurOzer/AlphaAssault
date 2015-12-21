@@ -44,6 +44,12 @@ public class Player implements Updateable,Renderable,Controllable{
     private Unit playerUnit;
     private GameWorld world;
 
+    /********************/
+    /*
+    CONSTRUCTOR
+    */
+    /********************/
+
     public Player(SightCamera _camera) {
         camera = _camera;
     }
@@ -166,16 +172,13 @@ public class Player implements Updateable,Renderable,Controllable{
                 switch (skill.getTargetType()) {
                     case Skill.TARGET_TYPE_SELF:
                         playerUnit.use(skill.getKey());
-                        System.out.println("SELF");
                         break;
                     case Skill.TARGET_TYPE_POINT:
-                        System.out.println("POINT");
                         break;
                     case Skill.TARGET_TYPE_UNIT:
-                        System.out.println("UNIT");
                         break;
                     case Skill.TARGET_TYPE_ANGLE:
-                        System.out.println("ANGLE");
+                        playerUnit.use(skill.getKey(),(float)playerUnit.getFacingAngle());
                         break;
                     default:
                         break;

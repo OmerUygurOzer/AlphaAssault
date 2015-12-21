@@ -3,6 +3,7 @@ package com.boomer.alphaassault.gameworld.mapfeatures;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
+import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.resources.Resource;
 
@@ -24,5 +25,10 @@ public class Rocks extends MapFeature {
         bDrawable = new BSprite(textureRegion);
         ((BSprite)bDrawable).setSize(16,16);
         ((BSprite)bDrawable).setPosition(center.x,center.y);
+    }
+
+    @Override
+    public void receiveHit(int _hit, Unit _source) {
+
     }
 }

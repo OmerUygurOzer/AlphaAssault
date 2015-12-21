@@ -3,6 +3,7 @@ package com.boomer.alphaassault.gameworld.units.assaulttrooper;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
+import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.skills.Fire;
 import com.boomer.alphaassault.gameworld.units.skills.Flashbang;
@@ -84,7 +85,8 @@ public class AssaultTrooper extends Unit {
         bAnimation.setFacingAngle(_angle);
         bAnimation.setCenter(_x,_y);
         bAnimation.update(_deltaTime);
-        RenderStateManager.updatingState.updateElement(getReferenceID(), RenderState.DEPTH_SURFACE, bAnimation);
+        setCenter(_x,_y);
+        RenderStateManager.updateElement(getReferenceID(), RenderState.DEPTH_SURFACE, bAnimation);
     }
 
     //UPDATEABLE
@@ -95,5 +97,16 @@ public class AssaultTrooper extends Unit {
     }
 
 
+    @Override
+    public void uponCollision(Entity _entity) {
+        //NOTHING
+    }
 
+    @Override
+    public void receiveHit(int _hit,Unit _source) {
+        HP -= _hit;
+        if(HP <= 0){markRemoved();
+        //RAISE EVENT FOR THE PLAYER OF THE SOURCE TO GET A KILL SCORE
+        }
+    }
 }

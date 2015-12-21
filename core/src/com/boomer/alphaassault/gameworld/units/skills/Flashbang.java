@@ -19,7 +19,7 @@ public class Flashbang extends Skill {
             super(_key);
 
 
-            icon = Resource.getTextureRegions(Resource.TEXTURE_REGION_SKILL_ICONS)[0][2];
+            icon = Resource.getTextureRegions(Resource.ICONS)[0][2];
 
             supply = new Supply();
             supply.name  = "Flashbang";

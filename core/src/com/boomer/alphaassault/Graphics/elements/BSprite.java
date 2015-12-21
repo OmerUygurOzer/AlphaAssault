@@ -72,5 +72,9 @@ public class BSprite implements BDrawable {
     }
 
     public Vector2 getCenter(){return center;}
+
+    public void rotate(double _angle){
+        sprite.rotate((float)_angle);
+    }
 }
 

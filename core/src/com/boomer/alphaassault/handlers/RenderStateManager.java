@@ -27,6 +27,9 @@ public class RenderStateManager {
         renderStateTwo = new RenderState();
         renderStateThree = new RenderState();
 
+        renderStateOne.ID = 1;
+        renderStateTwo.ID = 2;
+        renderStateThree.ID = 3;
 
         renderStateOne.CURRENT_STATE = RenderState.STATE_RECENTLY_UPDATED;
         renderStateTwo.CURRENT_STATE = RenderState.STATE_BEING_RENDERED;
@@ -63,15 +66,13 @@ public class RenderStateManager {
             renderingState.setCurrentState(RenderState.STATE_BEING_UPDATED);
             updatedState.setCurrentState(RenderState.STATE_BEING_RENDERED);
 
-            switcher = updatingState;
-            updatingState = renderingState;
+            switcher = renderingState;
             renderingState = updatedState;
-            updatedState = switcher;
-
-
-
+            updatedState = updatingState;
+            updatingState = switcher;
 
             updatingState.getUpdates(updatedState);
+
 
 
     }

@@ -6,12 +6,14 @@ import com.boomer.alphaassault.graphics.elements.BDrawable;
 
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
  * Created by Omer on 11/27/2015.
  */
 public class RenderState{
+    public int ID;
 
     public static final int STATE_BEING_RENDERED = 0;
     public static final int STATE_BEING_UPDATED = 1;
@@ -56,28 +58,32 @@ public class RenderState{
     }
 
     public void addElement(int _viewType, long _referenceId,int _depth,BDrawable _bDrawable){
+            synchronized (viewMapping) {
+                bDrawables.get(_depth).put(_referenceId, _bDrawable.copy());
+                if (!viewMapping.get(_depth).containsKey(_viewType)) {
+                    List<Long> list = new ArrayList<Long>();
+                    list.add(_referenceId);
+                    viewMapping.get(_depth).put(_viewType, list);
 
-       bDrawables.get(_depth).put(_referenceId,_bDrawable.copy());
-        if(!viewMapping.get(_depth).containsKey(_viewType)){
-            List<Long> list = new ArrayList<Long>();
-            list.add(_referenceId);
-            viewMapping.get(_depth).put(_viewType,list);
-
-        }else{
-            viewMapping.get(_depth).get(_viewType).add(_referenceId);
-        }
+                } else {
+                    viewMapping.get(_depth).get(_viewType).add(_referenceId);
+                }
+            }
     }
 
-    public void removeElement(long _referenceId,int _depth){
-        if(bDrawables.get(_depth).containsKey(_referenceId)){
-            bDrawables.get(_depth).remove(_referenceId);
-        }
 
-        for(int map: viewMapping.get(_depth).keySet()){
-            if(viewMapping.get(_depth).get(map).contains(_referenceId)){
-                viewMapping.get(_depth).get(map).remove(_referenceId);
+    public void removeElement(long _referenceId,int _depth){
+
+            if (bDrawables.get(_depth).containsKey(_referenceId)) {
+                bDrawables.get(_depth).remove(_referenceId);
             }
-        }
+
+            for (int map : viewMapping.get(_depth).keySet()) {
+                if (viewMapping.get(_depth).get(map).contains(_referenceId)) {
+                    viewMapping.get(_depth).get(map).remove(_referenceId);
+                }
+            }
+
     }
     public void updateElement(long _referenceId,int _depth,BDrawable bDrawable){
            bDrawables.get(_depth).get(_referenceId).set(bDrawable);
@@ -88,24 +94,27 @@ public class RenderState{
     //GAME SCREEN IS DRAWN LAST
     public void  render() {
 
-        for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++){
-            for(int key: viewPorts.keySet()){
-                spriteBatch.setProjectionMatrix(viewPorts.get(key).getCamera().combined);
-                spriteBatch.begin();
-                viewPorts.get(key).apply();
-                if(viewMapping.get(depth).get(key)!=null) {
-                    for (long MAPPER : viewMapping.get(depth).get(key)) {
-                        bDrawables.get(depth).get(MAPPER).draw(spriteBatch);
+            for (int depth = DEPTH_BASE; depth < DEPTH_MAX; depth++) {
+                for (int key : viewPorts.keySet()) {
+                    spriteBatch.setProjectionMatrix(viewPorts.get(key).getCamera().combined);
+                    spriteBatch.begin();
+                    viewPorts.get(key).apply();
+                    if (viewMapping.get(depth).get(key) != null) {
+                        synchronized (viewMapping) {
+                            for (long MAPPER : (viewMapping.get(depth).get(key))) {
+                                bDrawables.get(depth).get(MAPPER).draw(spriteBatch);
+                            }
+                        }
                     }
+                    spriteBatch.end();
                 }
-                spriteBatch.end();
             }
-        }
 
 
     }
 
      public void getUpdates(RenderState _renderState) {
+
          for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
             for(long key : _renderState.getDrawables().get(depth).keySet()){
                  if(!bDrawables.get(depth).containsKey(key)){

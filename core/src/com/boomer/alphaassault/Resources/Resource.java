@@ -20,6 +20,8 @@ public class Resource {
 
 
     public static final int TEXTURE_REGION_ASSAULT_TROOPER = 0;
+
+    public static final int GAME_ALL = 1;
 /*
 * OTHER TEXTURES
 *
@@ -43,7 +45,14 @@ public class Resource {
 
     //ICONS
     public static final int TEXTURE_PLAYER = 60;
-    public static final int TEXTURE_REGION_SKILL_ICONS = 61;
+    public static final int ICONS = 61;
+    //public static final int RUN = 61;
+    //public static final int FIRE = 62;
+    //public static final int FLASHBANG = 63;
+
+    //IN-GAME
+    public static final int BULLET = 80;
+
 
 
     public Resource() {
@@ -59,7 +68,8 @@ public class Resource {
         loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
         loadTexture(GUI_ALL,"GUI/gui.png");
         loadTexture(MAP_ALL,"map/map.png");
-        loadTextureRegion(TEXTURE_REGION_SKILL_ICONS,"game/skillicons.png",512/7,64);
+        loadTexture(GAME_ALL,"game/game.png");
+
 
 
         loadTextureRegion(ANALOG,getTexture(GUI_ALL),512,128,128,128,4,1);
@@ -67,10 +77,16 @@ public class Resource {
         loadTextureRegion(FONTS,getTexture(GUI_ALL),0,0,32,43,16,6);
         loadTextureRegion(BUTTONS,getTexture(GUI_ALL),512,0,256,128,2,1);
 
+        //MAP
         loadTextureRegion(BACKGROUND,getTexture(MAP_ALL),0,0,128,128,2,1);
         loadTextureRegion(TREES,getTexture(MAP_ALL),0,128,85,128,3,1);
         loadTextureRegion(DOODADS,getTexture(MAP_ALL),256,0,32,32,4,1);
 
+        //ICONS
+        loadTextureRegion(ICONS,getTexture(GAME_ALL),0,0,60,40,7,1);
+
+        //GAME
+        loadTextureRegion(BULLET,getTexture(GAME_ALL),0,40,40,120,1,1);
     }
 
     //TEXTURE HANDLERS

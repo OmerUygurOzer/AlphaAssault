@@ -2,11 +2,12 @@ package com.boomer.alphaassault.gameworld.gamelogic;
 
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
+import com.boomer.alphaassault.gameworld.units.Unit;
 
 /**
  * Created by Omer on 12/17/2015.
  */
-public abstract class Entity {
+public abstract class Entity implements Updateable{
     protected Vector2 center;
     protected boolean removed;
     protected float radius;
@@ -26,11 +27,17 @@ public abstract class Entity {
         center.x  = _x;
         center.y = _y;
     }
+
+    public void markRemoved(){removed = true;}
+
     public final boolean isRemoved(){return removed;}
     public final Vector2 getCenter(){return center;}
     public final float getRadius(){return radius;}
     public final long getReferenceId(){return referenceId;}
     public final int getDepth(){return depth;}
+
+    public abstract void uponCollision(Entity _entity);
+    public abstract void receiveHit(int _hit,Unit _source);
 
     public static boolean doesCollide(Entity _first, Entity _second){
         double radiant = _first.getRadius() + _second.getRadius();
