@@ -10,86 +10,188 @@ import com.boomer.alphaassault.settings.GameSettings;
  */
 public class RenderStateManager {
 
-    public static RenderState renderStateOne;
-    public static RenderState renderStateTwo;
-    public static RenderState renderStateThree;
+    /*
+   private bool _GlControlLoaded = false;
+        private int _SmileyTexture;
+        private RenderState[] _RenderStates = new RenderState[3];
+        private int _CurrentUpdatingStateNr = -1;
+        private int _LastUpdatedStateNr = -1;
+        private int _PreviousUpdatedStateNr = -1;
+        private int _CurrentDrawingStateNr = -1;
+        private int _LastUpdatedStateThatIsNotCurrentlyDrawingNr = -1;
+        private object _RenderStatePointerSwitchLock = new object();
+        private Vector2 _BallSpeedPerSecond = new Vector2(100, 100);
+        private const float _BallSize = 21;
+        private long _DrawStart;
+        private long _PreviousDrawStart;
+        private long _UpdateStart;
+        private long _PreviousUpdateStart;
+        private long _StepNr;
+        private float _CachedExtrapolationStepSize = float.MinValue;
+    */
+    private static int currentUpdatingStateIndex = -1;
+    private static int lastUpdatedStateIndex = -1;
+    private static int previousUpdatedStateIndex = -1;
+    private static int currentRenderingStateIndex = -1;
+    private static int lastUpdatedStateThatIsNotRendering = -1;
 
-    public static RenderState renderingState;
-    public static RenderState updatingState;
-    public static RenderState updatedState;
+    public static RenderState renderingStatePointer;
+    public static RenderState updatingStatePointer;
+    public static RenderState lastUpdatedStatePointer;
 
-    public static RenderState DEFAULT;
+    private static Object pointerSwitchLock;
+
+    public static RenderState[] renderStates;
+
+    public static int currentFrame;
 
     static{
-        DEFAULT = new RenderState();
-        renderingState = DEFAULT;
-        renderStateOne = new RenderState();
-        renderStateTwo = new RenderState();
-        renderStateThree = new RenderState();
+        renderingStatePointer = null;
+        updatingStatePointer = null;
+        lastUpdatedStatePointer = null;
 
-        renderStateOne.ID = 1;
-        renderStateTwo.ID = 2;
-        renderStateThree.ID = 3;
+        renderStates = new RenderState[3];
+        renderStates[0] = new RenderState(0);
+        renderStates[1] = new RenderState(1);
+        renderStates[2] = new RenderState(2);
 
-        renderStateOne.CURRENT_STATE = RenderState.STATE_RECENTLY_UPDATED;
-        renderStateTwo.CURRENT_STATE = RenderState.STATE_BEING_RENDERED;
-        renderStateThree.CURRENT_STATE = RenderState.STATE_BEING_UPDATED;
 
-        updatedState = renderStateOne;
-        renderingState = renderStateTwo;
-        updatingState = renderStateThree;
+
+        pointerSwitchLock = new Object();
+
+        currentFrame = 0;
 
     }
-
-
-    public static void addElement(int _viewType, long _referenceID,int _depth ,BDrawable _bDrawable){
-        updatingState.addElement(_viewType,_referenceID,_depth,_bDrawable);
-
-    }
-
-    public static void removeElement(long _referenceID, int _depth){
-        updatingState.removeElement(_referenceID,_depth);
-
-    }
-
-    public static void updateElement(long _referenceId,int _depth,BDrawable _bDrawable){
-        updatingState.updateElement(_referenceId,_depth, _bDrawable);
-    }
-
+/*
     public static void switchRenderState(){
-            RenderState switcher;
-            if(updatingState == null && updatedState ==null){return;}
 
-            //RE-ASSIGN STATES ACCORDINGLY
+                RenderState switcher;
+                if (updatingState == null && updatedState == null) {
+                    return;
+                }
 
-            updatingState.setCurrentState(RenderState.STATE_RECENTLY_UPDATED);
-            renderingState.setCurrentState(RenderState.STATE_BEING_UPDATED);
-            updatedState.setCurrentState(RenderState.STATE_BEING_RENDERED);
+                //RE-ASSIGN STATES ACCORDINGLY
 
-            switcher = renderingState;
-            renderingState = updatedState;
-            updatedState = updatingState;
-            updatingState = switcher;
+                updatingState.setCurrentState(RenderState.STATE_RECENTLY_UPDATED);
+                renderingState.setCurrentState(RenderState.STATE_BEING_UPDATED);
+                updatedState.setCurrentState(RenderState.STATE_BEING_RENDERED);
 
-            updatingState.getUpdates(updatedState);
+                switcher = renderingState;
+                renderingState = updatedState;
+                updatedState = updatingState;
+                updatingState = switcher;
+
+                updatingState.getUpdates(updatedState);
 
 
 
+    }
+*/
+    public static void beginUpdating(){
+        RenderStateManager.updatingStatePointer = RenderStateManager.getUpdatingState();
+        RenderStateManager.updatingStatePointer.currentFrame = RenderStateManager.currentFrame;
+    }
+
+    public static void swapUpdates(){
+        RenderStateManager.lastUpdatedStatePointer = RenderStateManager.getLastUpdatedState();
+        if(RenderStateManager.lastUpdatedStatePointer == null){
+            RenderStateManager.updatingStatePointer.getUpdates(RenderStateManager.updatingStatePointer);
+        }else{
+            RenderStateManager.updatingStatePointer.getUpdates(RenderStateManager.lastUpdatedStatePointer);
+        }
+    }
+
+    public static RenderState getUpdatingState(){
+        synchronized (pointerSwitchLock){
+            if(currentRenderingStateIndex == -1 || lastUpdatedStateIndex == currentRenderingStateIndex){
+                switch (lastUpdatedStateIndex) {
+                    case 0:
+                       //System.out.println("case 0");
+                        if (renderStates[1].currentFrame > renderStates[2].currentFrame) {
+                            currentUpdatingStateIndex = 2;
+                            return renderStates[2];
+                        } else {
+                            currentUpdatingStateIndex = 1;
+                            return renderStates[1];
+                        }
+                    case 1:
+                        //System.out.println("case 1");
+                        if (renderStates[0].currentFrame > renderStates[2].currentFrame) {
+                            currentUpdatingStateIndex = 2;
+                            return renderStates[2];
+                        } else {
+                            currentUpdatingStateIndex = 0;
+                            return renderStates[0];
+                        }
+                    case 2:
+                        //System.out.println("case 2");
+                        if (renderStates[0].currentFrame > renderStates[1].currentFrame) {
+                            currentUpdatingStateIndex = 1;
+                            return renderStates[1];
+                        } else {
+                            currentUpdatingStateIndex = 0;
+                            return renderStates[0];
+                        }
+                    default:
+                       // System.out.println("case default");
+                        currentUpdatingStateIndex = 0;
+                        return renderStates[0];
+                    }
+                }else{
+                  //  System.out.println("case else");
+                    currentUpdatingStateIndex = 3 - (lastUpdatedStateIndex + currentRenderingStateIndex);
+                    return renderStates[currentUpdatingStateIndex];
+            }
+
+            }
+
+        }
+
+    public static void releaseUpdatingState(){
+        synchronized (pointerSwitchLock){
+            currentFrame++;
+            previousUpdatedStateIndex = lastUpdatedStateIndex;
+            lastUpdatedStateIndex = currentUpdatingStateIndex;
+            lastUpdatedStateThatIsNotRendering = lastUpdatedStateIndex;
+            currentUpdatingStateIndex = -1;
+        }
+    }
+
+    public static RenderState getRenderingState(){
+        synchronized (pointerSwitchLock){
+            currentRenderingStateIndex = lastUpdatedStateIndex;
+            lastUpdatedStateThatIsNotRendering = previousUpdatedStateIndex;
+        }
+        return renderStates[currentRenderingStateIndex];
+    }
+
+    public static void releaseRenderingState(){
+        synchronized (pointerSwitchLock){
+         currentRenderingStateIndex = -1;
+        }
+    }
+
+    public static RenderState getLastUpdatedState(){
+        if(lastUpdatedStateIndex == -1){
+            return null;
+        }
+        return renderStates[lastUpdatedStateIndex];
     }
 
     public static void setGameRenderState(RenderState _renderState){
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_INACTIVE;
-        renderStateOne.set(_renderState);
-        renderStateTwo.set(_renderState);
-        renderStateThree.set(_renderState);
+        renderStates[0].set(_renderState);
+        renderStates[1].set(_renderState);
+        renderStates[2].set(_renderState);
         GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
 
     }
 
+
     public static void dispose(){
-        renderStateOne.dispose();
-        renderStateTwo.dispose();
-        renderStateThree.dispose();
+        renderStates[0].dispose();
+        renderStates[1].dispose();
+        renderStates[2].dispose();
     }
 
 

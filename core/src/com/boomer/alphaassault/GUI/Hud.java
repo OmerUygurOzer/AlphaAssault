@@ -124,15 +124,15 @@ public class Hud implements Renderable,Updateable {
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId+1,RenderState.DEPTH_GAME_SCREEN_BASE,playerIcon);
-        RenderStateManager.addElement(viewType,referenceId+10, RenderState.DEPTH_GAME_SCREEN_BASE,playerName);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId+1,RenderState.DEPTH_GAME_SCREEN_BASE,playerIcon);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId+10, RenderState.DEPTH_GAME_SCREEN_BASE,playerName);
         int index = 1;
         for(BFont bFont : supplyFonts){
-            RenderStateManager.addElement(viewType,referenceId + 10 + index,RenderState.DEPTH_GAME_SCREEN_BASE,bFont);
+            RenderStateManager.updatingStatePointer.addElement(viewType,referenceId + 10 + index,RenderState.DEPTH_GAME_SCREEN_BASE,bFont);
             index++;
         }
         for(BSprite bSprite : supplyIcons){
-            RenderStateManager.addElement(viewType,referenceId + 10 + index,RenderState.DEPTH_GAME_SCREEN_BASE,bSprite);
+            RenderStateManager.updatingStatePointer.addElement(viewType,referenceId + 10 + index,RenderState.DEPTH_GAME_SCREEN_BASE,bSprite);
             index++;
         }
 

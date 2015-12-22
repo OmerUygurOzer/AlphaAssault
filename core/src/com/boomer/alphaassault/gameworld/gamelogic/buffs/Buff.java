@@ -56,12 +56,12 @@ public abstract class Buff implements Updateable,Renderable {
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,icon);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,icon);
     }
 
     @Override
     public void removeFromRenderState() {
-        RenderStateManager.removeElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE);
+        RenderStateManager.updatingStatePointer.removeElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE);
     }
 
     @Override

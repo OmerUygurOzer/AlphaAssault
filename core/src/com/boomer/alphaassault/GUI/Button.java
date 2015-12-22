@@ -63,18 +63,18 @@ public class Button implements Renderable {
 
     public void setState(int _state){
         BSprite getState = states.get(_state);
-        RenderStateManager.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
+        RenderStateManager.updatingStatePointer.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
     }
 
     public void resetState(){
         BSprite getState = states.get(STATE_INIT);
-        RenderStateManager.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
+        RenderStateManager.updatingStatePointer.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
     }
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,base);
-        RenderStateManager.addElement(viewType,referenceId+1,RenderState.DEPTH_GAME_SCREEN_DYNAMIC,icon);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,base);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId+1,RenderState.DEPTH_GAME_SCREEN_DYNAMIC,icon);
     }
 
     @Override

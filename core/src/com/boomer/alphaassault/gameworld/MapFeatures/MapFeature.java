@@ -65,12 +65,12 @@ public abstract class MapFeature extends Entity implements Renderable{
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId, RenderState.DEPTH_SURFACE, bDrawable);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId, RenderState.DEPTH_SURFACE, bDrawable);
     }
 
     @Override
     public void removeFromRenderState() {
-        RenderStateManager.removeElement(referenceId,RenderState.DEPTH_SURFACE);
+        RenderStateManager.updatingStatePointer.removeElement(referenceId,RenderState.DEPTH_SURFACE);
     }
 
     @Override

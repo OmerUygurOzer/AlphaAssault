@@ -21,7 +21,7 @@ public abstract class GameStateBase {
 
     public GameStateBase(GameStateManager _gameStateManager){
         GAME_STATE_MANAGER = _gameStateManager;
-        RENDER_STATE = new RenderState();
+        RENDER_STATE = new RenderState(0);
 
     }
 

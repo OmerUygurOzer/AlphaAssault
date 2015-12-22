@@ -44,7 +44,7 @@ public abstract class Projectile extends Entity implements Renderable{
 
     @Override
     public void removeFromRenderState() {
-        RenderStateManager.removeElement(referenceId,depth);
+        RenderStateManager.updatingStatePointer.removeElement(referenceId,depth);
     }
 
     @Override
@@ -64,7 +64,7 @@ public abstract class Projectile extends Entity implements Renderable{
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId,depth,image);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId,depth,image);
     }
 
 

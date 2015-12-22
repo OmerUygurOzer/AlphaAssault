@@ -45,9 +45,9 @@ public class RenderThread extends Game {
             while (timeAccumulated >= GameSettings.RPS) {
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 timeAccumulated -= GameSettings.RPS;
-                //System.out.println(Thread.currentThread().getId());
+                RenderStateManager.renderingStatePointer = RenderStateManager.getRenderingState();
                 gameStateManager.getGameState().render(null);
-
+                RenderStateManager.releaseRenderingState();
             }
             wait(1);
         }

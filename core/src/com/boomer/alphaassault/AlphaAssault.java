@@ -2,6 +2,7 @@ package com.boomer.alphaassault;
 
 
 import com.boomer.alphaassault.handlers.GameStateManager;
+import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.handlers.controls.InputManager;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.settings.GameSettings;
@@ -27,7 +28,11 @@ public class AlphaAssault extends RenderThread {
         //INITIALIZE GAME RESOURCES
         gameResources = new Resource();
         gameResources.initialize();
+
+        RenderStateManager.beginUpdating();
+        RenderStateManager.swapUpdates();
         gameStateManager = new GameStateManager();
+        RenderStateManager.releaseUpdatingState();
 
         //DECLARE THREADS
         updateThread = new UpdateThread(gameStateManager);

@@ -51,7 +51,7 @@ public class GameWorld implements Updateable,Renderable{
 
     public void removeEntity(Entity _entity){
         if(_entity instanceof Renderable){
-            RenderStateManager.removeElement(_entity.getReferenceId(),_entity.getDepth());
+            RenderStateManager.updatingStatePointer.removeElement(_entity.getReferenceId(),_entity.getDepth());
         }
         entities.remove(_entity);
     }

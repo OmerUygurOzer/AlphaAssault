@@ -54,7 +54,7 @@ public class Bullet extends Projectile {
             removed = true;
         }
 
-       RenderStateManager.updateElement(referenceId, viewType, image);
+       RenderStateManager.updatingStatePointer.updateElement(referenceId, viewType, image);
     }
     }
     @Override

@@ -13,11 +13,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by Omer on 11/27/2015.
  */
 public class RenderState{
-    public int ID;
 
-    public static final int STATE_BEING_RENDERED = 0;
-    public static final int STATE_BEING_UPDATED = 1;
-    public static final int STATE_RECENTLY_UPDATED = 2;
+    private int ID;
+    public int currentFrame;
 
     public static final int DEPTH_BASE = 0;
     public static final int DEPTH_SURFACE = 1;
@@ -26,9 +24,6 @@ public class RenderState{
     public static final int DEPTH_GAME_SCREEN_DYNAMIC = 4;
     public static final int DEPTH_MAX = 5;
 
-    public int CURRENT_STATE;
-
-
     private List<Map<Long,BDrawable>> bDrawables;
     private Map<Integer,Viewport> viewPorts;
     private List<Map<Integer,List<Long>>> viewMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
@@ -36,9 +31,8 @@ public class RenderState{
 
     private SpriteBatch spriteBatch;
 
-    private List<Long> bufferList;
-
-    public RenderState(){
+    public RenderState(int _id){
+        ID = _id;
 
         spriteBatch = new SpriteBatch();
 
@@ -52,8 +46,6 @@ public class RenderState{
             viewMapping.add(depth,new HashMap<Integer, List<Long>>());
         }
 
-
-        bufferList = new ArrayList<Long>();
     }
 
     public void addView(int _viewType, Viewport _viewPort){
@@ -103,11 +95,9 @@ public class RenderState{
                     spriteBatch.begin();
                     viewPorts.get(key).apply();
                     if (viewMapping.get(depth).get(key) != null) {
-                            bufferList.addAll(viewMapping.get(depth).get(key));
-                            for (long MAPPER : bufferList) {
+                            for (long MAPPER : viewMapping.get(depth).get(key)) {
                                 bDrawables.get(depth).get(MAPPER).draw(spriteBatch);
                             }
-                        bufferList.clear();
                     }
                     spriteBatch.end();
                 }
@@ -193,7 +183,7 @@ public class RenderState{
             }
 
         }
-        CURRENT_STATE = _renderState.getCurrentState();
+
     }
 
 
@@ -201,8 +191,6 @@ public class RenderState{
     private List<Map<Long,BDrawable>> getDrawables(){return bDrawables;}
     private Map<Integer,Viewport> getViewPorts(){return viewPorts;}
     private List<Map<Integer,List<Long>>> getViewMapping(){return viewMapping;}
-    public int getCurrentState(){return CURRENT_STATE;}
-    public void setCurrentState(int _state){CURRENT_STATE  = _state;}
     public void dispose(){spriteBatch.dispose();}
 
 

@@ -159,7 +159,7 @@ public class Map implements Renderable{
 
             for(int x=0;x< width/TILE_SIZE;x++){
                 for(int y=0;y< height/TILE_SIZE;y++) {
-                    int feature = random.nextInt((20 - 1) + 1) + 1;
+                    int feature = random.nextInt((40 - 1) + 1) + 1;
                     if(featureTiles[x][y] == FEATURE_EMPTY){
                     switch (feature) {
                         case FEATURE_BUSH:
@@ -243,7 +243,7 @@ public class Map implements Renderable{
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.addElement(viewType,referenceId,RenderState.DEPTH_BASE,mapBase);
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId,RenderState.DEPTH_BASE,mapBase);
         for(MapFeature mapFeature:mapFeatures){
             mapFeature.setViewType(viewType);
             world.addEntity(mapFeature);
