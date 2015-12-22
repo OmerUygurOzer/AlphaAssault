@@ -3,6 +3,7 @@ package com.boomer.alphaassault.gameworld.gamelogic;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.utilities.GameMath;
 
 /**
  * Created by Omer on 12/17/2015.
@@ -14,6 +15,7 @@ public abstract class Entity implements Updateable{
     protected long referenceId;
     protected int depth;
     protected GameWorld world;
+    protected boolean isSolid;
 
     protected Entity(Vector2 _center,int _depth,GameWorld _world){
         center = _center;
@@ -29,6 +31,7 @@ public abstract class Entity implements Updateable{
     }
 
     public void markRemoved(){removed = true;}
+    public void markNew(){removed = false;}
 
     public final boolean isRemoved(){return removed;}
     public final Vector2 getCenter(){return center;}

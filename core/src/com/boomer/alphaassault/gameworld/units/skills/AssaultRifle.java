@@ -3,21 +3,25 @@ package com.boomer.alphaassault.gameworld.units.skills;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.projectiles.Bullet;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.resources.Resource;
 
 /**
  * Created by Omer on 12/12/2015.
  */
-public class Fire extends Skill {
+public class AssaultRifle extends Skill {
 
-    private static final float FIRE_COOLDOWN = 0.1f;
+    private static final float ASSAULT_RIFLE_CD = 0.1f;
 
-   public Fire(int _key){
+    private static final float BULLET_SPEED = 0.1f;
+    private static final int BULLET_DAMAGE = 10;
+    private static final int BULLET_COL_LIMIT = 1;
+    private static final int BULLET_RANGE = 15;
+
+   public AssaultRifle(int _key){
         super(_key);
        targetType = Skill.TARGET_TYPE_ANGLE;
        icon = Resource.getTextureRegions(Resource.ICONS)[0][0];
-       cooldown = Math.round(FIRE_COOLDOWN * 1000);
+       cooldown = Math.round(ASSAULT_RIFLE_CD * 1000);
    }
 
 
@@ -48,11 +52,11 @@ public class Fire extends Skill {
             timer = System.currentTimeMillis();
             Bullet bullet = world.bulletPool.acquire();
             bullet.setCenter(user.getCenter().x,user.getCenter().y);
-            bullet.setCollisionLimit(1);
-            bullet.setDamage(10);
+            bullet.setCollisionLimit(BULLET_COL_LIMIT);
+            bullet.setDamage(BULLET_DAMAGE);
             bullet.setSource(user);
-            bullet.setSpeed(0.1f);
-            bullet.setRange(10);
+            bullet.setSpeed(BULLET_SPEED);
+            bullet.setRange(BULLET_RANGE);
             bullet.setDirectionAngle((float)user.getFacingAngle());
             bullet.setViewType(world.viewType);
             world.addEntity(bullet);

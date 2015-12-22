@@ -36,11 +36,7 @@ public abstract class Pool<T> {
     }
 
     public T acquire(){
-        if(!memStack.isEmpty()){
-           return memStack.pop();
-
-        }
-        return newObject();
+       return memStack.isEmpty() ? newObject() : memStack.pop();
     }
 
 }

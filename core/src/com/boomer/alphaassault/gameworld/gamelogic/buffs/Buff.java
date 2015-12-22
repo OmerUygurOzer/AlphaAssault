@@ -29,6 +29,7 @@ public abstract class Buff implements Updateable,Renderable {
         duration = _duration;
         startTime = System.currentTimeMillis();
         isExpired = false;
+        referenceId = System.nanoTime();
     }
 
 

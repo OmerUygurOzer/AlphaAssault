@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.gameworld.units.skills.Fire;
+import com.boomer.alphaassault.gameworld.units.skills.AssaultRifle;
 import com.boomer.alphaassault.gameworld.units.skills.Flashbang;
 import com.boomer.alphaassault.gameworld.units.skills.Run;
 import com.boomer.alphaassault.graphics.RenderState;
@@ -27,7 +27,7 @@ public class AssaultTrooper extends Unit {
     public static final int ASSAULT_TROOPER_MOVEMENT_SPEED = 8;
     public static final int ASSAULT_TROOPER_FLASHBANG_MAX = 2;
 
-    private static final int FIRE_KEY = 0;
+    private static final int ASSAULT_RIFLE_KEY = 0;
     private static final int RUN_KEY = 1;
     private static final int FLASHBANG_KEY = 2;
 
@@ -48,11 +48,11 @@ public class AssaultTrooper extends Unit {
         bAnimation.setSecondsPerFrame(1f/10f);
 
         //ADD SKILLS
-        Fire fire = new Fire(0);
+        AssaultRifle fire = new AssaultRifle(ASSAULT_RIFLE_KEY);
         fire.setUser(this);
-        Run run = new Run(1);
+        Run run = new Run(RUN_KEY);
         run.setUser(this);
-        Flashbang flashbang = new Flashbang(2);
+        Flashbang flashbang = new Flashbang(FLASHBANG_KEY);
         flashbang.setUser(this);
 
         fire.setWorld(_world);

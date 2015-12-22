@@ -5,13 +5,13 @@ package com.boomer.alphaassault.gameworld;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.boomer.alphaassault.gameworld.gamelogic.GameMath;
 import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.graphics.Renderable;
+import com.boomer.alphaassault.utilities.GameMath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -233,11 +233,13 @@ public class Map implements Renderable{
                 break;
         }
         double distance = GameMath.getDistance(_x,_y,centerX,centerY);
-        if(distance < radius){
-            return false;
-        }
+        return distance >= radius;
+    }
 
-        return true;
+    public void clearTile(float _x,float _y){
+        int tileX = Math.round(((_x - (_x % TILE_SIZE))/TILE_SIZE));
+        int tileY = Math.round(((_y - (_y % TILE_SIZE))/TILE_SIZE));
+        featureTiles[tileX][tileY] = FEATURE_EMPTY;
     }
 
 

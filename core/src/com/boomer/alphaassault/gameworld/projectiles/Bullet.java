@@ -70,9 +70,11 @@ public class Bullet extends Projectile {
     }
     @Override
     public void uponCollision(Entity _entity) {
-        currentCollisionCount++;
         if(currentCollisionCount == collisionLimit){markRemoved();return;}
+        currentCollisionCount++;
         _entity.receiveHit(damage,source);
+
+
     }
 
     @Override
@@ -84,6 +86,6 @@ public class Bullet extends Projectile {
     public void reset() {
         traveledDistance = 0f;
         currentCollisionCount = 0;
-        removed = false;
+        markNew();
     }
 }

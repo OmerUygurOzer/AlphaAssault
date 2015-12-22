@@ -1,7 +1,6 @@
 package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.math.Vector2;
-import com.boomer.alphaassault.gameworld.gamelogic.GameMath;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -11,6 +10,8 @@ import com.boomer.alphaassault.handlers.controls.Inputs;
 import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.handlers.controls.InputReceiver;
 import com.boomer.alphaassault.graphics.Renderable;
+import com.boomer.alphaassault.utilities.GameMath;
+
 
 /**
  * Created by Omer on 11/25/2015.
@@ -193,7 +194,7 @@ public class Analog extends Controller implements Renderable,InputReceiver {
                 rightCurrentLocation.x = inputX;
                 rightCurrentLocation.y = inputY;
                 set(RIGHT_ANALOG,distance*1/RADIUS);
-                set(RIGHT_ROTATION,GameMath.getAngle(inputX,inputY,RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y));
+                set(RIGHT_ROTATION, GameMath.getAngle(inputX,inputY,RIGHT_BUTTON_CENTER.x,RIGHT_BUTTON_CENTER.y));
                 set(RIGHT_ACTIVE,true);
                 rightButtonSprite.setCenter(rightCurrentLocation.x, rightCurrentLocation.y);
                 RenderStateManager.updatingStatePointer.updateElement(rightButtonId,RenderState.DEPTH_GAME_SCREEN_BASE,rightButtonSprite);

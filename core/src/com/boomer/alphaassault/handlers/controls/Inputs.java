@@ -1,7 +1,9 @@
 package com.boomer.alphaassault.handlers.controls;
 
 import com.badlogic.gdx.math.Vector2;
-import com.boomer.alphaassault.gameworld.gamelogic.GameMath;
+import com.boomer.alphaassault.utilities.GameMath;
+
+
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
