@@ -4,6 +4,7 @@ package com.boomer.alphaassault.memoryutils;
 
 import com.boomer.alphaassault.exceptions.NullPoolableException;
 import com.boomer.alphaassault.exceptions.ObjectNotPoolableException;
+import com.boomer.alphaassault.gameworld.GameWorld;
 
 
 import java.util.Collection;
@@ -36,7 +37,8 @@ public abstract class Pool<T> {
 
     public T acquire(){
         if(!memStack.isEmpty()){
-            return memStack.pop();
+           return memStack.pop();
+
         }
         return newObject();
     }

@@ -10,25 +10,7 @@ import com.boomer.alphaassault.settings.GameSettings;
  */
 public class RenderStateManager {
 
-    /*
-   private bool _GlControlLoaded = false;
-        private int _SmileyTexture;
-        private RenderState[] _RenderStates = new RenderState[3];
-        private int _CurrentUpdatingStateNr = -1;
-        private int _LastUpdatedStateNr = -1;
-        private int _PreviousUpdatedStateNr = -1;
-        private int _CurrentDrawingStateNr = -1;
-        private int _LastUpdatedStateThatIsNotCurrentlyDrawingNr = -1;
-        private object _RenderStatePointerSwitchLock = new object();
-        private Vector2 _BallSpeedPerSecond = new Vector2(100, 100);
-        private const float _BallSize = 21;
-        private long _DrawStart;
-        private long _PreviousDrawStart;
-        private long _UpdateStart;
-        private long _PreviousUpdateStart;
-        private long _StepNr;
-        private float _CachedExtrapolationStepSize = float.MinValue;
-    */
+
     private static int currentUpdatingStateIndex = -1;
     private static int lastUpdatedStateIndex = -1;
     private static int previousUpdatedStateIndex = -1;

@@ -29,6 +29,6 @@ public class Crate extends MapFeature {
 
     @Override
     public void receiveHit(int _hit, Unit _source) {
-
+        markRemoved();
     }
 }

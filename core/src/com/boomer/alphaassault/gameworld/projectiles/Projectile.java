@@ -7,12 +7,13 @@ import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.boomer.alphaassault.memoryutils.Poolable;
 import com.boomer.alphaassault.settings.GameSettings;
 
 /**
  * Created by Omer on 12/20/2015.
  */
-public abstract class Projectile extends Entity implements Renderable{
+public abstract class Projectile extends Entity implements Renderable,Poolable {
 
     protected static final int TRAVEL_RANGE_MULTIPLIER = 10;
 

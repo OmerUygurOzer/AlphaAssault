@@ -46,8 +46,8 @@ public class Fire extends Skill {
         if(ready){
             ready = false;
             timer = System.currentTimeMillis();
-            Vector2 bulletPos = new Vector2(user.getCenter().x,user.getCenter().y);
-            Bullet bullet = new Bullet(bulletPos, RenderState.DEPTH_SURFACE,world,user.getFacingAngle());
+            Bullet bullet = world.bulletPool.acquire();
+            bullet.setCenter(user.getCenter().x,user.getCenter().y);
             bullet.setCollisionLimit(1);
             bullet.setDamage(10);
             bullet.setSource(user);
