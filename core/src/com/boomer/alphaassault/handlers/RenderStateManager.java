@@ -62,42 +62,18 @@ public class RenderStateManager {
         currentFrame = 0;
 
     }
-/*
-    public static void switchRenderState(){
 
-                RenderState switcher;
-                if (updatingState == null && updatedState == null) {
-                    return;
-                }
-
-                //RE-ASSIGN STATES ACCORDINGLY
-
-                updatingState.setCurrentState(RenderState.STATE_RECENTLY_UPDATED);
-                renderingState.setCurrentState(RenderState.STATE_BEING_UPDATED);
-                updatedState.setCurrentState(RenderState.STATE_BEING_RENDERED);
-
-                switcher = renderingState;
-                renderingState = updatedState;
-                updatedState = updatingState;
-                updatingState = switcher;
-
-                updatingState.getUpdates(updatedState);
-
-
-
-    }
-*/
     public static void beginUpdating(){
-        RenderStateManager.updatingStatePointer = RenderStateManager.getUpdatingState();
-        RenderStateManager.updatingStatePointer.currentFrame = RenderStateManager.currentFrame;
+        updatingStatePointer = getUpdatingState();
+        updatingStatePointer.currentFrame = currentFrame;
     }
 
     public static void swapUpdates(){
-        RenderStateManager.lastUpdatedStatePointer = RenderStateManager.getLastUpdatedState();
-        if(RenderStateManager.lastUpdatedStatePointer == null){
-            RenderStateManager.updatingStatePointer.getUpdates(RenderStateManager.updatingStatePointer);
+        lastUpdatedStatePointer = RenderStateManager.getLastUpdatedState();
+        if(lastUpdatedStatePointer == null){
+           updatingStatePointer.getUpdates(updatingStatePointer);
         }else{
-            RenderStateManager.updatingStatePointer.getUpdates(RenderStateManager.lastUpdatedStatePointer);
+           updatingStatePointer.getUpdates(lastUpdatedStatePointer);
         }
     }
 
