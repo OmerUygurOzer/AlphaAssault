@@ -1,19 +1,20 @@
 package com.boomer.alphaassault.gameworld.gamelogic.buffs;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
 /**
  * Created by Omer on 12/12/2015.
  */
 public abstract class Buff implements Updateable,Renderable {
 
-    public static final int WIDTH = 40;
-    public static final int HEIGHT = 40;
+    public static final int SIZE = 40;
 
     private long referenceId;
     private int viewType;
@@ -24,14 +25,23 @@ public abstract class Buff implements Updateable,Renderable {
     private boolean isExpired;
 
     protected BSprite icon;
+    protected TextureRegion image;
+
+    protected Vector2 center;
 
     public Buff(long _duration){
         duration = _duration;
         startTime = System.currentTimeMillis();
         isExpired = false;
         referenceId = System.nanoTime();
+        center = new Vector2();
     }
 
+    public void setIconPosition(float _x,float _y){
+        center.x = _x;
+        center.y = _y;
+        icon.setCenter(_x,_y);
+    }
 
 
     @Override
@@ -58,11 +68,13 @@ public abstract class Buff implements Updateable,Renderable {
     @Override
     public void addToRenderState() {
         RenderStateManager.updatingStatePointer.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,icon);
+
     }
 
     @Override
     public void removeFromRenderState() {
         RenderStateManager.updatingStatePointer.removeElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE);
+
     }
 
     @Override

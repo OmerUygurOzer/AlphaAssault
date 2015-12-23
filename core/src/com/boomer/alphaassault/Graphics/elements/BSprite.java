@@ -39,6 +39,7 @@ public class BSprite implements BDrawable {
         sprite.set(((BSprite)_bDrawable).getSprite());
     }
 
+
     @Override
     public void draw(SpriteBatch _spriteBatch) {
             sprite.draw(_spriteBatch);

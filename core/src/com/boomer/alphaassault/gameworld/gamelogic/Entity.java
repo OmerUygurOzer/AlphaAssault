@@ -16,6 +16,7 @@ public abstract class Entity implements Updateable{
     protected int depth;
     protected GameWorld world;
     protected boolean isSolid;
+    protected float size;
 
     protected Entity(Vector2 _center,int _depth,GameWorld _world){
         center = _center;

@@ -21,8 +21,9 @@ public class Rocks extends MapFeature {
         blocksAerial = false;
         blocksDamage = true;
         radius = ROCKS_RADIUS;
-        TextureRegion textureRegion = Resource.getTextureRegions(Resource.DOODADS)[0][1];
-        bDrawable = new BSprite(textureRegion);
+        size = radius * 2;
+        image = Resource.getTextureRegions(Resource.DOODADS)[0][1];
+        bDrawable = new BSprite(image);
         ((BSprite)bDrawable).setSize(16,16);
         ((BSprite)bDrawable).setPosition(center.x,center.y);
     }

@@ -86,7 +86,7 @@ public class AssaultTrooper extends Unit {
         bAnimation.setCenter(_x,_y);
         bAnimation.update(_deltaTime);
         setCenter(_x,_y);
-        RenderStateManager.getUpdatingState().updateElement(getReferenceID(), RenderState.DEPTH_SURFACE, bAnimation);
+        RenderStateManager.updatingStatePointer.updateElement(getReferenceID(), RenderState.DEPTH_SURFACE, bAnimation);
     }
 
     //UPDATEABLE

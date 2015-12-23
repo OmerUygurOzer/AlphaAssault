@@ -1,5 +1,6 @@
 package com.boomer.alphaassault.gameworld.projectiles;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
@@ -8,7 +9,6 @@ import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.memoryutils.Poolable;
-import com.boomer.alphaassault.settings.GameSettings;
 
 /**
  * Created by Omer on 12/20/2015.
@@ -26,7 +26,8 @@ public abstract class Projectile extends Entity implements Renderable,Poolable {
     protected float traveledDistance;
     protected float travelRange;
 
-    protected BDrawable image;
+    protected BDrawable drawable;
+    protected TextureRegion image;
 
 
     protected Projectile(Vector2 _center, int _depth, GameWorld _world) {
@@ -42,6 +43,12 @@ public abstract class Projectile extends Entity implements Renderable,Poolable {
     public void setRange(float _range){travelRange = _range * TRAVEL_RANGE_MULTIPLIER;}
 
     public void setSource(Unit _source){source = _source;}
+
+    @Override
+    public void addToRenderState() {
+        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId,depth, drawable);
+
+    }
 
     @Override
     public void removeFromRenderState() {
@@ -63,10 +70,7 @@ public abstract class Projectile extends Entity implements Renderable,Poolable {
         viewType = _viewType;
     }
 
-    @Override
-    public void addToRenderState() {
-        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId,depth,image);
-    }
+
 
 
 }

@@ -1,12 +1,13 @@
 package com.boomer.alphaassault.gameworld.mapfeatures;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.graphics.Renderable;
 
 /**
  * Created by Omer on 11/25/2015.
@@ -26,7 +27,8 @@ public abstract class MapFeature extends Entity implements Renderable{
     protected boolean destroyable;
 
     //MECHANIC/GRAPHICAL DETAILS
-    public BDrawable bDrawable;
+    protected BDrawable bDrawable;
+    protected TextureRegion image;
     private int viewType;
 
     public MapFeature(Vector2 _center,GameWorld _world) {

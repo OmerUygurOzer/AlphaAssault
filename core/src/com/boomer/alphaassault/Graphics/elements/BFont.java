@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+
 import com.boomer.alphaassault.resources.Resource;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class BFont implements BDrawable {
         if(incomingText.equals(text)){return;}
         setText(bFont.getText());
     }
+
 
     @Override
     public void draw(SpriteBatch _spriteBatch) {

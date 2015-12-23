@@ -98,7 +98,7 @@ public class BAnimation implements BDrawable {
                 spriteSheetStill = new Sprite[frames];
 
                 for(int i=0;i<textureRegions[0].length;i++){
-                   spriteSheetStill[i] = new Sprite(textureRegions[0][i]);
+                    spriteSheetStill[i] = new Sprite(textureRegions[0][i]);
                 }
 
 
@@ -181,12 +181,14 @@ public class BAnimation implements BDrawable {
 
 
         if(width != ((BAnimation) _bDrawable).getWidth() || height != ((BAnimation) _bDrawable).getHeight()){
-            width = incomingAnimation.getWidth();
-            height = incomingAnimation.getHeight();
+            width = ((BAnimation) _bDrawable).getWidth();
+            height= ((BAnimation) _bDrawable).getHeight();
             setSize(width,height);
         }
 
     }
+
+
 
     @Override
     public void draw(SpriteBatch _spriteBatch) {
@@ -213,9 +215,7 @@ public class BAnimation implements BDrawable {
     }
 
     @Override
-    public Vector2 getCenter() {
-        return center;
-    }
+    public Vector2 getCenter() {return center;}
 
     public float getWidth() {
         return width;
@@ -227,6 +227,7 @@ public class BAnimation implements BDrawable {
 
     public double getFacingAngle() {
         return facingAngle;
+
     }
 
     public int getCurrentFrame() {

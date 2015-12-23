@@ -22,7 +22,8 @@ public class AdjustedSpeed extends Buff {
         type = _type;
         adjustment = _adjustment;
         icon = new BSprite(Resource.getTextureRegions(Resource.ICONS)[0][1]);
-        icon.setSize(Buff.WIDTH,Buff.HEIGHT);
+        image = Resource.getTextureRegions(Resource.ICONS)[0][1];
+        icon.setSize(Buff.SIZE,Buff.SIZE);
     }
 
 
@@ -49,7 +50,6 @@ public class AdjustedSpeed extends Buff {
     public void deflict(Unit _unit) {
         super.deflict(_unit);
         _unit.adjustMovementSpeed(-finalAdjustment);
-        //System.out.println(_unit.getMovementSpeed());
     }
 
 

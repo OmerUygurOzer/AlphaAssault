@@ -66,7 +66,7 @@ public class Hud implements Renderable,Updateable {
     public Hud(){
             buffsShown = new ArrayList<Buff>();
             buffsExpired = new ArrayList<Buff>();
-            buffBaseX =  Buff.WIDTH/2 + 10f;
+            buffBaseX =  Buff.SIZE /2 + 10f;
             buffBaseY = GameGraphics.VIRTUAL_HEIGHT - 130f;
 
             supplyFonts = new ArrayList<BFont>();
@@ -107,7 +107,7 @@ public class Hud implements Renderable,Updateable {
     }
 
     public void showBuff(Buff _buff){
-        _buff.getIcon().setCenter(buffBaseX + buffsShown.size()* Buff.WIDTH,buffBaseY);
+        _buff.setIconPosition(buffBaseX + buffsShown.size()* Buff.SIZE,buffBaseY);
         _buff.setViewType(viewType);
         _buff.addToRenderState();
         buffsShown.add(_buff);

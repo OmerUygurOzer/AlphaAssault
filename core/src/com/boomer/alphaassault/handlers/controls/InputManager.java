@@ -48,7 +48,7 @@ public class InputManager{
         if(realAspectRatio>= GameGraphics.VIRTUAL_ASPECT_RATIO){ //LIMITING FACTOR = HEIGHT
                 screenHeight = Gdx.graphics.getHeight();
                 screenWidth = Math.round(((float)Gdx.graphics.getHeight()/(float)GameGraphics.VIRTUAL_HEIGHT)*(float)GameGraphics.VIRTUAL_WIDTH);
-        }else{  //LIMITING FACTOR = WIDTH
+        }else{  //LIMITING FACTOR = SIZE
                 screenHeight = Math.round(((float)Gdx.graphics.getWidth()/(float)GameGraphics.VIRTUAL_WIDTH) * (float) GameGraphics.VIRTUAL_HEIGHT);
                 screenWidth = Gdx.graphics.getWidth();
         }

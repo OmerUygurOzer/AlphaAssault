@@ -28,18 +28,20 @@ public class Bullet extends Projectile {
     public Bullet(Vector2 _center, int _depth, GameWorld _world,double _angle) {
         super(_center, _depth, _world);
         currentCollisionCount = 0;
-        image = new BSprite(Resource.getTextureRegions(Resource.BULLET)[0][0]);
-        ((BSprite) image).setSize(SIZE, SIZE);
-        ((BSprite)image).setCenter(center.x, center.y);
+        drawable = new BSprite(Resource.getTextureRegions(Resource.BULLET)[0][0]);
+        image   = Resource.getTextureRegions(Resource.BULLET)[0][0];
+        ((BSprite) drawable).setSize(SIZE, SIZE);
+        ((BSprite)drawable).setCenter(center.x, center.y);
         radius = BULLET_RADIUS;
     }
 
     public Bullet(GameWorld _world){
         super(new Vector2(), RenderState.DEPTH_SURFACE,_world);
         currentCollisionCount = 0;
-        image = new BSprite(Resource.getTextureRegions(Resource.BULLET)[0][0]);
-        ((BSprite) image).setSize(SIZE, SIZE);
-        ((BSprite)image).setCenter(center.x, center.y);
+        drawable = new BSprite(Resource.getTextureRegions(Resource.BULLET)[0][0]);
+        image   = Resource.getTextureRegions(Resource.BULLET)[0][0];
+        ((BSprite) drawable).setSize(SIZE, SIZE);
+        ((BSprite)drawable).setCenter(center.x, center.y);
         radius = BULLET_RADIUS;
     }
 
@@ -59,15 +61,16 @@ public class Bullet extends Projectile {
         double yMovement = Math.cos(Math.toRadians(directionAngle)) * travelSpeed / GameSettings.UPS;
          center.x = center.x + (float)xMovement;
         center.y = center.y + (float)yMovement;
-         ((BSprite)image).setCenter(center.x, center.y);
+         ((BSprite)drawable).setCenter(center.x, center.y);
         traveledDistance += travelSpeed / GameSettings.UPS;
         if (traveledDistance >= travelRange) {
             removed = true;
         }
 
-       RenderStateManager.updatingStatePointer.updateElement(referenceId, viewType, image);
+       RenderStateManager.updatingStatePointer.updateElement(referenceId, viewType, drawable);
     }
     }
+
     @Override
     public void uponCollision(Entity _entity) {
         if(currentCollisionCount == collisionLimit){markRemoved();return;}
