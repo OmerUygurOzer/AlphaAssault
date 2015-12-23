@@ -4,6 +4,7 @@ package com.boomer.alphaassault.gameworld;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
@@ -103,34 +104,36 @@ public class Map implements Renderable{
             int min = 0;
             int max = 1;
 
-            int tileTextureWidth = Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getRegionWidth();
-            int tileTextureHeight =  Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getRegionHeight();
 
-            Pixmap tileGrass = new Pixmap(128,128, Pixmap.Format.RGBA8888);
-            Pixmap tileBadLands = new Pixmap(128,128,Pixmap.Format.RGBA8888);
-            Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getTexture().getTextureData().prepare();
-            Pixmap tilesAll = Resource.getTextureRegions(Resource.BACKGROUND)[0][0].getTexture().getTextureData().consumePixmap();
 
-            for(int x = 0;x<tileTextureWidth;x++){
-                for(int y = 0;y < tileTextureHeight;y++){
+            Pixmap tileGrass = new Pixmap(80,80, Pixmap.Format.RGBA8888);
+            Pixmap tileBadlands = new Pixmap(80,80,Pixmap.Format.RGBA8888);
+            TextureRegion grass = Resource.getTextureRegions(Resource.BACKGROUND)[0][0];
+            TextureRegion badlands = Resource.getTextureRegions(Resource.BACKGROUND)[0][1];
+            Resource.getTexture(Resource.IN_GAME).getTextureData().prepare();
+            Pixmap tilesAll = Resource.getTexture(Resource.IN_GAME).getTextureData().consumePixmap();
+
+            int regionSize = grass.getRegionHeight();
+
+            for(int x = grass.getRegionX();x<grass.getRegionX()+grass.getRegionWidth();x++){
+                for(int y = grass.getRegionY();y < grass.getRegionY()+ grass.getRegionHeight();y++){
                     int pixel = tilesAll.getPixel(x,y);
-                    tileGrass.drawPixel(x,y,pixel);
-
+                    tileGrass.drawPixel(x-grass.getRegionX(),y-grass.getRegionY(),pixel);
                 }
             }
 
-            for(int x = 128;x<tileTextureWidth+128;x++){
-                for(int y = 0;y < tileTextureHeight;y++){
-                int pixel = tilesAll.getPixel(x,y);
-                tileBadLands.drawPixel(x-128,y,pixel);
-                }
+            for(int x = badlands.getRegionX();x<badlands.getRegionX()+badlands.getRegionWidth();x++){
+                for(int y = badlands.getRegionY();y <badlands.getRegionY()+ badlands.getRegionHeight();y++){
+                    int pixel = tilesAll.getPixel(x,y);
+                    tileBadlands.drawPixel(x-badlands.getRegionX(),y-badlands.getRegionY(),pixel);
+
+            }
             }
 
-            int scaler  = tileTextureHeight / TILE_SIZE;
+            int scaler  = regionSize / TILE_SIZE;
 
 
             Texture base = new Texture(width*scaler,height*scaler, Pixmap.Format.RGBA8888);
-            base.draw(tileBadLands,0,0);
 
             for(int x=0;x< width/TILE_SIZE;x++){
                 for(int y=0;y< height/TILE_SIZE;y++) {
@@ -140,7 +143,7 @@ public class Map implements Renderable{
                            base.draw(tileGrass,x*scaler*TILE_SIZE,y*scaler*TILE_SIZE);
                             break;
                         case 1:
-                            base.draw(tileBadLands,x*scaler*TILE_SIZE,y*scaler*TILE_SIZE);
+                            base.draw(tileBadlands,x*scaler*TILE_SIZE,y*scaler*TILE_SIZE);
                             break;
                         default:
                             //DO NOTHING
@@ -150,7 +153,7 @@ public class Map implements Renderable{
             }
 
             tileGrass.dispose();
-            tileBadLands.dispose();
+            tileBadlands.dispose();
             tilesAll.dispose();
 
             mapBase = new BSprite(base);

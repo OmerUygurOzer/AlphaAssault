@@ -36,11 +36,15 @@ public class Resource {
     public static final int FONTS = 5;
     public static final int BUTTONS = 6;
 
-    //MAP
-    public static final int MAP_ALL = 20;
+    //IN-GAME !
+    public static final int IN_GAME = 20;
     public static final int BACKGROUND = 21;
     public static final int TREES = 22;
-    public static final int DOODADS = 23;
+    public static final int CRATES = 23;
+    public static final int BUSHES = 24;
+    public static final int ROCKS = 25;
+    public static final int WATER = 26;
+
 
 
     //ICONS
@@ -67,7 +71,7 @@ public class Resource {
         loadTexture(TEXTURE_REGION_ASSAULT_TROOPER,"character.png");
         loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
         loadTexture(GUI_ALL,"GUI/gui.png");
-        loadTexture(MAP_ALL,"map/map.png");
+        loadTexture(IN_GAME,"game/ingame.png");
         loadTexture(GAME_ALL,"game/game.png");
 
 
@@ -78,15 +82,18 @@ public class Resource {
         loadTextureRegion(BUTTONS,getTexture(GUI_ALL),512,0,256,128,2,1);
 
         //MAP
-        loadTextureRegion(BACKGROUND,getTexture(MAP_ALL),0,0,128,128,2,1);
-        loadTextureRegion(TREES,getTexture(MAP_ALL),0,128,85,128,3,1);
-        loadTextureRegion(DOODADS,getTexture(MAP_ALL),256,0,32,32,4,1);
+        loadTextureRegion(BACKGROUND,getTexture(IN_GAME),160,0,80,80,2,1);
+        loadTextureRegion(TREES,getTexture(IN_GAME),0,0,40,80,4,1);
+        loadTextureRegion(ROCKS,getTexture(IN_GAME),0,80,40,40,4,1);
+        loadTextureRegion(CRATES,getTexture(IN_GAME),0,120,40,40,4,1);
+        loadTextureRegion(WATER,getTexture(IN_GAME),0,160,40,40,4,1);
+        loadTextureRegion(BUSHES,getTexture(IN_GAME),0,200,20,20,4,1);
 
         //ICONS
         loadTextureRegion(ICONS,getTexture(GAME_ALL),0,0,60,40,7,1);
 
         //GAME
-        loadTextureRegion(BULLET,getTexture(GAME_ALL),0,40,40,120,1,1);
+        loadTextureRegion(BULLET,getTexture(IN_GAME),0,220,20,20,1,8);
     }
 
     //TEXTURE HANDLERS

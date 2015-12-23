@@ -5,6 +5,7 @@ import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.RenderState;
+import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
@@ -28,20 +29,22 @@ public class Bullet extends Projectile {
     public Bullet(Vector2 _center, int _depth, GameWorld _world,double _angle) {
         super(_center, _depth, _world);
         currentCollisionCount = 0;
-        drawable = new BSprite(Resource.getTextureRegions(Resource.BULLET)[0][0]);
-        image   = Resource.getTextureRegions(Resource.BULLET)[0][0];
-        ((BSprite) drawable).setSize(SIZE, SIZE);
-        ((BSprite)drawable).setCenter(center.x, center.y);
+        drawable = new BAnimation(Resource.getTextureRegions(Resource.BULLET), BAnimation.Type.DIRECTIONAL);
+        ((BAnimation) drawable).setSize(SIZE, SIZE);
+        ((BAnimation)drawable).setCenter(center.x, center.y);
+        ((BAnimation) drawable).setFacingAngle(_angle);
+        ((BAnimation) drawable).setSecondsPerFrame(0.1f);
         radius = BULLET_RADIUS;
     }
 
     public Bullet(GameWorld _world){
         super(new Vector2(), RenderState.DEPTH_SURFACE,_world);
         currentCollisionCount = 0;
-        drawable = new BSprite(Resource.getTextureRegions(Resource.BULLET)[0][0]);
-        image   = Resource.getTextureRegions(Resource.BULLET)[0][0];
-        ((BSprite) drawable).setSize(SIZE, SIZE);
-        ((BSprite)drawable).setCenter(center.x, center.y);
+        drawable = new BAnimation(Resource.getTextureRegions(Resource.BULLET), BAnimation.Type.DIRECTIONAL);
+        ((BAnimation) drawable).setSize(SIZE, SIZE);
+        ((BAnimation)drawable).setCenter(center.x, center.y);
+        ((BAnimation) drawable).setFacingAngle(0);
+        ((BAnimation) drawable).setSecondsPerFrame(0.1f);
         radius = BULLET_RADIUS;
     }
 
@@ -55,18 +58,24 @@ public class Bullet extends Projectile {
     }
 
     @Override
+    public void setDirectionAngle(float _angle) {
+        super.setDirectionAngle(_angle);
+        ((BAnimation) drawable).setFacingAngle(_angle);
+    }
+
+    @Override
     public void update(float _deltaTime) {
      if(!removed) {
         double xMovement = Math.sin(Math.toRadians(directionAngle)) * travelSpeed / GameSettings.UPS;
         double yMovement = Math.cos(Math.toRadians(directionAngle)) * travelSpeed / GameSettings.UPS;
          center.x = center.x + (float)xMovement;
         center.y = center.y + (float)yMovement;
-         ((BSprite)drawable).setCenter(center.x, center.y);
+         ((BAnimation)drawable).setCenter(center.x,center.y);
         traveledDistance += travelSpeed / GameSettings.UPS;
         if (traveledDistance >= travelRange) {
             removed = true;
         }
-
+        ((BAnimation) drawable).update(_deltaTime);
        RenderStateManager.updatingStatePointer.updateElement(referenceId, viewType, drawable);
     }
     }

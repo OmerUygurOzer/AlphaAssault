@@ -7,6 +7,8 @@ import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.resources.Resource;
 
+import java.util.Random;
+
 /**
  * Created by Omer on 11/25/2015.
  */
@@ -22,7 +24,9 @@ public class Water extends MapFeature {
         blocksDamage = false;
         radius = WATER_RADIUS;
         size = radius * 2;
-        image = Resource.getTextureRegions(Resource.DOODADS)[0][3];
+        Random random = new Random();
+        int featureType = random.nextInt((3-1)+1)+1;
+        image = Resource.getTextureRegions(Resource.WATER)[0][featureType];
         bDrawable = new BSprite(image);
         ((BSprite)bDrawable).setSize(16,16);
         ((BSprite)bDrawable).setPosition(_center.x,_center.y);
