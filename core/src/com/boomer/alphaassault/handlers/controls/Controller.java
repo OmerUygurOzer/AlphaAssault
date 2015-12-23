@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.handlers.controls;
 
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.utilities.Value;
 
 import java.util.HashMap;
 
@@ -9,34 +10,9 @@ import java.util.HashMap;
  */
 public class Controller {
 
-    public class Value {
-        public double valueDouble;
-        public boolean valueBoolean;
-        public Vector2 valueLocation;
-
-        public Value(double _value) {
-            valueBoolean = false;
-            valueDouble = _value;
-            valueLocation = null;
-        }
-
-        public Value(boolean _value) {
-            valueBoolean = _value;
-            valueDouble = 0;
-            valueLocation = null;
-        }
-
-        public Value(Vector2 _value) {
-            valueBoolean = false;
-            valueDouble = 0;
-            valueLocation = new Vector2(_value);
-        }
-    }
 
 
     protected HashMap<Integer, Value> values;
-
-
 
     protected Controller() {
        values = new HashMap<Integer, Value>();
@@ -61,8 +37,8 @@ public class Controller {
 
     public void set(Integer _key, Vector2 _value) {
         if(values.containsKey(_key)){
-            values.get(_key).valueLocation.x = _value.x;
-            values.get(_key).valueLocation.y = _value.y;
+            values.get(_key).valueVector2.x = _value.x;
+            values.get(_key).valueVector2.y = _value.y;
 
         }else{
             values.put(_key,new Value(_value));

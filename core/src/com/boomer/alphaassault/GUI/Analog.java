@@ -107,14 +107,14 @@ public class Analog extends Controller implements Renderable,InputReceiver {
     @Override
     public void addToRenderState() {
         if(TYPE == LEFT_ONLY || TYPE == BOTH) {
-            RenderStateManager.getUpdatingState().addElement(viewType, leftButtonId, RenderState.DEPTH_GAME_SCREEN_BASE, leftButtonSprite);
-            RenderStateManager.getUpdatingState().addElement(viewType, leftCircleId, RenderState.DEPTH_GAME_SCREEN_BASE,leftCircleSprite);
+            RenderStateManager.updatingStatePointer.addElement(viewType, leftButtonId, RenderState.DEPTH_GAME_SCREEN_BASE, leftButtonSprite);
+            RenderStateManager.updatingStatePointer.addElement(viewType, leftCircleId, RenderState.DEPTH_GAME_SCREEN_BASE,leftCircleSprite);
         }
         if(TYPE == RIGHT_ONLY || TYPE == BOTH) {
-            RenderStateManager.getUpdatingState().addElement(viewType, rightButtonId,RenderState.DEPTH_GAME_SCREEN_BASE, rightButtonSprite);
-            RenderStateManager.getUpdatingState().addElement(viewType, rightCircleId,RenderState.DEPTH_GAME_SCREEN_BASE, rightCircleSprite);
+            RenderStateManager.updatingStatePointer.addElement(viewType, rightButtonId,RenderState.DEPTH_GAME_SCREEN_BASE, rightButtonSprite);
+            RenderStateManager.updatingStatePointer.addElement(viewType, rightCircleId,RenderState.DEPTH_GAME_SCREEN_BASE, rightCircleSprite);
         }
-        RenderStateManager.getUpdatingState().addElement(viewType, gameFrameId, RenderState.DEPTH_GAME_SCREEN_BASE, gameFrameSprite);
+        RenderStateManager.updatingStatePointer.addElement(viewType, gameFrameId, RenderState.DEPTH_GAME_SCREEN_BASE, gameFrameSprite);
     }
 
     @Override
