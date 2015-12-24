@@ -1,7 +1,7 @@
 package com.boomer.alphaassault.handlers;
 
 import com.boomer.alphaassault.graphics.RenderState;
-import com.boomer.alphaassault.settings.GameSettings;
+import com.boomer.alphaassault.GameSystem;
 
 
 
@@ -141,11 +141,11 @@ public class RenderStateManager {
     }
 
     public static void setGameRenderState(RenderState _renderState){
-        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_INACTIVE;
+        GameSystem.GAME_RUNNING_STATE = GameSystem.RUNNING_STATE_INACTIVE;
         renderStates[0].set(_renderState);
         renderStates[1].set(_renderState);
         renderStates[2].set(_renderState);
-        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
+        GameSystem.GAME_RUNNING_STATE = GameSystem.RUNNING_STATE_ACTIVE;
 
     }
 

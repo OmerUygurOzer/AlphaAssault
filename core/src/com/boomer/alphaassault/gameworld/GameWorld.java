@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.gameworld.projectiles.Bullet;
+import com.boomer.alphaassault.gameworld.visuals.Smoke;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -22,7 +23,7 @@ import java.util.List;
 public class GameWorld implements Updateable,Renderable{
 
     private Map gameMap;
-    private long baseReference;
+    private short baseReference;
     private Player player;
     private Camera camera;
     private List<Entity> entities;
@@ -32,11 +33,13 @@ public class GameWorld implements Updateable,Renderable{
 
     public int viewType;
 
+    private List<Entity> additions;
     private List<Entity> removals;
 
     public GameWorld(Camera _camera){
         entities = new ArrayList<Entity>();
         removals = new ArrayList<Entity>();
+        additions = new ArrayList<Entity>();
 
         final GameWorld worldPointer = this;
         bulletPool = new Pool<Bullet>() {
@@ -57,19 +60,7 @@ public class GameWorld implements Updateable,Renderable{
         player.setWorld(this);
     }
 
-    public void addEntity(Entity _entity){
-        if(_entity instanceof Renderable){
-            ((Renderable) _entity).addToRenderState();
-        }
-        entities.add(_entity);
-    }
 
-    public void removeEntity(Entity _entity){
-        if(_entity instanceof Renderable){
-            RenderStateManager.updatingStatePointer.removeElement(_entity.getReferenceId(),_entity.getDepth());
-        }
-        entities.remove(_entity);
-    }
 
     public Map getGameMap(){return gameMap;}
 
@@ -85,15 +76,11 @@ public class GameWorld implements Updateable,Renderable{
     }
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return baseReference;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        baseReference = _referenceId;
-        gameMap.setReferenceID(baseReference + 1000);
-    }
+
 
     @Override
     public void setViewType(int _viewType) {
@@ -104,11 +91,25 @@ public class GameWorld implements Updateable,Renderable{
     @Override
     public void update(float _deltaTime) {
         player.update(_deltaTime);
+        doEntityAddition();
         doEntityUpdates(_deltaTime);
         handleCollisions();
         doEntityRemoval();
 
     }
+
+    public void doEntityAddition(){
+        for(Entity entity : additions){
+            if(entity instanceof Renderable){
+                ((Renderable)entity).addToRenderState();
+            }
+            entities.add(entity);
+        }
+        additions.clear();
+
+    }
+
+
     public void doEntityUpdates(float _deltaTime){
         for(Entity entity : entities){
             entity.update(_deltaTime);
@@ -135,6 +136,7 @@ public class GameWorld implements Updateable,Renderable{
                     bulletPool.free((Bullet)entity);
                 }
 
+
                 removals.add(entity);
             }
         }
@@ -143,6 +145,17 @@ public class GameWorld implements Updateable,Renderable{
             removeEntity(entity);
         }
         removals.clear();
+    }
+
+    public void addEntity(Entity _entity){
+        additions.add(_entity);
+    }
+
+    public void removeEntity(Entity _entity){
+        if(_entity instanceof Renderable){
+            ((Renderable)_entity).removeFromRenderState();
+        }
+        entities.remove(_entity);
     }
 
 

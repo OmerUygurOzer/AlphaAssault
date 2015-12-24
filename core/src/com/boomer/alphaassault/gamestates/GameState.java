@@ -11,7 +11,7 @@ import java.util.HashMap;
 /**
  * Created by Omer on 11/24/2015.
  */
-public abstract class GameStateBase {
+public abstract class GameState {
 
     protected GameStateManager GAME_STATE_MANAGER;
     protected RenderState RENDER_STATE;
@@ -19,7 +19,7 @@ public abstract class GameStateBase {
 
 
 
-    public GameStateBase(GameStateManager _gameStateManager){
+    public GameState(GameStateManager _gameStateManager){
         GAME_STATE_MANAGER = _gameStateManager;
         RENDER_STATE = new RenderState(0);
 

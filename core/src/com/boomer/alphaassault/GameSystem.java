@@ -1,9 +1,11 @@
-package com.boomer.alphaassault.settings;
+package com.boomer.alphaassault;
 
 /**
  * Created by Omer on 11/26/2015.
  */
-public class GameSettings {
+public class GameSystem {
+
+    private static short baseReference = Short.MIN_VALUE;
 
     public static final String TITLE = "ALPHA ASSAULT";
 
@@ -24,5 +26,10 @@ public class GameSettings {
 
     //CONTROLS
     public static final int INPUT_MAX = 5;
+
+    public static short obtainReference(){
+        baseReference++;
+        return baseReference;
+    }
 
 }

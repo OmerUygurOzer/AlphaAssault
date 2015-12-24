@@ -1,7 +1,6 @@
 package com.boomer.alphaassault.utilities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.boomer.alphaassault.settings.GameSettings;
 
 /**
  * Created by Omer on 12/17/2015.

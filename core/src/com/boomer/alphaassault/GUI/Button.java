@@ -1,13 +1,12 @@
 package com.boomer.alphaassault.GUI;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages_ca;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,8 @@ public class Button implements Renderable {
     private int width;
     private int height;
 
-    private long referenceId;
+    private short baseImageId;
+    private short iconImageId;
     private int viewType;
 
     private Map<Integer,BSprite> states;
@@ -38,6 +38,8 @@ public class Button implements Renderable {
         center = new Vector2(_x,_y);
         width = _width;
         height = _height;
+        baseImageId = GameSystem.obtainReference();
+        iconImageId = GameSystem.obtainReference();
     }
 
 
@@ -63,18 +65,18 @@ public class Button implements Renderable {
 
     public void setState(int _state){
         BSprite getState = states.get(_state);
-        RenderStateManager.updatingStatePointer.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
+        RenderStateManager.updatingStatePointer.updateElement(baseImageId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
     }
 
     public void resetState(){
         BSprite getState = states.get(STATE_INIT);
-        RenderStateManager.updatingStatePointer.updateElement(referenceId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
+        RenderStateManager.updatingStatePointer.updateElement(baseImageId,RenderState.DEPTH_GAME_SCREEN_BASE,getState);
     }
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId, RenderState.DEPTH_GAME_SCREEN_BASE,base);
-        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId+1,RenderState.DEPTH_GAME_SCREEN_DYNAMIC,icon);
+        RenderStateManager.updatingStatePointer.addElement(viewType, baseImageId, RenderState.DEPTH_GAME_SCREEN_BASE,base);
+        RenderStateManager.updatingStatePointer.addElement(viewType, iconImageId,RenderState.DEPTH_GAME_SCREEN_DYNAMIC,icon);
     }
 
     @Override
@@ -83,14 +85,11 @@ public class Button implements Renderable {
     }
 
     @Override
-    public long getReferenceID() {
-        return referenceId;
+    public short getReferenceID() {
+        return baseImageId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId;
-    }
+
 
     @Override
     public void setViewType(int _viewType) {

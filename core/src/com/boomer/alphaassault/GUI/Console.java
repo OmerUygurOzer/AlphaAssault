@@ -1,7 +1,8 @@
 package com.boomer.alphaassault.GUI;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.boomer.alphaassault.GameSystem;
+import com.boomer.alphaassault.gamestates.GameState;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.InputReceiver;
@@ -47,22 +48,29 @@ public class Console extends Controller implements Renderable,InputReceiver {
     private Map<Integer,Integer> localStates;
 
     //REFERENCE IDS
-    private long referenceId;
-    private long buttonOneId;
-    private long buttonTwoId;
-    private long buttonThreeId;
-    private long buttonFourId;
+    private short referenceId;
+    private short buttonOneId;
+    private short buttonTwoId;
+    private short buttonThreeId;
+    private short buttonFourId;
+
+    private short[] buttonIds;
 
     private int viewType;
 
     public Console() {
         super();
 
-
+        buttonIds = new short[4];
+        for(int i= 0;i<4;i++){
+            buttonIds[i]= GameSystem.obtainReference();
+        }
 
         buttons     = new HashMap<Integer,Button>();
         localStates = new HashMap<Integer, Integer>();
         buttonNumber = 0;
+
+        referenceId = GameSystem.obtainReference();
     }
 
     public void addButton(int _key,TextureRegion[][] _states,TextureRegion _icon){
@@ -73,7 +81,6 @@ public class Console extends Controller implements Renderable,InputReceiver {
         button.addState(PRESSED,buttonStates[0][PRESSED]);
 
         //SET BUTTON PROPERTIES
-        button.setReferenceID(referenceId + buttonNumber);
         button.setIcon(_icon, CONSOLE_BUTTON_ICON_WIDTH, CONSOLE_BUTTON_ICON_HEIGHT);
         button.setViewType(viewType);
 
@@ -129,18 +136,10 @@ public class Console extends Controller implements Renderable,InputReceiver {
     }
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId;
-        buttonOneId = referenceId   + 0;
-        buttonTwoId = referenceId   + 1;
-        buttonThreeId = referenceId + 2;
-        buttonFourId = referenceId  + 3 ;
-    }
 
     @Override
     public void setViewType(int _viewType) {

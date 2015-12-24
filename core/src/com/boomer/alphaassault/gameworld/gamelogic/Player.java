@@ -1,13 +1,12 @@
 package com.boomer.alphaassault.gameworld.gamelogic;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.GUI.Analog;
 import com.boomer.alphaassault.GUI.Console;
 import com.boomer.alphaassault.GUI.Hud;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.GameWorld;
-import com.boomer.alphaassault.gameworld.Map;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
 import com.boomer.alphaassault.gameworld.units.skills.Skill;
@@ -15,7 +14,6 @@ import com.boomer.alphaassault.graphics.cameras.SightCamera;
 import com.boomer.alphaassault.handlers.controls.Controllable;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.graphics.Renderable;
 
 
@@ -28,10 +26,11 @@ public class Player implements Updateable,Renderable,Controllable{
     public static final int COMMANDO        = 2;
     public static final int MEDIC           = 3;
 
+    private short referenceId;
+
     private String name;
     private Texture icon;
 
-    private static final int PLAYER_REFERENCE = 1;
     private int viewType;
 
     private SightCamera camera;
@@ -52,6 +51,7 @@ public class Player implements Updateable,Renderable,Controllable{
 
     public Player(SightCamera _camera) {
         camera = _camera;
+        referenceId = GameSystem.obtainReference();
     }
 
     //NAME AND ICON
@@ -85,8 +85,7 @@ public class Player implements Updateable,Renderable,Controllable{
     public void setRole(int _role){
         switch (_role){
             case ASSAULT_TROOPER:
-                playerUnit = new AssaultTrooper(GameSettings.TEAM_BLUE,new Vector2(Math.round(camera.position.x),Math.round(camera.position.y)),world);
-                playerUnit.setReferenceID(PLAYER_REFERENCE);
+                playerUnit = new AssaultTrooper(GameSystem.TEAM_BLUE,new Vector2(Math.round(camera.position.x),Math.round(camera.position.y)),world);
                 playerUnit.setViewType(viewType);
                 playerUnit.setPlayer(this);
                 camera.setSight(AssaultTrooper.ASSAULT_TROOPER_SIGHT);
@@ -129,16 +128,14 @@ public class Player implements Updateable,Renderable,Controllable{
 
     @Override
     public void removeFromRenderState() {
-
+        playerUnit.removeFromRenderState();
     }
 
     @Override
-    public long getReferenceID() {
-        return PLAYER_REFERENCE;
+    public short getReferenceID() {
+        return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {}
 
     @Override
     public void setViewType(int _viewType) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -24,7 +25,7 @@ import java.util.Random;
 public class Map implements Renderable{
 
     //REFERENCE
-    private long referenceId;
+    private short referenceId;
     private int viewType;
 
     //MAP CONSTANTS
@@ -67,6 +68,9 @@ public class Map implements Renderable{
     public Map(int _size,GameWorld _world){
         world = _world;
         mapFeatures = new ArrayList<MapFeature>();
+
+        referenceId = GameSystem.obtainReference();
+
         switch(_size){
             case SIZE_SMALL:
                 width = SIDE_SMALL * SCALE;
@@ -95,6 +99,7 @@ public class Map implements Renderable{
                 featureTiles[x][y]=FEATURE_EMPTY;
             }
         }
+
         generateMap();
     }
 
@@ -262,14 +267,10 @@ public class Map implements Renderable{
     }
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId;
-    }
 
     @Override
     public void setViewType(int _cameraType) {

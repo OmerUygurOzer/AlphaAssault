@@ -24,10 +24,10 @@ public class RenderState{
     public static final int DEPTH_GAME_SCREEN_DYNAMIC = 4;
     public static final int DEPTH_MAX = 5;
 
-    private List<Map<Long,BDrawable>> bDrawables;
+    private List<Map<Short,BDrawable>> bDrawables;
     private Map<Integer,Viewport> viewPorts;
-    private List<Map<Integer,List<Long>>> viewMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
-    private List<Long> removals;
+    private List<Map<Integer,List<Short>>> viewMapping; //MAP OF CAMERAS FOR EACH DEPTH AND REFERENCE IDS FOR OBJECTS NEED TO BE DRAWN USING THOSE CAMERAS
+    private List<Short> removals;
 
     private SpriteBatch spriteBatch;
 
@@ -36,14 +36,14 @@ public class RenderState{
 
         spriteBatch = new SpriteBatch();
 
-        bDrawables = new ArrayList<Map<Long, BDrawable>>();
+        bDrawables = new ArrayList<Map<Short, BDrawable>>();
         viewPorts = new HashMap<Integer, Viewport>();
-        viewMapping = new ArrayList<Map<Integer, List<Long>>>();
-        removals = new ArrayList<Long>();
+        viewMapping = new ArrayList<Map<Integer, List<Short>>>();
+        removals = new ArrayList<Short>();
 
         for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
-            bDrawables.add(depth,new HashMap<Long, BDrawable>());
-            viewMapping.add(depth,new HashMap<Integer, List<Long>>());
+            bDrawables.add(depth,new HashMap<Short, BDrawable>());
+            viewMapping.add(depth,new HashMap<Integer, List<Short>>());
         }
 
     }
@@ -52,11 +52,11 @@ public class RenderState{
         viewPorts.put(_viewType, _viewPort);
     }
 
-    public void addElement(int _viewType, long _referenceId,int _depth,BDrawable _bDrawable){
+    public void addElement(int _viewType, short _referenceId,int _depth,BDrawable _bDrawable){
 
         bDrawables.get(_depth).put(_referenceId, _bDrawable.copy());
         if (!viewMapping.get(_depth).containsKey(_viewType)) {
-            List<Long> list = new ArrayList<Long>();
+            List<Short> list = new ArrayList<Short>();
             list.add(_referenceId);
             viewMapping.get(_depth).put(_viewType, list);
 
@@ -67,7 +67,7 @@ public class RenderState{
     }
 
 
-    public void removeElement(long _referenceId,int _depth){
+    public void removeElement(Short _referenceId,int _depth){
 
         if (bDrawables.get(_depth).containsKey(_referenceId)) {
             bDrawables.get(_depth).remove(_referenceId);
@@ -79,8 +79,11 @@ public class RenderState{
             }
         }
 
+
     }
-    public void updateElement(long _referenceId,int _depth,BDrawable bDrawable){
+
+
+    public void updateElement(short _referenceId,int _depth,BDrawable bDrawable){
         bDrawables.get(_depth).get(_referenceId).set(bDrawable);
     }
 
@@ -97,7 +100,7 @@ public class RenderState{
                 spriteBatch.begin();
                 viewPorts.get(key).apply();
                 if (viewMapping.get(depth).get(key) != null) {
-                    for (long MAPPER : viewMapping.get(depth).get(key)) {
+                    for (Short MAPPER : viewMapping.get(depth).get(key)) {
                         bDrawables.get(depth).get(MAPPER).draw(spriteBatch);
                     }
                 }
@@ -111,7 +114,7 @@ public class RenderState{
     public void getUpdates(RenderState _renderState) {
 
         for(int depth = DEPTH_BASE;depth<DEPTH_MAX;depth++) {
-            for(long key : _renderState.getDrawables().get(depth).keySet()){
+            for(Short key : _renderState.getDrawables().get(depth).keySet()){
                 if(!bDrawables.get(depth).containsKey(key)){
                     bDrawables.get(depth).put(key,_renderState.getDrawables().get(depth).get(key).copy());
 
@@ -121,21 +124,21 @@ public class RenderState{
                 }
             }
 
-            for(long key : bDrawables.get(depth).keySet()){
+            for(Short key : bDrawables.get(depth).keySet()){
                 if(!_renderState.getDrawables().get(depth).containsKey(key)){
                     removals.add(key);
                 }
             }
-            for(long key : removals){
+            for(short key : removals){
                 bDrawables.get(depth).remove(key);
             }
             removals.clear();
 
 
             for(int viewKey : _renderState.getViewMapping().get(depth).keySet()){
-                for(Long l : _renderState.getViewMapping().get(depth).get(viewKey)){
+                for(Short l : _renderState.getViewMapping().get(depth).get(viewKey)){
                     if(viewMapping.get(depth).get(viewKey)==null){
-                        viewMapping.get(depth).put(viewKey,new ArrayList<Long>());
+                        viewMapping.get(depth).put(viewKey,new ArrayList<Short>());
                     }
                     if (!viewMapping.get(depth).get(viewKey).contains(l)){
                         viewMapping.get(depth).get(viewKey).add(l);
@@ -147,7 +150,7 @@ public class RenderState{
 
 
             for(int viewKey : viewMapping.get(depth).keySet()){
-                for(Long l : viewMapping.get(depth).get(viewKey)){
+                for(Short l : viewMapping.get(depth).get(viewKey)){
                     if (!_renderState.getViewMapping().get(depth).get(viewKey).contains(l)){
                         removals.add(l);
                     }
@@ -156,7 +159,7 @@ public class RenderState{
             }
 
             for(int viewKey : viewMapping.get(depth).keySet()){
-                for(Long l : removals){
+                for(Short l : removals){
                     if(viewMapping.get(depth).get(viewKey).contains(l))
                         viewMapping.get(depth).get(viewKey).remove(l);
                 }
@@ -176,12 +179,12 @@ public class RenderState{
             bDrawables.get(depth).clear();
 
             viewMapping.get(depth).clear();
-            for (Long key : _renderState.getDrawables().get(depth).keySet()) {
+            for (short key : _renderState.getDrawables().get(depth).keySet()) {
                 bDrawables.get(depth).put(key, _renderState.getDrawables().get(depth).get(key)).copy();
             }
 
             for (Integer map : _renderState.getViewMapping().get(depth).keySet()) {
-                viewMapping.get(depth).put(map, new ArrayList<Long>(_renderState.getViewMapping().get(depth).get(map)));
+                viewMapping.get(depth).put(map, new ArrayList<Short>(_renderState.getViewMapping().get(depth).get(map)));
             }
 
         }
@@ -190,9 +193,9 @@ public class RenderState{
 
 
 
-    private List<Map<Long,BDrawable>> getDrawables(){return bDrawables;}
+    private List<Map<Short,BDrawable>> getDrawables(){return bDrawables;}
     private Map<Integer,Viewport> getViewPorts(){return viewPorts;}
-    private List<Map<Integer,List<Long>>> getViewMapping(){return viewMapping;}
+    private List<Map<Integer,List<Short>>> getViewMapping(){return viewMapping;}
     public void dispose(){spriteBatch.dispose();}
 
 

@@ -1,11 +1,7 @@
 package com.boomer.alphaassault.threads;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.boomer.alphaassault.graphics.GameGraphics;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.handlers.controls.InputManager;
-import com.boomer.alphaassault.handlers.controls.Inputs;
-import com.boomer.alphaassault.settings.GameSettings;
 
 /**
  * Created by Omer on 11/27/2015.
@@ -24,7 +20,7 @@ public class InputThread implements Runnable {
     public InputThread(InputManager _inputManager) {
         inputThread = new Thread(this);
         inputManager = _inputManager;
-        inputManager.setLimit(GameSettings.INPUT_MAX);
+        inputManager.setLimit(GameSystem.INPUT_MAX);
         inputManager.setScreenBounds();
 
         timeAccumulated = 0.0f;
@@ -40,11 +36,11 @@ public class InputThread implements Runnable {
     public void run() {
         float deltaTime;
         while(THREAD_RUNNING) {
-            while (GameSettings.GAME_RUNNING_STATE) {
+            while (GameSystem.GAME_RUNNING_STATE) {
                 deltaTime = getDeltaTime();
                 timeAccumulated += deltaTime;
-                while (timeAccumulated >= GameSettings.IPS) {
-                    timeAccumulated -= GameSettings.IPS;
+                while (timeAccumulated >= GameSystem.IPS) {
+                    timeAccumulated -= GameSystem.IPS;
                     inputManager.poll();
 
                 }
@@ -61,7 +57,7 @@ public class InputThread implements Runnable {
     private float getDeltaTime(){
         if(timeAccumulated == 0){
             time = System.currentTimeMillis();
-            return GameSettings.UPS+0.01f;
+            return GameSystem.UPS+0.01f;
         }
 
         long deltaLong = System.currentTimeMillis() - time;

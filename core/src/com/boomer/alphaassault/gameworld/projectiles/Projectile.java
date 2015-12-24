@@ -27,12 +27,12 @@ public abstract class Projectile extends Entity implements Renderable,Poolable {
     protected float travelRange;
 
     protected BDrawable drawable;
-    protected TextureRegion image;
 
 
     protected Projectile(Vector2 _center, int _depth, GameWorld _world) {
         super(_center, _depth, _world);
         traveledDistance = 0f;
+        isSolid = false;
     }
 
 
@@ -56,14 +56,10 @@ public abstract class Projectile extends Entity implements Renderable,Poolable {
     }
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId;
-    }
 
     @Override
     public void setViewType(int _viewType) {

@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.gameworld.units.skills.AssaultRifle;
-import com.boomer.alphaassault.gameworld.units.skills.Flashbang;
+import com.boomer.alphaassault.gameworld.units.skills.Fire_AssaultRifle;
+import com.boomer.alphaassault.gameworld.units.skills.Fire_Flashbang;
 import com.boomer.alphaassault.gameworld.units.skills.Run;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
@@ -48,23 +48,23 @@ public class AssaultTrooper extends Unit {
         bAnimation.setSecondsPerFrame(1f/10f);
 
         //ADD SKILLS
-        AssaultRifle fire = new AssaultRifle(ASSAULT_RIFLE_KEY);
+        Fire_AssaultRifle fire = new Fire_AssaultRifle(ASSAULT_RIFLE_KEY);
         fire.setUser(this);
         Run run = new Run(RUN_KEY);
         run.setUser(this);
-        Flashbang flashbang = new Flashbang(FLASHBANG_KEY);
-        flashbang.setUser(this);
+        Fire_Flashbang fireFlashbang = new Fire_Flashbang(FLASHBANG_KEY);
+        fireFlashbang.setUser(this);
 
         fire.setWorld(_world);
         run.setWorld(_world);
-        flashbang.setWorld(_world);
+        fireFlashbang.setWorld(_world);
 
         addSkill(fire);
         addSkill(run);
-        addSkill(flashbang);
+        addSkill(fireFlashbang);
 
         //ADD THE SUPPLIES
-        setSupplies(FLASHBANG_KEY,flashbang.getSupply());
+        setSupplies(FLASHBANG_KEY, fireFlashbang.getSupply());
 
 
 

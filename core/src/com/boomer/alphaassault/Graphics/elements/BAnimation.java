@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.boomer.alphaassault.settings.GameSettings;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.utilities.Rotation;
 
 import java.util.HashMap;
@@ -160,11 +160,16 @@ public class BAnimation implements BDrawable {
     }
 
     public void update(float _deltaTime){
-        timer += GameSettings.UPS;
+        timer += GameSystem.UPS;
         if(timer>SPF){currentFrame++;timer=0f;}
         if(currentFrame==frames){currentFrame = 0;}
 
     }
+
+    public void setCurrentFrame(int _currentFrame){
+        currentFrame = _currentFrame;
+    }
+
 
 
     @Override

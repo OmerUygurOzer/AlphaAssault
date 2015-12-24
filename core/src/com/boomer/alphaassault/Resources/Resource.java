@@ -56,7 +56,10 @@ public class Resource {
 
     //IN-GAME
     public static final int BULLET = 80;
+    public static final int FLASHBANG = 81;
 
+    //VISUALS
+    public static final int SMOKE = 100;
 
 
     public Resource() {
@@ -94,6 +97,10 @@ public class Resource {
 
         //GAME
         loadTextureRegion(BULLET,getTexture(IN_GAME),0,220,20,20,1,8);
+        loadTextureRegion(FLASHBANG,getTexture(IN_GAME),20,220,20,20,1,1);
+
+        //VISUALS
+        loadTextureRegion(SMOKE,getTexture(IN_GAME),320,0,80,80,7,1);
     }
 
     //TEXTURE HANDLERS

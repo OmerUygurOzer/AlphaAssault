@@ -76,12 +76,9 @@ public abstract class MapFeature extends Entity implements Renderable{
     }
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId){
-        referenceId=_referenceId;
-    }
+
 }

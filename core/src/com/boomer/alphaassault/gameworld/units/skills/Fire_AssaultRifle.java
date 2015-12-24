@@ -8,7 +8,7 @@ import com.boomer.alphaassault.resources.Resource;
 /**
  * Created by Omer on 12/12/2015.
  */
-public class AssaultRifle extends Skill {
+public class Fire_AssaultRifle extends Skill {
 
     private static final float ASSAULT_RIFLE_CD = 0.1f;
 
@@ -17,7 +17,7 @@ public class AssaultRifle extends Skill {
     private static final int BULLET_COL_LIMIT = 1;
     private static final int BULLET_RANGE = 15;
 
-   public AssaultRifle(int _key){
+   public Fire_AssaultRifle(int _key){
         super(_key);
        targetType = Skill.TARGET_TYPE_ANGLE;
        icon = Resource.getTextureRegions(Resource.ICONS)[0][0];

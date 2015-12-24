@@ -1,9 +1,6 @@
 package com.boomer.alphaassault.handlers;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.boomer.alphaassault.gamestates.GameStateBase;
+import com.boomer.alphaassault.gamestates.GameState;
 import com.boomer.alphaassault.gamestates.Play;
 
 import java.util.Stack;
@@ -13,12 +10,12 @@ import java.util.Stack;
  */
 public class GameStateManager {
 
-    private static Stack<GameStateBase> GAME_STATES;
+    private static Stack<GameState> GAME_STATES;
     public static final int PLAY = 0;
 
     public GameStateManager (){
 
-        GAME_STATES = new Stack<GameStateBase>();
+        GAME_STATES = new Stack<GameState>();
         pushState(PLAY);
 
     }
@@ -27,7 +24,7 @@ public class GameStateManager {
             GAME_STATES.peek().update(deltaTime);
     }
 
-    private GameStateBase getState(int _state){
+    private GameState getState(int _state){
         if(_state == PLAY){return new Play(this);}
         return null;
     }
@@ -42,13 +39,13 @@ public class GameStateManager {
     }
 
     public void popState(){
-        GameStateBase gameStateBase = GAME_STATES.pop();
+        GameState gameStateBase = GAME_STATES.pop();
         gameStateBase.dispose();
     }
 
     public void reSize(int _width,int _height){GAME_STATES.peek().reSize(_width,_height);}
 
-    public GameStateBase getGameState(){
+    public GameState getGameState(){
         return GAME_STATES.peek();
     }
 

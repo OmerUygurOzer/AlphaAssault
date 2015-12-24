@@ -6,10 +6,9 @@ import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
-import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.settings.GameSettings;
+import com.boomer.alphaassault.GameSystem;
 
 
 /**
@@ -66,14 +65,15 @@ public class Bullet extends Projectile {
     @Override
     public void update(float _deltaTime) {
      if(!removed) {
-        double xMovement = Math.sin(Math.toRadians(directionAngle)) * travelSpeed / GameSettings.UPS;
-        double yMovement = Math.cos(Math.toRadians(directionAngle)) * travelSpeed / GameSettings.UPS;
+        double xMovement = Math.sin(Math.toRadians(directionAngle)) * travelSpeed / GameSystem.UPS;
+        double yMovement = Math.cos(Math.toRadians(directionAngle)) * travelSpeed / GameSystem.UPS;
          center.x = center.x + (float)xMovement;
         center.y = center.y + (float)yMovement;
          ((BAnimation)drawable).setCenter(center.x,center.y);
-        traveledDistance += travelSpeed / GameSettings.UPS;
+        traveledDistance += travelSpeed / GameSystem.UPS;
         if (traveledDistance >= travelRange) {
-            removed = true;
+            markRemoved();
+            return;
         }
         ((BAnimation) drawable).update(_deltaTime);
        RenderStateManager.updatingStatePointer.updateElement(referenceId, viewType, drawable);

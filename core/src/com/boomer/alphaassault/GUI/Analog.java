@@ -1,6 +1,7 @@
 package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -49,13 +50,13 @@ public class Analog extends Controller implements Renderable,InputReceiver {
     private Vector2 rightCurrentLocation;
 
     //REFERENCE IDS
-    private  long leftButtonId;
-    private  long leftCircleId;
-    private  long rightButtonId;
-    private  long rightCircleId;
-    private  long gameFrameId;
+    private  short leftButtonId;
+    private  short leftCircleId;
+    private  short rightButtonId;
+    private  short rightCircleId;
+    private  short gameFrameId;
 
-    private long referenceId;
+    private short referenceId;
     private int viewType;
 
     private boolean leftActive;
@@ -73,6 +74,12 @@ public class Analog extends Controller implements Renderable,InputReceiver {
     public Analog(int _type) {
         super();
 
+        referenceId = GameSystem.obtainReference();
+        leftButtonId = GameSystem.obtainReference();
+        leftCircleId = GameSystem.obtainReference();
+        rightButtonId = GameSystem.obtainReference();
+        rightCircleId = GameSystem.obtainReference();
+        gameFrameId = GameSystem.obtainReference();
 
         //LEFT_ONLY
         leftButtonSprite = new BSprite (Resource.getTextureRegions(Resource.ANALOG)[0][2]);
@@ -124,19 +131,11 @@ public class Analog extends Controller implements Renderable,InputReceiver {
 
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId;
-        leftButtonId = referenceId;
-        leftCircleId = referenceId  +1;
-        rightButtonId = referenceId +2;
-        rightCircleId = referenceId +3;
-        gameFrameId = referenceId   +4;
-    }
+
 
     @Override
     public void setViewType(int _viewType) {

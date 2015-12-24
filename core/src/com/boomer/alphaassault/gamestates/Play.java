@@ -19,7 +19,7 @@ import com.boomer.alphaassault.resources.Resource;
 /**
  * Created by Omer on 11/24/2015.
  */
-public class Play extends GameStateBase {
+public class Play extends GameState {
 
     public static final int VIEW_TYPE_SCREEN = 0;
     public static final int VIEW_TYPE_GAME = 1;
@@ -66,21 +66,17 @@ public class Play extends GameStateBase {
         //ACTIVATE ANALOG CONTROLLER
         analog = new Analog(Analog.LEFT_ONLY);
         analog.setViewType(VIEW_TYPE_SCREEN);
-        analog.setReferenceID(REFERENCE_POINT + 1000);
         analog.addToRenderState();
 
         //ACTIVATE CONSOLE CONTROLLER
         console = new Console();
-        console.setReferenceID(REFERENCE_POINT + 2000);
 
         //ACTIVATE HUD
         hud = new Hud();
-        hud.setReferenceID(REFERENCE_POINT + 3000);
         hud.setViewType(VIEW_TYPE_SCREEN);
 
         //ACTIVATE GAMEWORLD
         gameWorld = new GameWorld(gameCam);
-        gameWorld.setReferenceID(REFERENCE_POINT + 4000);
         gameWorld.setViewType(VIEW_TYPE_GAME);
 
         //ADD PLAYER

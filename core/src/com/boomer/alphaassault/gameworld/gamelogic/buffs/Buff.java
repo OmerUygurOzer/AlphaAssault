@@ -2,6 +2,7 @@ package com.boomer.alphaassault.gameworld.gamelogic.buffs;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.RenderState;
@@ -16,7 +17,7 @@ public abstract class Buff implements Updateable,Renderable {
 
     public static final int SIZE = 40;
 
-    private long referenceId;
+    private short referenceId;
     private int viewType;
 
     private long duration;
@@ -33,7 +34,7 @@ public abstract class Buff implements Updateable,Renderable {
         duration = _duration;
         startTime = System.currentTimeMillis();
         isExpired = false;
-        referenceId = System.nanoTime();
+        referenceId = GameSystem.obtainReference();
         center = new Vector2();
     }
 
@@ -78,14 +79,10 @@ public abstract class Buff implements Updateable,Renderable {
     }
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId;
-    }
 
     @Override
     public void setViewType(int _viewType) {

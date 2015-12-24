@@ -1,8 +1,8 @@
 package com.boomer.alphaassault.threads;
 
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
-import com.boomer.alphaassault.settings.GameSettings;
 
 /**
  * Created by Omer on 11/27/2015.
@@ -31,17 +31,17 @@ public class UpdateThread implements Runnable {
     public void run() {
         float deltaTime;
         while(THREAD_RUNNING) {
-            while (GameSettings.GAME_RUNNING_STATE) {
+            while (GameSystem.GAME_RUNNING_STATE) {
                 deltaTime = getDeltaTime();
                 timeAccumulated += deltaTime;
-                while (timeAccumulated >= GameSettings.UPS) {
+                while (timeAccumulated >= GameSystem.UPS) {
                     //RenderStateManager.switchRenderState();
                     RenderStateManager.beginUpdating();
                     RenderStateManager.swapUpdates();
 
                     gameStateManager.getGameState().handleInput();
                     gameStateManager.getGameState().update(deltaTime);
-                    timeAccumulated -= GameSettings.UPS;
+                    timeAccumulated -= GameSystem.UPS;
 
 
                     RenderStateManager.releaseUpdatingState();
@@ -58,7 +58,7 @@ public class UpdateThread implements Runnable {
     private float getDeltaTime(){
         if(timeAccumulated == 0){
             time = System.currentTimeMillis();
-            return GameSettings.UPS+0.01f;
+            return GameSystem.UPS+0.01f;
         }
 
         long deltaLong = System.currentTimeMillis() - time;

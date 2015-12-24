@@ -137,18 +137,13 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     public void addToRenderState() {RenderStateManager.updatingStatePointer.addElement(viewType, referenceId, RenderState.DEPTH_SURFACE, bAnimation);}
 
     @Override
-    public void removeFromRenderState() {
-        RenderStateManager.updatingStatePointer.removeElement(referenceId,RenderState.DEPTH_SURFACE);
-    }
+    public void removeFromRenderState() {RenderStateManager.updatingStatePointer.removeElement(referenceId,RenderState.DEPTH_SURFACE);}
 
     @Override
-    public long getReferenceID() {return referenceId;}
+    public short getReferenceID() {return referenceId;}
     @Override
     public void setViewType(int _viewType) {viewType = _viewType;}
-    @Override
-    public void setReferenceID(long _referenceId) {
-    referenceId = _referenceId;
-    }
+
 
 
     public abstract void resupply();

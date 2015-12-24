@@ -5,12 +5,13 @@ import com.boomer.alphaassault.handlers.GameStateManager;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.handlers.controls.InputManager;
 import com.boomer.alphaassault.resources.Resource;
-import com.boomer.alphaassault.settings.GameSettings;
 import com.boomer.alphaassault.threads.InputThread;
 import com.boomer.alphaassault.threads.RenderThread;
 import com.boomer.alphaassault.threads.UpdateThread;
 
 public class AlphaAssault extends RenderThread {
+
+
     private UpdateThread updateThread;
     private InputThread inputThread;
 
@@ -20,9 +21,11 @@ public class AlphaAssault extends RenderThread {
     private InputManager inputManager;
 
 
+
     @Override
     public void create() {
         super.create();
+
 
 
         //INITIALIZE GAME RESOURCES
@@ -41,20 +44,20 @@ public class AlphaAssault extends RenderThread {
 
         setGameStateManager(gameStateManager);
 
-        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
+        GameSystem.GAME_RUNNING_STATE = GameSystem.RUNNING_STATE_ACTIVE;
     }
 
     @Override
     public void pause() {
         super.pause();
-        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_INACTIVE;
+        GameSystem.GAME_RUNNING_STATE = GameSystem.RUNNING_STATE_INACTIVE;
 
     }
 
     @Override
     public void resume() {
         super.resume();
-        GameSettings.GAME_RUNNING_STATE = GameSettings.RUNNING_STATE_ACTIVE;
+        GameSystem.GAME_RUNNING_STATE = GameSystem.RUNNING_STATE_ACTIVE;
 
     }
 
@@ -72,6 +75,7 @@ public class AlphaAssault extends RenderThread {
         inputManager.setScreenBounds();
 
     }
+
 
 
 }

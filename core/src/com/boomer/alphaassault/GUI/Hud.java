@@ -2,6 +2,7 @@ package com.boomer.alphaassault.GUI;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
 import com.boomer.alphaassault.graphics.GameGraphics;
@@ -39,7 +40,12 @@ public class Hud implements Renderable,Updateable {
 
     private static final int PADDING = 10;
 
-    private long referenceId;
+    private short referenceId;
+    private short playerIconId;
+    private short playerNameId;
+    private List<Short> supplyFontIds;
+    private List<Short> supplyIconIds;
+
     private int viewType;
 
 
@@ -64,6 +70,14 @@ public class Hud implements Renderable,Updateable {
     private List<BSprite> supplyIcons;
 
     public Hud(){
+        referenceId = GameSystem.obtainReference();
+        playerIconId = GameSystem.obtainReference();
+        playerNameId = GameSystem.obtainReference();
+
+        supplyFontIds = new ArrayList<Short>();
+        supplyIconIds = new ArrayList<Short>();
+
+
             buffsShown = new ArrayList<Buff>();
             buffsExpired = new ArrayList<Buff>();
             buffBaseX =  Buff.SIZE /2 + 10f;
@@ -72,10 +86,15 @@ public class Hud implements Renderable,Updateable {
             supplyFonts = new ArrayList<BFont>();
             supplyIcons = new ArrayList<BSprite>();
 
+
+
     }
 
     public void setPlayer(Player _player){
         player = _player;
+
+
+
 
         playerIconTexture = player.getIcon();
         playerIcon = new BSprite(playerIconTexture);
@@ -90,6 +109,8 @@ public class Hud implements Renderable,Updateable {
         //PRINT AMMO FONTS AND ICONS
         int supplyIndex = 0;
         for(int supplyKey : player.getPlayerUnit().getSupplies().keySet()){
+            supplyFontIds.add(GameSystem.obtainReference());
+            supplyIconIds.add(GameSystem.obtainReference());
             String ammoString =  " x " + player.getPlayerUnit().getSupplies().get(supplyKey).count;
             int scaledAmmoFont = FONT_BASE - Math.round(6*ammoString.length()/ MAX_FONT_LENGTH);
             BFont bFont = new BFont(new Vector2(SUPPLY_X + SUPPLY_ICON_SIZE, SUPPLY_Y - SUPPLY_FONT_BASE *supplyIndex),ammoString,scaledAmmoFont);
@@ -124,15 +145,16 @@ public class Hud implements Renderable,Updateable {
 
     @Override
     public void addToRenderState() {
-        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId+1,RenderState.DEPTH_GAME_SCREEN_BASE,playerIcon);
-        RenderStateManager.updatingStatePointer.addElement(viewType,referenceId+10, RenderState.DEPTH_GAME_SCREEN_BASE,playerName);
-        int index = 1;
+        RenderStateManager.updatingStatePointer.addElement(viewType,playerIconId,RenderState.DEPTH_GAME_SCREEN_BASE,playerIcon);
+        RenderStateManager.updatingStatePointer.addElement(viewType,playerNameId, RenderState.DEPTH_GAME_SCREEN_BASE,playerName);
+        int index = 0;
         for(BFont bFont : supplyFonts){
-            RenderStateManager.updatingStatePointer.addElement(viewType,referenceId + 10 + index,RenderState.DEPTH_GAME_SCREEN_BASE,bFont);
+            RenderStateManager.updatingStatePointer.addElement(viewType,supplyFontIds.get(index),RenderState.DEPTH_GAME_SCREEN_BASE,bFont);
             index++;
         }
+        index = 0;
         for(BSprite bSprite : supplyIcons){
-            RenderStateManager.updatingStatePointer.addElement(viewType,referenceId + 10 + index,RenderState.DEPTH_GAME_SCREEN_BASE,bSprite);
+            RenderStateManager.updatingStatePointer.addElement(viewType,supplyIconIds.get(index),RenderState.DEPTH_GAME_SCREEN_BASE,bSprite);
             index++;
         }
 
@@ -144,14 +166,10 @@ public class Hud implements Renderable,Updateable {
     }
 
     @Override
-    public long getReferenceID() {
+    public short getReferenceID() {
         return referenceId;
     }
 
-    @Override
-    public void setReferenceID(long _referenceId) {
-        referenceId = _referenceId;
-    }
 
     @Override
     public void setViewType(int _viewType) {
