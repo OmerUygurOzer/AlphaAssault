@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.boomer.alphaassault.graphics.graphicsutils.TextureSplitter;
+import com.boomer.alphaassault.graphics.graphicsutils.GraphicsUtils;
 
 import java.util.HashMap;
 
@@ -54,12 +54,14 @@ public class Resource {
     //public static final int FIRE = 62;
     //public static final int FLASHBANG = 63;
 
-    //IN-GAME
+    //PROJECTILE
     public static final int BULLET = 80;
     public static final int FLASHBANG = 81;
+    public static final int ROCKET = 82;
 
     //VISUALS
     public static final int SMOKE = 100;
+    public static final int EXPLOSION = 101;
 
 
     public Resource() {
@@ -93,14 +95,16 @@ public class Resource {
         loadTextureRegion(BUSHES,getTexture(IN_GAME),0,200,20,20,4,1);
 
         //ICONS
-        loadTextureRegion(ICONS,getTexture(GAME_ALL),0,0,60,40,7,1);
+        loadTextureRegion(ICONS,getTexture(GAME_ALL),0,0,60,40,8,1);
 
-        //GAME
+        //PROJECTILES
         loadTextureRegion(BULLET,getTexture(IN_GAME),0,220,20,20,1,8);
         loadTextureRegion(FLASHBANG,getTexture(IN_GAME),20,220,20,20,1,1);
+        loadTextureRegion(ROCKET,getTexture(IN_GAME),160,80,40,40,8,8);
 
         //VISUALS
         loadTextureRegion(SMOKE,getTexture(IN_GAME),320,0,80,80,7,1);
+        loadTextureRegion(EXPLOSION,getTexture(IN_GAME),480,80,40,40,9,9);
     }
 
     //TEXTURE HANDLERS
@@ -119,7 +123,7 @@ public class Resource {
     }
 
     public void loadTextureRegion(int _key,Texture _texture,int _x,int _y,int _width,int _height,int _xNumber,int _yNumber){
-        textureRegions.put(_key, TextureSplitter.split(_texture,_x,_y,_width,_height,_xNumber,_yNumber));
+        textureRegions.put(_key, GraphicsUtils.splitTexture(_texture,_x,_y,_width,_height,_xNumber,_yNumber));
     }
 
     //TEXTURE REGION HANDLERS

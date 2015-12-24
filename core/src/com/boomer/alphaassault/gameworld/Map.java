@@ -224,6 +224,7 @@ public class Map implements Renderable{
         float centerX = (tileX * TILE_SIZE)+TILE_SIZE/2f;
         float centerY = (tileY * TILE_SIZE)+TILE_SIZE/2f;
         int radius = 0;
+        if(tileX >= featureTiles.length || tileY >= featureTiles[0].length){return false;}
         switch(featureTiles[tileX][tileY]){
             case FEATURE_BUSH:
                 return true;

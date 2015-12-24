@@ -9,30 +9,26 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.resources.Resource;
 
 /**
- * Created by Omer on 12/23/2015.
+ * Created by Omer on 12/24/2015.
  */
-public class Smoke extends Visual {
-    private static final int DEFAULT_SIZE = 200;
+public class Explosion extends Visual {
+    private static final int DEFAULT_SIZE = 50;
+    private static final int MAX_FRAMES_INDEX = 80;
 
     private int size;
 
 
-    public Smoke(Vector2 _center, int _depth, GameWorld _world) {
+
+    public Explosion(Vector2 _center, int _depth, GameWorld _world) {
         super(_center, _depth, _world);
-        currentFrame = 0;
-        totalFrames = Resource.getTextureRegions(Resource.SMOKE)[0].length;
-        effect = new BAnimation(Resource.getTextureRegions(Resource.SMOKE), BAnimation.Type.STILL);
+        effect = new BAnimation(Resource.getTextureRegions(Resource.EXPLOSION), BAnimation.Type.STILL);
         size = DEFAULT_SIZE;
         ((BAnimation)effect).setSize(size,size);
         ((BAnimation) effect).setCenter(center.x,center.y);
-        ((BAnimation) effect).setSecondsPerFrame(1f/7f);
-
+        ((BAnimation) effect).setSecondsPerFrame(2f/81f);
     }
 
-    public void setAOE(int _aoe){
-        ((BAnimation)effect).setSize(_aoe,_aoe);
-        ((BAnimation) effect).setCenter(center.x,center.y);
-    }
+
 
     @Override
     public void uponCollision(Entity _entity) {
@@ -44,15 +40,10 @@ public class Smoke extends Visual {
 
     }
 
-
     @Override
     public void update(float _deltaTime) {
-     if(System.currentTimeMillis() - initTime >= duration){
-         markRemoved();
-         return;
-     }
-
         ((BAnimation)effect).update(_deltaTime);
+        if(((BAnimation)effect).getCurrentFrame() == MAX_FRAMES_INDEX){markRemoved();return;}
         RenderStateManager.updatingStatePointer.updateElement(referenceId,depth,effect);
     }
 }

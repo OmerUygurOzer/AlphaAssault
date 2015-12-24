@@ -70,6 +70,7 @@ public class Player implements Updateable,Renderable,Controllable{
             float y = camera.position.y + (float) (Math.cos(Math.toRadians(angle)) * power);
             y = y < world.getGameMap().getHeight() ? y : world.getGameMap().getHeight();
             y = y < 0 ? 0 : y;
+
             if(world.getGameMap().isMoveable(x,y)){
                 camera.position.set(x, y, camera.position.z);
                 playerUnit.move(_deltaTime, x, y, angle);

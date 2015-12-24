@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.GameSystem;
+import com.boomer.alphaassault.graphics.graphicsutils.GraphicsUtils;
 import com.boomer.alphaassault.utilities.Rotation;
 
 import java.util.HashMap;
@@ -59,10 +60,10 @@ public class BAnimation implements BDrawable {
 
 
     private void generate(){
-        frames = textureRegions[0].length;
+
         switch (type){
             case DIRECTIONAL:
-
+                frames = textureRegions[0].length;
                 Sprite [] spritesRight = new Sprite[frames];
                 Sprite [] spritesLeft = new Sprite[frames];
                 Sprite [] spritesUp = new Sprite[frames];
@@ -95,10 +96,12 @@ public class BAnimation implements BDrawable {
 
                 break;
             case STILL:
+                TextureRegion[] linear = GraphicsUtils.linearizeTextureRegion(textureRegions);
+                frames = linear.length;
                 spriteSheetStill = new Sprite[frames];
 
-                for(int i=0;i<textureRegions[0].length;i++){
-                    spriteSheetStill[i] = new Sprite(textureRegions[0][i]);
+                for(int i=0;i<frames;i++){
+                    spriteSheetStill[i] = new Sprite(linear[i]);
                 }
 
 
@@ -112,6 +115,23 @@ public class BAnimation implements BDrawable {
 
         position = new Vector2();
         center = new Vector2();
+    }
+
+    public BAnimation(TextureRegion [][] textureRegions){
+        type = Type.STILL;
+
+        TextureRegion[] linear = GraphicsUtils.linearizeTextureRegion(textureRegions);
+
+        frames = linear.length;
+        spriteSheetStill = new Sprite[frames];
+
+        for (int i= 0; i < frames;i++){
+            spriteSheetStill[i] = new Sprite(linear[i]);
+        }
+
+        position = new Vector2();
+        center = new Vector2();
+
     }
 
     public void setSecondsPerFrame(float _spf){

@@ -42,7 +42,6 @@ public class Bullet extends Projectile {
         drawable = new BAnimation(Resource.getTextureRegions(Resource.BULLET), BAnimation.Type.DIRECTIONAL);
         ((BAnimation) drawable).setSize(SIZE, SIZE);
         ((BAnimation)drawable).setCenter(center.x, center.y);
-        ((BAnimation) drawable).setFacingAngle(0);
         ((BAnimation) drawable).setSecondsPerFrame(0.1f);
         radius = BULLET_RADIUS;
     }

@@ -48,6 +48,10 @@ public class FlashBang extends Projectile {
 
     }
 
+    public void setAOE(int _aoe){
+        AOE = _aoe;
+    }
+
     @Override
     public void uponCollision(Entity _entity) {
 

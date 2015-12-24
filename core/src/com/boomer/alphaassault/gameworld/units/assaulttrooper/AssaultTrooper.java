@@ -7,6 +7,7 @@ import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.gameworld.units.skills.Fire_AssaultRifle;
 import com.boomer.alphaassault.gameworld.units.skills.Fire_Flashbang;
+import com.boomer.alphaassault.gameworld.units.skills.Fire_Rocket;
 import com.boomer.alphaassault.gameworld.units.skills.Run;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
@@ -30,6 +31,7 @@ public class AssaultTrooper extends Unit {
     private static final int ASSAULT_RIFLE_KEY = 0;
     private static final int RUN_KEY = 1;
     private static final int FLASHBANG_KEY = 2;
+    private static final int ROCKET_KEY = 3;
 
     public AssaultTrooper(int _team, Vector2 _center,GameWorld _world) {
         super(_team, _center,_world);
@@ -59,13 +61,18 @@ public class AssaultTrooper extends Unit {
         run.setWorld(_world);
         fireFlashbang.setWorld(_world);
 
+        Fire_Rocket fireRocket = new Fire_Rocket(ROCKET_KEY);
+        fireRocket.setUser(this);
+        fireRocket.setWorld(_world);
+
         addSkill(fire);
         addSkill(run);
         addSkill(fireFlashbang);
+        addSkill(fireRocket);
 
         //ADD THE SUPPLIES
         setSupplies(FLASHBANG_KEY, fireFlashbang.getSupply());
-
+        setSupplies(ROCKET_KEY,fireRocket.getSupply());
 
 
     }

@@ -17,7 +17,7 @@ public class Fire_Flashbang extends Skill {
     private static final float FLASHBANG_SPEED = 0.01f;
     private static final int FLASHBANG_RANGE = 10;
     private static final int FLASHBANG_DURATION  = 5;
-
+    private static final int FLASHBANG_AOE  = 200;
 
 
 
@@ -45,11 +45,7 @@ public class Fire_Flashbang extends Skill {
 
     @Override
     public void use() {
-            if(isReady()){
-                if(supply.count >0){
-                    //use
-                }
-            }
+
     }
 
     @Override
@@ -76,8 +72,8 @@ public class Fire_Flashbang extends Skill {
                 flashBang.setSpeed(FLASHBANG_SPEED);
                 flashBang.setRange(FLASHBANG_RANGE);
                 flashBang.setDuration(FLASHBANG_DURATION);
+                flashBang.setAOE(FLASHBANG_AOE);
                 flashBang.setSource(user);
-
                 world.addEntity(flashBang);
 
             }
