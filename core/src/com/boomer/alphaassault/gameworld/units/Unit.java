@@ -4,8 +4,8 @@ package com.boomer.alphaassault.gameworld.units;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
-import com.boomer.alphaassault.gameworld.gamelogic.Player;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
+import com.boomer.alphaassault.gameworld.players.Player;
 import com.boomer.alphaassault.gameworld.units.skills.Skill;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
@@ -109,6 +109,7 @@ public abstract class Unit extends Entity implements Updateable,Renderable{
     public int getHP(){return HP;}
     public int getTeam(){return team;}
     public double getFacingAngle(){return facingAngle;}
+    public int getSight(){return sight;}
 
 
     //UPDATEABLE

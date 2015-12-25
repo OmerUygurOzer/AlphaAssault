@@ -2,12 +2,13 @@ package com.boomer.alphaassault.gameworld;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
-import com.boomer.alphaassault.gameworld.gamelogic.Player;
+import com.boomer.alphaassault.gameworld.players.AI;
+import com.boomer.alphaassault.gameworld.players.Human;
+import com.boomer.alphaassault.gameworld.players.Player;
 import com.boomer.alphaassault.gameworld.projectiles.Bullet;
-import com.boomer.alphaassault.gameworld.visuals.Smoke;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
-import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.boomer.alphaassault.handlers.events.EventHandler;
 import  com.boomer.alphaassault.memoryutils.Pool;
 
 import java.util.ArrayList;
@@ -22,11 +23,21 @@ import java.util.List;
      */
 public class GameWorld implements Updateable,Renderable{
 
-    private Map gameMap;
     private short baseReference;
-    private Player player;
+
+    private Map gameMap;
+
     private Camera camera;
+
+    private Human contextPlayer;
+
+
+    private List<Player> clientPlayers;
     private List<Entity> entities;
+    private AI computerPlayer;
+
+
+    private EventHandler eventHandler;
 
 
     public Pool<Bullet> bulletPool;
@@ -37,6 +48,9 @@ public class GameWorld implements Updateable,Renderable{
     private List<Entity> removals;
 
     public GameWorld(Camera _camera){
+        clientPlayers = new ArrayList<Player>();
+        computerPlayer = new AI(this);
+
         entities = new ArrayList<Entity>();
         removals = new ArrayList<Entity>();
         additions = new ArrayList<Entity>();
@@ -55,9 +69,16 @@ public class GameWorld implements Updateable,Renderable{
 
     }
 
-    public void addPlayer(Player _player){
-        player = _player;
-        player.setWorld(this);
+    public void setEventHandler(EventHandler _eventHandler){
+        eventHandler = _eventHandler;
+    }
+
+    public EventHandler getEventHandler(){return eventHandler;}
+
+    //public
+
+    public void addPlayer(Human _player){
+        contextPlayer = _player;
     }
 
 
@@ -67,7 +88,7 @@ public class GameWorld implements Updateable,Renderable{
     @Override
     public void addToRenderState() {
         gameMap.addToRenderState();
-        player.addToRenderState();
+        contextPlayer.addToRenderState();
     }
 
     @Override
@@ -90,7 +111,7 @@ public class GameWorld implements Updateable,Renderable{
 
     @Override
     public void update(float _deltaTime) {
-        player.update(_deltaTime);
+        contextPlayer.update(_deltaTime);
         doEntityAddition();
         doEntityUpdates(_deltaTime);
         handleCollisions();

@@ -3,7 +3,7 @@ package com.boomer.alphaassault.GUI;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.GameSystem;
-import com.boomer.alphaassault.gameworld.gamelogic.Player;
+import com.boomer.alphaassault.gameworld.players.Human;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.RenderState;
@@ -14,7 +14,9 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Omer on 12/13/2015.
@@ -33,7 +35,7 @@ public class Hud implements Renderable,Updateable {
     private static final int PLAYER_NAME_X = 110;
     private static final int PLAYER_NAME_Y = GameGraphics.VIRTUAL_HEIGHT - 5*BFont.SCALER;
 
-    private static final int SUPPLY_FONT_BASE = 10;
+    private static final int SUPPLY_FONT_BASE = 20;
     private static final int SUPPLY_X = PLAYER_NAME_X;
     private static final int SUPPLY_Y = PLAYER_NAME_Y - FONT_BASE;
     private static final int SUPPLY_ICON_SIZE = 20;
@@ -43,13 +45,13 @@ public class Hud implements Renderable,Updateable {
     private short referenceId;
     private short playerIconId;
     private short playerNameId;
-    private List<Short> supplyFontIds;
+    private Map<Integer,Short> supplyFontIds;
     private List<Short> supplyIconIds;
 
     private int viewType;
 
 
-    private Player player;
+    private Human player;
 
     //ICONS , FONTS
     private Texture playerIconTexture;
@@ -66,7 +68,7 @@ public class Hud implements Renderable,Updateable {
     private float buffBaseY;
 
     //SUPPLIES:
-    private List<BFont> supplyFonts;
+    private Map<Integer,BFont> supplyFonts;
     private List<BSprite> supplyIcons;
 
     public Hud(){
@@ -74,7 +76,7 @@ public class Hud implements Renderable,Updateable {
         playerIconId = GameSystem.obtainReference();
         playerNameId = GameSystem.obtainReference();
 
-        supplyFontIds = new ArrayList<Short>();
+        supplyFontIds = new HashMap<Integer, Short>();
         supplyIconIds = new ArrayList<Short>();
 
 
@@ -83,14 +85,14 @@ public class Hud implements Renderable,Updateable {
             buffBaseX =  Buff.SIZE /2 + 10f;
             buffBaseY = GameGraphics.VIRTUAL_HEIGHT - 130f;
 
-            supplyFonts = new ArrayList<BFont>();
+            supplyFonts = new HashMap<Integer,BFont>();
             supplyIcons = new ArrayList<BSprite>();
 
 
 
     }
 
-    public void setPlayer(Player _player){
+    public void setPlayer(Human _player){
         player = _player;
 
 
@@ -109,12 +111,12 @@ public class Hud implements Renderable,Updateable {
         //PRINT AMMO FONTS AND ICONS
         int supplyIndex = 0;
         for(int supplyKey : player.getPlayerUnit().getSupplies().keySet()){
-            supplyFontIds.add(GameSystem.obtainReference());
+            supplyFontIds.put(supplyKey,GameSystem.obtainReference());
             supplyIconIds.add(GameSystem.obtainReference());
             String ammoString =  " x " + player.getPlayerUnit().getSupplies().get(supplyKey).count;
             int scaledAmmoFont = FONT_BASE - Math.round(6*ammoString.length()/ MAX_FONT_LENGTH);
             BFont bFont = new BFont(new Vector2(SUPPLY_X + SUPPLY_ICON_SIZE, SUPPLY_Y - SUPPLY_FONT_BASE *supplyIndex),ammoString,scaledAmmoFont);
-            supplyFonts.add(bFont);
+            supplyFonts.put(supplyKey,bFont);
 
             BSprite bSprite = new BSprite(player.getPlayerUnit().getSupplies().get(supplyKey).icon);
             bSprite.setSize(SUPPLY_ICON_SIZE,SUPPLY_ICON_SIZE);
@@ -139,7 +141,10 @@ public class Hud implements Renderable,Updateable {
     }
 
     private void updateAmmos(){
-
+        for(int supplyKey : player.getPlayerUnit().getSupplies().keySet()){
+           supplyFonts.get(supplyKey).setText(" x " + Integer.toString(player.getPlayerUnit().getSupplies().get(supplyKey).count));
+            RenderStateManager.updatingStatePointer.updateElement(supplyFontIds.get(supplyKey),RenderState.DEPTH_GAME_SCREEN_BASE,supplyFonts.get(supplyKey));
+        }
     }
 
 
@@ -147,12 +152,11 @@ public class Hud implements Renderable,Updateable {
     public void addToRenderState() {
         RenderStateManager.updatingStatePointer.addElement(viewType,playerIconId,RenderState.DEPTH_GAME_SCREEN_BASE,playerIcon);
         RenderStateManager.updatingStatePointer.addElement(viewType,playerNameId, RenderState.DEPTH_GAME_SCREEN_BASE,playerName);
-        int index = 0;
-        for(BFont bFont : supplyFonts){
-            RenderStateManager.updatingStatePointer.addElement(viewType,supplyFontIds.get(index),RenderState.DEPTH_GAME_SCREEN_BASE,bFont);
-            index++;
+        for(int fontKey : supplyFonts.keySet()){
+            RenderStateManager.updatingStatePointer.addElement(viewType,supplyFontIds.get(fontKey),RenderState.DEPTH_GAME_SCREEN_BASE,supplyFonts.get(fontKey));
+
         }
-        index = 0;
+        int index = 0;
         for(BSprite bSprite : supplyIcons){
             RenderStateManager.updatingStatePointer.addElement(viewType,supplyIconIds.get(index),RenderState.DEPTH_GAME_SCREEN_BASE,bSprite);
             index++;

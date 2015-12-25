@@ -3,12 +3,15 @@ package com.boomer.alphaassault.gamestates;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.*;
-import com.boomer.alphaassault.GUI.Console;
+import com.boomer.alphaassault.GUI.ConsoleWithGUI;
 import com.boomer.alphaassault.GUI.Hud;
+import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.GameWorld;
-import com.boomer.alphaassault.GUI.Analog;
-import com.boomer.alphaassault.gameworld.gamelogic.Player;
+import com.boomer.alphaassault.GUI.AnalogWithGUI;
+import com.boomer.alphaassault.gameworld.players.Human;
+import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
 import com.boomer.alphaassault.graphics.views.GameViewport;
@@ -35,15 +38,15 @@ public class Play extends GameState {
     private SightCamera gameCam;
 
     //ADD CONTROLLERS
-    private Analog analog;
-    private Console console;
+    private AnalogWithGUI analog;
+    private ConsoleWithGUI console;
 
     //ADD HUD
     private Hud hud;
 
     //ADD IN-GAME FEATURES
     private GameWorld gameWorld;
-    private Player player;
+    private Human player;
 
 
     public Play(GameStateManager _gameStateManager) {
@@ -64,12 +67,12 @@ public class Play extends GameState {
         RenderStateManager.setGameRenderState(RENDER_STATE);
 
         //ACTIVATE ANALOG CONTROLLER
-        analog = new Analog(Analog.LEFT_ONLY);
+        analog = new AnalogWithGUI(AnalogWithGUI.LEFT_ONLY);
         analog.setViewType(VIEW_TYPE_SCREEN);
         analog.addToRenderState();
 
         //ACTIVATE CONSOLE CONTROLLER
-        console = new Console();
+        console = new ConsoleWithGUI();
 
         //ACTIVATE HUD
         hud = new Hud();
@@ -80,14 +83,13 @@ public class Play extends GameState {
         gameWorld.setViewType(VIEW_TYPE_GAME);
 
         //ADD PLAYER
-        player = new Player(gameCam);
-        player.setWorld(gameWorld);
+        AssaultTrooper assaultTrooper = new AssaultTrooper(GameSystem.TEAM_BLUE,new Vector2(0,0),gameWorld);
+        player = new Human(gameCam,gameWorld,assaultTrooper);
         player.setViewType(VIEW_TYPE_GAME);
         player.setName("PC PRINCIPAL");
         player.setIcon(Resource.getTexture(Resource.TEXTURE_PLAYER));
         player.setAnalog(analog);
         player.setConsole(console);
-        player.setRole(Player.ASSAULT_TROOPER);
         player.setHud(hud);
 
         gameWorld.addPlayer(player);

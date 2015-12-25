@@ -65,8 +65,8 @@ public class BFont implements BDrawable {
 
     }
 
-    private String getText(){return text;}
-    private void setText(String _text){
+    public String getText(){return text;}
+    public void setText(String _text){
         text = _text;
         generateFont();
     }

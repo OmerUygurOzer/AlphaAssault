@@ -6,6 +6,7 @@ import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.boomer.alphaassault.handlers.controls.Analog;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.Inputs;
 import com.boomer.alphaassault.resources.Resource;
@@ -17,7 +18,7 @@ import com.boomer.alphaassault.utilities.GameMath;
 /**
  * Created by Omer on 11/25/2015.
  */
-public class Analog extends Controller implements Renderable,InputReceiver {
+public class AnalogWithGUI extends Analog  implements Renderable,InputReceiver {
 
     //GAMEPAD TYPE
     //LEFT_ONLY : ONLY LEFT ANALOG
@@ -71,8 +72,8 @@ public class Analog extends Controller implements Renderable,InputReceiver {
     public static final int RIGHT_ACTIVE   = 5;
 
 
-    public Analog(int _type) {
-        super();
+    public AnalogWithGUI(int _type) {
+        super(_type);
 
         referenceId = GameSystem.obtainReference();
         leftButtonId = GameSystem.obtainReference();
@@ -89,7 +90,6 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         leftCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         leftCircleSprite.setCenter(LEFT_BUTTON_CENTER.x, LEFT_BUTTON_CENTER.y);
         leftCurrentLocation = new Vector2(LEFT_BUTTON_CENTER);
-        leftActive = false;
 
         //RIGHT_ONLY
         rightButtonSprite = new BSprite (Resource.getTextureRegions(Resource.ANALOG)[0][0]);
@@ -99,15 +99,12 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         rightCircleSprite.setSize(CIRCLE_SIZE, CIRCLE_SIZE);
         rightCircleSprite.setCenter(RIGHT_BUTTON_CENTER.x, RIGHT_BUTTON_CENTER.y);
         rightCurrentLocation = new Vector2(RIGHT_BUTTON_CENTER);
-        rightActive = false;
 
         //GAME VIEW FRAME
         gameFrameSprite = new BSprite(Resource.getTextureRegions(Resource.GAME_FRAME)[0][0]);
         gameFrameSprite.setSize(GameGraphics.VIRTUAL_HEIGHT,GameGraphics.VIRTUAL_HEIGHT);
         gameFrameSprite.setCenter(GameGraphics.VIRTUAL_WIDTH/2,GameGraphics.VIRTUAL_HEIGHT/2);
 
-
-        TYPE = _type;
 
     }
 
@@ -154,7 +151,8 @@ public class Analog extends Controller implements Renderable,InputReceiver {
         }
     }
 
-    private void updateLeft(){
+    @Override
+    protected void updateLeft(){
         for (Long key : Inputs.getInputs().keySet()){
             float inputX = Inputs.getInputs().get(key).x;
             float inputY = Inputs.getInputs().get(key).y;
@@ -184,7 +182,8 @@ public class Analog extends Controller implements Renderable,InputReceiver {
 
     }
 
-    private void updateRight(){
+    @Override
+    protected void updateRight(){
         for (Long key : Inputs.getInputs().keySet()){
             float inputX = Inputs.getInputs().get(key).x;
             float inputY = Inputs.getInputs().get(key).y;

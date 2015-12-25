@@ -10,7 +10,7 @@ import java.util.Stack;
  */
 public class GameStateManager {
 
-    private static Stack<GameState> GAME_STATES;
+    private Stack<GameState> GAME_STATES;
     public static final int PLAY = 0;
 
     public GameStateManager (){

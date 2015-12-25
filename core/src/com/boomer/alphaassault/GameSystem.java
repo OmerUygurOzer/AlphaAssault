@@ -21,8 +21,12 @@ public class GameSystem {
 
 
     //TEAM DETAILS
+    public static final int TEAM_AI = -1;
     public static final int TEAM_RED = 0;
     public static final int TEAM_BLUE = 1;
+    public static final int TEAM_GREEN = 2;
+    public static final int TEAM_BROWN = 3;
+    public static final int TEAM_YELLOW = 4;
 
     //CONTROLS
     public static final int INPUT_MAX = 5;

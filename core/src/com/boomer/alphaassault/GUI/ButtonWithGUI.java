@@ -7,6 +7,7 @@ import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
 import com.boomer.alphaassault.handlers.RenderStateManager;
+import com.boomer.alphaassault.handlers.controls.Button;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,14 +15,9 @@ import java.util.Map;
 /**
  * Created by Omer on 12/11/2015.
  */
-public class Button implements Renderable {
+public class ButtonWithGUI extends Button implements Renderable {
     private BSprite icon;
     private BSprite base;
-
-    private Vector2 center;
-
-    private int width;
-    private int height;
 
     private short baseImageId;
     private short iconImageId;
@@ -29,24 +25,17 @@ public class Button implements Renderable {
 
     private Map<Integer,BSprite> states;
 
-    private static final int STATE_INIT = 0;
     private int numberOfStates;
 
-    public Button(float _x,float _y,int _width,int _height){
+    public ButtonWithGUI(float _x, float _y, int _width, int _height){
+        super(_x,_y, _width,_height);
         numberOfStates = 0;
         states = new HashMap<Integer, BSprite>();
-        center = new Vector2(_x,_y);
-        width = _width;
-        height = _height;
         baseImageId = GameSystem.obtainReference();
         iconImageId = GameSystem.obtainReference();
     }
 
 
-    public Vector2 getCenter(){return center;}
-
-    public int getWidth(){return width;}
-    public int getHeight(){return height;}
 
     public void addState(int _state,TextureRegion _textureRegion){
         BSprite Bsprite = new BSprite(_textureRegion);

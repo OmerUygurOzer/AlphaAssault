@@ -1,30 +1,25 @@
-package com.boomer.alphaassault.gameworld.gamelogic;
+package com.boomer.alphaassault.gameworld.players;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
-import com.boomer.alphaassault.GUI.Analog;
-import com.boomer.alphaassault.GUI.Console;
+import com.boomer.alphaassault.GUI.AnalogWithGUI;
+import com.boomer.alphaassault.GUI.ConsoleWithGUI;
 import com.boomer.alphaassault.GUI.Hud;
 import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
 import com.boomer.alphaassault.gameworld.units.skills.Skill;
-import com.boomer.alphaassault.graphics.cameras.SightCamera;
-import com.boomer.alphaassault.handlers.controls.Controllable;
-import com.boomer.alphaassault.handlers.controls.Controller;
-import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.graphics.Renderable;
+import com.boomer.alphaassault.graphics.cameras.SightCamera;
+import com.boomer.alphaassault.handlers.controls.Analog;
+import com.boomer.alphaassault.handlers.controls.Console;
+import com.boomer.alphaassault.handlers.controls.Controllable;
+import com.boomer.alphaassault.resources.Resource;
 
 
 /**
- * Created by Omer on 12/6/2015.
+ * Created by Omer on 12/24/2015.
  */
-public class Player implements Updateable,Renderable,Controllable{
-    public static final int ASSAULT_TROOPER = 0;
-    public static final int ENGINEER        = 1;
-    public static final int COMMANDO        = 2;
-    public static final int MEDIC           = 3;
+public class Human extends Player implements Renderable,Controllable{
 
     private short referenceId;
 
@@ -34,14 +29,14 @@ public class Player implements Updateable,Renderable,Controllable{
     private int viewType;
 
     private SightCamera camera;
-    //GUI
-    private Controller analog;
-    private Controller console;
+
+    //CONTROLS
+    private Analog analog;
+    private Console console;
     private Hud hud;
 
     //IN-GAME
     private Unit playerUnit;
-    private GameWorld world;
 
     /********************/
     /*
@@ -49,8 +44,12 @@ public class Player implements Updateable,Renderable,Controllable{
     */
     /********************/
 
-    public Player(SightCamera _camera) {
+    public Human(SightCamera _camera,GameWorld _world,Unit _unit) {
+        super(_world);
         camera = _camera;
+        camera.setSight(_unit.getSight());
+        playerUnit = _unit;
+        playerUnit.setPlayer(this);
         referenceId = GameSystem.obtainReference();
     }
 
@@ -61,9 +60,9 @@ public class Player implements Updateable,Renderable,Controllable{
     public Texture getIcon(){return icon;}
 
     public void move(float _deltaTime){
-        if(analog.get(Analog.LEFT_ACTIVE).valueBoolean) {
-            double power = analog.get(Analog.LEFT_ANALOG).valueDouble * playerUnit.getMovementSpeed() / Unit.MAX_SPEED;
-            double angle = analog.get(Analog.LEFT_ROTATION).valueDouble;
+        if(analog.get(AnalogWithGUI.LEFT_ACTIVE).valueBoolean) {
+            double power = analog.get(AnalogWithGUI.LEFT_ANALOG).valueDouble * playerUnit.getMovementSpeed() / Unit.MAX_SPEED;
+            double angle = analog.get(AnalogWithGUI.LEFT_ROTATION).valueDouble;
             float x =  camera.position.x + (float) (Math.sin(Math.toRadians(angle)) * power);
             x = x < world.getGameMap().getWidth() ? x : world.getGameMap().getWidth();
             x = x < 0 ? 0 : x;
@@ -79,47 +78,10 @@ public class Player implements Updateable,Renderable,Controllable{
         }
     }
 
-    public void setWorld(GameWorld _world){
-        world = _world;
-    }
 
-    public void setRole(int _role){
-        switch (_role){
-            case ASSAULT_TROOPER:
-                playerUnit = new AssaultTrooper(GameSystem.TEAM_BLUE,new Vector2(Math.round(camera.position.x),Math.round(camera.position.y)),world);
-                playerUnit.setViewType(viewType);
-                playerUnit.setPlayer(this);
-                camera.setSight(AssaultTrooper.ASSAULT_TROOPER_SIGHT);
-
-                //MAP SKILLS TO CONSOLE BUTTONS
-                for(Skill skill : playerUnit.getSkillSet()){
-                    ((Console)console).addButton(skill.getKey(), Resource.getTextureRegions(Resource.BUTTONS),skill.getIcon());
-                }
-                ((Console)console).addToRenderState();
-
-
-
-
-
-                break;
-            case ENGINEER:
-
-                break;
-            case COMMANDO:
-
-                break;
-            case MEDIC:
-                break;
-
-            default:
-                //DO NOTHING
-                break;
-        }
-
-    }
 
     public Unit getPlayerUnit(){return playerUnit;}
-
+    public void setPlayerUnit(Unit _unit){addControlledUnit(_unit);playerUnit = _unit;}
 
     @Override
     public void addToRenderState() {
@@ -141,6 +103,7 @@ public class Player implements Updateable,Renderable,Controllable{
     @Override
     public void setViewType(int _viewType) {
         viewType = _viewType;
+        playerUnit.setViewType(viewType);
     }
 
     @Override
@@ -150,13 +113,18 @@ public class Player implements Updateable,Renderable,Controllable{
     }
 
     @Override
-    public void setAnalog(Controller _controller) {
-        analog = _controller;
+    public void setAnalog(Analog _analog) {
+        analog = _analog;
     }
 
     @Override
-    public void setConsole(Controller _controller) {
-        console = _controller;
+    public void setConsole(Console _console) {
+        console = _console;
+        for(Skill skill : playerUnit.getSkillSet()){
+            ((ConsoleWithGUI)console).addButton(skill.getKey(), Resource.getTextureRegions(Resource.BUTTONS),skill.getIcon());
+        }
+        ((ConsoleWithGUI)console).addToRenderState();
+
     }
 
     public void setHud(Hud _hud){hud = _hud; hud.setPlayer(this);}
@@ -166,7 +134,7 @@ public class Player implements Updateable,Renderable,Controllable{
     public void control(float _deltaTime) {
         move(_deltaTime);
         for(Skill skill : playerUnit.getSkillSet()){
-            if(console.get(skill.getKey()).valueDouble==Console.PRESSED){
+            if(console.get(skill.getKey()).valueDouble==ConsoleWithGUI.PRESSED){
                 switch (skill.getTargetType()) {
                     case Skill.TARGET_TYPE_SELF:
                         playerUnit.use(skill.getKey());

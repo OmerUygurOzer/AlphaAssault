@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gamestates.GameState;
 import com.boomer.alphaassault.graphics.GameGraphics;
+import com.boomer.alphaassault.handlers.controls.Console;
 import com.boomer.alphaassault.handlers.controls.Controller;
 import com.boomer.alphaassault.handlers.controls.InputReceiver;
 import com.boomer.alphaassault.graphics.Renderable;
@@ -15,23 +16,7 @@ import java.util.Map;
 /**
  * Created by Omer on 12/11/2015.
  */
-public class Console extends Controller implements Renderable,InputReceiver {
-
-
-    public static final int CONSOLE_BUTTON_WIDTH  = 180;
-    public static final int CONSOLE_BUTTON_HEIGHT = 80;
-
-    public static final int CONSOLE_BUTTON_X = GameGraphics.VIRTUAL_WIDTH - 100;
-    public static final int CONSOLE_BUTTON_Y = 50;
-
-    public static final int CONSOLE_BUTTON_ICON_WIDTH = 50;
-    public static final int CONSOLE_BUTTON_ICON_HEIGHT = 50;
-
-    //INPUT MAPPING
-    public static final int BUTTON_ONE_STATE = 0;
-    public static final int BUTTON_TWO_STATE = 1;
-    public static final int BUTTON_THREE_STATE = 2;
-    public static final int BUTTON_FOUR_STATE = 3;
+public class ConsoleWithGUI extends Console implements Renderable,InputReceiver {
 
     //BUTTON STATES
     public static final int IDLE    = 0;
@@ -39,12 +24,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
     private int buttonNumber;
 
-    public static final int BUTTON_ONE     = 0;
-    public static final int BUTTON_TWO     = 1;
-    public static final int BUTTON_THREE   = 2;
-    public static final int BUTTON_FOUR    = 3;
-
-    private Map<Integer,Button> buttons;
+    private Map<Integer,ButtonWithGUI> buttons;
     private Map<Integer,Integer> localStates;
 
     //REFERENCE IDS
@@ -58,7 +38,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
     private int viewType;
 
-    public Console() {
+    public ConsoleWithGUI() {
         super();
 
         buttonIds = new short[4];
@@ -66,7 +46,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
             buttonIds[i]= GameSystem.obtainReference();
         }
 
-        buttons     = new HashMap<Integer,Button>();
+        buttons     = new HashMap<Integer,ButtonWithGUI>();
         localStates = new HashMap<Integer, Integer>();
         buttonNumber = 0;
 
@@ -76,7 +56,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
     public void addButton(int _key,TextureRegion[][] _states,TextureRegion _icon){
         //CREATE BUTTON
         TextureRegion[][] buttonStates = _states;
-        Button button = new Button(CONSOLE_BUTTON_X,CONSOLE_BUTTON_Y + buttonNumber*80,CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);
+        ButtonWithGUI button = new ButtonWithGUI(CONSOLE_BUTTON_X,CONSOLE_BUTTON_Y + buttonNumber*80,CONSOLE_BUTTON_WIDTH,CONSOLE_BUTTON_HEIGHT);
         button.addState(IDLE,buttonStates[0][IDLE]);
         button.addState(PRESSED,buttonStates[0][PRESSED]);
 
@@ -100,7 +80,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
             float inputX = Inputs.getInputs().get(key).x;
             float inputY = Inputs.getInputs().get(key).y;
             for(int index : buttons.keySet()) {
-                Button button = buttons.get(index);
+                ButtonWithGUI button = buttons.get(index);
                 boolean fitsX = Math.abs(button.getCenter().x - inputX)<button.getWidth()/2;
                 boolean fitsY = Math.abs(button.getCenter().y - inputY)<button.getHeight()/2;
                 if(fitsX && fitsY){
@@ -125,7 +105,7 @@ public class Console extends Controller implements Renderable,InputReceiver {
 
     @Override
     public void addToRenderState() {
-        for(Button button: buttons.values()){
+        for(ButtonWithGUI button: buttons.values()){
             button.addToRenderState();
         }
     }

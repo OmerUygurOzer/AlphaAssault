@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * Created by Omer on 11/30/2015.
  */
-public class Controller {
+public abstract class Controller {
 
     public class Value {
 
@@ -42,7 +42,7 @@ public class Controller {
     }
 
 
-    public void set(Integer _key, double _value) {
+    protected void set(Integer _key, double _value) {
         if(values.containsKey(_key)){
             values.get(_key).valueDouble = _value;
         }else{
@@ -50,7 +50,7 @@ public class Controller {
         }
     }
 
-    public void set(Integer _key, boolean _value) {
+    protected void set(Integer _key, boolean _value) {
         if(values.containsKey(_key)){
             values.get(_key).valueBoolean = _value;
         }else{
@@ -58,7 +58,7 @@ public class Controller {
         }
     }
 
-    public void set(Integer _key, Vector2 _value) {
+    protected void set(Integer _key, Vector2 _value) {
         if(values.containsKey(_key)){
             values.get(_key).valueVector2.x = _value.x;
             values.get(_key).valueVector2.y = _value.y;
@@ -74,5 +74,7 @@ public class Controller {
       }
         return null;
     }
+
+    public abstract void receiveInput();
 
 }

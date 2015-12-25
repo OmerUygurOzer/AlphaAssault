@@ -1,11 +1,6 @@
 package com.boomer.alphaassault.memoryutils;
 
-
-
-import com.boomer.alphaassault.exceptions.NullPoolableException;
-import com.boomer.alphaassault.exceptions.ObjectNotPoolableException;
-import com.boomer.alphaassault.gameworld.GameWorld;
-
+import com.boomer.alphaassault.exceptions.GameEngineException;
 
 import java.util.Collection;
 import java.util.Stack;
@@ -23,8 +18,8 @@ public abstract class Pool<T> {
     abstract protected T newObject();
 
     public void free(T object){
-        if(object == null){throw new NullPoolableException();}
-        if(!(object instanceof  Poolable)) {throw new ObjectNotPoolableException();}
+        if(object == null){throw new GameEngineException("Null Poolable Assignment.");}
+        if(!(object instanceof  Poolable)) {throw new GameEngineException("Object Instance Not Poolable");}
         ((Poolable)object).reset();
         memStack.push(object);
     }
