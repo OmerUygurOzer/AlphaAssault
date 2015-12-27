@@ -15,6 +15,7 @@ import com.boomer.alphaassault.resources.Resource;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.utilities.GameMath;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -64,6 +65,8 @@ public class Map implements Renderable{
     private static final int FEATURE_WATER = 5;
     private static final int FEATURE_PLAYER_HQ = 10;
 
+    private List<Vector2> startingPoints;
+
 
     public Map(int _size,GameWorld _world){
         world = _world;
@@ -104,6 +107,9 @@ public class Map implements Renderable{
     }
 
     private void generateMap(){
+
+            startingPoints = new ArrayList<Vector2>();
+
             Random random = new Random();
 
             int min = 0;

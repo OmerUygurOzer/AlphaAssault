@@ -27,7 +27,6 @@ public class AlphaAssault extends RenderThread {
         super.create();
 
 
-
         //INITIALIZE GAME RESOURCES
         gameResources = new Resource();
         gameResources.initialize();

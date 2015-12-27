@@ -7,11 +7,8 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
 /**
  * Created by Omer on 11/27/2015.
  */
-public class UpdateThread implements Runnable {
+public class UpdateThread extends BThread {
 
-    private float timeAccumulated;
-    private long time;
-    private volatile boolean THREAD_RUNNING;
 
     private GameStateManager gameStateManager;
     private Thread updateThread;
@@ -53,32 +50,5 @@ public class UpdateThread implements Runnable {
         }
         System.out.println("UPDATE THREAD FINISHED.");
     }
-
-
-    private float getDeltaTime(){
-        if(timeAccumulated == 0){
-            time = System.currentTimeMillis();
-            return GameSystem.UPS+0.01f;
-        }
-
-        long deltaLong = System.currentTimeMillis() - time;
-        time = System.currentTimeMillis();
-        float deltaFloat=  (float)deltaLong/1000f;
-        return deltaFloat;
-
-    }
-
-    private void wait(int _time){
-        try {
-            Thread.sleep(_time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void stop(){
-    THREAD_RUNNING = false;
-    }
-    public void resume() {THREAD_RUNNING = true;}
 
 }

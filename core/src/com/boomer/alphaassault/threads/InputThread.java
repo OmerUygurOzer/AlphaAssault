@@ -6,11 +6,9 @@ import com.boomer.alphaassault.handlers.controls.InputManager;
 /**
  * Created by Omer on 11/27/2015.
  */
-public class InputThread implements Runnable {
+public class InputThread extends BThread {
 
-    private float timeAccumulated;
-    private long time;
-    private volatile boolean THREAD_RUNNING;
+
 
     private Thread inputThread;
     private InputManager inputManager;
@@ -54,31 +52,9 @@ public class InputThread implements Runnable {
 
 
 
-    private float getDeltaTime(){
-        if(timeAccumulated == 0){
-            time = System.currentTimeMillis();
-            return GameSystem.UPS+0.01f;
-        }
 
-        long deltaLong = System.currentTimeMillis() - time;
-        time = System.currentTimeMillis();
-        float deltaFloat=  (float)deltaLong/1000f;
-        return deltaFloat;
 
-    }
 
-    private void wait(int _time){
-        try {
-            Thread.sleep(_time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void stop(){
-        THREAD_RUNNING = false;
-    }
-    public void resume() {THREAD_RUNNING = true;}
 
 
 
