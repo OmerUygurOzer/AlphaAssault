@@ -5,10 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.gameworld.units.skills.Fire_AssaultRifle;
-import com.boomer.alphaassault.gameworld.units.skills.Fire_Flashbang;
-import com.boomer.alphaassault.gameworld.units.skills.Fire_Rocket;
-import com.boomer.alphaassault.gameworld.units.skills.Run;
+import com.boomer.alphaassault.gameworld.skills.Fire_AssaultRifle;
+import com.boomer.alphaassault.gameworld.skills.Fire_Flashbang;
+import com.boomer.alphaassault.gameworld.skills.Fire_Rocket;
+import com.boomer.alphaassault.gameworld.skills.Run;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -50,19 +50,15 @@ public class AssaultTrooper extends Unit {
         bAnimation.setSecondsPerFrame(1f/10f);
 
         //ADD SKILLS
-        Fire_AssaultRifle fire = new Fire_AssaultRifle(ASSAULT_RIFLE_KEY);
-        fire.setUser(this);
-        Run run = new Run(RUN_KEY);
-        run.setUser(this);
-        Fire_Flashbang fireFlashbang = new Fire_Flashbang(FLASHBANG_KEY);
-        fireFlashbang.setUser(this);
+        Fire_AssaultRifle fire = new Fire_AssaultRifle(this,ASSAULT_RIFLE_KEY);
+        Run run = new Run(this,RUN_KEY);
+        Fire_Flashbang fireFlashbang = new Fire_Flashbang(this,FLASHBANG_KEY);
 
         fire.setWorld(_world);
         run.setWorld(_world);
         fireFlashbang.setWorld(_world);
 
-        Fire_Rocket fireRocket = new Fire_Rocket(ROCKET_KEY);
-        fireRocket.setUser(this);
+        Fire_Rocket fireRocket = new Fire_Rocket(this,ROCKET_KEY);
         fireRocket.setWorld(_world);
 
         addSkill(fire);

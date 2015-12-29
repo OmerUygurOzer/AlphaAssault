@@ -2,6 +2,7 @@ package com.boomer.alphaassault.gameworld;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
+import com.boomer.alphaassault.gameworld.map.Map;
 import com.boomer.alphaassault.gameworld.players.AI;
 import com.boomer.alphaassault.gameworld.players.Human;
 import com.boomer.alphaassault.gameworld.players.Player;

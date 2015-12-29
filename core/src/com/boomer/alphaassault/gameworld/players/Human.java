@@ -7,7 +7,7 @@ import com.boomer.alphaassault.GUI.Hud;
 import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.units.Unit;
-import com.boomer.alphaassault.gameworld.units.skills.Skill;
+import com.boomer.alphaassault.gameworld.skills.Skill;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
 import com.boomer.alphaassault.handlers.controls.Analog;

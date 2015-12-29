@@ -6,7 +6,7 @@ import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.Buff;
 import com.boomer.alphaassault.gameworld.players.Player;
-import com.boomer.alphaassault.gameworld.units.skills.Skill;
+import com.boomer.alphaassault.gameworld.skills.Skill;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;

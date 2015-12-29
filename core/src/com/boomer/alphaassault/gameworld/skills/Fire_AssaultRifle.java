@@ -1,7 +1,8 @@
-package com.boomer.alphaassault.gameworld.units.skills;
+package com.boomer.alphaassault.gameworld.skills;
 
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.projectiles.Bullet;
+import com.boomer.alphaassault.gameworld.skills.Skill;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.resources.Resource;
 
@@ -17,8 +18,8 @@ public class Fire_AssaultRifle extends Skill {
     private static final int BULLET_COL_LIMIT = 1;
     private static final int BULLET_RANGE = 15;
 
-   public Fire_AssaultRifle(int _key){
-        super(_key);
+   public Fire_AssaultRifle(Unit _user,int _key){
+       super(_user,_key);
        targetType = Skill.TARGET_TYPE_ANGLE;
        icon = Resource.getTextureRegions(Resource.ICONS)[0][0];
        cooldown = Math.round(ASSAULT_RIFLE_CD * 1000);

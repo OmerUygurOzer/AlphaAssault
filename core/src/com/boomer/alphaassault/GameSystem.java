@@ -1,5 +1,6 @@
 package com.boomer.alphaassault;
 
+
 /**
  * Created by Omer on 11/26/2015.
  */
@@ -40,7 +41,7 @@ public class GameSystem {
 
     static{
         NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-        System.out.println(NUMBER_OF_CORES);
+        System.out.println("System Cores:" + NUMBER_OF_CORES);
         switch (NUMBER_OF_CORES){
             case 1:
                 UPDATE_THREAD_AFFINITY = 1;

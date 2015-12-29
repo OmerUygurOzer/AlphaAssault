@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.gameworld.units.skills;
+package com.boomer.alphaassault.gameworld.skills;
 
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -40,9 +40,10 @@ public abstract class Skill {
 
     }
 
-    protected Skill(int _key){
+    protected Skill(Unit _user,int _key){
         key = _key;
         ready = true;
+        user = _user;
     }
 
     //METHODS
@@ -59,7 +60,6 @@ public abstract class Skill {
     public final boolean isReady(){return ready;}
     public final int getKey(){return key;}
     public final int getTargetType(){return targetType;}
-    public final void setUser(Unit _unit){user = _unit;}
     public final TextureRegion getIcon(){return icon;}
     public final Supply getSupply(){return supply;}
 

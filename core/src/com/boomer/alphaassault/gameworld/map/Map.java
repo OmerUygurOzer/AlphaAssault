@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.gameworld;
+package com.boomer.alphaassault.gameworld.map;
 
 
 
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.GameSystem;
+import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.mapfeatures.*;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BSprite;

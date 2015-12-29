@@ -1,7 +1,8 @@
-package com.boomer.alphaassault.gameworld.units.skills;
+package com.boomer.alphaassault.gameworld.skills;
 
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.projectiles.FlashBang;
+import com.boomer.alphaassault.gameworld.skills.Skill;
 import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.resources.Resource;
@@ -21,9 +22,8 @@ public class Fire_Flashbang extends Skill {
 
 
 
-    public Fire_Flashbang(int _key)
-    {
-            super(_key);
+    public Fire_Flashbang(Unit _user,int _key){
+        super(_user,_key);
             cooldown = Math.round(FLASHBANG_CD * 1000);
 
             icon = Resource.getTextureRegions(Resource.ICONS)[0][2];
