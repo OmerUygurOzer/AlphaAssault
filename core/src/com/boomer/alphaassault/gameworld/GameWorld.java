@@ -3,6 +3,7 @@ package com.boomer.alphaassault.gameworld;
 import com.badlogic.gdx.graphics.Camera;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
 import com.boomer.alphaassault.gameworld.map.Map;
+import com.boomer.alphaassault.gameworld.map.MapIO;
 import com.boomer.alphaassault.gameworld.players.AI;
 import com.boomer.alphaassault.gameworld.players.Human;
 import com.boomer.alphaassault.gameworld.players.Player;
@@ -66,7 +67,11 @@ public class GameWorld implements Updateable,Renderable{
 
 
         gameMap = new Map(Map.SIZE_MEDIUM,this);
+        // MapIO.saveMap(gameMap,"random1");
+        //MapIO.loadMap(gameMap,"random1");
         camera = _camera;
+
+
 
     }
 
