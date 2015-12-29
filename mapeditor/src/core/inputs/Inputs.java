@@ -3,8 +3,8 @@ package core.inputs;
 import com.badlogic.gdx.math.Vector2;
 import core.utils.GameMath;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -22,7 +22,7 @@ public class Inputs {
         static{
             hover = new Vector2(0,0);
             numberOfInputs = 0;
-            inputs = new ConcurrentHashMap<Long, Vector2>();
+            inputs = new HashMap<Long, Vector2>();
             INPUT_SEPARATOR = 90;
            }
 

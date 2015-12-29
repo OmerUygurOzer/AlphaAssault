@@ -31,8 +31,8 @@ public class ComponentView extends ScalingViewport {
 
     @Override
     public void update(int screenWidth, int screenHeight, boolean centerCamera) {
-        int screenRatioX = Math.round((float)screenWidth / (float)System.VIRTUAL_WIDTH);
-        int screenRatioY = Math.round((float)screenHeight / (float)System.VIRTUAL_HEIGHT);
+        float screenRatioX = Math.round((float)screenWidth / (float)System.VIRTUAL_WIDTH);
+        float screenRatioY = Math.round((float)screenHeight / (float)System.VIRTUAL_HEIGHT);
         int viewX =  Math.round(screenRatioX * x);
         int viewY =  Math.round(screenRatioY * y);
         int viewPortWidth = Math.round(screenRatioX * viewWidth);

@@ -67,7 +67,7 @@ public class GameWorld implements Updateable,Renderable{
 
 
         gameMap = new Map(Map.SIZE_MEDIUM,this);
-        // MapIO.saveMap(gameMap,"random1");
+        //MapIO.saveMap(gameMap,"random1");
         //MapIO.loadMap(gameMap,"random1");
         camera = _camera;
 

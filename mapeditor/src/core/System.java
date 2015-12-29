@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
  * Created by Omer on 12/28/2015.
  */
 public class System {
+
+    public static final float FPS = 1/60f;
+
     public static int REAL_WIDTH;
     public static int REAL_HEIGHT;
 
@@ -16,12 +19,13 @@ public class System {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
-    public static void initScreen(){
+    public static void init(){
         REAL_WIDTH = Gdx.graphics.getWidth();
         REAL_HEIGHT = Gdx.graphics.getHeight();
 
         SCREEN_WIDTH = VIRTUAL_WIDTH;
         SCREEN_HEIGHT = VIRTUAL_HEIGHT;
+
     }
 
     public static void setScreenSize(int _width,int _height){

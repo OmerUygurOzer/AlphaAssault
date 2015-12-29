@@ -65,7 +65,7 @@ public class Resources {
     public static final int EXPLOSION = 101;
 
 
-    public Resources() {
+    static {
         textures = new HashMap<Integer, Texture>();
         textureRegions = new HashMap<Integer, TextureRegion[][]>();
         musics = new HashMap<Integer, Music>();
@@ -73,7 +73,7 @@ public class Resources {
 
     }
 
-    public void initialize(){
+    public static void initialize(){
         loadTexture(TEXTURE_REGION_ASSAULT_TROOPER,"character.png");
         loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
         loadTexture(GUI_ALL,"GUI/gui.png");
@@ -109,7 +109,7 @@ public class Resources {
     }
 
     //TEXTURE HANDLERS
-    public void loadTexture(int _key, String _path){
+    public static void loadTexture(int _key, String _path){
         Texture texture = new Texture(Gdx.files.internal(_path));
         textures.put(_key,texture);
     }
@@ -118,17 +118,17 @@ public class Resources {
         return textures.get(_key);
     }
 
-    public void loadTextureRegion(int _key,String _path,int _width,int _height){
+    public static void loadTextureRegion(int _key,String _path,int _width,int _height){
         TextureRegion[][] splitRegions = TextureRegion.split(new Texture(Gdx.files.internal(_path)),_width,_height);
         textureRegions.put(_key,splitRegions);
     }
 
-    public void loadTextureRegion(int _key,Texture _texture,int _x,int _y,int _width,int _height,int _xNumber,int _yNumber){
+    public static void loadTextureRegion(int _key,Texture _texture,int _x,int _y,int _width,int _height,int _xNumber,int _yNumber){
         textureRegions.put(_key, GraphicsUtils.splitTexture(_texture,_x,_y,_width,_height,_xNumber,_yNumber));
     }
 
     //TEXTURE REGION HANDLERS
-    public void removeTextureRegion(int _key){
+    public static void removeTextureRegion(int _key){
         TextureRegion[][] splitRegions = textureRegions.get(_key);
         if(splitRegions !=null){
             textureRegions.remove(_key);
@@ -137,7 +137,7 @@ public class Resources {
 
     public static TextureRegion[][] getTextureRegions(int _key){return textureRegions.get(_key);}
 
-    public void removeTexture(int _key){
+    public static void removeTexture(int _key){
         Texture texture = textures.get(_key);
         if(texture != null){
             textures.remove(_key);
@@ -146,7 +146,7 @@ public class Resources {
     }
 
     //SOUND HANDLERS
-    public void loadSound(int _key, String _path){
+    public static void loadSound(int _key, String _path){
         Sound sound = Gdx.audio.newSound(Gdx.files.internal(_path));
         sounds.put(_key,sound);
     }
@@ -155,7 +155,7 @@ public class Resources {
         return sounds.get(_key);
     }
 
-    public void removeSound(int _key){
+    public static void removeSound(int _key){
         Sound sound = sounds.get(_key);
         if(sound!=null){
             sounds.remove(_key);
@@ -165,7 +165,7 @@ public class Resources {
 
     //MUSIC HANDLERS
 
-    public void loadMusic(int _key,String _path){
+    public static void loadMusic(int _key,String _path){
         Music music = Gdx.audio.newMusic(Gdx.files.internal(_path));
         musics.put(_key,music);
     }
@@ -174,7 +174,7 @@ public class Resources {
         return musics.get(_key);
     }
 
-    public void removeMusic(int _key){
+    public static void removeMusic(int _key){
         Music music = musics.get(_key);
         if(music!=null){
             musics.remove(_key);
@@ -183,7 +183,7 @@ public class Resources {
 
     }
 
-    public void disposeAll(){
+    public static void disposeAll(){
         for(Object o : textures.values()) {
             Texture texture = (Texture) o;
             texture.dispose();

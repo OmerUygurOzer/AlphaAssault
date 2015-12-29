@@ -1,9 +1,14 @@
 package core.main;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import core.Resources;
 import core.System;
+import core.graphics.GUI.MapHolder;
+import core.inputs.InputManager;
 
 /**
  * Created by Omer on 12/28/2015.
@@ -12,11 +17,27 @@ public class MapEditor extends Game {
 
     private SpriteBatch spriteBatch;
 
+    private InputManager inputManager;
+
+    private float timeAccumulated;
+
+    private MapHolder mapHolder;
+
     @Override
     public void create() {
         spriteBatch = new SpriteBatch();
-        System.initScreen();
+        System.init();
+
+        Resources.initialize();
+
+        timeAccumulated = 0f;
+
+        inputManager = new InputManager();
+
+        mapHolder = new MapHolder(0,0,400,400);
     }
+
+
 
     @Override
     public void resume() {
@@ -26,6 +47,22 @@ public class MapEditor extends Game {
     @Override
     public void render() {
         super.render();
+        timeAccumulated+= Gdx.graphics.getDeltaTime();
+        spriteBatch.setProjectionMatrix(mapHolder.getViewport().getCamera().combined);
+        Gdx.gl.glClearColor(0,0,0,1);
+        if(timeAccumulated >= System.FPS){
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            timeAccumulated = 0f;
+            spriteBatch.begin();
+            mapHolder.draw(spriteBatch);
+            spriteBatch.end();
+
+        }
+
+    }
+
+    public void handleInputs(){
+        inputManager.poll();
     }
 
     @Override
@@ -41,6 +78,8 @@ public class MapEditor extends Game {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        inputManager.setScreenBounds();
+        mapHolder.resize(width,height);
     }
 
     @Override
@@ -52,11 +91,6 @@ public class MapEditor extends Game {
     public Screen getScreen() {
         return super.getScreen();
     }
-
-
-
-
-
 
 
 
