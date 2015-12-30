@@ -34,7 +34,7 @@ public class MapEditor extends Game {
 
         inputManager = new InputManager();
 
-        mapHolder = new MapHolder(0,0,400,400);
+        mapHolder = new MapHolder(100,100,400,400);
     }
 
 

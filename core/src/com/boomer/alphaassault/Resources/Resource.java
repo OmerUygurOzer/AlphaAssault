@@ -75,9 +75,9 @@ public class Resource {
     public void initialize(){
         loadTexture(TEXTURE_REGION_ASSAULT_TROOPER,"character.png");
         loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
-        loadTexture(GUI_ALL,"GUI/gui.png");
-        loadTexture(IN_GAME,"game/ingame.png");
-        loadTexture(GAME_ALL,"game/game.png");
+        loadTexture(GUI_ALL,"raw/GUI/gui.png");
+        loadTexture(IN_GAME,"raw/game/ingame.png");
+        loadTexture(GAME_ALL,"raw/game/game.png");
 
 
 

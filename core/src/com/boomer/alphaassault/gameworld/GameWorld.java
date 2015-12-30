@@ -2,8 +2,9 @@ package com.boomer.alphaassault.gameworld;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
+import com.boomer.alphaassault.gameworld.level.Level;
 import com.boomer.alphaassault.gameworld.map.Map;
-import com.boomer.alphaassault.gameworld.map.MapIO;
+
 import com.boomer.alphaassault.gameworld.players.AI;
 import com.boomer.alphaassault.gameworld.players.Human;
 import com.boomer.alphaassault.gameworld.players.Player;
@@ -15,6 +16,7 @@ import  com.boomer.alphaassault.memoryutils.Pool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by Omer on 11/24/2015.
@@ -27,7 +29,7 @@ public class GameWorld implements Updateable,Renderable{
 
     private short baseReference;
 
-    private Map gameMap;
+    private Stack<Level> levels;
 
     private Camera camera;
 
@@ -53,6 +55,8 @@ public class GameWorld implements Updateable,Renderable{
         clientPlayers = new ArrayList<Player>();
         computerPlayer = new AI(this);
 
+        levels = new Stack<Level>();
+
         entities = new ArrayList<Entity>();
         removals = new ArrayList<Entity>();
         additions = new ArrayList<Entity>();
@@ -66,9 +70,7 @@ public class GameWorld implements Updateable,Renderable{
         };
 
 
-        gameMap = new Map(Map.SIZE_MEDIUM,this);
-        //MapIO.saveMap(gameMap,"random1");
-        //MapIO.loadMap(gameMap,"random1");
+
         camera = _camera;
 
 
@@ -88,12 +90,9 @@ public class GameWorld implements Updateable,Renderable{
     }
 
 
-
-    public Map getGameMap(){return gameMap;}
-
     @Override
     public void addToRenderState() {
-        gameMap.addToRenderState();
+
         contextPlayer.addToRenderState();
     }
 
@@ -112,7 +111,6 @@ public class GameWorld implements Updateable,Renderable{
     @Override
     public void setViewType(int _viewType) {
         viewType = _viewType;
-        gameMap.setViewType(_viewType);
     }
 
     @Override

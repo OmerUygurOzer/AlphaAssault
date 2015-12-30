@@ -34,6 +34,11 @@ public abstract class MapFeature extends Entity implements Renderable{
     public MapFeature(Vector2 _center,GameWorld _world) {
         super(_center,RenderState.DEPTH_SURFACE,_world);
     }
+
+    public void createFromType(String _path){
+
+    }
+
     public final boolean isDestroyable(){
         return destroyable;
     }

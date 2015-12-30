@@ -60,14 +60,15 @@ public class Human extends Player implements Renderable,Controllable{
     public Texture getIcon(){return icon;}
 
     public void move(float _deltaTime){
+        /*
         if(analog.get(AnalogWithGUI.LEFT_ACTIVE).valueBoolean) {
             double power = analog.get(AnalogWithGUI.LEFT_ANALOG).valueDouble * playerUnit.getMovementSpeed() / Unit.MAX_SPEED;
             double angle = analog.get(AnalogWithGUI.LEFT_ROTATION).valueDouble;
             float x =  camera.position.x + (float) (Math.sin(Math.toRadians(angle)) * power);
-            x = x < world.getGameMap().getWidth() ? x : world.getGameMap().getWidth();
+          //  x = x < world.getGameMap().getWidth() ? x : world.getGameMap().getWidth();
             x = x < 0 ? 0 : x;
             float y = camera.position.y + (float) (Math.cos(Math.toRadians(angle)) * power);
-            y = y < world.getGameMap().getHeight() ? y : world.getGameMap().getHeight();
+        //    y = y < world.getGameMap().getHeight() ? y : world.getGameMap().getHeight();
             y = y < 0 ? 0 : y;
 
             if(world.getGameMap().isMoveable(x,y)){
@@ -76,6 +77,7 @@ public class Human extends Player implements Renderable,Controllable{
             }
 
         }
+        */
     }
 
 
