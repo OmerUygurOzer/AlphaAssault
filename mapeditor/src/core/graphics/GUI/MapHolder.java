@@ -1,27 +1,24 @@
 package core.graphics.GUI;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import core.Resources;
 import core.graphics.views.ComponentView;
+import core.inputs.Inputs;
 
 /**
  * Created by Omer on 12/28/2015.
  */
 public class MapHolder extends Component{
 
-    private static final int SCROLLER_WIDTH = 50;
-    private static final int SCROLLER_HEIGHT = 10;
+
 
     private OrthographicCamera camera;
 
 
-    private int horizontalScrollerLocation;
-    private int verticalScrollerLocation;
 
-    private int horizontalScrollTab;
-    private int verticalScrollTab;
 
     private Sprite test;
 
@@ -33,10 +30,6 @@ public class MapHolder extends Component{
         viewport = new ComponentView(_x,_y,_width,_height,camera);
         ((ComponentView)viewport).apply();
         camera.update();
-
-
-        horizontalScrollerLocation = 0;
-        verticalScrollerLocation = 0;
 
         test = new Sprite(Resources.getTextureRegions(Resources.BACKGROUND)[0][1]);
         test.setSize(_width,_height);
@@ -51,7 +44,19 @@ public class MapHolder extends Component{
 
     }
 
+    public void moveCamera(int _x,int _y){
+        camera.position.x += _x;
+        camera.position.y -= _y;
+        camera.update();
+    }
 
+
+
+
+    public void resetCamera(){
+        camera.position.x = 0;
+        camera.position.y = 0;
+    }
 
 
     @Override
@@ -62,6 +67,38 @@ public class MapHolder extends Component{
 
     @Override
     public void receiveInput() {
+        int xMovement = 0;
+        int yMovement = 0;
 
+        if(Inputs.getInputKeys().get(Input.Keys.A)!= null){
+            if(Inputs.getInputKeys().get(Input.Keys.A)){
+                xMovement -=1;
+            }
+
+        }
+        if(Inputs.getInputKeys().get(Input.Keys.D)!= null){
+            if(Inputs.getInputKeys().get(Input.Keys.D)){
+                xMovement +=1;
+            }
+        }
+
+        if(Inputs.getInputKeys().get(Input.Keys.W)!= null){
+            if(Inputs.getInputKeys().get(Input.Keys.W)){
+                yMovement -=1;
+            }
+        }
+
+        if(Inputs.getInputKeys().get(Input.Keys.S)!= null){
+            if(Inputs.getInputKeys().get(Input.Keys.S)){
+                yMovement +=1;
+            }
+        }
+
+        if(Inputs.getInputKeys().get(Input.Keys.R)!= null){
+            if(Inputs.getInputKeys().get(Input.Keys.R)){
+                resetCamera();
+            }
+        }
+        moveCamera(xMovement,yMovement);
     }
 }

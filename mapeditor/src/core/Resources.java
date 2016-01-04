@@ -5,8 +5,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import core.map.Entity;
+import core.map.EntityParser;
 import core.utils.GraphicsUtils;
 
+import java.lang.*;
 import java.util.HashMap;
 
 /**
@@ -74,18 +77,8 @@ public class Resources {
     }
 
     public static void initialize(){
-        loadTexture(TEXTURE_REGION_ASSAULT_TROOPER,"character.png");
-        loadTexture(TEXTURE_PLAYER,"pcprincipal.png");
-        loadTexture(GUI_ALL,"GUI/gui.png");
-        loadTexture(IN_GAME,"game/ingame.png");
-        loadTexture(GAME_ALL,"game/game.png");
+        loadTexture(IN_GAME,"resourcefiles/ingame.png");
 
-
-
-        loadTextureRegion(ANALOG,getTexture(GUI_ALL),512,128,128,128,4,1);
-        loadTextureRegion(GAME_FRAME,getTexture(GUI_ALL),0,258,128,128,1,1);
-        loadTextureRegion(FONTS,getTexture(GUI_ALL),0,0,32,43,16,6);
-        loadTextureRegion(BUTTONS,getTexture(GUI_ALL),512,0,256,128,2,1);
 
         //MAP
         loadTextureRegion(BACKGROUND,getTexture(IN_GAME),160,0,80,80,2,1);
@@ -95,9 +88,6 @@ public class Resources {
         loadTextureRegion(WATER,getTexture(IN_GAME),0,160,40,40,4,1);
         loadTextureRegion(BUSHES,getTexture(IN_GAME),0,200,20,20,4,1);
 
-        //ICONS
-        loadTextureRegion(ICONS,getTexture(GAME_ALL),0,0,60,40,8,1);
-
         //PROJECTILES
         loadTextureRegion(BULLET,getTexture(IN_GAME),0,220,20,20,1,8);
         loadTextureRegion(FLASHBANG,getTexture(IN_GAME),20,220,20,20,1,1);
@@ -106,11 +96,15 @@ public class Resources {
         //VISUALS
         loadTextureRegion(SMOKE,getTexture(IN_GAME),320,0,80,80,7,1);
         loadTextureRegion(EXPLOSION,getTexture(IN_GAME),480,80,40,40,9,9);
+
+        EntityParser.cache();
     }
 
     //TEXTURE HANDLERS
     public static void loadTexture(int _key, String _path){
-        Texture texture = new Texture(Gdx.files.internal(_path));
+        String path = Gdx.files.getLocalStoragePath();
+        path += _path;
+        Texture texture = new Texture(path);
         textures.put(_key,texture);
     }
 

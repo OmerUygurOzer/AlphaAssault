@@ -167,6 +167,7 @@ public class Resource {
     public void loadMusic(int _key,String _path){
         Music music = Gdx.audio.newMusic(Gdx.files.internal(_path));
         musics.put(_key,music);
+
     }
 
     public static Music getMusic(int _key){

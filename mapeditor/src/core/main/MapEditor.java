@@ -33,6 +33,7 @@ public class MapEditor extends Game {
         timeAccumulated = 0f;
 
         inputManager = new InputManager();
+        inputManager.setLimit(4);
 
         mapHolder = new MapHolder(100,100,400,400);
     }
@@ -53,6 +54,8 @@ public class MapEditor extends Game {
         if(timeAccumulated >= System.FPS){
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             timeAccumulated = 0f;
+            handleInputs();
+            mapHolder.receiveInput();
             spriteBatch.begin();
             mapHolder.draw(spriteBatch);
             spriteBatch.end();

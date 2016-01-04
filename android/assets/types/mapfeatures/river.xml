@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<base>
+    <resourceID>2</resourceID>
+    <destroyable>false</destroyable>
+    <blocksMovement>true</blocksMovement>
+    <blocksBullets>false</blocksBullets>
+    <blocksDamage>false</blocksDamage>
+    <radius>10</radius>
+    <size>10</size>
+</base>

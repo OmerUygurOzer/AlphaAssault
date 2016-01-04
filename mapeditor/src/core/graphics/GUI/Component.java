@@ -15,7 +15,7 @@ public abstract class Component {
 
     protected Viewport viewport;
 
-    public Component(float _x,float _y,int _width,int _height){
+    protected Component(float _x,float _y,int _width,int _height){
         center = new Vector2(_x,_y);
 
         width = _width;

@@ -15,14 +15,16 @@ public class Inputs {
 
         private static volatile Vector2 hover;
         private static int numberOfInputs;
-        private static Map<Long,Vector2> inputs;
+        private static Map<Long,Vector2> inputTouch;
+        private static Map<Integer,Boolean> inputKeys;
         public static final int INPUT_SEPARATOR;
 
 
         static{
             hover = new Vector2(0,0);
             numberOfInputs = 0;
-            inputs = new HashMap<Long, Vector2>();
+            inputTouch = new HashMap<Long, Vector2>();
+            inputKeys = new HashMap<Integer, Boolean>();
             INPUT_SEPARATOR = 90;
            }
 
@@ -35,29 +37,36 @@ public class Inputs {
 
         public static void inputAcquire(int _x, int _y){
             boolean newInput = true;
-            if(inputs.isEmpty()){
+            if(inputTouch.isEmpty()){
                 numberOfInputs++;
-                inputs.put(System.nanoTime(),new Vector2(_x,_y));
+                inputTouch.put(System.nanoTime(),new Vector2(_x,_y));
                 return;
             }
-            for(Long key: inputs.keySet()){
-                if(GameMath.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
-                    inputs.get(key).x = _x;
-                    inputs.get(key).y = _y;
+            for(Long key: inputTouch.keySet()){
+                if(GameMath.getDistance(inputTouch.get(key).x, inputTouch.get(key).y,_x,_y)<INPUT_SEPARATOR){
+                    inputTouch.get(key).x = _x;
+                    inputTouch.get(key).y = _y;
                     newInput = false;
                  }
 
             }
             if (newInput) {
                 numberOfInputs++;
-                inputs.put(System.nanoTime(),new Vector2(_x,_y));
+                inputTouch.put(System.nanoTime(),new Vector2(_x,_y));
             }
         }
 
+        public static void inputAcquire(int _key){
+            inputKeys.put(_key,true);
+            System.out.println(_key);
+        }
+
+
+
         public static void inputRelease(int _x, int _y){
-            for(Long key: inputs.keySet()){
-                        if(GameMath.getDistance(inputs.get(key).x,inputs.get(key).y,_x,_y)<INPUT_SEPARATOR){
-                            inputs.remove(key);
+            for(Long key: inputTouch.keySet()){
+                        if(GameMath.getDistance(inputTouch.get(key).x, inputTouch.get(key).y,_x,_y)<INPUT_SEPARATOR){
+                            inputTouch.remove(key);
                             numberOfInputs--;
                             continue;
                         }
@@ -66,11 +75,17 @@ public class Inputs {
 
         }
 
+        public static void inputRelease(int _key){
+            inputKeys.put(_key,false);
+            System.out.println(_key);
+         }
+
         public static Vector2 getHoverLocation(){
            return hover;
         }
-        public static Map<Long,Vector2> getInputs(){return inputs;}
-        public static boolean isEmtpy(){return inputs.isEmpty();}
+        public static Map<Long,Vector2> getInputTouch(){return inputTouch;}
+        public static Map<Integer,Boolean> getInputKeys(){return inputKeys;}
+        public static boolean isEmtpy(){return inputTouch.isEmpty();}
 
 
 }

@@ -1,4 +1,4 @@
-package com.boomer.alphaassault.gameworld.mapfeatures;
+package com.boomer.alphaassault.gameworld.level.mapfeatures;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +12,7 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
 /**
  * Created by Omer on 11/25/2015.
  */
-public abstract class MapFeature extends Entity implements Renderable{
+public abstract class MapFeatureBase extends Entity implements Renderable{
 
 
     //TYPE PROPERTIES:
@@ -31,7 +31,7 @@ public abstract class MapFeature extends Entity implements Renderable{
     protected TextureRegion image;
     private int viewType;
 
-    public MapFeature(Vector2 _center,GameWorld _world) {
+    public MapFeatureBase(Vector2 _center, GameWorld _world) {
         super(_center,RenderState.DEPTH_SURFACE,_world);
     }
 

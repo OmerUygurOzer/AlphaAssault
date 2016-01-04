@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<base id="26">
+    <resourceID>river</resourceID>
+    <variety>3</variety>
+    <destroyable>false</destroyable>
+    <blocksMovement>true</blocksMovement>
+    <blocksBullets>false</blocksBullets>
+    <blocksDamage>false</blocksDamage>
+    <radius>10</radius>
+    <size>10</size>
+</base>
