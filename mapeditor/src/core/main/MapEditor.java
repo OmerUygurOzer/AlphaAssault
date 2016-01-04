@@ -4,11 +4,17 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import core.Resources;
 import core.System;
 import core.graphics.GUI.MapHolder;
+import core.graphics.GUI.BScreen;
+import core.graphics.GUI.TabSelector;
 import core.inputs.InputManager;
+import core.map.Map;
 
 /**
  * Created by Omer on 12/28/2015.
@@ -16,26 +22,53 @@ import core.inputs.InputManager;
 public class MapEditor extends Game {
 
     private SpriteBatch spriteBatch;
-
     private InputManager inputManager;
 
     private float timeAccumulated;
 
     private MapHolder mapHolder;
+    private Map map;
+
+    private TabSelector entityPalette;
+
+    private Viewport generalView;
+    private OrthographicCamera generalCamera;
+
+    private BScreen screen;
+
 
     @Override
     public void create() {
-        spriteBatch = new SpriteBatch();
         System.init();
-
         Resources.initialize();
+        screen = new BScreen();
+
+        spriteBatch = new SpriteBatch();
+
+        generalCamera = new OrthographicCamera();
+        generalView = new FitViewport(System.VIRTUAL_WIDTH,System.VIRTUAL_HEIGHT,generalCamera);
+        generalView.apply();
+        generalCamera.translate(System.VIRTUAL_WIDTH / 2, System.VIRTUAL_HEIGHT / 2);
+        generalCamera.update();
+
 
         timeAccumulated = 0f;
 
         inputManager = new InputManager();
         inputManager.setLimit(4);
 
-        mapHolder = new MapHolder(100,100,400,400);
+        map = new Map(Map.SMALL);
+        mapHolder = new MapHolder(100,100,500,500,map);
+
+
+        entityPalette = new TabSelector(810,40);
+        entityPalette.setCamera(generalCamera);
+        entityPalette.setView(generalView);
+
+        screen.addComponent(entityPalette);
+        //screen.addComponent(mapHolder);
+
+
     }
 
 
@@ -49,16 +82,18 @@ public class MapEditor extends Game {
     public void render() {
         super.render();
         timeAccumulated+= Gdx.graphics.getDeltaTime();
-        spriteBatch.setProjectionMatrix(mapHolder.getViewport().getCamera().combined);
         Gdx.gl.glClearColor(0,0,0,1);
         if(timeAccumulated >= System.FPS){
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
             timeAccumulated = 0f;
             handleInputs();
+
+
+
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             mapHolder.receiveInput();
-            spriteBatch.begin();
-            mapHolder.draw(spriteBatch);
-            spriteBatch.end();
+            screen.draw(spriteBatch);
+
 
         }
 
@@ -81,13 +116,16 @@ public class MapEditor extends Game {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
+        generalView.update(width,height);
         inputManager.setScreenBounds();
-        mapHolder.resize(width,height);
+
+      //mapHolder.resize(width,height);
+
     }
 
     @Override
-    public void setScreen(Screen screen) {
-        super.setScreen(screen);
+    public void setScreen(Screen Screen) {
+        super.setScreen(Screen);
     }
 
     @Override

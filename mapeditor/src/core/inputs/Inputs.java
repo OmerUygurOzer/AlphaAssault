@@ -32,7 +32,7 @@ public class Inputs {
         public static void updateHover(int _x, int _y){
                 hover.x = _x;
                 hover.y = _y;
-
+                //System.out.println(_x + "   " + _y);
         }
 
         public static void inputAcquire(int _x, int _y){

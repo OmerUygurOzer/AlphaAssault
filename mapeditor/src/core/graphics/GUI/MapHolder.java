@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import core.Resources;
 import core.graphics.views.ComponentView;
 import core.inputs.Inputs;
+import core.map.Map;
+
 
 /**
  * Created by Omer on 12/28/2015.
@@ -14,33 +16,28 @@ import core.inputs.Inputs;
 public class MapHolder extends Component{
 
 
-
-    private OrthographicCamera camera;
-
-
-
-
     private Sprite test;
 
-    //private Map map;
+    private Map map;
 
-    public MapHolder(int _x,int _y,int _width,int _height){
+
+    public MapHolder(int _x,int _y,int _width,int _height,Map _map){
         super(_x,_y,_width,_height);
         camera = new OrthographicCamera();
         viewport = new ComponentView(_x,_y,_width,_height,camera);
-        ((ComponentView)viewport).apply();
+        viewport.apply();
         camera.update();
 
         test = new Sprite(Resources.getTextureRegions(Resources.BACKGROUND)[0][1]);
         test.setSize(_width,_height);
         test.setCenter(_width/2,_height/2);
-
+        map = _map;
     }
 
 
 
     public void resize(int _screenWidth,int _screenHeight){
-        viewport.update(_screenWidth,_screenHeight);
+      viewport.update(_screenWidth,_screenHeight);
 
     }
 
@@ -62,7 +59,10 @@ public class MapHolder extends Component{
     @Override
     public void draw(SpriteBatch _spriteBatch)
     {
-            test.draw(_spriteBatch);
+            _spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+            _spriteBatch.begin();
+            map.draw(_spriteBatch);
+            _spriteBatch.end();
     }
 
     @Override
