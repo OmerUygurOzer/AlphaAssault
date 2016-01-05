@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import core.Resources;
+import core.System;
 import core.graphics.views.ComponentView;
 import core.inputs.Inputs;
 import core.map.Entity;
@@ -31,7 +32,7 @@ public class MapHolder extends Component{
         camera = new OrthographicCamera();
         viewport = new ComponentView(_x,_y,_width,_height,camera);
         viewport.apply();
-        //camera.translate(_width/2,_height/2);
+
         camera.update();
 
         test = new Sprite(Resources.getTextureRegions(Resources.BACKGROUND)[0][1]);
@@ -44,11 +45,14 @@ public class MapHolder extends Component{
         if(selection !=null){
             if(selection.id!=_id){
                 selection = EntityParser.parse(_id);
-                System.out.println(_id);
+                selection.image.setSize(selection.width, selection.height);
+                //System.out.println(_id);
             }
             return;
         }
+
         selection = EntityParser.parse(_id);
+        selection.image.setSize(selection.width, selection.height);
     }
 
 

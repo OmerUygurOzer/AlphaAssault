@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import core.Resources;
+import core.System;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,17 +112,22 @@ public class Map {
 
 
         tilesAll.dispose();
+        tileBadlands.dispose();
+        tileGrass.dispose();
 
         mapBase = new Sprite(base);
-        mapBase.setSize(width,height);
-        mapBase.setCenter(width/2,height/2);
+        mapBase.setSize(width* System.SCALE,height* System.SCALE);
+        mapBase.setCenter(width * System.SCALE/2,height* System.SCALE  /2);
 
     }
 
     public void addEntity(Entity _entity){
         Entity entity = EntityParser.parse(_entity.id);
         entity.center = new Vector2(_entity.center.x,_entity.center.y);
-        entity.image.setCenter(_entity.center.x,_entity.center.y);
+        entity.width = _entity.width;
+        entity.height = _entity.height;
+        entity.image.setCenter(_entity.center.x ,_entity.center.y);
+        entity.image.setSize(entity.width,entity.height);
         entityList.add(entity);
     }
 
@@ -136,6 +142,14 @@ public class Map {
         mapBase.draw(_batch);
         for(Entity entity:entityList){
             entity.image.draw(_batch);
+        }
+    }
+
+    public void descale(){
+        mapBase.setSize(width / System.SCALE,height / System.SCALE);
+        for(Entity entity :entityList){
+            entity.center.x = entity.center.x / System.SCALE;
+            entity.center.y = entity.center.y / System.SCALE;
         }
     }
 

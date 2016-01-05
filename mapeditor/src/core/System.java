@@ -9,6 +9,8 @@ public class System {
 
     public static final float FPS = 1/60f;
 
+    public static final float SCALE = 2;
+
     public static int REAL_WIDTH;
     public static int REAL_HEIGHT;
 
@@ -18,6 +20,8 @@ public class System {
 
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
+
+
 
     public static void init(){
         REAL_WIDTH = Gdx.graphics.getWidth();

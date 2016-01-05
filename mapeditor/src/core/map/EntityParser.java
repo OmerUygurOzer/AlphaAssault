@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import core.Resources;
+import core.System;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -36,7 +37,8 @@ public class EntityParser {
             for(int i = 0; i<allXML.length ; i++){
                 Entity parsedEntity = new Entity();
                 int id;
-                int size;
+                int width;
+                int height;
                 int variety;
 
 
@@ -58,16 +60,17 @@ public class EntityParser {
                             Element eElement = (Element) nNode;
 
                            id = Integer.parseInt(eElement.getAttribute("id"));
-                           size = Integer.parseInt(eElement.getElementsByTagName("size").item(0).getTextContent());
+                           width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
+                           height =  Integer.parseInt(eElement.getElementsByTagName("height").item(0).getTextContent());
                            variety = Integer.parseInt(eElement.getElementsByTagName("variety").item(0).getTextContent());
 
                             parsedEntity.id = id;
                             parsedEntity.variety = variety;
                             Sprite image = new Sprite(Resources.getTextureRegions(id)[0][0]);
-                            image.setSize(size,size);
-                            parsedEntity.width = size;
-                            parsedEntity.height = size;
+                            parsedEntity.width = Math.round(width * System.SCALE);
+                            parsedEntity.height = Math.round(height * System.SCALE);
                             parsedEntity.image = image;
+                            image.setSize(parsedEntity.width,parsedEntity.height);
                             entityCache.put(id,parsedEntity);
                         }
 

@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 <base id="22">
     <resourceID>trees</resourceID>
+    <imagePath>tree.png"</imagePath>
     <variety>3</variety>
     <destroyable>false</destroyable>
     <blocksMovement>true</blocksMovement>
     <blocksBullets>true</blocksBullets>
     <blocksDamage>true</blocksDamage>
     <radius>10</radius>
-    <size>10</size>
+    <width>8</width>
+    <height>10</height>
 </base>

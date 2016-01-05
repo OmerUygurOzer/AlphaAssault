@@ -14,6 +14,8 @@ import core.graphics.GUI.MapHolder;
 import core.graphics.GUI.BScreen;
 import core.graphics.GUI.TabSelector;
 import core.inputs.InputManager;
+import core.level.Level;
+import core.level.LevelPacker;
 import core.map.Map;
 
 /**
@@ -36,11 +38,15 @@ public class MapEditor extends Game {
 
     private BScreen screen;
 
+    private Level level;
 
     @Override
     public void create() {
         System.init();
         Resources.initialize();
+
+        level = new Level();
+
         screen = new BScreen();
 
         spriteBatch = new SpriteBatch();
@@ -58,7 +64,7 @@ public class MapEditor extends Game {
         inputManager.setLimit(4);
 
         map = new Map(Map.SMALL);
-        mapHolder = new MapHolder(50,50,500,500,map);
+        mapHolder = new MapHolder(10,10,660,660,map);
 
 
         entityPalette = new TabSelector(810,728);
@@ -69,6 +75,9 @@ public class MapEditor extends Game {
         screen.addComponent(entityPalette);
         screen.addComponent(mapHolder);
 
+        level.setMap(map);
+
+        LevelPacker.pack("test",null);
 
     }
 
