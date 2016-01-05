@@ -58,15 +58,16 @@ public class MapEditor extends Game {
         inputManager.setLimit(4);
 
         map = new Map(Map.SMALL);
-        mapHolder = new MapHolder(100,100,500,500,map);
+        mapHolder = new MapHolder(50,50,500,500,map);
 
 
-        entityPalette = new TabSelector(810,40);
+        entityPalette = new TabSelector(810,728);
+        entityPalette.setMapHolder(mapHolder);
         entityPalette.setCamera(generalCamera);
         entityPalette.setView(generalView);
 
         screen.addComponent(entityPalette);
-        //screen.addComponent(mapHolder);
+        screen.addComponent(mapHolder);
 
 
     }
@@ -92,6 +93,8 @@ public class MapEditor extends Game {
 
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             mapHolder.receiveInput();
+            entityPalette.receiveInput();
+
             screen.draw(spriteBatch);
 
 
@@ -118,8 +121,7 @@ public class MapEditor extends Game {
         super.resize(width, height);
         generalView.update(width,height);
         inputManager.setScreenBounds();
-
-      //mapHolder.resize(width,height);
+        mapHolder.resize(generalView.getScreenWidth(),generalView.getScreenHeight());
 
     }
 

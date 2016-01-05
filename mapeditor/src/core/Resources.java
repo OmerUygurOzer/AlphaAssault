@@ -54,18 +54,17 @@ public class Resources {
     //ICONS
     public static final int TEXTURE_PLAYER = 60;
     public static final int ICONS = 61;
-    //public static final int RUN = 61;
-    //public static final int FIRE = 62;
-    //public static final int FLASHBANG = 63;
 
-    //PROJECTILE
-    public static final int BULLET = 80;
-    public static final int FLASHBANG = 81;
-    public static final int ROCKET = 82;
+    //SELECTORS
+    public static final int RED_SELECTOR = 80;
+    public static final int YELLOW_SELECTOR = 81;
 
-    //VISUALS
-    public static final int SMOKE = 100;
-    public static final int EXPLOSION = 101;
+    //TAB ICONS & PANEL
+    public static final int TAB_PANEL = 90;
+    public static final int MAP_FEATURES_ICON = 91;
+    public static final int UNITS_ICON = 92;
+    public static final int SPAWNERS_ICON = 93;
+
 
 
     static {
@@ -77,7 +76,7 @@ public class Resources {
     }
 
     public static void initialize(){
-        loadTexture(IN_GAME,"resourcefiles/ingame.png");
+        loadTexture(IN_GAME,"resourcefiles/mapImages.png");
 
 
         //MAP
@@ -88,14 +87,17 @@ public class Resources {
         loadTextureRegion(WATER,getTexture(IN_GAME),0,160,40,40,4,1);
         loadTextureRegion(BUSHES,getTexture(IN_GAME),0,200,20,20,4,1);
 
-        //PROJECTILES
-        loadTextureRegion(BULLET,getTexture(IN_GAME),0,220,20,20,1,8);
-        loadTextureRegion(FLASHBANG,getTexture(IN_GAME),20,220,20,20,1,1);
-        loadTextureRegion(ROCKET,getTexture(IN_GAME),160,80,40,40,8,8);
+        //TABS
+        loadTextureRegion(TAB_PANEL,getTexture(IN_GAME),440,0,60,180,1,1);
+        loadTextureRegion(MAP_FEATURES_ICON,getTexture(IN_GAME),320,0,60,60,1,1);
+        loadTextureRegion(UNITS_ICON,getTexture(IN_GAME),380,0,60,60,1,1);
+        loadTextureRegion(SPAWNERS_ICON,getTexture(IN_GAME),320,60,60,60,1,1);
 
-        //VISUALS
-        loadTextureRegion(SMOKE,getTexture(IN_GAME),320,0,80,80,7,1);
-        loadTextureRegion(EXPLOSION,getTexture(IN_GAME),480,80,40,40,9,9);
+        //SELECTORS
+        loadTextureRegion(RED_SELECTOR,getTexture(IN_GAME),160,80,60,60,1,1);
+        loadTextureRegion(YELLOW_SELECTOR,getTexture(IN_GAME),220,80,60,60,1,1);
+
+
 
         EntityParser.cache();
     }

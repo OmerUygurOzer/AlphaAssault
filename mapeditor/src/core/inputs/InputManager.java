@@ -171,7 +171,8 @@ public class InputManager {
             previousStateTouches[touchNumber].down = currentStateTouches[touchNumber].down;
         }
 
-        Inputs.updateHover(Gdx.input.getX(),Gdx.input.getY());
+        hover(Gdx.input.getX(),Gdx.input.getY());
+
     }
 
     private void touchDown(int _x,int _y){
@@ -206,6 +207,21 @@ public class InputManager {
     }
     private void keyUp(int _key){
         Inputs.inputRelease(_key);
+    }
+
+    private void hover(int _x, int _y){
+        _y = Gdx.graphics.getHeight() - _y;
+        int virtualX=0;
+        int virtualY=0;
+        boolean fitsX = _x <= screenStartPoint.x + screenWidth && _x > screenStartPoint.x;
+        boolean fitsY  = _y <= screenStartPoint.y + screenHeight && _y >screenStartPoint.y;
+        if(fitsX && fitsY){
+            virtualX   = Math.round((float)(_x - screenStartPoint.x)/(float)screenWidth*(float)System.VIRTUAL_WIDTH);
+            virtualY = Math.round((float)(_y - screenStartPoint.y)/(float)screenHeight*(float)System.VIRTUAL_HEIGHT);
+        }
+
+        Inputs.updateHover(virtualX,virtualY);
+
     }
 
 

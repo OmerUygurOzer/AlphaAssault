@@ -97,8 +97,8 @@ public class RenderState{
         for (int depth = DEPTH_BASE; depth < DEPTH_MAX; depth++) {
             for (int key : viewPorts.keySet()) {
                 spriteBatch.setProjectionMatrix(viewPorts.get(key).getCamera().combined);
-                spriteBatch.begin();
                 viewPorts.get(key).apply();
+                spriteBatch.begin();
                 if (viewMapping.get(depth).get(key) != null) {
                     for (Short MAPPER : viewMapping.get(depth).get(key)) {
                         bDrawables.get(depth).get(MAPPER).draw(spriteBatch);

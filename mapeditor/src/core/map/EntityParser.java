@@ -2,6 +2,7 @@ package core.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import core.Resources;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -56,15 +57,16 @@ public class EntityParser {
 
                             Element eElement = (Element) nNode;
 
-                          id = Integer.parseInt(eElement.getAttribute("id"));
-                          size = Integer.parseInt(eElement.getElementsByTagName("size").item(0).getTextContent());
+                           id = Integer.parseInt(eElement.getAttribute("id"));
+                           size = Integer.parseInt(eElement.getElementsByTagName("size").item(0).getTextContent());
                            variety = Integer.parseInt(eElement.getElementsByTagName("variety").item(0).getTextContent());
 
                             parsedEntity.id = id;
                             parsedEntity.variety = variety;
-                            System.out.println(id);
                             Sprite image = new Sprite(Resources.getTextureRegions(id)[0][0]);
                             image.setSize(size,size);
+                            parsedEntity.width = size;
+                            parsedEntity.height = size;
                             parsedEntity.image = image;
                             entityCache.put(id,parsedEntity);
                         }
@@ -90,8 +92,11 @@ public class EntityParser {
 
     public static Entity parse(int _id){
         Entity entity = new Entity();
+        entity.center = new Vector2();
         entity.image = new Sprite();
         entity.image.set(entityCache.get(_id).image);
+        entity.width = entityCache.get(_id).width;
+        entity.height = entityCache.get(_id).height;
         entity.variety = entityCache.get(_id).variety;
         entity.id = _id;
 

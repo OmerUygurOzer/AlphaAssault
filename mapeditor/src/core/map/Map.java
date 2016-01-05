@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import core.Resources;
 
 import java.util.ArrayList;
@@ -117,10 +118,16 @@ public class Map {
 
     }
 
+    public void addEntity(Entity _entity){
+        Entity entity = EntityParser.parse(_entity.id);
+        entity.center = new Vector2(_entity.center.x,_entity.center.y);
+        entity.image.setCenter(_entity.center.x,_entity.center.y);
+        entityList.add(entity);
+    }
+
     public void addEntity(int _id,int _x,int _y){
         Entity entity = EntityParser.parse(_id);
-        entity.x = _x;
-        entity.y = _y;
+
         entity.image.setCenter(_x,_y);
         entityList.add(entity);
     }

@@ -32,7 +32,7 @@ public class Inputs {
         public static void updateHover(int _x, int _y){
                 hover.x = _x;
                 hover.y = _y;
-                //System.out.println(_x + "   " + _y);
+                //System.out.println(_x +":"+_y);
         }
 
         public static void inputAcquire(int _x, int _y){
@@ -58,7 +58,6 @@ public class Inputs {
 
         public static void inputAcquire(int _key){
             inputKeys.put(_key,true);
-            System.out.println(_key);
         }
 
 
@@ -77,7 +76,6 @@ public class Inputs {
 
         public static void inputRelease(int _key){
             inputKeys.put(_key,false);
-            System.out.println(_key);
          }
 
         public static Vector2 getHoverLocation(){
