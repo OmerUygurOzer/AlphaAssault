@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
 import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.gameworld.units.UnitBase;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BSprite;
@@ -54,12 +55,12 @@ public abstract class Buff implements Updateable,Renderable {
         return isExpired;
     }
 
-    public void inflict(Unit _unit){
+    public void inflict(UnitBase _unit){
         _unit.addBuff(this);
 
     }
 
-    public void deflict(Unit _unit){
+    public void deflict(UnitBase _unit){
         _unit.removeBuff(this);
 
     }

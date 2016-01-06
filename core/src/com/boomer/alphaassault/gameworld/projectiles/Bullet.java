@@ -3,7 +3,7 @@ package com.boomer.alphaassault.gameworld.projectiles;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
-import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.gameworld.units.UnitBase;
 import com.boomer.alphaassault.graphics.RenderState;
 import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -89,7 +89,7 @@ public class Bullet extends Projectile {
     }
 
     @Override
-    public void receiveHit(int _hit,Unit _source) {
+    public void receiveHit(int _hit,UnitBase _source) {
 
     }
 

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<base>
+    <radius>5</radius>
+    <width>10</width>
+    <height>10</height>
+
+    <HP>12</HP>
+    <range>8</range>
+    <sight>8</sight>;
+    <damage>4</damage>
+    <movementSpeed>8</movementSpeed>
+
+
+
+    <components>
+        <component name="run" id="0"/>
+        <component name="fireAssaultRifle" id="1"/>
+        <component name="flashbang" id="2"/>
+        <component name="fireRocketLauncher" id="3"/>
+    </components>
+
+</base>

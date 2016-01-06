@@ -1,12 +1,11 @@
 package com.boomer.alphaassault.gameworld.players;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.boomer.alphaassault.GUI.AnalogWithGUI;
 import com.boomer.alphaassault.GUI.ConsoleWithGUI;
 import com.boomer.alphaassault.GUI.Hud;
 import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.GameWorld;
-import com.boomer.alphaassault.gameworld.units.Unit;
+import com.boomer.alphaassault.gameworld.units.UnitBase;
 import com.boomer.alphaassault.gameworld.skills.Skill;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
@@ -36,7 +35,7 @@ public class Human extends Player implements Renderable,Controllable{
     private Hud hud;
 
     //IN-GAME
-    private Unit playerUnit;
+    private UnitBase playerUnit;
 
     /********************/
     /*
@@ -44,7 +43,7 @@ public class Human extends Player implements Renderable,Controllable{
     */
     /********************/
 
-    public Human(SightCamera _camera,GameWorld _world,Unit _unit) {
+    public Human(SightCamera _camera,GameWorld _world,UnitBase _unit) {
         super(_world);
         camera = _camera;
         camera.setSight(_unit.getSight());
@@ -82,8 +81,8 @@ public class Human extends Player implements Renderable,Controllable{
 
 
 
-    public Unit getPlayerUnit(){return playerUnit;}
-    public void setPlayerUnit(Unit _unit){addControlledUnit(_unit);playerUnit = _unit;}
+    public UnitBase getPlayerUnit(){return playerUnit;}
+    public void setPlayerUnit(UnitBase _unit){addControlledUnit(_unit);playerUnit = _unit;}
 
     @Override
     public void addToRenderState() {
