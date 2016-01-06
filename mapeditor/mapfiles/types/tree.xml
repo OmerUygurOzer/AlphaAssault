@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<base id="22">
-    <resourceID>trees</resourceID>
-    <imagePath>tree.png"</imagePath>
-    <variety>3</variety>
+<base>
+    <variety_w>8</variety_w>
+    <variety_h>8</variety_h>
     <destroyable>false</destroyable>
     <blocksMovement>true</blocksMovement>
     <blocksBullets>true</blocksBullets>
     <blocksDamage>true</blocksDamage>
-    <radius>10</radius>
-    <width>8</width>
-    <height>10</height>
+    <blocksAerial>false</blocksAerial>
+    <radius>5</radius>
+    <width>10</width>
+    <height>20</height>
 </base>

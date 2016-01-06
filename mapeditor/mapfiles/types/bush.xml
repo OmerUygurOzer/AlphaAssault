@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<base id="24">
-    <resourceID>bush</resourceID>
-    <imagePath>bush.png"</imagePath>
-    <variety>3</variety>
+<base>
+    <variety_w>10</variety_w>
+    <variety_h>1</variety_h>
     <destroyable>false</destroyable>
     <blocksMovement>false</blocksMovement>
     <blocksBullets>false</blocksBullets>
     <blocksDamage>false</blocksDamage>
-    <radius>8</radius>
+    <blocksAerial>false</blocksAerial>
+    <radius>4</radius>
     <width>8</width>
     <height>8</height>
 </base>

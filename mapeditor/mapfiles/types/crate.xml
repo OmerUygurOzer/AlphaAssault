@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<base id="23">
-    <resourceID>crate</resourceID>
-    <imagePath>crate.png"</imagePath>
-    <variety>3</variety>
+<base>
+    <variety_w>8</variety_w>
+    <variety_h>8</variety_h>
     <destroyable>true</destroyable>
     <blocksMovement>true</blocksMovement>
     <blocksBullets>true</blocksBullets>
     <blocksDamage>true</blocksDamage>
-    <radius>8</radius>
-    <width>8</width>
-    <height>8</height>
+    <blocksAerial>false</blocksAerial>
+    <radius>5</radius>
+    <width>10</width>
+    <height>10</height>
 </base>
