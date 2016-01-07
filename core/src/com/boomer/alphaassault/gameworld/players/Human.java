@@ -1,12 +1,13 @@
 package com.boomer.alphaassault.gameworld.players;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.boomer.alphaassault.GUI.AnalogWithGUI;
 import com.boomer.alphaassault.GUI.ConsoleWithGUI;
 import com.boomer.alphaassault.GUI.Hud;
 import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.GameWorld;
-import com.boomer.alphaassault.gameworld.units.UnitBase;
 import com.boomer.alphaassault.gameworld.skills.Skill;
+import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
 import com.boomer.alphaassault.handlers.controls.Analog;
@@ -35,7 +36,7 @@ public class Human extends Player implements Renderable,Controllable{
     private Hud hud;
 
     //IN-GAME
-    private UnitBase playerUnit;
+    private Unit playerUnit;
 
     /********************/
     /*
@@ -43,7 +44,7 @@ public class Human extends Player implements Renderable,Controllable{
     */
     /********************/
 
-    public Human(SightCamera _camera,GameWorld _world,UnitBase _unit) {
+    public Human(SightCamera _camera,GameWorld _world,Unit _unit) {
         super(_world);
         camera = _camera;
         camera.setSight(_unit.getSight());
@@ -59,30 +60,30 @@ public class Human extends Player implements Renderable,Controllable{
     public Texture getIcon(){return icon;}
 
     public void move(float _deltaTime){
-/*
+
         if(analog.get(AnalogWithGUI.LEFT_ACTIVE).valueBoolean) {
             double power = analog.get(AnalogWithGUI.LEFT_ANALOG).valueDouble * playerUnit.getMovementSpeed() / Unit.MAX_SPEED;
             double angle = analog.get(AnalogWithGUI.LEFT_ROTATION).valueDouble;
             float x =  camera.position.x + (float) (Math.sin(Math.toRadians(angle)) * power);
-            x = x < world.getGameMap().getWidth() ? x : world.getGameMap().getWidth();
+           // x = x < world.getGameMap().getWidth() ? x : world.getGameMap().getWidth();
             x = x < 0 ? 0 : x;
             float y = camera.position.y + (float) (Math.cos(Math.toRadians(angle)) * power);
-            y = y < world.getGameMap().getHeight() ? y : world.getGameMap().getHeight();
+            //y = y < world.getGameMap().getHeight() ? y : world.getGameMap().getHeight();
             y = y < 0 ? 0 : y;
 
-            if(world.getGameMap().isMoveable(x,y)){
+            if(true){
                 camera.position.set(x, y, camera.position.z);
                 playerUnit.move(_deltaTime, x, y, angle);
             }
 
         }
-*/
+
     }
 
 
 
-    public UnitBase getPlayerUnit(){return playerUnit;}
-    public void setPlayerUnit(UnitBase _unit){addControlledUnit(_unit);playerUnit = _unit;}
+    public Unit getPlayerUnit(){return playerUnit;}
+    public void setPlayerUnit(Unit _unit){addControlledUnit(_unit);playerUnit = _unit;}
 
     @Override
     public void addToRenderState() {

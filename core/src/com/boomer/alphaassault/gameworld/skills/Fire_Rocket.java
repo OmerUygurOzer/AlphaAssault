@@ -20,7 +20,7 @@ public class Fire_Rocket extends Skill {
     private static final int ROCKET_COL_LIMIT = 1;
     private static final int ROCKET_RANGE = 18;
 
-    public Fire_Rocket(Unit _user,int _key){
+    public Fire_Rocket(Unit _user, int _key){
         super(_user,_key);
 
         cooldown = Math.round(ROCKET_CD * 1000);

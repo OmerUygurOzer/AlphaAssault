@@ -11,7 +11,7 @@ import com.boomer.alphaassault.GameSystem;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.GUI.AnalogWithGUI;
 import com.boomer.alphaassault.gameworld.players.Human;
-import com.boomer.alphaassault.gameworld.units.assaulttrooper.AssaultTrooper;
+import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.GameGraphics;
 import com.boomer.alphaassault.graphics.cameras.SightCamera;
 import com.boomer.alphaassault.graphics.views.GameViewport;
@@ -83,7 +83,7 @@ public class Play extends GameState {
         gameWorld.setViewType(VIEW_TYPE_GAME);
 
         //ADD PLAYER
-        AssaultTrooper assaultTrooper = new AssaultTrooper(GameSystem.TEAM_BLUE,new Vector2(0,0),gameWorld);
+        Unit assaultTrooper = new Unit(GameSystem.TEAM_BLUE,new Vector2(0,0),gameWorld);
         player = new Human(gameCam,gameWorld,assaultTrooper);
         player.setViewType(VIEW_TYPE_GAME);
         player.setName("PC PRINCIPAL");

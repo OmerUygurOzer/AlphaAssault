@@ -4,7 +4,7 @@ package com.boomer.alphaassault.gameworld.skills;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
-import com.boomer.alphaassault.gameworld.units.UnitBase;
+import com.boomer.alphaassault.gameworld.units.Unit;
 
 /**
  * Created by Omer on 12/1/2015.
@@ -20,7 +20,7 @@ public abstract class Skill {
 
     protected int key;
     protected int targetType;
-    protected UnitBase user;
+    protected Unit user;
 
     //VARIABLES
     protected long cooldown;
@@ -40,7 +40,7 @@ public abstract class Skill {
 
     }
 
-    protected Skill(UnitBase _user, int _key){
+    protected Skill(Unit _user, int _key){
         key = _key;
         ready = true;
         user = _user;
@@ -53,7 +53,7 @@ public abstract class Skill {
 
     public abstract void resupply();
     public abstract void use();
-    public abstract void use(UnitBase _unit);
+    public abstract void use(Unit _unit);
     public abstract void use(Vector2 _target);
     public abstract void use(float _angle);
     public abstract void update();

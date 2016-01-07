@@ -3,7 +3,7 @@ package com.boomer.alphaassault.gameworld.projectiles;
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.GameWorld;
 import com.boomer.alphaassault.gameworld.gamelogic.Entity;
-import com.boomer.alphaassault.gameworld.units.UnitBase;
+import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.graphics.elements.BDrawable;
 import com.boomer.alphaassault.handlers.RenderStateManager;
@@ -18,7 +18,7 @@ public abstract class Projectile extends Entity implements Renderable,Poolable {
 
     protected int viewType;
 
-    protected UnitBase source;
+    protected Unit source;
 
     protected float travelSpeed; //PER SECOND
     protected float directionAngle;
@@ -41,7 +41,7 @@ public abstract class Projectile extends Entity implements Renderable,Poolable {
 
     public void setRange(float _range){travelRange = _range * TRAVEL_RANGE_MULTIPLIER;}
 
-    public void setSource(UnitBase _source){source = _source;}
+    public void setSource(Unit _source){source = _source;}
 
     @Override
     public void addToRenderState() {

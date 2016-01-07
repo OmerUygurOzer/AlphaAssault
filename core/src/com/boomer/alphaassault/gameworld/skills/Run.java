@@ -2,7 +2,7 @@ package com.boomer.alphaassault.gameworld.skills;
 
 import com.badlogic.gdx.math.Vector2;
 import com.boomer.alphaassault.gameworld.gamelogic.buffs.AdjustedSpeed;
-import com.boomer.alphaassault.gameworld.units.UnitBase;
+import com.boomer.alphaassault.gameworld.units.Unit;
 import com.boomer.alphaassault.resources.Resource;
 
 /**
@@ -15,7 +15,7 @@ public class Run extends Skill {
     public static final long DURATION  = 5 * 1000;//5 SECONDS
     public static final int BOOST_PERCENTAGE = 100;
 
-    public Run(UnitBase _user, int _key){
+    public Run(Unit _user, int _key){
         super(_user,_key);
         targetType = Skill.TARGET_TYPE_SELF;
         cooldown = RUN_COOLDOWN;
@@ -36,7 +36,7 @@ public class Run extends Skill {
     }
 
     @Override
-    public void use(UnitBase _unit) {
+    public void use(Unit _unit) {
         if(ready){
             ready = false;
             timer = System.currentTimeMillis();
