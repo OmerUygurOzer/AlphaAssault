@@ -13,6 +13,7 @@ import com.boomer.alphaassault.graphics.elements.BAnimation;
 import com.boomer.alphaassault.handlers.RenderStateManager;
 import com.boomer.alphaassault.graphics.Renderable;
 import com.boomer.alphaassault.gameworld.gamelogic.Updateable;
+import com.boomer.alphaassault.handlers.events.Event;
 import com.boomer.alphaassault.resources.Resource;
 
 
@@ -83,7 +84,7 @@ public class Unit extends Entity implements Updateable,Renderable{
     protected boolean invisibility;
 
 
-    public Unit(int _team, Vector2 _center, GameWorld _world){
+    public Unit(Vector2 _center, GameWorld _world){
         super(_center,RenderState.DEPTH_SURFACE,_world);
         TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_REGION_ASSAULT_TROOPER),1024/6,2048/8);
         bAnimation = new BAnimation(framesAll, BAnimation.Type.DIRECTIONAL);
@@ -98,7 +99,6 @@ public class Unit extends Entity implements Updateable,Renderable{
 
         //BASIC COMMON PROPERTIES
         facingAngle = RANDOM.nextInt((359 - 0) + 1) + 0;
-        team = _team;
         radius = UNIT_RADIUS;
         invisibility = false;
         adjustedMovementSpeed = 0;
@@ -199,6 +199,31 @@ public class Unit extends Entity implements Updateable,Renderable{
 
     @Override
     public void receiveHit(int _hit, Unit _source) {
+
+    }
+
+    //EVENT
+    private static class CreateUnit extends Event{
+
+        private Vector2 center;
+        private int depth;
+
+        private String name;
+
+        protected CreateUnit(GameWorld _world) {
+            super(_world);
+        }
+
+
+
+        @Override
+        public void process() {
+
+        }
+
+    }
+
+    public static void create(GameWorld gameWorld){
 
     }
 }

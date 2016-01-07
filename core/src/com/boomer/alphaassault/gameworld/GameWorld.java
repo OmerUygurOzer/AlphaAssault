@@ -65,9 +65,6 @@ public class GameWorld implements Updateable,Renderable{
         };
 
 
-       // gameMap = new Map(Map.SIZE_MEDIUM,this);
-        // MapIO.saveMap(gameMap,"random1");
-        //MapIO.loadMap(gameMap,"random1");
         camera = _camera;
 
 
@@ -77,10 +74,8 @@ public class GameWorld implements Updateable,Renderable{
     public void setEventHandler(EventHandler _eventHandler){
         eventHandler = _eventHandler;
     }
-
     public EventHandler getEventHandler(){return eventHandler;}
 
-    //public
 
     public void addPlayer(Human _player){
         contextPlayer = _player;
@@ -88,11 +83,10 @@ public class GameWorld implements Updateable,Renderable{
 
 
 
-  //  public Map getGameMap(){return gameMap;}
 
     @Override
     public void addToRenderState() {
-       // gameMap.addToRenderState();
+
         contextPlayer.addToRenderState();
     }
 
@@ -111,7 +105,7 @@ public class GameWorld implements Updateable,Renderable{
     @Override
     public void setViewType(int _viewType) {
         viewType = _viewType;
-       // gameMap.setViewType(_viewType);
+
     }
 
     @Override

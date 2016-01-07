@@ -1,5 +1,6 @@
 package com.boomer.alphaassault.handlers.events;
 
+import com.boomer.alphaassault.exceptions.GameEngineException;
 import com.boomer.alphaassault.gameworld.GameWorld;
 
 import java.io.Serializable;
@@ -12,25 +13,25 @@ import java.util.Map;
 public abstract class Event {
 
     protected  GameWorld world;
-
-    protected Map<Character,Double> attributes;
-
-    protected String className;
-
     protected String message;
 
+    private boolean doesHaveMessage;
 
     protected Event(GameWorld _world){
         world = _world;
-        attributes = new HashMap<Character, Double>();
-
-        message = "";
-        className = "";
+        doesHaveMessage = false;
     }
 
     public abstract void process();
-    public abstract byte[] serialize();
 
-    public String getMessage(){return message;}
+
+    public void setMessage(String _message){message =  _message; doesHaveMessage = true;}
+    public String getMessage(){
+        if(!doesHaveMessage){throw new GameEngineException("Event has no message set");}
+        return message;}
+
+    public byte[] serialize(){
+        if(!doesHaveMessage){throw new GameEngineException("Event has no message set");}
+        return message.getBytes();}
 
 }
