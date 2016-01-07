@@ -1,5 +1,7 @@
 package com.boomer.alphaassault.handlers.events;
 
+import com.boomer.alphaassault.gameworld.GameWorld;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +43,10 @@ public class EventHandler {
     }
 
 
-    public void processEvents(){
+    public void processEvents(GameWorld gameWorld){
         synchronized (accessLock){
             while(eventIndex != events.size()){
-                events.get(eventIndex).process();
+                events.get(eventIndex).process(gameWorld);
                 eventIndex++;
             }
 

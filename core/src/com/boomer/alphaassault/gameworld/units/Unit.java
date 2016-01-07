@@ -25,7 +25,6 @@ import java.util.*;
 public class Unit extends Entity implements Updateable,Renderable{
 
     //CONSTANTS
-    protected static final float UNIT_SIZE = 40;
     public static final int MAX_SPEED = 10;
 
 
@@ -69,7 +68,6 @@ public class Unit extends Entity implements Updateable,Renderable{
 
     //IN-GAME DETAILS
     protected int HP;
-    private int team;
     protected int damage;
     protected int range;
     protected int baseMovementSpeed;
@@ -88,7 +86,7 @@ public class Unit extends Entity implements Updateable,Renderable{
         super(_center,RenderState.DEPTH_SURFACE,_world);
         TextureRegion[][] framesAll = TextureRegion.split(Resource.getTexture(Resource.TEXTURE_REGION_ASSAULT_TROOPER),1024/6,2048/8);
         bAnimation = new BAnimation(framesAll, BAnimation.Type.DIRECTIONAL);
-        bAnimation.setSize(UNIT_SIZE,UNIT_SIZE);
+        bAnimation.setSize(40,40);
         bAnimation.setCenter(center.x,center.y);
         bAnimation.setFacingAngle(facingAngle);
         bAnimation.setSecondsPerFrame(1f/10f);
@@ -118,7 +116,6 @@ public class Unit extends Entity implements Updateable,Renderable{
     public boolean isInvisible(){return invisibility;}
     public boolean isAlive() {return (HP>0);}
     public int getHP(){return HP;}
-    public int getTeam(){return team;}
     public double getFacingAngle(){return facingAngle;}
     public int getSight(){return sight;}
 
@@ -189,6 +186,7 @@ public class Unit extends Entity implements Updateable,Renderable{
 
     //MOVEMENT ADJUSTMENTS
     public void adjustMovementSpeed(int _adjustment){adjustedMovementSpeed += _adjustment;}
+
     public int getBaseMovementSpeed(){return baseMovementSpeed;}
     public int getMovementSpeed(){return baseMovementSpeed + adjustedMovementSpeed;}
 
@@ -202,6 +200,8 @@ public class Unit extends Entity implements Updateable,Renderable{
 
     }
 
+
+
     //EVENT
     private static class CreateUnit extends Event{
 
@@ -210,20 +210,22 @@ public class Unit extends Entity implements Updateable,Renderable{
 
         private String name;
 
-        protected CreateUnit(GameWorld _world) {
-            super(_world);
+        protected CreateUnit(String _name,Vector2 _center,int _depth){
+            name = _name;
+            center = _center;
+            depth = _depth;
         }
 
 
 
         @Override
-        public void process() {
-
+        public void process(GameWorld gameWorld) {
+            ;
         }
 
     }
 
-    public static void create(GameWorld gameWorld){
+    public static void create(String name,Vector2 position, int depth){
 
     }
 }

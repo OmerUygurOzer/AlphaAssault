@@ -17,12 +17,11 @@ public abstract class Event {
 
     private boolean doesHaveMessage;
 
-    protected Event(GameWorld _world){
-        world = _world;
+    protected Event(){
         doesHaveMessage = false;
     }
 
-    public abstract void process();
+    public abstract void process(GameWorld _gameWorld);
 
 
     public void setMessage(String _message){message =  _message; doesHaveMessage = true;}
