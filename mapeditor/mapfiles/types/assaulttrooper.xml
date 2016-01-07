@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<base>
+<base type = "unit">
     <radius>5</radius>
     <width>10</width>
     <height>10</height>

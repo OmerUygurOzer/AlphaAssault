@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<base>
+<base type = "mapfeature">
     <variety_w>10</variety_w>
     <variety_h>1</variety_h>
     <destroyable>false</destroyable>

@@ -14,12 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created by Omer on 1/5/2016.
  */
 public class ObjectCreator {
 
-    private static final String EXTENSION = ".aaobj";
+    private static final String EXTENSION = ".enj";
 
     private static final short MAP_FEATURE_HEADER = 2;
     private static final short UNIT_HEADER = 4;
@@ -30,15 +31,16 @@ public class ObjectCreator {
     private static final String TYPES_IN = "types\\";
     private static final String OBJECTS_OUT = "objects\\";
 
-    private static final String ALL = "-all";
-    private static final String MAP_FEATURE = "-mapfeature";
-    private static final String UNIT = "-unit";
-    private static final String SPAWNER = "-spawner";
+    private static final String ARG = "-";
+    private static final String ALL = "all";
+    private static final String MAP_FEATURE = "mapfeature";
+    private static final String UNIT = "unit";
+    private static final String SPAWNER = "spawner";
 
     private static final String SUCCESS = "Success.";
     private static final String ERROR = "Error.";
 
-    private static final int BASE = 4;
+    private static final int BASE = 8;
     private static final int MAP_FEATURE_BASE = 29;
     private static final int UNIT_BASE = 36;
 
@@ -54,7 +56,23 @@ public class ObjectCreator {
 
         for(int i = 0; i < arg.length; i++){
             if(arg[i].charAt(0) == '-'){
-                if(arg[i].equals(MAP_FEATURE)){
+
+                if(arg[i].equals(ARG + ALL)){
+                    result += ALL + " ";
+                    if(arg.length>1){
+                        result +=ERROR;
+                        System.out.println(result);
+                        return;
+                    }
+
+                    createAll();
+
+
+
+                }
+
+
+                if(arg[i].equals(ARG + MAP_FEATURE)){
                     result += MAP_FEATURE + " ";
                     if(arg.length>2 || arg.length<2){
                         result +=ERROR;
@@ -72,7 +90,7 @@ public class ObjectCreator {
 
                 }
 
-                if(arg[i].equals(UNIT)){
+                if(arg[i].equals(ARG + UNIT)){
                     result += UNIT + " ";
                     if(arg.length>2 || arg.length<2){
                         result +=ERROR;
@@ -100,106 +118,84 @@ public class ObjectCreator {
         System.out.println(result);
     }
 
-    public static void createMapFeature(String dir) {
-        System.out.println("Creating map feature...");
-        String path = WORKING_PATH;
-        path += TYPES_IN;
-        String pathXML = path+ dir + ".xml";
-        String pathPNG = path+ dir +".png";
-        String pathOBJ = WORKING_PATH + OBJECTS_OUT + dir + EXTENSION;
+    public static void createAll() {
+        System.out.println("Finding files...");
+        String path = WORKING_PATH + TYPES_IN;
 
-        int byteCount = BASE + MAP_FEATURE_BASE;
-        FileRead imageFile = readFromFile(pathPNG);
-        byteCount += imageFile.size;
+        File[] filesAll = new File(path).listFiles();
+        int fileCount = filesAll.length;
 
-        int width = 0;
-        int height = 0;
-        int variety_w = 0;
-        int variety_h = 0;
-        int radius = 0;
-        boolean destroyable = false;
-        boolean blocksMovement = false;
-        boolean blocksBullets = false;
-        boolean blocksDamage = false;
-        boolean blocksAerial = false;
-        int imageSize = imageFile.size;
+        System.out.println(fileCount + "files found.");
 
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = null;
+        List<String> fileNames = new ArrayList<String>();
+        Map<String, File> filesMap = new HashMap<String, File>();
+        List<String> filesToProcess = new ArrayList<String>();
 
 
+        for (int i = 0; i < fileCount; i++) {
+            fileNames.add(filesAll[i].getName());
+            filesMap.put(filesAll[i].getName(), filesAll[i]);
+        }
 
-        File dirXML = new File(pathXML);
-        try {
-            dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(dirXML);
-            doc.getDocumentElement().normalize();
-
-
-            NodeList nList = doc.getElementsByTagName("base");
-
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                Node nNode = nList.item(temp);
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-                    Element eElement = (Element) nNode;
-
-                    variety_w = Integer.parseInt(eElement.getElementsByTagName("variety_w").item(0).getTextContent());
-                    variety_h = Integer.parseInt(eElement.getElementsByTagName("variety_h").item(0).getTextContent());
-                    width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
-                    height = Integer.parseInt(eElement.getElementsByTagName("height").item(0).getTextContent());
-                    radius = Integer.parseInt(eElement.getElementsByTagName("radius").item(0).getTextContent());
-                    destroyable = eElement.getElementsByTagName("destroyable").item(0).getTextContent().equals("true");
-                    blocksMovement =  eElement.getElementsByTagName("blocksMovement").item(0).getTextContent().equals("true");
-                    blocksBullets =  eElement.getElementsByTagName("blocksBullets").item(0).getTextContent().equals("true");
-                    blocksDamage =  eElement.getElementsByTagName("blocksDamage").item(0).getTextContent().equals("true");
-                    blocksAerial =  eElement.getElementsByTagName("blocksAerial").item(0).getTextContent().equals("true");
+        for (int i = 0; i < fileCount; i++) {
+            String absoluteName = "";
+            String fileName = filesAll[i].getName();
+            if (fileName.endsWith(".png") || fileName.endsWith(".xml")) {
+                absoluteName = fileName.substring(0, fileName.length() - 4);
+            }
+            if (fileNames.contains(absoluteName + ".png") && fileNames.contains(absoluteName + ".xml")) {
+                if (!filesToProcess.contains(absoluteName)) {
+                    filesToProcess.add(absoluteName);
                 }
+            }
+        }
+
+        System.out.println("Total objects to be created: " + filesToProcess.size());
+
+        for (String curr : filesToProcess) {
+            String objectPath = WORKING_PATH + TYPES_IN;
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = null;
 
 
+            File dirXML = new File(objectPath + curr + ".xml");
+
+            try {
+                dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(dirXML);
+                doc.getDocumentElement().normalize();
+
+                NodeList nList = doc.getElementsByTagName("base");
+                String type;
+
+                for (int temp = 0; temp < nList.getLength(); temp++) {
+                    Node nNode = nList.item(temp);
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element eElement = (Element) nNode;
+
+                        type = eElement.getAttribute("type");
+                        if(type.equals(MAP_FEATURE)){
+                            createMapFeature(curr);
+                        }
+                        if(type.equals(UNIT)){
+                            createUnit(curr);
+                        }
+                    }
+
+                }
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        int indexPointer = 0;
-        byte[] bytes = new byte[byteCount];
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,MAP_FEATURE_HEADER);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,destroyable);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksMovement);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksBullets);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksDamage);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksAerial);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,variety_w);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,variety_h);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,width);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,height);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,radius);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageSize);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageFile.bytes);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,OBJECT_FOOTER);
-        System.out.println(indexPointer + " total bytes processed.");
 
-        File outputFile = new File(pathOBJ);
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-            fileOutputStream.write(bytes);
-            fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        System.out.println("Object created at: " + pathOBJ);
     }
-
-
-
     public static void createUnit(String dir){
         System.out.println("Creating unit...");
         String path = WORKING_PATH;
@@ -212,6 +208,8 @@ public class ObjectCreator {
         FileRead imageFile = readFromFile(pathPNG);
         byteCount += imageFile.size;
 
+        String type = "";
+        int typeSize = 0;
         int radius = 0;
         int width = 0;
         int height = 0;
@@ -246,6 +244,10 @@ public class ObjectCreator {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eElement = (Element) nNode;
+
+                    type = eElement.getAttribute("type");
+                    typeSize = type.length();
+                    byteCount += typeSize * 2;
 
                     radius = Integer.parseInt(eElement.getElementsByTagName("radius").item(0).getTextContent());
                     width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
@@ -293,6 +295,8 @@ public class ObjectCreator {
         int indexPointer = 0;
         byte[] bytes = new byte[byteCount];
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,UNIT_HEADER);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,typeSize);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,type);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,radius);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,width);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,height);
@@ -324,6 +328,112 @@ public class ObjectCreator {
         }
         System.out.println("Object created at: " + pathOBJ);
 
+    }
+    public static void createMapFeature(String dir) {
+        System.out.println("Creating map feature...");
+        String path = WORKING_PATH;
+        path += TYPES_IN;
+        String pathXML = path+ dir + ".xml";
+        String pathPNG = path+ dir +".png";
+        String pathOBJ = WORKING_PATH + OBJECTS_OUT + dir + EXTENSION;
+
+        int byteCount = BASE + MAP_FEATURE_BASE;
+        FileRead imageFile = readFromFile(pathPNG);
+        byteCount += imageFile.size;
+
+        String type = "";
+        int typeSize = 0;
+
+        int width = 0;
+        int height = 0;
+        int variety_w = 0;
+        int variety_h = 0;
+        int radius = 0;
+        boolean destroyable = false;
+        boolean blocksMovement = false;
+        boolean blocksBullets = false;
+        boolean blocksDamage = false;
+        boolean blocksAerial = false;
+        int imageSize = imageFile.size;
+
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = null;
+
+
+
+        File dirXML = new File(pathXML);
+        try {
+            dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(dirXML);
+            doc.getDocumentElement().normalize();
+
+
+            NodeList nList = doc.getElementsByTagName("base");
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node nNode = nList.item(temp);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) nNode;
+
+                    type = eElement.getAttribute("type");
+                    typeSize = type.length();
+                    byteCount += typeSize * 2;
+
+                    variety_w = Integer.parseInt(eElement.getElementsByTagName("variety_w").item(0).getTextContent());
+                    variety_h = Integer.parseInt(eElement.getElementsByTagName("variety_h").item(0).getTextContent());
+                    width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
+                    height = Integer.parseInt(eElement.getElementsByTagName("height").item(0).getTextContent());
+                    radius = Integer.parseInt(eElement.getElementsByTagName("radius").item(0).getTextContent());
+                    destroyable = eElement.getElementsByTagName("destroyable").item(0).getTextContent().equals("true");
+                    blocksMovement =  eElement.getElementsByTagName("blocksMovement").item(0).getTextContent().equals("true");
+                    blocksBullets =  eElement.getElementsByTagName("blocksBullets").item(0).getTextContent().equals("true");
+                    blocksDamage =  eElement.getElementsByTagName("blocksDamage").item(0).getTextContent().equals("true");
+                    blocksAerial =  eElement.getElementsByTagName("blocksAerial").item(0).getTextContent().equals("true");
+                }
+
+
+            }
+
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int indexPointer = 0;
+        byte[] bytes = new byte[byteCount];
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,MAP_FEATURE_HEADER);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,typeSize);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,type);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,destroyable);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksMovement);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksBullets);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksDamage);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksAerial);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,variety_w);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,variety_h);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,width);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,height);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,radius);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageSize);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageFile.bytes);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,OBJECT_FOOTER);
+        System.out.println(indexPointer + " total bytes processed.");
+
+        File outputFile = new File(pathOBJ);
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+            fileOutputStream.write(bytes);
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Object created at: " + pathOBJ);
     }
 
 
