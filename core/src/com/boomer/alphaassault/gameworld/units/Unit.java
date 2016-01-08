@@ -220,12 +220,21 @@ public class Unit extends Entity implements Updateable,Renderable{
 
         @Override
         public void process(GameWorld gameWorld) {
-            ;
+                gameWorld.addEntity(generateInstance(gameWorld,name,center,depth));
         }
 
     }
 
-    public static void create(String name,Vector2 position, int depth){
-
+    private static void create(GameWorld gameWorld,String _name,Vector2 _center, int _depth){
+        CreateUnit createUnit = new CreateUnit(_name,_center,_depth);
+        gameWorld.getEventHandler().raiseEvent(createUnit);
     }
+
+
+    private static Unit generateInstance(GameWorld gameWorld,String _name,Vector2 _position, int _depth){
+
+        return null;
+    }
+
+
 }
