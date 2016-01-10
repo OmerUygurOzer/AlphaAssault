@@ -1,6 +1,5 @@
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import core.EditPanel;
 import core.MapPanel;
 
 
@@ -15,6 +14,7 @@ public class MapEditorLauncher extends JFrame{
     private static final Vector2 APP_SIZE = new Vector2(1024,768);
 
     private MapPanel mapPanel;
+    private EditPanel editPanel;
 
     public static void main(String[] args) {
         final MapEditorLauncher app = new MapEditorLauncher();
@@ -33,8 +33,9 @@ public class MapEditorLauncher extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mapPanel = new MapPanel();
+        editPanel = new EditPanel();
 
-        mapPanel.setLayout(null);
+
         setLayout(null);
 
         setBounds(0,0,(int)APP_SIZE.x,(int)APP_SIZE.y);
@@ -64,6 +65,9 @@ public class MapEditorLauncher extends JFrame{
 
 
         setJMenuBar(menuBar);
+
+        add(mapPanel);
+        add(editPanel);
     }
 
 
