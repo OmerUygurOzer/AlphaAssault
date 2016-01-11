@@ -435,6 +435,8 @@ public class ObjectCreator {
         }
         System.out.println("Object created at: " + pathOBJ);
     }
+
+
     public static void createSpawner(String dir){
         System.out.println("Creating spawner...");
         String path = WORKING_PATH;

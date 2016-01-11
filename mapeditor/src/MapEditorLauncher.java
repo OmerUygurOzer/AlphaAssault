@@ -1,3 +1,4 @@
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import core.EditPanel;
 import core.MapPanel;
