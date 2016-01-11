@@ -198,11 +198,12 @@ public class ObjectCreator {
     }
     public static void createUnit(String dir){
         System.out.println("Creating unit...");
+        String UNITPath = "units\\";
         String path = WORKING_PATH;
         path += TYPES_IN;
         String pathXML = path+ dir + ".xml";
         String pathPNG = path+ dir +".png";
-        String pathOBJ = WORKING_PATH + OBJECTS_OUT + dir + EXTENSION;
+        String pathOBJ = WORKING_PATH + OBJECTS_OUT + UNITPath + dir + EXTENSION;
 
         int byteCount = BASE + UNIT_BASE;;
         FileRead imageFile = readFromFile(pathPNG);
@@ -331,11 +332,12 @@ public class ObjectCreator {
     }
     public static void createMapFeature(String dir) {
         System.out.println("Creating map feature...");
+        String MFPath = "mapfeatures\\";
         String path = WORKING_PATH;
         path += TYPES_IN;
         String pathXML = path+ dir + ".xml";
         String pathPNG = path+ dir +".png";
-        String pathOBJ = WORKING_PATH + OBJECTS_OUT + dir + EXTENSION;
+        String pathOBJ = WORKING_PATH + OBJECTS_OUT + MFPath + dir + EXTENSION;
 
         int byteCount = BASE + MAP_FEATURE_BASE;
         FileRead imageFile = readFromFile(pathPNG);

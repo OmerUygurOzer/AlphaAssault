@@ -12,7 +12,9 @@ import javax.swing.*;
  */
 public class MapEditorLauncher extends JFrame{
     private static final String TITLE = "EnJine2D Level Editor";
-    private static final Vector2 APP_SIZE = new Vector2(1024,768);
+
+    private static final int APP_SIZE_WIDTH = 1224;
+    private static final int APP_SIZE_HEIGHT = 828;
 
     private MapPanel mapPanel;
     private EditPanel editPanel;
@@ -32,14 +34,14 @@ public class MapEditorLauncher extends JFrame{
     public MapEditorLauncher() {
         super(TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
 
         mapPanel = new MapPanel();
         editPanel = new EditPanel();
 
 
         setLayout(null);
-
-        setBounds(0,0,(int)APP_SIZE.x,(int)APP_SIZE.y);
+        setSize(APP_SIZE_WIDTH,APP_SIZE_HEIGHT);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
