@@ -104,9 +104,8 @@ public class EditPanel extends JPanel {
         JList filesList = new JList(filesModel);
         objectList.setViewportView(filesList);
 
-        final ImageHolder image = new ImageHolder();
-        image.setOpaque(false);
-        image.setBounds(0,348,WIDTH-10,375);
+        final BrushSelector brushSelector = new BrushSelector();
+        brushSelector.setBounds(0,348,WIDTH-10,375);
 
 
 
@@ -139,10 +138,8 @@ public class EditPanel extends JPanel {
                         detailsModel.addElement("Width         :" + mfr.width);
                         detailsModel.addElement("Height        :" + mfr.height);
                         detailsModel.addElement("Image         : Available");
-
-                        image.setImage(mfr.image);
-                        image.repaint();
-                        image.validate();
+                        brushSelector.clearBrushes();
+                        brushSelector.setTexture(mfr.variety_w,mfr.variety_h,mfr.image);
 
                     }
                 }
@@ -157,7 +154,7 @@ public class EditPanel extends JPanel {
         panel.add(nameText);
         panel.add(detailsLabel);
         panel.add(detailsPane);
-        panel.add(image);
+        panel.add(brushSelector);
         return panel;
     }
 

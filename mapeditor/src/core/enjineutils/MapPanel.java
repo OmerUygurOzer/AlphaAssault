@@ -1,9 +1,7 @@
 package core.enjineutils;
 
 
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLException;
+import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -62,7 +60,10 @@ public class MapPanel extends GLJPanel{
 
                 @Override
                 public void display(GLAutoDrawable glAutoDrawable) {
+                    GL2 gl = glAutoDrawable.getGL().getGL2();
                     System.out.println("Displayed.");
+
+                    render(gl);
                 }
 
                 @Override
@@ -78,7 +79,15 @@ public class MapPanel extends GLJPanel{
 
 
 
-    private void render(){
+    private void render(GL2 gl){
+        gl.glBegin(GL.GL_TRIANGLES);
+        gl.glColor3f(1, 0, 0);
+        gl.glVertex2f(-1, -1);
+        gl.glColor3f(0, 1, 0);
+        gl.glVertex2f(0, 1);
+        gl.glColor3f(0, 0, 1);
+        gl.glVertex2f(1, -1);
+        gl.glEnd();
 
     }
 
