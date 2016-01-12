@@ -1,7 +1,7 @@
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import core.EditPanel;
-import core.MapPanel;
+import core.enjineutils.EditPanel;
+import core.enjineutils.MapPanel;
 
 
 import javax.swing.*;
@@ -46,6 +46,7 @@ public class MapEditorLauncher extends JFrame{
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
         JMenu edit = new JMenu("Edit");
+        JMenu map  = new JMenu("Map");
 
         JMenuItem loadFile = new JMenuItem("Load Level");
         JMenuItem saveFile = new JMenuItem("Save Level");
@@ -54,6 +55,10 @@ public class MapEditorLauncher extends JFrame{
         JMenuItem undo = new JMenuItem("Undo");
         JMenuItem redo = new JMenuItem("Redo");
 
+        JMenuItem setSize        = new JMenuItem("Set Size:");
+        JMenuItem generateRandom = new JMenuItem("Generate random map");
+        JMenuItem showTileGrids  = new JMenuItem("Show tile grids");
+
         file.add(loadFile);
         file.add(saveFile);
         file.add(exit);
@@ -61,10 +66,13 @@ public class MapEditorLauncher extends JFrame{
         edit.add(undo);
         edit.add(redo);
 
-
+        map.add(setSize);
+        map.add(generateRandom);
+        map.add(showTileGrids);
 
         menuBar.add(file);
         menuBar.add(edit);
+        menuBar.add(map);
 
 
         setJMenuBar(menuBar);

@@ -247,8 +247,8 @@ public class ObjectCreator {
                     Element eElement = (Element) nNode;
 
                     type = eElement.getAttribute("type");
-                    typeSize = type.length();
-                    byteCount += typeSize * 2;
+                    typeSize = type.getBytes().length;
+                    byteCount += typeSize;
 
                     radius = Integer.parseInt(eElement.getElementsByTagName("radius").item(0).getTextContent());
                     width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
@@ -297,7 +297,7 @@ public class ObjectCreator {
         byte[] bytes = new byte[byteCount];
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,UNIT_HEADER);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,typeSize);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,type);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,type.getBytes());
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,radius);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,width);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,height);
@@ -312,8 +312,9 @@ public class ObjectCreator {
             indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,components.get(i).length());
             indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,components.get(i));
         }
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageFile.size);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageFile.bytes.length);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageFile.bytes);
+        System.out.println("Image size:" + imageFile.bytes.length);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,OBJECT_FOOTER);
         System.out.println(indexPointer + " total bytes processed.");
 
@@ -379,8 +380,8 @@ public class ObjectCreator {
                     Element eElement = (Element) nNode;
 
                     type = eElement.getAttribute("type");
-                    typeSize = type.length();
-                    byteCount += typeSize * 2;
+                    typeSize = type.getBytes().length;
+                    byteCount += typeSize;
 
                     variety_w = Integer.parseInt(eElement.getElementsByTagName("variety_w").item(0).getTextContent());
                     variety_h = Integer.parseInt(eElement.getElementsByTagName("variety_h").item(0).getTextContent());
@@ -409,7 +410,7 @@ public class ObjectCreator {
         byte[] bytes = new byte[byteCount];
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,MAP_FEATURE_HEADER);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,typeSize);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,type);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,type.getBytes());
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,destroyable);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksMovement);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,blocksBullets);
@@ -420,8 +421,9 @@ public class ObjectCreator {
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,width);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,height);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,radius);
-        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageSize);
+        indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageFile.bytes.length);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,imageFile.bytes);
+        System.out.println("Image size:" + imageFile.bytes.length);
         indexPointer = SerializationWriter.writeBytes(bytes,indexPointer,OBJECT_FOOTER);
         System.out.println(indexPointer + " total bytes processed.");
 

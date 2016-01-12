@@ -75,7 +75,7 @@ public class SerializationWriter {
     }
 
     public static short readShort(byte[] bytes,int indexPointer){
-        return (short)((bytes[indexPointer+2] << 8) | (bytes[indexPointer+3] << 0));
+        return (short)((bytes[indexPointer] << 8) | (bytes[indexPointer++] << 0));
     }
 
     public static float readFloat(byte[] bytes,int indexPointer){
@@ -87,7 +87,7 @@ public class SerializationWriter {
     }
 
     public static char readChar(byte[] bytes,int indexPointer){
-        return (char)((bytes[indexPointer+2] << 8) | (bytes[indexPointer+3] << 0));
+        return (char)((bytes[indexPointer] << 8) | (bytes[indexPointer++] << 0));
     }
 
     public static boolean readBoolean(byte[] bytes,int indexPointer){

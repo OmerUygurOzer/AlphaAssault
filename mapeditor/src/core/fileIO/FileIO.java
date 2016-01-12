@@ -30,4 +30,27 @@ public class FileIO {
 
 
     }
+
+    public static byte[] readFromFile(File _file){
+
+
+        byte[] bytes = new byte[(int)_file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(_file);
+            fileInputStream.read(bytes);
+            fileInputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return bytes;
+
+
+
+    }
+
+
 }

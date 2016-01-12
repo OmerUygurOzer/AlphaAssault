@@ -15,7 +15,7 @@ public class SerializationWriter {
 
     public static int writeBytes(byte[] bytes,int indexPointer,byte[] data){
        for(int i = 0;i<data.length;i++){
-           bytes[indexPointer++] = data[i];
+           bytes[indexPointer+i] = data[i];
        }
         return indexPointer;
     }
@@ -75,7 +75,7 @@ public class SerializationWriter {
     }
 
     public static short readShort(byte[] bytes,int indexPointer){
-        return (short)((bytes[indexPointer+2] << 8) | (bytes[indexPointer+3] << 0));
+        return (short)((bytes[indexPointer] << 8) | (bytes[indexPointer++] << 0));
     }
 
     public static float readFloat(byte[] bytes,int indexPointer){
@@ -87,7 +87,12 @@ public class SerializationWriter {
     }
 
     public static char readChar(byte[] bytes,int indexPointer){
-        return (char)((bytes[indexPointer+2] << 8) | (bytes[indexPointer+3] << 0));
+        return (char)((bytes[indexPointer] << 8) | (bytes[indexPointer++] << 0));
+    }
+
+    public static String readString(byte[] bytes,int indexPointer,int length){
+        String string = new String(readBytes(bytes,indexPointer,length));
+        return string;
     }
 
     public static boolean readBoolean(byte[] bytes,int indexPointer){
@@ -97,6 +102,13 @@ public class SerializationWriter {
 
     public static byte readByte(byte[] bytes,int indexPointer){
         return bytes[indexPointer];
+    }
+    public static byte[] readBytes(byte[] bytes,int indexPointer,int size){
+        byte[] retBytes = new byte[size];
+        for(int i = 0;i < size ; i++){
+            retBytes[i] = bytes[indexPointer+i];
+        }
+        return retBytes;
     }
 
 
