@@ -10,8 +10,9 @@ import java.awt.*;
 /**
  * Created by Omer on 1/7/2016.
  */
-public class MapPanel extends GLJPanel{
+public class LevelPanel extends GLJPanel{
 
+    private EditPanel editPanel;
 
     private static final int X = 0; //CORNER SIZE
     private static final int Y = 0;
@@ -27,11 +28,10 @@ public class MapPanel extends GLJPanel{
     private Scrollbar horizontalBar;
 
 
-    public MapPanel() throws GLException {
+    public LevelPanel(EditPanel editPanel) throws GLException {
+            this.editPanel = editPanel;
             setBounds(X,Y,WIDTH,HEIGHT);
             setLayout(null);
-
-
 
             verticalBar = new Scrollbar();
             horizontalBar = new Scrollbar();

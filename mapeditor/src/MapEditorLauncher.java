@@ -1,23 +1,41 @@
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import core.enjineutils.EditPanel;
-import core.enjineutils.MapPanel;
+import core.enjineutils.LevelPanel;
+
 
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.event.MenuKeyListener;
+import javax.swing.event.MenuListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
 
 /**
  * Created by Omer on 12/28/2015.
  */
-public class MapEditorLauncher extends JFrame{
+public class MapEditorLauncher extends JFrame implements ActionListener{
     private static final String TITLE = "EnJine2D Level Editor";
 
     private static final int APP_SIZE_WIDTH = 1224;
     private static final int APP_SIZE_HEIGHT = 828;
 
-    private MapPanel mapPanel;
+    private LevelPanel levelPanel;
     private EditPanel editPanel;
+
+    JMenuItem newLevel;
+    JMenuItem loadLevel;
+    JMenuItem saveLevel;
+    JMenuItem exit;
+
+    JMenuItem undo;
+    JMenuItem redo;
+
+    JMenuItem showTileGrids;
 
     public static void main(String[] args) {
         final MapEditorLauncher app = new MapEditorLauncher();
@@ -36,8 +54,9 @@ public class MapEditorLauncher extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        mapPanel = new MapPanel();
         editPanel = new EditPanel();
+        levelPanel = new LevelPanel(editPanel);
+
 
 
         setLayout(null);
@@ -48,39 +67,45 @@ public class MapEditorLauncher extends JFrame{
         JMenu edit = new JMenu("Edit");
         JMenu map  = new JMenu("Map");
 
-        JMenuItem loadFile = new JMenuItem("Load Level");
-        JMenuItem saveFile = new JMenuItem("Save Level");
-        JMenuItem exit     = new JMenuItem("Exit");
+        newLevel  = new JMenuItem("New Level");
+        loadLevel = new JMenuItem("Load Level");
+        saveLevel = new JMenuItem("Save Level");
+        exit     = new JMenuItem("Exit");
 
-        JMenuItem undo = new JMenuItem("Undo");
-        JMenuItem redo = new JMenuItem("Redo");
+        undo = new JMenuItem("Undo");
+        redo = new JMenuItem("Redo");
 
-        JMenuItem setSize        = new JMenuItem("Set Size:");
-        JMenuItem generateRandom = new JMenuItem("Generate random map");
-        JMenuItem showTileGrids  = new JMenuItem("Show tile grids");
+        showTileGrids  = new JMenuItem("Show tile grids");
 
-        file.add(loadFile);
-        file.add(saveFile);
-        file.add(exit);
+        newLevel.addActionListener(this);file.add(newLevel);
+        loadLevel.addActionListener(this);file.add(loadLevel);
+        saveLevel.addActionListener(this);file.add(saveLevel);
+        exit.addActionListener(this);file.add(exit);
 
-        edit.add(undo);
-        edit.add(redo);
 
-        map.add(setSize);
-        map.add(generateRandom);
-        map.add(showTileGrids);
+        undo.addActionListener(this);edit.add(undo);
+        redo.addActionListener(this);edit.add(redo);
+
+        showTileGrids.addActionListener(this);map.add(showTileGrids);
 
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(map);
 
-
         setJMenuBar(menuBar);
 
-        add(mapPanel);
+        add(levelPanel);
         add(editPanel);
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JMenuItem selection = (JMenuItem)e.getSource();
+        if(selection.equals(newLevel)){
+            System.out.println("ASD");
+            return;
+        }
+    }
 }
 

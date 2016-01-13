@@ -6,7 +6,8 @@ import core.objects.MapFeatureReflection;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by Omer on 1/7/2016.
  */
-public class EditPanel extends JPanel {
+public class EditPanel extends JPanel{
     private static final String MAP_FEATURES = "mapfeatures";
     private static final String UNITS        = "units";
     private static final String ITEMS        = "items";
@@ -146,6 +147,10 @@ public class EditPanel extends JPanel {
             });
         }
 
+        if(type.equals(UNITS)){
+
+        }
+
 
 
 
@@ -157,6 +162,7 @@ public class EditPanel extends JPanel {
         panel.add(brushSelector);
         return panel;
     }
+
 
 
 }
