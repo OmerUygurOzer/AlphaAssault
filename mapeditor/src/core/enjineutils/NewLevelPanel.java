@@ -25,7 +25,7 @@ public class NewLevelPanel extends JPanel {
         private int tileSize;
 
         private JTextField nameField = new JTextField(10);
-        private String[] types = {LevelType.MAP_FLAT.toString() , LevelType.MAP_ISOMORPHIC.toString(), LevelType.PLATFORMER.toString()};private JComboBox<String> typeField = new JComboBox<String>(types);
+        private String[] types = LevelType.toStringArray();private JComboBox<String> typeField = new JComboBox<String>(types);
         private JTextField widthField = new JFormattedTextField(NumberFormat.getNumberInstance());
         private JTextField heightField = new JFormattedTextField(NumberFormat.getNumberInstance());
         private JTextField tileSizeField = new JFormattedTextField(NumberFormat.getNumberInstance());

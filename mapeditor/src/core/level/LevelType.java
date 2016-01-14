@@ -6,5 +6,8 @@ package core.level;
 public enum LevelType {
     MAP_FLAT,
     MAP_ISOMORPHIC,
-    PLATFORMER
+    PLATFORMER;
+    public static String[] toStringArray(){
+        return new String[]{MAP_FLAT.toString(),MAP_ISOMORPHIC.toString(),PLATFORMER.toString()};
+    }
 }

@@ -1,7 +1,7 @@
 package core.enjineutils;
 
 import core.fileIO.FileIO;
-import core.objects.MapFeatureReflection;
+import core.objects.MapFeature;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -127,7 +127,7 @@ public class EditPanel extends JPanel{
                         int selection = listPointer.getSelectedIndex();
                         nameText.setText(mfFiles.get(selection).getName());
 
-                        MapFeatureReflection mfr = MapFeatureReflection.readFromByteArray(FileIO.readFromFile(mfFiles.get(selection)));
+                        MapFeature.Reflection mfr = MapFeature.Reflection.readFromFile(mfFiles.get(selection));
                         detailsModel.addElement("Destroyable   :" + mfr.destroyable);
                         detailsModel.addElement("BlocksMovement:" + mfr.blocksMovement);
                         detailsModel.addElement("BlocksBullets :" + mfr.blocksBullets);

@@ -7,6 +7,7 @@ import core.gl.Renderable;
  */
 public class Level implements Renderable{
     private String levelName;
+    private byte[] levelData;
 
     private LevelType levelType;
 
@@ -112,6 +113,14 @@ public class Level implements Renderable{
 
     public boolean isGenerated() {
         return generated;
+    }
+
+
+    public void saveLevel(){
+        LevelIO.saveLevel(this);
+    }
+    private void toByteArray(){
+
     }
 
 }
