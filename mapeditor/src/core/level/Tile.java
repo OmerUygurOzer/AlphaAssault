@@ -23,14 +23,12 @@ public class Tile{
 
     public int x;
     public int y;
-    public int width;
-    public int height;
+    public int size;
 
-    public Tile(int x,int y,int width,int height){
+    public Tile(int x,int y,int size){
         this.x = x;
         this.y = y;
-        this.width  = width;
-        this.height = height;
+        this.size  = size;
     }
 
     public void addCrossing(int crossing){

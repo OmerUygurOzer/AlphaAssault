@@ -2,17 +2,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import core.enjineutils.EditPanel;
 import core.enjineutils.LevelPanel;
-
+import core.enjineutils.NewLevelPanel;
 
 
 import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuKeyEvent;
-import javax.swing.event.MenuKeyListener;
-import javax.swing.event.MenuListener;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
+
 
 
 /**
@@ -26,6 +23,7 @@ public class MapEditorLauncher extends JFrame implements ActionListener{
 
     private LevelPanel levelPanel;
     private EditPanel editPanel;
+    private NewLevelPanel newLevelPanel;
 
     JMenuItem newLevel;
     JMenuItem loadLevel;
@@ -54,8 +52,7 @@ public class MapEditorLauncher extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        editPanel = new EditPanel();
-        levelPanel = new LevelPanel(editPanel);
+
 
 
 
@@ -94,8 +91,7 @@ public class MapEditorLauncher extends JFrame implements ActionListener{
 
         setJMenuBar(menuBar);
 
-        add(levelPanel);
-        add(editPanel);
+
     }
 
 
@@ -103,9 +99,27 @@ public class MapEditorLauncher extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         JMenuItem selection = (JMenuItem)e.getSource();
         if(selection.equals(newLevel)){
-            System.out.println("ASD");
+            popNewLevel();
             return;
         }
+    }
+
+    private void popNewLevel(){
+        newLevelPanel = new NewLevelPanel();
+        newLevelPanel.initialize();
+        if(newLevelPanel.getLevel()!=null){
+            initialize();
+        }
+    }
+
+    private void initialize(){
+        editPanel = new EditPanel();
+        levelPanel = new LevelPanel(editPanel);
+        levelPanel.setLevel(newLevelPanel.getLevel());
+
+        add(levelPanel);
+        add(editPanel);
+        repaint();
     }
 }
 

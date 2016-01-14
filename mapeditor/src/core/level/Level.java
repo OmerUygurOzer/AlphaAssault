@@ -6,10 +6,15 @@ import core.gl.Renderable;
  * Created by Omer on 1/12/2016.
  */
 public class Level implements Renderable{
+    private String levelName;
+
     private LevelType levelType;
 
     private boolean tileSizeSet;
     private boolean sizeSet;
+
+
+
     private boolean generated;
 
     private int width;
@@ -22,7 +27,8 @@ public class Level implements Renderable{
 
 
 
-    public Level(LevelType levelType){
+    public Level(String levelName,LevelType levelType){
+        this.levelName = levelName;
         this.levelType = levelType;
         sizeSet = false;
         tileSizeSet = false;
@@ -90,7 +96,7 @@ public class Level implements Renderable{
 
        for(int i = 0; i < yTiles ; i++){
            for(int j = 0; j < xTiles ; j++){
-               tiles[j + i * yTiles] = new Tile(j*tileSize,i*tileSize,tileSize,tileSize);
+               tiles[j + i * yTiles] = new Tile(j*tileSize,i*tileSize,tileSize);
            }
        }
 
@@ -102,6 +108,10 @@ public class Level implements Renderable{
 
     public void generatePlatform(){
 
+    }
+
+    public boolean isGenerated() {
+        return generated;
     }
 
 }

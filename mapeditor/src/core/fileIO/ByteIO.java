@@ -3,10 +3,7 @@ package core.fileIO;
 /**
  * Created by Omer on 12/24/2015.
  */
-public class SerializationWriter {
-    public static final byte[] HEADER = "AA".getBytes();
-    public static final short VERSION = 0x0100;
-
+public class ByteIO {
 
     public static int writeBytes(byte[] bytes,int indexPointer,byte value){
         bytes[indexPointer++] = value;

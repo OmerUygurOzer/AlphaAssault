@@ -1,9 +1,6 @@
 package core.fileIO;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by Omer on 1/11/2016.
@@ -31,12 +28,12 @@ public class FileIO {
 
     }
 
-    public static byte[] readFromFile(File _file){
+    public static byte[] readFromFile(File file){
 
 
-        byte[] bytes = new byte[(int)_file.length()];
+        byte[] bytes = new byte[(int)file.length()];
         try {
-            FileInputStream fileInputStream = new FileInputStream(_file);
+            FileInputStream fileInputStream = new FileInputStream(file);
             fileInputStream.read(bytes);
             fileInputStream.close();
         } catch (FileNotFoundException e) {
@@ -47,10 +44,21 @@ public class FileIO {
 
 
         return bytes;
-
-
-
     }
+
+    public static void writeToFile(String path, byte[] bytes){
+        File file = new File(path);
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(bytes);
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

@@ -4,6 +4,7 @@ package core.enjineutils;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
+import core.level.Level;
 
 import java.awt.*;
 
@@ -11,6 +12,7 @@ import java.awt.*;
  * Created by Omer on 1/7/2016.
  */
 public class LevelPanel extends GLJPanel{
+    private Level level;
 
     private EditPanel editPanel;
 
@@ -88,10 +90,15 @@ public class LevelPanel extends GLJPanel{
         gl.glColor3f(0, 0, 1);
         gl.glVertex2f(1, -1);
         gl.glEnd();
+        if(level!=null && level.isGenerated()){
+            level.render();
+        }
 
     }
 
 
-
+    public void setLevel(Level level){
+        this.level = level;
+    }
 
 }

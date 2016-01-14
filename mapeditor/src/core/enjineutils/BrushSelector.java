@@ -42,8 +42,8 @@ public class BrushSelector extends JPanel {
         varietyPane.setViewportView(varietyList);
 
         brush.setBounds(0,0,100,100);
-
         brush.setVisible(true);
+
         varietyList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         varietyList.addListSelectionListener(new ListSelectionListener() {
             @Override
