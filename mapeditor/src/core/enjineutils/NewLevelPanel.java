@@ -26,15 +26,23 @@ public class NewLevelPanel extends JPanel {
 
         private JTextField nameField = new JTextField(10);
         private String[] types = LevelType.toStringArray();private JComboBox<String> typeField = new JComboBox<String>(types);
-        private JTextField widthField = new JFormattedTextField(NumberFormat.getNumberInstance());
-        private JTextField heightField = new JFormattedTextField(NumberFormat.getNumberInstance());
-        private JTextField tileSizeField = new JFormattedTextField(NumberFormat.getNumberInstance());
+        private JComboBox<Integer> widthField = new JComboBox<Integer>();
+        private JComboBox<Integer> heightField = new JComboBox<Integer>();
+        private JComboBox<Integer> tileSizeField = new JComboBox<Integer>();
+
 
         public NewLevelPanel(){
                 super();
-                widthField.setColumns(4);
-                heightField.setColumns(4);
-                tileSizeField.setColumns(3);
+                for(int i = 100; i<=4000 ; i+=100){
+                        widthField.addItem(i);
+                        heightField.addItem(i);
+                }
+                tileSizeField.addItem(5);
+                tileSizeField.addItem(10);
+                tileSizeField.addItem(20);
+                tileSizeField.addItem(40);
+
+
                 setBounds(X,Y,WIDTH,HEIGTH);
                 add(new JLabel("Level Name:"));
                 add(nameField);
@@ -55,11 +63,11 @@ public class NewLevelPanel extends JPanel {
                 boolean GTG = false;
                 int result = JOptionPane.showConfirmDialog(null, this, "Creating new level...", JOptionPane.OK_CANCEL_OPTION);
                 if(result == JOptionPane.OK_OPTION){
-                        levelName = nameField.getText();
+                        levelName = nameField.getText();  levelName = levelName.trim();  levelName = levelName.replace("\\s",""); levelName = levelName.replaceAll("[^a-zA-Z0-9]+","");
                         levelType = LevelType.valueOf((String)typeField.getSelectedItem());
-                        levelWidth = Integer.parseInt(widthField.getText());
-                        levelHeight = Integer.parseInt(heightField.getText());
-                        tileSize = Integer.parseInt(tileSizeField.getText());
+                        levelWidth = (Integer)widthField.getSelectedItem();
+                        levelHeight = (Integer)heightField.getSelectedItem();
+                        tileSize = (Integer)tileSizeField.getSelectedItem();
 
                         System.out.println(levelName);
                         System.out.println(levelType);

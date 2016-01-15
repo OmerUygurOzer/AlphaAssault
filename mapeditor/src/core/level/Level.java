@@ -1,6 +1,6 @@
 package core.level;
 
-import core.gl.Renderable;
+import core.graphics.Renderable;
 
 /**
  * Created by Omer on 1/12/2016.

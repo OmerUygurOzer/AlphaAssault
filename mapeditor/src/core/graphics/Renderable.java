@@ -1,4 +1,4 @@
-package core.gl;
+package core.graphics;
 
 /**
  * Created by Omer on 1/12/2016.
