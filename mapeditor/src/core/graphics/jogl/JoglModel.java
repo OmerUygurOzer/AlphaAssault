@@ -1,16 +1,15 @@
-package core.graphics;
+package core.graphics.jogl;
 
 /**
- * Created by Omer on 1/14/2016.
+ * Created by Omer on 1/15/2016.
  */
-public class RawModel {
+public class JoglModel {
     private int vaoID;
     private int vertexCount;
 
-    public RawModel(int vaoID,int vertexCount){
-        this.vaoID = vaoID;
+    public JoglModel(int vertexCount, int vaoID) {
         this.vertexCount = vertexCount;
-
+        this.vaoID = vaoID;
     }
 
     public int getVertexCount() {

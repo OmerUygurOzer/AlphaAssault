@@ -33,8 +33,7 @@ public class BrushSelector extends JPanel {
     public BrushSelector(){
         super();
         setLayout(null);
-
-
+        
 
         varietyList = new JList(varieties);
         varietyPane = new JScrollPane();

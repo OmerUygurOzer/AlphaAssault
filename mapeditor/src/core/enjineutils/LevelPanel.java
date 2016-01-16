@@ -4,6 +4,9 @@ package core.enjineutils;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
+import core.graphics.jogl.JoglModel;
+import core.graphics.jogl.JoglRenderer;
+import core.graphics.jogl.ModelLoader;
 import core.level.Level;
 
 import java.awt.*;
@@ -30,6 +33,7 @@ public class LevelPanel extends GLJPanel{
     private Scrollbar horizontalBar;
 
 
+
     public LevelPanel(EditPanel editPanel) throws GLException {
             this.editPanel = editPanel;
             setBounds(X,Y,WIDTH,HEIGHT);
@@ -49,23 +53,48 @@ public class LevelPanel extends GLJPanel{
             add(horizontalBar);
 
 
+
             addGLEventListener(new GLEventListener() {
+                GL2 gl;
+                ModelLoader modelLoader;
+                JoglRenderer renderer;
+                JoglModel model;
+
                 @Override
                 public void init(GLAutoDrawable glAutoDrawable) {
                     System.out.println("Initialized:");
+                    gl = glAutoDrawable.getGL().getGL2();
+
+                    modelLoader = new ModelLoader(gl);
+                    renderer = new JoglRenderer(gl);
+
+
+                    float[] vertices = {
+                            -0.5f, 0.5f, 0f,
+                            -0.5f, -0.5f, 0f,
+                            0.5f, -0.5f, 0f,
+                            0.5f, -0.5f, 0f,
+                            0.5f, 0.5f, 0f,
+                            -0.5f, 0.5f, 0f
+                    };
+                    model = modelLoader.loadToVao(vertices);
+
                 }
 
                 @Override
                 public void dispose(GLAutoDrawable glAutoDrawable) {
                     System.out.println("Disposed:");
+                    modelLoader.clear();
                 }
 
                 @Override
                 public void display(GLAutoDrawable glAutoDrawable) {
-                    GL2 gl = glAutoDrawable.getGL().getGL2();
                     System.out.println("Displayed.");
 
                     render(gl);
+                    renderer.begin();
+                    renderer.render(model);
+                    renderer.checkError();
                 }
 
                 @Override
@@ -77,22 +106,18 @@ public class LevelPanel extends GLJPanel{
             FPSAnimator animator = new FPSAnimator(this,1);
             animator.start();
 
+
+
     }
 
 
 
     private void render(GL2 gl){
-        gl.glBegin(GL.GL_TRIANGLES);
-        gl.glColor3f(1, 0, 0);
-        gl.glVertex2f(-1, -1);
-        gl.glColor3f(0, 1, 0);
-        gl.glVertex2f(0, 1);
-        gl.glColor3f(0, 0, 1);
-        gl.glVertex2f(1, -1);
-        gl.glEnd();
+
         if(level!=null && level.isGenerated()){
             level.render();
         }
+
 
     }
 
