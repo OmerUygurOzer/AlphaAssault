@@ -2,6 +2,7 @@ package com.boomer.alphaassault.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import com.boomer.alphaassault.AlphaAssault;
 import com.boomer.alphaassault.graphics.GameGraphics;
 
@@ -11,5 +12,7 @@ public class DesktopLauncher {
 		config.height = GameGraphics.VIRTUAL_HEIGHT;
 		config.width = GameGraphics.VIRTUAL_WIDTH;
 		new LwjglApplication(new AlphaAssault(), config);
+
+
 	}
 }
