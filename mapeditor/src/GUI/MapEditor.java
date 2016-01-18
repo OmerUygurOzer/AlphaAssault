@@ -89,9 +89,6 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
         jMenuBar.add(tools);
         setJMenuBar(jMenuBar);
 
-        BasePalette basePalette = new BasePalette();
-        basePalette.setVisible(true);
-        add(basePalette);
 
         revalidate();
 

@@ -37,7 +37,7 @@ public class NewLevelDialog extends JPanel {
             widthField.addItem(i);
             heightField.addItem(i);
         }
-        tileSizeField.addItem(5);
+
         tileSizeField.addItem(10);
         tileSizeField.addItem(20);
         tileSizeField.addItem(40);
