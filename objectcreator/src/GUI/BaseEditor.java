@@ -3,6 +3,7 @@ package GUI;
 
 import GUI.utils.Animator;
 import GUI.utils.ImageUtils;
+import objects.BaseTile;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,20 +33,24 @@ public class BaseEditor extends JPanel implements ActionListener{
     private Stack<JLabel> frameLabels = new Stack<JLabel>();
     private Stack<BufferedImage> frames = new Stack<BufferedImage>();
 
-    private JButton addFrame = new JButton("Add Frame");
-    private JButton addFrameSheet = new JButton("Add Frame Sheet");
-    private JButton removeFrame = new JButton("Remove Last Frame");
-    private JButton addCrossing = new JButton("Add");
-    private JButton removeCrossing = new JButton("Remove");
+    private JButton addFrame           = new JButton("Add Frame");
+    private JButton addFrameSheet      = new JButton("Add Frame Sheet");
+    private JButton removeFrame        = new JButton("Remove Last Frame");
+    private JButton addCrossing        = new JButton("Add");
+    private JButton removeCrossing     = new JButton("Remove");
     private JButton removeAllCrossings = new JButton("Remove All");
-    private List<String> crossingsAll = new ArrayList<String>();
+    private JButton save               = new JButton("Save");
+
+    private List<String> crossingsAll  = new ArrayList<String>();
     private DefaultListModel<String> crossingListModel = new DefaultListModel<String>();
     private JList<String> crossingsAllUI = new JList<String>(crossingListModel);
 
-    private JComboBox<String> tileType = new JComboBox<String>();
-    private JComboBox<String> crossings = new JComboBox<String>();
-    private JComboBox<Integer> frameWidth = new JComboBox<Integer>();
+    private JComboBox<String> tileType     = new JComboBox<String>();
+    private JComboBox<String> crossings    = new JComboBox<String>();
+    private JComboBox<Integer> frameWidth  = new JComboBox<Integer>();
     private JComboBox<Integer> frameHeigth = new JComboBox<Integer>();
+
+    private JTextField saveName = new JTextField();
 
 
 
@@ -53,9 +58,13 @@ public class BaseEditor extends JPanel implements ActionListener{
     private int line = 0;
     private int lineSize = 20;
 
+    private BaseTile baseTile;
+
     public BaseEditor(){
         setLayout(null);
         setBounds(800,0,WIDTH,HEIGHT);
+
+        baseTile = new BaseTile();
 
         frameX = new int[6 * 6];
         frameY = new int[6 * 6];
@@ -131,8 +140,17 @@ public class BaseEditor extends JPanel implements ActionListener{
 
         line++;
         animator = new Animator(800,400,100,100);
-        animator.setSPF(1/10f);
+        animator.setSPF(1/5f);
         add(animator);
+
+        saveName.setBounds(WIDTH - 100,HEIGHT - 120,80,20);
+        add(saveName);
+
+        save.setBounds(WIDTH - 100,HEIGHT - 100,80,40);
+        save.addActionListener(this);
+        add(save);
+
+
     }
 
 
@@ -148,8 +166,6 @@ public class BaseEditor extends JPanel implements ActionListener{
                 try {
                     BufferedImage image = ImageIO.read(chooser.getSelectedFile());
                     addFrame(image);
-
-
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -167,64 +183,66 @@ public class BaseEditor extends JPanel implements ActionListener{
                 try {
                     BufferedImage image = ImageIO.read(chooser.getSelectedFile());
                     addFrames(image,(Integer)frameWidth.getSelectedItem(),(Integer)frameHeigth.getSelectedItem());
-
-
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
-            return;
+                return;
         }
 
         if(e.getSource().equals(removeFrame)){
-            if(frameLabels.size()==0)return;
-            animator.removeFrame(frames.pop());
-            remove(frameLabels.pop());
-            frameCount--;
-            repaint();
-            return;
+                removeFrame();
+                return;
         }
 
         if(e.getSource().equals(addCrossing)){
-            if(crossingsAll.contains((String)crossings.getSelectedItem())){
-                return;
-            }
-            crossingsAll.add((String)crossings.getSelectedItem());
-            crossingListModel.addElement((String)crossings.getSelectedItem());
-                return;
+            addCrossing();
+            return;
         }
 
         if(e.getSource().equals(removeCrossing)){
-            if(!crossingsAll.contains(crossings.getSelectedItem())){
-                return;
-            }
-            crossingsAll.remove(crossings.getSelectedItem());
-            crossingListModel.removeElement(crossings.getSelectedItem());
-                return;
+            removeCrossing();
+            return;
         }
 
         if(e.getSource().equals(removeAllCrossings)){
-            crossingsAll.clear();
-            crossingListModel.clear();
-                return;
+            removeAllCrossings();
+            return;
         }
+
+        if(e.getSource().equals(save)){
+            String path = saveName.getText().replaceAll("[^a-zA-Z]+", ""); path = path.trim();
+            path = "C:\\Users\\Omer\\Desktop\\Game Projects\\AlphaAssault\\objectcreator\\files\\" + path;
+            save(path);
+            return;
+        }
+
+
+
+
 
 
 
     }
 
-    private void addFrame(BufferedImage image){
-        BufferedImage scaledImage = ImageUtils.resizeImage(image,100,100);
-        ImageIcon icon = new ImageIcon(scaledImage);
-        JLabel imageLabel = new JLabel(); imageLabel.setBackground(Color.MAGENTA);
-        imageLabel.setBounds(frameX[frameCount],frameY[frameCount],100,100);
-        imageLabel.setIcon(icon);
-        add(imageLabel);
-        animator.addFrame(scaledImage);
-        frames.push(scaledImage);
-        frameLabels.push(imageLabel);
-        frameCount++;
-        repaint();
+
+
+    private void addFrame(BufferedImage image) {
+        if (frameCount < 36){
+            BufferedImage scaledImage = ImageUtils.resizeImage(image, 100, 100);
+            ImageIcon icon = new ImageIcon(scaledImage);
+            JLabel imageLabel = new JLabel();
+            imageLabel.setBackground(Color.MAGENTA);
+            imageLabel.setBounds(frameX[frameCount], frameY[frameCount], 100, 100);
+            imageLabel.setIcon(icon);
+            add(imageLabel);
+            animator.addFrame(scaledImage);
+            frames.push(scaledImage);
+            frameLabels.push(imageLabel);
+            frameCount++;
+            baseTile.frames.add(scaledImage);
+            repaint();
+        }
     }
 
     private void addFrames(BufferedImage image,int width,int height){
@@ -232,5 +250,44 @@ public class BaseEditor extends JPanel implements ActionListener{
         for(int i = 0;i<frames.length;i++){
             addFrame(frames[i]);
         }
+    }
+
+    private void removeFrame(){
+        if(frameLabels.size()==0)return;
+        animator.removeFrame(frames.pop());
+        remove(frameLabels.pop());
+        frameCount--;
+        repaint();
+    }
+
+    private void addCrossing(){
+        if(crossingsAll.contains((String)crossings.getSelectedItem())){
+            return;
+        }
+        crossingsAll.add((String)crossings.getSelectedItem());
+        crossingListModel.addElement((String)crossings.getSelectedItem());
+        baseTile.crossings.add(crossings.getSelectedIndex());
+        return;
+    }
+
+    private void removeCrossing(){
+        if(!crossingsAll.contains(crossings.getSelectedItem())){
+            return;
+        }
+        crossingsAll.remove(crossings.getSelectedItem());
+        crossingListModel.removeElement(crossings.getSelectedItem());
+        baseTile.crossings.remove(crossings.getSelectedIndex());
+        return;
+    }
+
+    private void removeAllCrossings(){
+        crossingsAll.clear();
+        crossingListModel.clear();
+        baseTile.crossings.clear();
+        return;
+    }
+
+    private void save(String path){
+        baseTile.toFile(path);
     }
 }

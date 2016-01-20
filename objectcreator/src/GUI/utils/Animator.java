@@ -87,7 +87,6 @@ public class Animator extends Canvas implements Runnable {
                         createBufferStrategy(3);
                         bufferStrategy = getBufferStrategy();
                     }
-
                 framePixels = ((DataBufferInt) frames.get(currentFrame).getRaster().getDataBuffer()).getData();
                 for (int i = 0; i < pixels.length; i++)
                     pixels[i] = framePixels[i];

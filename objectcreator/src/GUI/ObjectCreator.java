@@ -21,6 +21,7 @@ public class ObjectCreator extends JFrame {
             setLayout(null);
             setSize(WIDTH,HEIGHT);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setResizable(false);
 
             typePane = new JTabbedPane();
             typePane.setBounds(0,0,WIDTH,HEIGHT);
