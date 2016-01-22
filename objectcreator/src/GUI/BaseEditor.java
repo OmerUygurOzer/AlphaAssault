@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 
@@ -36,17 +34,10 @@ public class BaseEditor extends JPanel implements ActionListener{
     private JButton addFrame           = new JButton("Add Frame");
     private JButton addFrameSheet      = new JButton("Add Frame Sheet");
     private JButton removeFrame        = new JButton("Remove Last Frame");
-    private JButton addCrossing        = new JButton("Add");
-    private JButton removeCrossing     = new JButton("Remove");
-    private JButton removeAllCrossings = new JButton("Remove All");
     private JButton save               = new JButton("Save");
 
-    private List<String> crossingsAll  = new ArrayList<String>();
-    private DefaultListModel<String> crossingListModel = new DefaultListModel<String>();
-    private JList<String> crossingsAllUI = new JList<String>(crossingListModel);
 
     private JComboBox<String> tileType     = new JComboBox<String>();
-    private JComboBox<String> crossings    = new JComboBox<String>();
     private JComboBox<Integer> frameWidth  = new JComboBox<Integer>();
     private JComboBox<Integer> frameHeigth = new JComboBox<Integer>();
 
@@ -62,7 +53,7 @@ public class BaseEditor extends JPanel implements ActionListener{
 
     public BaseEditor(){
         setLayout(null);
-        setBounds(800,0,WIDTH,HEIGHT);
+        setBounds(0,0,WIDTH,HEIGHT);
 
         baseTile = new BaseTile();
 
@@ -90,33 +81,6 @@ public class BaseEditor extends JPanel implements ActionListener{
         tileType.addItem("Isometric Tile");
         add(tileType);
 
-        JLabel crossingsLabel = new JLabel("Crossings:");
-        crossingsLabel.setBounds((WIDTH/2) - 60,lineSize*line,120,lineSize);
-        add(crossingsLabel);
-        crossings.setBounds((WIDTH/2) + 60 ,lineSize*line,120,lineSize);
-        crossings.addItem("N");
-        crossings.addItem("NE");
-        crossings.addItem("E");
-        crossings.addItem("SE");
-        crossings.addItem("S");
-        crossings.addItem("SW");
-        crossings.addItem("W");
-        crossings.addItem("NW");
-
-        addCrossing.setBounds((WIDTH/2) + 180 ,lineSize*line,120,lineSize); addCrossing.addActionListener(this);
-        removeCrossing.setBounds((WIDTH/2) + 300 ,lineSize*line,120,lineSize);removeCrossing.addActionListener(this);
-        removeAllCrossings.setBounds((WIDTH/2) + 300 ,lineSize*(line+1),120,lineSize);removeAllCrossings.addActionListener(this);
-
-        JScrollPane listHolder = new JScrollPane();
-        listHolder.setBounds((WIDTH/2) + 420 ,lineSize*line,40,lineSize*crossings.getItemCount());
-        listHolder.setViewportView(crossingsAllUI);
-
-        add(crossings);
-        add(addCrossing);
-        add(removeCrossing);
-        add(removeAllCrossings);
-        add(listHolder);
-        line++;
 
         addFrame.setBounds((WIDTH/2) - 60,lineSize * line,120,lineSize); line++;
         addFrame.addActionListener(this);
@@ -195,25 +159,17 @@ public class BaseEditor extends JPanel implements ActionListener{
                 return;
         }
 
-        if(e.getSource().equals(addCrossing)){
-            addCrossing();
-            return;
-        }
-
-        if(e.getSource().equals(removeCrossing)){
-            removeCrossing();
-            return;
-        }
-
-        if(e.getSource().equals(removeAllCrossings)){
-            removeAllCrossings();
-            return;
-        }
 
         if(e.getSource().equals(save)){
+            baseTile.tileType = tileType.getSelectedIndex();
             String path = saveName.getText().replaceAll("[^a-zA-Z]+", ""); path = path.trim();
-            path = "C:\\Users\\Omer\\Desktop\\Game Projects\\AlphaAssault\\objectcreator\\files\\" + path;
-            save(path);
+            if(!path.equals("")) {
+                path = "C:\\Users\\Omer\\Desktop\\Game Projects\\AlphaAssault\\objectcreator\\files\\" + path;
+                save(path);
+                popDialog("Object Saved!");
+            }else{
+                popDialog("Type in a file name!");
+            }
             return;
         }
 
@@ -260,34 +216,11 @@ public class BaseEditor extends JPanel implements ActionListener{
         repaint();
     }
 
-    private void addCrossing(){
-        if(crossingsAll.contains((String)crossings.getSelectedItem())){
-            return;
-        }
-        crossingsAll.add((String)crossings.getSelectedItem());
-        crossingListModel.addElement((String)crossings.getSelectedItem());
-        baseTile.crossings.add(crossings.getSelectedIndex());
-        return;
-    }
 
-    private void removeCrossing(){
-        if(!crossingsAll.contains(crossings.getSelectedItem())){
-            return;
-        }
-        crossingsAll.remove(crossings.getSelectedItem());
-        crossingListModel.removeElement(crossings.getSelectedItem());
-        baseTile.crossings.remove(crossings.getSelectedIndex());
-        return;
-    }
-
-    private void removeAllCrossings(){
-        crossingsAll.clear();
-        crossingListModel.clear();
-        baseTile.crossings.clear();
-        return;
-    }
 
     private void save(String path){
         baseTile.toFile(path);
     }
+
+    private void popDialog(String message){JOptionPane.showMessageDialog(this, message);}
 }

@@ -14,22 +14,35 @@ import java.util.List;
  * Created by Omer on 1/19/2016.
  */
 public class BaseTile {
+    public int tileType;
     public List<BufferedImage> frames = new ArrayList<BufferedImage>();
-    public List<Integer> crossings = new ArrayList<Integer>();
 
     public void toFile(String path){
         File file = new File(path + ".enjTile");
+        /*
+        File order
+        1 - tile type
+        2 - number of frames
+        3 - loop{
+            frameSize
+            frame
+            }
+         */
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(ByteIO.convertToByteArray(crossings.size()));
-            for(int i = 0 ; i < crossings.size(); i++){
-                fileOutputStream.write(ByteIO.convertToByteArray(crossings.get(i)));
-            }
+            fileOutputStream.write(ByteIO.convertToByteArray(tileType));
+
             fileOutputStream.write(ByteIO.convertToByteArray(frames.size()));
             for(int i  = 0 ; i < frames.size() ; i++ ){
-            fileOutputStream.write(ByteIO.convertToByteArray(frames.get(i)));
+                byte[] frame = ByteIO.convertToByteArray(frames.get(i));
+                fileOutputStream.write(ByteIO.convertToByteArray(frame.length));
+                fileOutputStream.write(frame);
             }
+
+
+
+
         fileOutputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
