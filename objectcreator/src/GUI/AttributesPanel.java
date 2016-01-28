@@ -61,26 +61,46 @@ public class AttributesPanel extends JPanel implements ActionListener{
     }
 
     public void addAttribute(){
-        if(parseObject(((String)attributeType.getSelectedItem()),attribute.getText())!=null){
-            System.out.println(parseObject(((String)attributeType.getSelectedItem()),attribute.getText()));
-            attributes.put(attributeID.getText(),parseObject(((String)attributeType.getSelectedItem()),attribute.getText()));
+        Object object = parseObject(((String)attributeType.getSelectedItem()),attribute.getText());
+        if(object!=null){
+            attributes.put(attributeID.getText(),object);
+            attributesObjects.add(object);
         }else{
             JOptionPane.showMessageDialog(this, "Types don't match, check your spelling or correct the type selection");
             return;
         }
+        String labelString = "ID:" + attributeID.getText() + " " + "Type:" + attributeType.getSelectedItem().toString() + " " + "Value:" + attribute.getText();
+        JLabel label = new JLabel(padToLength(labelString,30));
+        JButton button = new JButton("x"); button.addActionListener(this);
+        label.setBounds(0,attributesObjects.indexOf(object)*LIST_HEIGHT,LIST_WIDTH,LIST_HEIGHT);
+        button.setBounds(260,attributesObjects.indexOf(object)*LIST_HEIGHT,60,LIST_HEIGHT);
+        attributesLabel.add(label);
+        attributesDelete.add(button);
+        add(label);
+        add(button);
 
 
         itemCount++;
         relist();
     }
 
-    private void removeAttribute(){
+    private void removeAttribute(int index){
+        attributes.remove(attributesObjects.get(index));
+        attributesObjects.remove(index);
+        remove(attributesLabel.get(index));
+        remove(attributesDelete.get(index));
+        attributesLabel.remove(index);
+        attributesDelete.remove(index);
 
-        itemCount = itemCount==0 ? itemCount = 0 : itemCount--;
+        itemCount--;
         relist();
     }
 
     private void relist(){
+        for(int i = 0; i < attributesObjects.size(); i ++){
+            attributesLabel.get(i).setBounds(0,i*LIST_HEIGHT,200,LIST_HEIGHT);
+            attributesDelete.get(i).setBounds(260,i*LIST_HEIGHT,60,LIST_HEIGHT);
+        }
         attributeID.setBounds(0,itemCount*LIST_HEIGHT,100,LIST_HEIGHT);
         attributeType.setBounds(100,itemCount*LIST_HEIGHT,60,LIST_HEIGHT);
         attribute.setBounds(160,itemCount*LIST_HEIGHT,100,LIST_HEIGHT);
@@ -90,7 +110,13 @@ public class AttributesPanel extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        addAttribute();
+        Object object = e.getSource();
+        if(object.equals(add)){
+            addAttribute();
+        }else {
+            int index = attributesDelete.indexOf(object);
+            removeAttribute(index);
+        }
     }
 
     private static Object parseObject(String type,String attribute){
@@ -107,15 +133,38 @@ public class AttributesPanel extends JPanel implements ActionListener{
             }
         }
         if(type.equals("Boolean")){
-            try{
-                Object object = Boolean.parseBoolean(attribute);
+            if(attribute.equals("true")){
+                Object object = Boolean.valueOf(true);
                 return object;
-            }catch (Exception e){
-                return null;
             }
+            if(attribute.equals("false")){
+                Object object = Boolean.valueOf(false);
+                return object;
+            }
+            return null;
+
         }
 
 
         return null;
+    }
+
+    private static String padToLength(String string, int length){
+        String[] strings = string.split(" ");
+        int totalPad = length - string.length();
+        String[] pads = new String[strings.length -1];
+        for(int i = 0;i < pads.length; i++){
+            pads[i] = " ";
+        }
+        for(int i = 0;i < totalPad; i++){
+            pads[i%pads.length]+=" ";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(strings[0]);
+        for(int i = 0 ; i < pads.length ; i++){
+            stringBuilder.append(pads[i]);
+            stringBuilder.append(strings[i+1]);
+        }
+        return stringBuilder.toString();
     }
 }
