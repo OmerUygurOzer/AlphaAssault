@@ -22,5 +22,7 @@ public abstract class ObjectBase {
         return attributes.get(id);
     }
 
+    public Map<String,Object> getAttributes(){return attributes;}
+
     public abstract void toFile(String path);
 }

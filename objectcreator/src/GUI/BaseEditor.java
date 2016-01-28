@@ -47,12 +47,11 @@ public class BaseEditor extends EditorBase{
     private int line = 0;
     private int lineSize = 20;
 
-    private BaseTile baseTile;
 
     public BaseEditor(){
         super();
 
-        baseTile = new BaseTile();
+        object = new BaseTile();
 
         frameX = new int[6 * 6];
         frameY = new int[6 * 6];
@@ -111,6 +110,7 @@ public class BaseEditor extends EditorBase{
         save.addActionListener(this);
         add(save);
 
+        attributesPanel.setAttributeMap(object.getAttributes());
 
     }
 
@@ -158,7 +158,7 @@ public class BaseEditor extends EditorBase{
 
 
         if(e.getSource().equals(save)){
-            baseTile.tileType = tileType.getSelectedIndex();
+            ((BaseTile)object).tileType = tileType.getSelectedIndex();
             String path = saveName.getText().replaceAll("[^a-zA-Z]+", ""); path = path.trim();
             if(!path.equals("")) {
                 path = "C:\\Users\\Omer\\Desktop\\Game Projects\\AlphaAssault\\objectcreator\\files\\" + path;
@@ -193,7 +193,7 @@ public class BaseEditor extends EditorBase{
             frames.push(scaledImage);
             frameLabels.push(imageLabel);
             frameCount++;
-            baseTile.frames.add(scaledImage);
+            ((BaseTile)object).frames.add(scaledImage);
             repaint();
         }
     }
@@ -216,7 +216,7 @@ public class BaseEditor extends EditorBase{
 
 
     private void save(String path){
-        baseTile.toFile(path);
+        object.toFile(path);
     }
 
     private void popDialog(String message){JOptionPane.showMessageDialog(this, message);}
