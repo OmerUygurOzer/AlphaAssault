@@ -14,9 +14,7 @@ import java.io.IOException;
 /**
  * Created by Omer on 1/20/2016.
  */
-public class FeatureEditor extends JPanel implements ActionListener {
-    private static final int WIDTH = 1200;
-    private static final int HEIGHT = 800;
+public class FeatureEditor extends EditorBase {
 
     private static final int PADDING = 10;
     private static final int Y_OFFSET = 100;
@@ -28,8 +26,6 @@ public class FeatureEditor extends JPanel implements ActionListener {
     private static final int BUTTON_HEIGTH = 20;
 
     private JButton addFrameSheet = new JButton("Add Frame Sheet");
-    private JButton save          = new JButton("Save");
-    private JTextField saveName   = new JTextField();
 
     private JLabel crossing_N  = new JLabel("N"); private JButton addFrame_N     = new JButton("Add Frame");
     private JLabel crossing_NE = new JLabel("NE");private JButton addFrame_NE    = new JButton("Add Frame");
@@ -58,13 +54,6 @@ public class FeatureEditor extends JPanel implements ActionListener {
     public FeatureEditor(){
         setLayout(null);
         setBounds(0,0,WIDTH,HEIGHT);
-
-        save.setBounds(WIDTH - 100,HEIGHT - 100,80,40);
-        save.addActionListener(this);
-        add(save);
-
-        saveName.setBounds(WIDTH - 100,HEIGHT - 120,80,20);
-        add(saveName);
 
         crossing_NW.setBounds(0,Y_OFFSET-LABEL_HEIGHT,LABEL_WIDTH,LABEL_HEIGHT);
         crossing_N.setBounds(200+PADDING,Y_OFFSET-LABEL_HEIGHT,LABEL_WIDTH,LABEL_HEIGHT);

@@ -19,9 +19,7 @@ import java.util.Stack;
 /**
  * Created by Omer on 1/17/2016.
  */
-public class BaseEditor extends JPanel implements ActionListener{
-    private static final int WIDTH = 1200;
-    private static final int HEIGHT = 800;
+public class BaseEditor extends EditorBase{
 
     private Animator animator;
 
@@ -52,8 +50,7 @@ public class BaseEditor extends JPanel implements ActionListener{
     private BaseTile baseTile;
 
     public BaseEditor(){
-        setLayout(null);
-        setBounds(0,0,WIDTH,HEIGHT);
+        super();
 
         baseTile = new BaseTile();
 

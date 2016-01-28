@@ -3,20 +3,18 @@ package objects;
 import fileIO.ByteIO;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Omer on 1/19/2016.
  */
-public class BaseTile {
+public class BaseTile extends ObjectBase {
     public int tileType;
     public List<BufferedImage> frames = new ArrayList<BufferedImage>();
 
+    @Override
     public void toFile(String path){
         File file = new File(path + ".enjTile");
         /*
@@ -27,6 +25,7 @@ public class BaseTile {
             frameSize
             frame
             }
+        4 - attributes
          */
 
         try {
@@ -39,11 +38,13 @@ public class BaseTile {
                 fileOutputStream.write(ByteIO.convertToByteArray(frame.length));
                 fileOutputStream.write(frame);
             }
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(attributes);
 
 
+            objectOutputStream.close();
+            fileOutputStream.close();
 
-
-        fileOutputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
