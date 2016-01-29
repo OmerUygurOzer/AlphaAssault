@@ -20,7 +20,7 @@ public class LevelHolder implements ApplicationListener{
 
     @Override
     public void resize(int width, int height) {
-
+        System.out.print("resized");
     }
 
     @Override

@@ -38,9 +38,6 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
         setSize(WIDTH,HEIGHT);
         addWindowListener(this);
 
-
-
-
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
         configuration.width  = WIDTH;
         configuration.height = HEIGHT;
@@ -137,7 +134,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
 
     }
 
-    private JMenuItem toItem(ActionEvent e){
+    private static JMenuItem toItem(ActionEvent e){
         return (JMenuItem)e.getSource();
     }
 }

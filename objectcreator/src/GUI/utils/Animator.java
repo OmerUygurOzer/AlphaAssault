@@ -64,12 +64,12 @@ public class Animator extends Canvas implements Runnable {
         }
     }
 
-    public void removeFrame(BufferedImage frame){
+    public void removeFrame(int index){
         synchronized (frameLock){
-            if(frames.indexOf(frame)==currentFrame);
-                    currentFrame = 0;
-            this.frames.remove(frame);
+            currentFrame = 0;
+            this.frames.remove(index);
             totalFrames--;
+            System.out.println(frames.size());
         }
     }
 
@@ -101,7 +101,21 @@ public class Animator extends Canvas implements Runnable {
                 currentFrame++;
                 if (currentFrame == totalFrames)
                     currentFrame = 0;
-            }
+            }else{
+                    if(bufferStrategy==null){
+                        createBufferStrategy(3);
+                        bufferStrategy = getBufferStrategy();
+                    }
+                    for (int i = 0; i < pixels.length; i++)
+                        pixels[i] = 0xF237F2;
+
+                    Graphics graphics = bufferStrategy.getDrawGraphics();
+                    graphics.setColor(Color.MAGENTA);
+                    graphics.fillRect(0,0,canvasWidth,canvasHeight);
+                    graphics.drawImage(screen,0,0,canvasWidth,canvasHeight,null);
+                    graphics.dispose();
+                    bufferStrategy.show();
+                }
         }
 
     }
@@ -115,5 +129,9 @@ public class Animator extends Canvas implements Runnable {
                 render();
             }
         }
+    }
+
+    public List<BufferedImage> getFrames() {
+        return frames;
     }
 }

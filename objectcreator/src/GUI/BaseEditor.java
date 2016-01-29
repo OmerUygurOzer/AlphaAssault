@@ -50,6 +50,9 @@ public class BaseEditor extends EditorBase{
 
     public BaseEditor(){
         super();
+        setLayout(null);
+        setBounds(0,0,WIDTH,HEIGHT);
+
 
         object = new BaseTile();
 
@@ -99,8 +102,8 @@ public class BaseEditor extends EditorBase{
         add(frameHeigth);
 
         line++;
-        animator = new Animator(800,400,100,100);
-        animator.setSPF(1/5f);
+        animator = new Animator(20,20,100,100);
+        animator.setSPF(1/6f);
         add(animator);
 
         saveName.setBounds(WIDTH - 100,HEIGHT - 120,80,20);
@@ -192,8 +195,8 @@ public class BaseEditor extends EditorBase{
             animator.addFrame(scaledImage);
             frames.push(scaledImage);
             frameLabels.push(imageLabel);
-            frameCount++;
             ((BaseTile)object).frames.add(scaledImage);
+            frameCount++;
             repaint();
         }
     }
@@ -207,7 +210,8 @@ public class BaseEditor extends EditorBase{
 
     private void removeFrame(){
         if(frameLabels.size()==0)return;
-        animator.removeFrame(frames.pop());
+        frames.pop();
+        animator.removeFrame(animator.getFrames().size()-1);
         remove(frameLabels.pop());
         frameCount--;
         repaint();
