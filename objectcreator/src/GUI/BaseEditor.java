@@ -3,14 +3,14 @@ package GUI;
 
 import GUI.utils.Animator;
 import GUI.utils.ImageUtils;
-import objects.BaseTile;
+import fileIO.SerializableImage;
+import objects.TileObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Stack;
@@ -32,17 +32,11 @@ public class BaseEditor extends EditorBase{
     private JButton addFrame           = new JButton("Add Frame");
     private JButton addFrameSheet      = new JButton("Add Frame Sheet");
     private JButton removeFrame        = new JButton("Remove Last Frame");
-    private JButton save               = new JButton("Save");
 
 
     private JComboBox<String> tileType     = new JComboBox<String>();
     private JComboBox<Integer> frameWidth  = new JComboBox<Integer>();
     private JComboBox<Integer> frameHeigth = new JComboBox<Integer>();
-
-    private JTextField saveName = new JTextField();
-
-
-
 
     private int line = 0;
     private int lineSize = 20;
@@ -54,7 +48,7 @@ public class BaseEditor extends EditorBase{
         setBounds(0,0,WIDTH,HEIGHT);
 
 
-        object = new BaseTile();
+        object = new TileObject();
 
         frameX = new int[6 * 6];
         frameY = new int[6 * 6];
@@ -81,7 +75,7 @@ public class BaseEditor extends EditorBase{
         add(tileType);
 
 
-        addFrame.setBounds((WIDTH/2) - 60,lineSize * line,120,lineSize); line++;
+        addFrame.setBounds((WIDTH/2) - 90,lineSize * line,180,lineSize); line++;
         addFrame.addActionListener(this);
         add(addFrame);
 
@@ -105,13 +99,6 @@ public class BaseEditor extends EditorBase{
         animator = new Animator(20,20,100,100);
         animator.setSPF(1/6f);
         add(animator);
-
-        saveName.setBounds(WIDTH - 100,HEIGHT - 120,80,20);
-        add(saveName);
-
-        save.setBounds(WIDTH - 100,HEIGHT - 100,80,40);
-        save.addActionListener(this);
-        add(save);
 
         attributesPanel.setAttributeMap(object.getAttributes());
 
@@ -161,14 +148,14 @@ public class BaseEditor extends EditorBase{
 
 
         if(e.getSource().equals(save)){
-            ((BaseTile)object).tileType = tileType.getSelectedIndex();
+            ((TileObject)object).tileType = tileType.getSelectedIndex();
             String path = saveName.getText().replaceAll("[^a-zA-Z]+", ""); path = path.trim();
             if(!path.equals("")) {
                 path = "C:\\Users\\Omer\\Desktop\\Game Projects\\AlphaAssault\\objectcreator\\files\\" + path;
                 save(path);
                 popDialog("Object Saved!");
             }else{
-                popDialog("Type in a file name!");
+                popDialog("Type-in a file name!");
             }
             return;
         }
@@ -195,7 +182,7 @@ public class BaseEditor extends EditorBase{
             animator.addFrame(scaledImage);
             frames.push(scaledImage);
             frameLabels.push(imageLabel);
-            ((BaseTile)object).frames.add(scaledImage);
+            ((TileObject)object).frames.add(new SerializableImage(scaledImage));
             frameCount++;
             repaint();
         }
@@ -219,9 +206,5 @@ public class BaseEditor extends EditorBase{
 
 
 
-    private void save(String path){
-        object.toFile(path);
-    }
 
-    private void popDialog(String message){JOptionPane.showMessageDialog(this, message);}
 }

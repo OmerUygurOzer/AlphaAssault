@@ -1,5 +1,6 @@
 package GUI;
 
+import fileIO.ObjectIO;
 import objects.ObjectBase;
 
 import javax.swing.*;
@@ -12,8 +13,8 @@ public abstract class EditorBase extends JPanel implements ActionListener {
     protected static final int WIDTH = 1200;
     protected static final int HEIGHT = 800;
 
-    private JButton save          = new JButton("Save");
-    private JTextField saveName   = new JTextField();
+    protected JButton save        = new JButton("Save");
+    protected JTextField saveName   = new JTextField();
 
     protected ObjectBase object;
 
@@ -33,11 +34,18 @@ public abstract class EditorBase extends JPanel implements ActionListener {
         attributesPanel = new AttributesPanel(800,0,400,800);
         add(attributesPanel);
 
+
+        repaint();
+
     }
 
     public void setObject(ObjectBase object){
         this.object = object;
     }
+
+    protected void save(String path){ObjectIO.writeObject(path,object);}
+
+    protected void popDialog(String message){JOptionPane.showMessageDialog(this, message);}
 
 
 

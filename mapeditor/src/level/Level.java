@@ -1,5 +1,7 @@
 package level;
 
+import level.objects.Tile;
+
 import java.util.ArrayList;
 import java.util.List;
 

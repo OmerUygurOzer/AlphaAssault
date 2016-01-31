@@ -1,7 +1,8 @@
 package GUI;
 
 import GUI.utils.ImageUtils;
-import objects.Feature;
+import fileIO.SerializableImage;
+import objects.FeatureObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -38,16 +39,16 @@ public class FeatureEditor extends EditorBase {
     private JLabel image_W = new JLabel();
     private JLabel image_C = new JLabel();
 
-    private JButton clear = new JButton("CLEAR");
+    private JButton clear = new JButton("Clear Frames");
 
     public FeatureEditor(){
         super();
         setLayout(null);
         setBounds(0,0,WIDTH,HEIGHT);
 
-        object = new Feature();
+        object = new FeatureObject();
 
-        clear.setBounds(20,20,BUTTON_WIDTH,BUTTON_HEIGTH);
+        clear.setBounds(0,20,160,BUTTON_HEIGTH);
         clear.addActionListener(this);
 
 
@@ -64,6 +65,7 @@ public class FeatureEditor extends EditorBase {
         image_C.setBounds(crossing_C.getX(),crossing_C.getY()+LABEL_HEIGHT,200,200);
         image_E.setBounds(crossing_E.getX(),crossing_E.getY()+LABEL_HEIGHT,200,200);
         image_S.setBounds(crossing_S.getX(),crossing_S.getY()+LABEL_HEIGHT,200,200);
+
 
 
 
@@ -113,11 +115,24 @@ public class FeatureEditor extends EditorBase {
             remove(image_E);
             remove(image_S);
 
-            ((Feature)object).frames.clear();
+            ((FeatureObject)object).frames.clear();
             repaint();
 
         }
+
+        if(e.getSource().equals(save)){
+            String path = saveName.getText().replaceAll("[^a-zA-Z]+", ""); path = path.trim();
+            if(!path.equals("")) {
+                path = "C:\\Users\\Omer\\Desktop\\Game Projects\\AlphaAssault\\objectcreator\\files\\" + path;
+                save(path);
+                popDialog("Object Saved!");
+            }else{
+                popDialog("Type-in a file name!");
+            }
+            return;
+        }
     }
+
 
     private void createCrossings(BufferedImage readImage){
         BufferedImage[] frames= ImageUtils.generateFrames(readImage,readImage.getWidth()/3,readImage.getHeight()/3);
@@ -128,11 +143,11 @@ public class FeatureEditor extends EditorBase {
         image_E.setIcon(new ImageIcon(frames[5]));
         image_S.setIcon(new ImageIcon(frames[7]));
 
-        ((Feature)object).frames.add(frames[1]);
-        ((Feature)object).frames.add(frames[3]);
-        ((Feature)object).frames.add(frames[4]);
-        ((Feature)object).frames.add(frames[5]);
-        ((Feature)object).frames.add(frames[7]);
+        ((FeatureObject)object).frames.put("N",new SerializableImage(frames[1]));
+        ((FeatureObject)object).frames.put("W",new SerializableImage(frames[3]));
+        ((FeatureObject)object).frames.put("C",new SerializableImage(frames[4]));
+        ((FeatureObject)object).frames.put("E",new SerializableImage(frames[5]));
+        ((FeatureObject)object).frames.put("S",new SerializableImage(frames[7]));
 
         add(image_N);
         add(image_W);

@@ -1,10 +1,10 @@
-package objects;
+package level.objects;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Omer on 1/27/2016.
+ * Created by Omer on 1/30/2016.
  */
 public abstract class ObjectBase {
 
@@ -19,5 +19,4 @@ public abstract class ObjectBase {
     }
 
     public Map<String,Object> getAttributes(){return attributes;}
-
 }
