@@ -19,6 +19,8 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
 
+    private JDesktopPane mainpane;
+
     private LwjglCanvas canvas;
 
 
@@ -31,22 +33,30 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
     private JMenuItem featurePalette;
     private JMenuItem objectPalette;
 
-
-
     public MapEditor() throws HeadlessException {
         setTitle(TITLE);
         setSize(WIDTH,HEIGHT);
         addWindowListener(this);
+
+        mainpane = new JDesktopPane();
+        mainpane.setSize(WIDTH,HEIGHT);
+        setContentPane(mainpane);
 
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
         configuration.width  = WIDTH;
         configuration.height = HEIGHT;
         final LwjglCanvas lwjglCanvas = new LwjglCanvas(new LevelHolder(),configuration);
         canvas = lwjglCanvas;
+        final JInternalFrame jInternalFrame = new JInternalFrame("EnJine2D Map",false,false,false,false);
+        jInternalFrame.setSize(WIDTH,HEIGHT);
+        jInternalFrame.setVisible(true);
+
+        getContentPane().add(jInternalFrame);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-               getContentPane().add(lwjglCanvas.getCanvas());
+               jInternalFrame.getContentPane().add(lwjglCanvas.getCanvas());
+               //getContentPane().add(lwjglCanvas.getCanvas());
                setVisible(true);
             }
         });
@@ -94,12 +104,11 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-        canvas.stop();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-
+        canvas.stop();
     }
 
     @Override

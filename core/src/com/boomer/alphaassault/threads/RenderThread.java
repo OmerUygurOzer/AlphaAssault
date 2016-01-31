@@ -13,7 +13,6 @@ import com.boomer.alphaassault.handlers.RenderStateManager;
  */
 public class RenderThread extends Game {
 
-
     private float timeAccumulated;
     private SpriteBatch spriteBatch;
     private GameStateManager gameStateManager;
