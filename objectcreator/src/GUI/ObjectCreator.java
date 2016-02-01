@@ -25,8 +25,7 @@ public class ObjectCreator extends JFrame {
 
             typePane = new JTabbedPane();
             typePane.setBounds(0,0,WIDTH,HEIGHT);
-            typePane.addTab("Base Editor",new BaseEditor());
-            typePane.addTab("Feature Editor",new FeatureEditor());
+            typePane.addTab("Object Editor",new BaseEditor());
 
             add(typePane);
 

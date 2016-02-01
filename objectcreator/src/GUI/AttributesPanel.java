@@ -84,6 +84,40 @@ public class AttributesPanel extends JPanel implements ActionListener{
         relist();
     }
 
+    public void addAttribute(String id,Object object){
+        String type = null;
+        if(object!=null){
+            attributes.put(attributeID.getText(),object);
+            attributesObjects.add(object);
+        }else{
+            JOptionPane.showMessageDialog(this, "Types don't match, check your spelling or correct the type selection");
+            return;
+        }
+        if(object instanceof String){
+            type = "String";
+        }
+        if(object instanceof  Boolean){
+            type = "Boolean";
+        }
+        if(object instanceof Double){
+            type = "Double";
+        }
+
+        String labelString = "ID:" + id + " " + "Type:" + type + " " + "Value:" + object.toString();
+        JLabel label = new JLabel(padToLength(labelString,30));
+        JButton button = new JButton("x"); button.addActionListener(this);
+        label.setBounds(0,attributesObjects.indexOf(object)*LIST_HEIGHT,LIST_WIDTH,LIST_HEIGHT);
+        button.setBounds(260,attributesObjects.indexOf(object)*LIST_HEIGHT,60,LIST_HEIGHT);
+        attributesLabel.add(label);
+        attributesDelete.add(button);
+        add(label);
+        add(button);
+
+
+        itemCount++;
+        relist();
+    }
+
     private void removeAttribute(int index){
         attributes.remove(attributesObjects.get(index));
         attributesObjects.remove(index);
@@ -147,6 +181,19 @@ public class AttributesPanel extends JPanel implements ActionListener{
 
 
         return null;
+    }
+
+    public void clearAttributes(){
+        for(int i = 0; i < itemCount; i++){
+            remove(attributesLabel.get(i));
+            remove(attributesDelete.get(i));
+        }
+
+        attributesLabel.clear();
+        attributesDelete.clear();
+        attributesObjects.clear();
+        itemCount = 0;
+        relist();
     }
 
     private static String padToLength(String string, int length){

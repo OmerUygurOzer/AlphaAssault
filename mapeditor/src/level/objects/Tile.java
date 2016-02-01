@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Omer on 1/17/2016.
  */
-public abstract class Tile extends ObjectBase implements Updateable {
+public abstract class Tile implements Updateable {
 
     protected List<BufferedImage> frames = new ArrayList<BufferedImage>();
 

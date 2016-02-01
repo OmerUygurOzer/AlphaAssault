@@ -13,8 +13,8 @@ public abstract class EditorBase extends JPanel implements ActionListener {
     protected static final int WIDTH = 1200;
     protected static final int HEIGHT = 800;
 
-    protected JButton save        = new JButton("Save");
-    protected JTextField saveName   = new JTextField();
+    protected JButton save     = new JButton("Save");
+    protected JButton load     = new JButton("Load");
 
     protected ObjectBase object;
 
@@ -24,14 +24,15 @@ public abstract class EditorBase extends JPanel implements ActionListener {
         setLayout(null);
         setBounds(0,0,WIDTH,HEIGHT);
 
-        saveName.setBounds(WIDTH - 100,HEIGHT - 120,80,20);
-        add(saveName);
+        load.setBounds(WIDTH-100,HEIGHT-140,80,40);
+        load.addActionListener(this);
+        add(load);
 
         save.setBounds(WIDTH - 100,HEIGHT - 100,80,40);
         save.addActionListener(this);
         add(save);
 
-        attributesPanel = new AttributesPanel(800,0,400,800);
+        attributesPanel = new AttributesPanel(800,0,400,600);
         add(attributesPanel);
 
 

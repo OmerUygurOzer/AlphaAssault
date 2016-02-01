@@ -3,8 +3,9 @@ package GUI;
 
 import GUI.utils.Animator;
 import GUI.utils.ImageUtils;
+import fileIO.ObjectIO;
 import fileIO.SerializableImage;
-import objects.TileObject;
+import objects.ObjectBase;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,8 +34,6 @@ public class BaseEditor extends EditorBase{
     private JButton addFrameSheet      = new JButton("Add Frame Sheet");
     private JButton removeFrame        = new JButton("Remove Last Frame");
 
-
-    private JComboBox<String> tileType     = new JComboBox<String>();
     private JComboBox<Integer> frameWidth  = new JComboBox<Integer>();
     private JComboBox<Integer> frameHeigth = new JComboBox<Integer>();
 
@@ -48,7 +47,7 @@ public class BaseEditor extends EditorBase{
         setBounds(0,0,WIDTH,HEIGHT);
 
 
-        object = new TileObject();
+        object = new ObjectBase();
 
         frameX = new int[6 * 6];
         frameY = new int[6 * 6];
@@ -66,13 +65,6 @@ public class BaseEditor extends EditorBase{
         }
 
 
-        JLabel tileTypeLabel = new JLabel("Tile Type:");
-        tileTypeLabel.setBounds((WIDTH/2) - 60,lineSize*line,120,lineSize);
-        add(tileTypeLabel);
-        tileType.setBounds((WIDTH/2) + 60 ,lineSize*line,120,lineSize);line++;
-        tileType.addItem("2D Tile");
-        tileType.addItem("Isometric Tile");
-        add(tileType);
 
 
         addFrame.setBounds((WIDTH/2) - 90,lineSize * line,180,lineSize); line++;
@@ -100,7 +92,7 @@ public class BaseEditor extends EditorBase{
         animator.setSPF(1/6f);
         add(animator);
 
-        attributesPanel.setAttributeMap(object.getAttributes());
+        attributesPanel.setAttributeMap(object.attributes);
 
     }
 
@@ -148,22 +140,44 @@ public class BaseEditor extends EditorBase{
 
 
         if(e.getSource().equals(save)){
-            ((TileObject)object).tileType = tileType.getSelectedIndex();
-            String path = saveName.getText().replaceAll("[^a-zA-Z]+", ""); path = path.trim();
-            if(!path.equals("")) {
-                path = "C:\\Users\\Omer\\Desktop\\Game Projects\\AlphaAssault\\objectcreator\\files\\" + path;
-                save(path);
-                popDialog("Object Saved!");
-            }else{
-                popDialog("Type-in a file name!");
+            String path;
+            String name;
+            JFileChooser saver = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "EnJine2D Files","enjo");
+            saver.setFileFilter(filter);
+            int sVal = saver.showSaveDialog(this);
+            if (sVal == JFileChooser.APPROVE_OPTION) {
+                path = saver.getCurrentDirectory().toString();
+                name = saver.getSelectedFile().getName();
+                ObjectIO.writeObject(path+"\\"+name,object);
+                return;
             }
-            return;
+            if (sVal == JFileChooser.CANCEL_OPTION) {
+                return;
+            }
         }
 
+        if(e.getSource().equals(load)){
+            String path;
+            String name;
+            JFileChooser loader = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "EnJine2D Files","enjo");
+            loader.setFileFilter(filter);
+            int lVal = loader.showOpenDialog(this);
+            if(lVal ==JFileChooser.APPROVE_OPTION){
+                path = loader.getCurrentDirectory().toString();
+                name = loader.getSelectedFile().getName();
+                ObjectBase object = ObjectIO.readObject(path+"\\"+name);
+                loadObject(object);
+                return;
+            }
+            if(lVal == JFileChooser.CANCEL_OPTION){
+                return;
+            }
 
-
-
-
+        }
 
 
     }
@@ -182,7 +196,7 @@ public class BaseEditor extends EditorBase{
             animator.addFrame(scaledImage);
             frames.push(scaledImage);
             frameLabels.push(imageLabel);
-            ((TileObject)object).frames.add(new SerializableImage(scaledImage));
+            object.frames.add(new SerializableImage(scaledImage));
             frameCount++;
             repaint();
         }
@@ -202,6 +216,22 @@ public class BaseEditor extends EditorBase{
         remove(frameLabels.pop());
         frameCount--;
         repaint();
+    }
+
+    private void loadObject(ObjectBase objectBase){
+        for(int i = 0 ; i < animator.getFrames().size(); i++){
+            animator.removeFrame(0);
+        }
+        attributesPanel.clearAttributes();
+        for(int i = 0 ; i < objectBase.frames.size(); i++){
+            addFrame(objectBase.frames.get(i).image);
+        }
+
+        for(String key:objectBase.attributes.keySet()){
+            attributesPanel.addAttribute(key,objectBase.attributes.get(key));
+        }
+
+
     }
 
 

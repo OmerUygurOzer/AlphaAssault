@@ -20,8 +20,10 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
     private static final int HEIGHT = 800;
 
     private JDesktopPane mainpane;
+    private ObjectBrushHolder objectBrushHolder;
 
     private LwjglCanvas canvas;
+    private LevelHolder levelHolder;
 
 
     private JMenuItem newLevel;
@@ -45,18 +47,25 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
         configuration.width  = WIDTH;
         configuration.height = HEIGHT;
-        final LwjglCanvas lwjglCanvas = new LwjglCanvas(new LevelHolder(),configuration);
+        levelHolder = new LevelHolder();
+        final LwjglCanvas lwjglCanvas = new LwjglCanvas(levelHolder,configuration);
         canvas = lwjglCanvas;
         final JInternalFrame jInternalFrame = new JInternalFrame("EnJine2D Map",false,false,false,false);
         jInternalFrame.setSize(WIDTH,HEIGHT);
         jInternalFrame.setVisible(true);
+
+        objectBrushHolder = new ObjectBrushHolder("Object Brush Holder",true,false,true,false);
+        objectBrushHolder.setLevelHolder(levelHolder);
+
+        objectBrushHolder.setVisible(true);
+        getContentPane().add(objectBrushHolder);
+
 
         getContentPane().add(jInternalFrame);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                jInternalFrame.getContentPane().add(lwjglCanvas.getCanvas());
-               //getContentPane().add(lwjglCanvas.getCanvas());
                setVisible(true);
             }
         });

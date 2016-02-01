@@ -1,4 +1,4 @@
-package fileIO;
+package IOUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
