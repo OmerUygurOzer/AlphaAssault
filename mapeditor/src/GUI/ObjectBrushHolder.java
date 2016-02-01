@@ -21,7 +21,10 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
     private JList<String> list = new JList<String>();
     private DefaultListModel<String> listModel = new DefaultListModel<String>();
 
+    File[] objects;
+
     private LevelHolder levelHolder;
+    private ObjectHolder objectHolder;
 
     public ObjectBrushHolder(String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) {
         super(title, resizable, closable, maximizable, iconifiable);
@@ -38,6 +41,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
         listHolder.setBounds(0,40,100,180);
 
         list.addListSelectionListener(this);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setModel(listModel);
 
         add(selectedBrush);
@@ -47,10 +51,17 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
     public void setLevelHolder(LevelHolder levelHolder){
         this.levelHolder = levelHolder;
     }
+    public void setObjectHolder(ObjectHolder objectHolder){this.objectHolder = objectHolder;}
 
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+        JList list = (JList)e.getSource();
+        if(!e.getValueIsAdjusting()){
+            File file = objects[list.getSelectedIndex()];
+            selectedBrush.setText(file.getName());
+            objectHolder.setObjectFile(file);
+        }
 
     }
 
@@ -64,9 +75,9 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
         int lVal = loader.showOpenDialog(this);
         if(lVal ==JFileChooser.APPROVE_OPTION){
             path = loader.getCurrentDirectory().toString();
-            File[] files = (new File(path)).listFiles();
-            for(int i = 0; i < files.length; i++){
-                listModel.addElement(files[i].getName());
+           objects = (new File(path)).listFiles();
+            for(int i = 0; i < objects.length; i++){
+                listModel.addElement(objects[i].getName());
             }
             return;
         }

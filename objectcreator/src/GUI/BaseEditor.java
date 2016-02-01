@@ -138,6 +138,15 @@ public class BaseEditor extends EditorBase{
                 return;
         }
 
+        if(e.getSource().equals(newObject)){
+            int framesMax = frameCount;
+            for(int i = 0;i<framesMax;i++)
+                removeFrame();
+            frameCount = 0;
+            attributesPanel.clearAttributes();
+            return;
+        }
+
 
         if(e.getSource().equals(save)){
             String path;
@@ -215,6 +224,7 @@ public class BaseEditor extends EditorBase{
         animator.removeFrame(animator.getFrames().size()-1);
         remove(frameLabels.pop());
         frameCount--;
+        object.frames.remove(object.frames.size()-1);
         repaint();
     }
 

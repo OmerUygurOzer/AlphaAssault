@@ -3,7 +3,6 @@ package objects;
 
 
 import IOUtils.SerializableImage;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

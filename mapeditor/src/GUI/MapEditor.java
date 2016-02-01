@@ -21,6 +21,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
 
     private JDesktopPane mainpane;
     private ObjectBrushHolder objectBrushHolder;
+    private ObjectHolder objectHolder;
 
     private LwjglCanvas canvas;
     private LevelHolder levelHolder;
@@ -54,11 +55,17 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
         jInternalFrame.setSize(WIDTH,HEIGHT);
         jInternalFrame.setVisible(true);
 
+        objectHolder = new ObjectHolder("Object Holder",true,false,true,false);
+        objectHolder.setVisible(true);
+        getContentPane().add(objectHolder);
+
         objectBrushHolder = new ObjectBrushHolder("Object Brush Holder",true,false,true,false);
         objectBrushHolder.setLevelHolder(levelHolder);
+        objectBrushHolder.setObjectHolder(objectHolder);
 
         objectBrushHolder.setVisible(true);
         getContentPane().add(objectBrushHolder);
+
 
 
         getContentPane().add(jInternalFrame);

@@ -1,7 +1,7 @@
 package IOUtils;
 
 
-import level.objects.ObjectBase;
+import objects.ObjectBase;
 
 import java.io.*;
 

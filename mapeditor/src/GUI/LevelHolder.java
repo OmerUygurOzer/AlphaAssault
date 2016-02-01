@@ -13,7 +13,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import level.objects.ObjectBase;
+import objects.ObjectBase;
+
 
 /**
  * Created by Omer on 1/17/2016.

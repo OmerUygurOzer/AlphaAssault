@@ -13,6 +13,7 @@ public abstract class EditorBase extends JPanel implements ActionListener {
     protected static final int WIDTH = 1200;
     protected static final int HEIGHT = 800;
 
+    protected JButton newObject= new JButton("New");
     protected JButton save     = new JButton("Save");
     protected JButton load     = new JButton("Load");
 
@@ -23,6 +24,10 @@ public abstract class EditorBase extends JPanel implements ActionListener {
     protected EditorBase(){
         setLayout(null);
         setBounds(0,0,WIDTH,HEIGHT);
+
+        newObject.setBounds(WIDTH-100,HEIGHT-180,80,40);
+        newObject.addActionListener(this);
+        add(newObject);
 
         load.setBounds(WIDTH-100,HEIGHT-140,80,40);
         load.addActionListener(this);
