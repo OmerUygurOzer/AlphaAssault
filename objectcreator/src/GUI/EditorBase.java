@@ -1,6 +1,6 @@
 package GUI;
 
-import fileIO.ObjectIO;
+import IOUtils.ObjectIO;
 import objects.ObjectBase;
 
 import javax.swing.*;
@@ -44,7 +44,8 @@ public abstract class EditorBase extends JPanel implements ActionListener {
         this.object = object;
     }
 
-    protected void save(String path){ObjectIO.writeObject(path,object);}
+    protected void save(String path){
+        ObjectIO.writeObject(path,object);}
 
     protected void popDialog(String message){JOptionPane.showMessageDialog(this, message);}
 

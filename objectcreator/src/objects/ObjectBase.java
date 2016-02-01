@@ -1,8 +1,9 @@
 package objects;
 
-import fileIO.SerializableImage;
 
-import java.awt.image.BufferedImage;
+
+import IOUtils.SerializableImage;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

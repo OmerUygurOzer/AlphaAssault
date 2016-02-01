@@ -3,8 +3,8 @@ package GUI;
 
 import GUI.utils.Animator;
 import GUI.utils.ImageUtils;
-import fileIO.ObjectIO;
-import fileIO.SerializableImage;
+import IOUtils.ObjectIO;
+import IOUtils.SerializableImage;
 import objects.ObjectBase;
 
 import javax.imageio.ImageIO;
