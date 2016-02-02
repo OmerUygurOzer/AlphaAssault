@@ -10,7 +10,6 @@ import java.io.*;
  */
 public class ObjectIO {
     public static void writeObject(String path, Object object){
-        System.out.println(path);
         File file = new File(path + ".enjo");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);

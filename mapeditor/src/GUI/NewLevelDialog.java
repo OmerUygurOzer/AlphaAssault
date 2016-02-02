@@ -9,7 +9,6 @@ import javax.swing.*;
  * Created by Omer on 1/17/2016.
  */
 public class NewLevelDialog extends JPanel {
-    private Level newLevel;
 
     private static final int X = 300;
     private static final int Y = 300;
@@ -30,9 +29,13 @@ public class NewLevelDialog extends JPanel {
     private JComboBox<Integer> heightField = new JComboBox<Integer>();
     private JComboBox<Integer> tileSizeField = new JComboBox<Integer>();
 
+    private LevelHolder levelHolder;
 
-    public NewLevelDialog() {
+    public NewLevelDialog(LevelHolder levelHolder) {
         super();
+
+        this.levelHolder = levelHolder;
+
         for (int i = 100; i <= 4000; i += 100) {
             widthField.addItem(i);
             heightField.addItem(i);
@@ -66,6 +69,9 @@ public class NewLevelDialog extends JPanel {
             levelWidth = (Integer)widthField.getSelectedItem();
             levelHeight = (Integer)heightField.getSelectedItem();
             tileSize = (Integer)tileSizeField.getSelectedItem();
+
+
+            levelHolder.createNewLevel(levelName,tileSize,levelWidth,levelHeight);
 
             System.out.println(levelName);
             System.out.println(levelType);

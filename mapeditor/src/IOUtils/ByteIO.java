@@ -151,12 +151,11 @@ public class ByteIO {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             byte[] bytes = null;
             try {
-                ImageIO.write(x,"jpg",byteArrayOutputStream);
+                ImageIO.write(x,"png",byteArrayOutputStream);
                 bytes = byteArrayOutputStream.toByteArray();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(bytes.length);
             return bytes;
         }
 

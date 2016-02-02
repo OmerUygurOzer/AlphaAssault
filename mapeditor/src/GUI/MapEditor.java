@@ -5,16 +5,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 
 /**
  * Created by Omer on 1/17/2016.
  */
-public class MapEditor extends JFrame implements WindowListener,ActionListener{
+public class MapEditor extends JFrame implements WindowListener,ActionListener,ComponentListener{
     private static final String TITLE = "EnJine2D LevelEditor";
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
@@ -36,13 +33,19 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
     private JMenuItem featurePalette;
     private JMenuItem objectPalette;
 
-    public MapEditor() throws HeadlessException {
+    private LocalSettings localSettings;
+
+    public MapEditor(LocalSettings localSettings) throws HeadlessException {
         setTitle(TITLE);
         setSize(WIDTH,HEIGHT);
+
         addWindowListener(this);
+
+        this.localSettings = localSettings;
 
         mainpane = new JDesktopPane();
         mainpane.setSize(WIDTH,HEIGHT);
+        mainpane.setBackground(Color.GRAY);
         setContentPane(mainpane);
 
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
@@ -52,21 +55,27 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
         final LwjglCanvas lwjglCanvas = new LwjglCanvas(levelHolder,configuration);
         canvas = lwjglCanvas;
         final JInternalFrame jInternalFrame = new JInternalFrame("EnJine2D Map",false,false,false,false);
+        jInternalFrame.addComponentListener(this);
         jInternalFrame.setSize(WIDTH,HEIGHT);
         jInternalFrame.setVisible(true);
 
+
         objectHolder = new ObjectHolder("Object Holder",true,false,true,false);
+        objectHolder.addComponentListener(this);
+        objectHolder.setLevelHolder(levelHolder);
         objectHolder.setVisible(true);
         getContentPane().add(objectHolder);
 
         objectBrushHolder = new ObjectBrushHolder("Object Brush Holder",true,false,true,false);
+        objectBrushHolder.addComponentListener(this);
         objectBrushHolder.setLevelHolder(levelHolder);
         objectBrushHolder.setObjectHolder(objectHolder);
 
+        levelHolder.setObjectBrushHolder(objectBrushHolder);
+
+
         objectBrushHolder.setVisible(true);
         getContentPane().add(objectBrushHolder);
-
-
 
         getContentPane().add(jInternalFrame);
         SwingUtilities.invokeLater(new Runnable() {
@@ -120,11 +129,13 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
+        canvas.stop();
+        e.getWindow().dispose();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        canvas.stop();
+
     }
 
     @Override
@@ -151,7 +162,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
     public void actionPerformed(ActionEvent e) {
         JMenuItem item = toItem(e);
         if(item == newLevel){
-            NewLevelDialog newLevelDialog = new NewLevelDialog();
+            NewLevelDialog newLevelDialog = new NewLevelDialog(levelHolder);
             newLevelDialog.initialize();
             return;
         }
@@ -161,5 +172,30 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener{
 
     private static JMenuItem toItem(ActionEvent e){
         return (JMenuItem)e.getSource();
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        saveSettings();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+        saveSettings();
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+        saveSettings();
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+        saveSettings();
+    }
+
+    private void saveSettings(){
+
+            localSettings.store();
     }
 }

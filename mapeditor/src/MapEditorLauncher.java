@@ -1,3 +1,4 @@
+import GUI.LocalSettings;
 import GUI.MapEditor;
 
 /**
@@ -5,6 +6,6 @@ import GUI.MapEditor;
  */
 public class MapEditorLauncher {
     public static void main(String args[]){
-            new MapEditor();
+            new MapEditor(new LocalSettings());
     }
 }

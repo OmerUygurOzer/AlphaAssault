@@ -21,6 +21,9 @@ public class ObjectHolder extends JInternalFrame implements ActionListener {
     private File objectFile;
     private ObjectBase objectBase;
 
+    private LevelHolder levelHolder;
+
+
 
     public ObjectHolder(String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) {
         super(title, resizable, closable, maximizable, iconifiable);
@@ -32,18 +35,24 @@ public class ObjectHolder extends JInternalFrame implements ActionListener {
         attributePane.setBounds(0,0,120,240);
         attributeList.setModel(attributeModel);
         attributePane.setViewportView(attributeList);
-        add(attributePane);
 
         frames = new JComboBox<Integer>();
         frames.setBounds(120,0,40,20);
         frames.addActionListener(this);
-        add(frames);
+
 
         imageHolder = new JLabel();
         imageHolder.setBounds(120,20,100,100);
+
+        add(frames);
+        add(attributePane);
         add(imageHolder);
 
 
+    }
+
+    public void setLevelHolder(LevelHolder levelHolder) {
+        this.levelHolder = levelHolder;
     }
 
     public void setObjectFile(File file){
@@ -80,8 +89,11 @@ public class ObjectHolder extends JInternalFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         JComboBox jComboBox = (JComboBox) e.getSource();
-        int selection = jComboBox.getSelectedIndex();
-        imageHolder.setIcon(new ImageIcon(objectBase.frames.get(selection).image));
+        Object item = jComboBox.getSelectedItem();
+        if(item!=null) {
+            int selection = (Integer) jComboBox.getSelectedItem();
+            imageHolder.setIcon(new ImageIcon(objectBase.frames.get(selection).image));
+        }
         repaint();
     }
 }
