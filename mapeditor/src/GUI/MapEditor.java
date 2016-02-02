@@ -19,6 +19,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
     private JDesktopPane mainpane;
     private ObjectBrushHolder objectBrushHolder;
     private ObjectHolder objectHolder;
+    private ToolsHolder toolsHolder;
 
     private LwjglCanvas canvas;
     private LevelHolder levelHolder;
@@ -60,19 +61,24 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         jInternalFrame.setVisible(true);
 
 
-        objectHolder = new ObjectHolder("Object Holder",true,false,true,false);
+        objectHolder = new ObjectHolder("Object",true,false,true,false);
         objectHolder.addComponentListener(this);
         objectHolder.setLevelHolder(levelHolder);
         objectHolder.setVisible(true);
         getContentPane().add(objectHolder);
 
-        objectBrushHolder = new ObjectBrushHolder("Object Brush Holder",true,false,true,false);
+        objectBrushHolder = new ObjectBrushHolder("Object Brush",true,false,true,false);
         objectBrushHolder.addComponentListener(this);
         objectBrushHolder.setLevelHolder(levelHolder);
         objectBrushHolder.setObjectHolder(objectHolder);
 
         levelHolder.setObjectBrushHolder(objectBrushHolder);
 
+        toolsHolder = new ToolsHolder("Tools",true,false,true,false);
+        toolsHolder.setLevelHolder(levelHolder);
+        toolsHolder.setVisible(true);
+
+        getContentPane().add(toolsHolder);
 
         objectBrushHolder.setVisible(true);
         getContentPane().add(objectBrushHolder);

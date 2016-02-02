@@ -93,6 +93,9 @@ public class ObjectHolder extends JInternalFrame implements ActionListener {
         if(item!=null) {
             int selection = (Integer) jComboBox.getSelectedItem();
             imageHolder.setIcon(new ImageIcon(objectBase.frames.get(selection).image));
+            if(levelHolder.getObjectBrush()!=null) {
+                levelHolder.changeBrushFrame(selection);
+            }
         }
         repaint();
     }

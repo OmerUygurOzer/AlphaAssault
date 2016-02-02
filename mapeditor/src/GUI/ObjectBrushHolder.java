@@ -89,6 +89,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
         pointTypeSelecetor.addActionListener(this);
 
 
+
         add(heigthDown);
         add(heigthLabel);
         add(heigthUp);
@@ -122,10 +123,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
             selectedBrush.setText(file.getName());
             objectHolder.setObjectFile(file);
             levelHolder.setObjectBrush(file);
-            levelHolder.setActiveLayer(depthSelector.getSelectedIndex());
             levelHolder.setPointType(pointTypeSelecetor.getSelectedIndex());
-            System.out.println(depthSelector.getSelectedIndex());
-            System.out.println(pointTypeSelecetor.getSelectedIndex());
         }
 
     }
@@ -161,6 +159,14 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
             widthLabel.setText("W:"+levelHolder.getObjectBrush().getCurrentFrame().getWidth());
             heigthLabel.setText("H:"+levelHolder.getObjectBrush().getCurrentFrame().getHeight());
             repaint();
+        }
+
+        if(e.getSource().equals(depthSelector)){
+            levelHolder.setActiveLayer(depthSelector.getSelectedIndex());
+        }
+
+        if(e.getSource().equals(pointTypeSelecetor)){
+            levelHolder.setPointType(pointTypeSelecetor.getSelectedIndex());
         }
     }
 

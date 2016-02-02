@@ -75,6 +75,10 @@ public class LayeredRenderer {
     }
 
 
+    public void clear(){
+        layers.clear();
+        renderedLayers.clear();
+    }
 
 
     public void dispose(){

@@ -3,6 +3,7 @@ package level;
 import com.badlogic.gdx.math.Vector2;
 import level.objects.Tile;
 import objects.ObjectBase;
+import org.lwjgl.Sys;
 
 import java.io.File;
 import java.io.Serializable;
@@ -61,11 +62,15 @@ public class Level implements Serializable{
         locations.get(file.getName()).add(position);
         layers.get(file.getName()).add(layer);
         sizes.get(file.getName()).add(new Vector2(width,heigth));
+        System.out.println(objectFiles.size());
 
+    }
 
-
-
-
+    public void clear(){
+        objectFiles.clear();
+        locations.clear();
+        layers.clear();
+        sizes.clear();
     }
 
 

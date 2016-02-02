@@ -8,8 +8,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -17,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import level.Level;
 import level.objects.MapObject;
-import objects.ObjectBase;
 import org.lwjgl.Sys;
 
 import java.io.File;
@@ -62,9 +59,6 @@ public class LevelHolder implements ApplicationListener{
     private int activeLayer;
     private int pointType;
 
-    private Texture texture;
-    private Sprite sprite;
-
 
     private List<MapObject> objects = new ArrayList<MapObject>();
 
@@ -85,13 +79,7 @@ public class LevelHolder implements ApplicationListener{
 
         shapeRenderer = new ShapeRenderer();
 
-        texture = new Texture("C:\\Users\\Omer\\Desktop\\Game Projects\\GameArt\\bricks.png");
-        sprite = new Sprite(texture);
-        sprite.setCenter(400,400);
-        sprite.setSize(100,100);
-
-        layeredRenderer.addSprite(0,sprite);
-        layeredRenderer.setRenderedLayers(0);
+        layeredRenderer.setRenderedLayers(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19);
 
     }
 
@@ -105,6 +93,8 @@ public class LevelHolder implements ApplicationListener{
             this.height = heigth;
         }
 
+        layeredRenderer.clear();
+        level.clear();
 
 
     }
@@ -120,11 +110,11 @@ public class LevelHolder implements ApplicationListener{
             int borderTop    = (int) orthographicCamera.position.y + (height / 2);
             int borderBottom = (int) orthographicCamera.position.y - (height / 2);
 
-            for (int v = borderLeft; v < borderRigth; v += tileSize) {
-                shapeRenderer.line(v, borderBottom, v, borderTop, Color.BLACK, Color.BLACK);
+            for (int v = borderLeft; v <= borderRigth; v += tileSize) {
+                shapeRenderer.line(v, borderBottom, v, borderTop, Color.WHITE, Color.WHITE);
             }
-            for (int h = borderBottom; h < borderTop; h += tileSize) {
-                shapeRenderer.line(borderLeft, h, borderRigth, h, Color.BLACK, Color.BLACK);
+            for (int h = borderBottom; h <= borderTop; h += tileSize) {
+                shapeRenderer.line(borderLeft, h, borderRigth, h, Color.WHITE, Color.WHITE);
             }
 
             shapeRenderer.end();
@@ -137,9 +127,23 @@ public class LevelHolder implements ApplicationListener{
         }
     }
 
+    public void zoomIn(){
+        synchronized (editLock) {
+            orthographicCamera.zoom -= 0.02;
+        }
+    }
+
+    public void zoomOut(){
+        synchronized (editLock) {
+            orthographicCamera.zoom += 0.02;
+        }
+    }
+
     public void setActiveLayer(int activeLayer){this.activeLayer = activeLayer;}
     public void setPointType(int pointType){this.pointType = pointType;}
-
+    public void changeBrushFrame(int frameIndex){objectBrush.changeCurrentFrame(frameIndex);}
+    public void setObjectBrushHolder(ObjectBrushHolder objectBrushHolder){this.objectBrushHolder = objectBrushHolder;}
+    public Viewport getViewport(){return viewport;}
     public MapObject getObjectBrush(){
         return objectBrush;
     }
@@ -185,7 +189,7 @@ public class LevelHolder implements ApplicationListener{
             boolean left_click = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 
             if(left_click && !left_prev){
-               insertObject(objectBrush.clone(),pointType,mouseX,mouseY,activeLayer,objectBrush.getCurrentFrame().getWidth(),objectBrush.getCurrentFrame().getHeight());
+               insertObject(objectBrush.clone(),pointType,(int)x,(int)y,activeLayer,objectBrush.getCurrentFrame().getWidth(),objectBrush.getCurrentFrame().getHeight());
             }
 
             left_prev = left_click;
@@ -205,7 +209,7 @@ public class LevelHolder implements ApplicationListener{
     @Override
     public void render() {
         synchronized (editLock) {
-            Gdx.gl.glClearColor(0, 1, 0, 1);
+            Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             drawGrids();
 
@@ -241,22 +245,26 @@ public class LevelHolder implements ApplicationListener{
         shapeRenderer.dispose();
     }
 
-    public void setObjectBrushHolder(ObjectBrushHolder objectBrushHolder){
-        this.objectBrushHolder = objectBrushHolder;
-    }
+
 
     private int getTile(float tile){
         return Math.round(tile/tileSize);
     }
 
 
-    private void insertObject(MapObject object,int pointing, int x,int y,int layer,float width,float heigth){{
+    private void insertObject(MapObject object,int pointing, int x,int y,int layer,float width,float heigth){
         switch (pointing){
             case POINTING_TO_TILE:
-                System.out.println("tile");
+                float tileX = (x - (x%tileSize))+(tileSize/2);
+                float tileY = (y - (y%tileSize))+(tileSize/2);
+                object.setSize(tileSize,tileSize);
+                object.setPosition(new Vector2(tileX,tileY));
+                layeredRenderer.addSprite(layer,object.getCurrentFrame());
+                objects.add(object);
+                level.addObject(object.getObjectFile(),new Vector2(tileX,tileY),layer,tileSize,tileSize);
+
                 break;
             case POINTING_TO_ABSOLUTE:
-                System.out.println("absolute");
                 layeredRenderer.addSprite(layer,object.getCurrentFrame());
                 objects.add(object);
                 level.addObject(object.getObjectFile(),new Vector2(x,y),layer,width,heigth);
@@ -265,7 +273,10 @@ public class LevelHolder implements ApplicationListener{
                 //Do noting
                 break;
         }
-    }
+
+
 
     }
+
+
 }

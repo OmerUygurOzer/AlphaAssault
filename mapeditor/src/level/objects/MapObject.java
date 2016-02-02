@@ -53,6 +53,9 @@ public class MapObject {
         synchronized (lock) {
             this.position = position;
             currentFrame.setCenter(position.x,position.y);
+            for (Sprite sprite : frameSprites) {
+                sprite.setCenter(position.x,position.y);
+            }
             }
     }
 
