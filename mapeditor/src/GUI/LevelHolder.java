@@ -235,12 +235,6 @@ public class LevelHolder implements ApplicationListener{
     public void setActiveLayer(int activeLayer){this.activeLayer = activeLayer;}
     public void setPointType(int pointType){this.pointType = pointType;}
 
-
-    public Viewport getViewport(){return viewport;}
-
-
-
-
     public void handleInput(){
         boolean a_pressed = Gdx.input.isKeyPressed(Input.Keys.A);
         boolean s_pressed = Gdx.input.isKeyPressed(Input.Keys.S);

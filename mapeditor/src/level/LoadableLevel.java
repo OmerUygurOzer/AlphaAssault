@@ -1,6 +1,7 @@
 package level;
 
 
+import level.objects.LoadableObject;
 import level.objects.MapObject;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class LoadableLevel implements Serializable{
 
 
     private transient ArrayList<MapObject>[] tiles;
+    private ArrayList<LoadableObject> objects;
 
 
     public LoadableLevel() {
@@ -25,7 +27,7 @@ public class LoadableLevel implements Serializable{
         this.width = 800;
         this.height = 800;
         this.tileSize = 20;
-
+        objects = new ArrayList<LoadableObject>();
         generateLevel();
     }
 
@@ -55,6 +57,16 @@ public class LoadableLevel implements Serializable{
     }
 
     public void addObject(MapObject object,int tileX,int tileY){
+            LoadableObject loadableObject = new LoadableObject();
+            loadableObject.objectFileName = object.getObjectFile().getName();
+            loadableObject.imageWidth = (int)object.getCurrentFrame().getWidth();
+            loadableObject.imageWidth = (int)object.getCurrentFrame().getHeight();
+            loadableObject.layer = object.layer;
+            loadableObject.x = (int) object.position.x;
+            loadableObject.y = (int) object.position.y;
+            objects.add(loadableObject);
+
+
            int index = tileX + tileY*(width/tileSize);
             tiles[index].add(object);
     }
@@ -73,6 +85,7 @@ public class LoadableLevel implements Serializable{
 
 
     public void clear(){
+        objects.clear();
         for(int i = 0; i < tiles.length;i++){
             tiles[i].clear();
         }
