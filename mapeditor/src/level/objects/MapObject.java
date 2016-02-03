@@ -49,14 +49,18 @@ public class MapObject {
 
     public File getObjectFile(){return objectFile;}
 
-    public void setPosition(Vector2 position) {
-        synchronized (lock) {
+    public void setRelativePosition(Vector2 position) {
             this.position = position;
+    }
+
+    public void setImagePosition(float x,float y){
+        synchronized (lock){
+            currentFrame.setCenter(x,y);
             currentFrame.setCenter(position.x,position.y);
             for (Sprite sprite : frameSprites) {
                 sprite.setCenter(position.x,position.y);
             }
-            }
+        }
     }
 
     public void setSize(float width, float heigth){
@@ -100,7 +104,7 @@ public class MapObject {
     public MapObject clone(){
         MapObject object = new MapObject(objectFile,objectBase);
         object.setSize(currentFrame.getWidth(),currentFrame.getHeight());
-        object.setPosition(position);
+        object.setRelativePosition(position);
         object.changeCurrentFrame(currentFrameIndex);
         object.setLayer(layer);
         return object;

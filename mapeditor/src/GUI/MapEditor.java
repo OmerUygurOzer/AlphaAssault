@@ -1,7 +1,9 @@
 package GUI;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
+import org.lwjgl.Sys;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +19,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
     private static final int HEIGHT = 800;
 
     private JDesktopPane mainpane;
+    private JInternalFrame levelHolderFrame;
     private ObjectBrushHolder objectBrushHolder;
     private ObjectHolder objectHolder;
     private ToolsHolder toolsHolder;
@@ -40,9 +43,9 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         setTitle(TITLE);
         setSize(WIDTH,HEIGHT);
 
-        addWindowListener(this);
 
         this.localSettings = localSettings;
+
 
         mainpane = new JDesktopPane();
         mainpane.setSize(WIDTH,HEIGHT);
@@ -52,45 +55,56 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
         configuration.width  = WIDTH;
         configuration.height = HEIGHT;
+
         levelHolder = new LevelHolder();
         final LwjglCanvas lwjglCanvas = new LwjglCanvas(levelHolder,configuration);
         canvas = lwjglCanvas;
-        final JInternalFrame jInternalFrame = new JInternalFrame("EnJine2D Map",false,false,false,false);
-        jInternalFrame.addComponentListener(this);
-        jInternalFrame.setSize(WIDTH,HEIGHT);
-        jInternalFrame.setVisible(true);
+        levelHolderFrame = new JInternalFrame("EnJine2D Map",false,false,false,false);
+        levelHolderFrame.setSize(WIDTH,HEIGHT);
+        levelHolderFrame.setVisible(true);
 
 
         objectHolder = new ObjectHolder("Object",true,false,true,false);
-        objectHolder.addComponentListener(this);
-        objectHolder.setLevelHolder(levelHolder);
         objectHolder.setVisible(true);
-        getContentPane().add(objectHolder);
+
 
         objectBrushHolder = new ObjectBrushHolder("Object Brush",true,false,true,false);
-        objectBrushHolder.addComponentListener(this);
-        objectBrushHolder.setLevelHolder(levelHolder);
-        objectBrushHolder.setObjectHolder(objectHolder);
+        objectBrushHolder.setVisible(true);
 
-        levelHolder.setObjectBrushHolder(objectBrushHolder);
+
 
         toolsHolder = new ToolsHolder("Tools",true,false,true,false);
         toolsHolder.setLevelHolder(levelHolder);
         toolsHolder.setVisible(true);
 
+
+
+        objectBrushHolder.setLevelHolder(levelHolder);
+        objectBrushHolder.setObjectHolder(objectHolder);
+        levelHolder.setObjectBrushHolder(objectBrushHolder);
+        objectHolder.setLevelHolder(levelHolder);
+
+        getContentPane().add(objectHolder);
         getContentPane().add(toolsHolder);
-
-        objectBrushHolder.setVisible(true);
         getContentPane().add(objectBrushHolder);
+        getContentPane().add(levelHolderFrame);
 
-        getContentPane().add(jInternalFrame);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-               jInternalFrame.getContentPane().add(lwjglCanvas.getCanvas());
-               setVisible(true);
+                levelHolderFrame.getContentPane().add(lwjglCanvas.getCanvas());
+                setVisible(true);
             }
         });
+
+        loadSettings();
+
+        levelHolderFrame.addComponentListener(this);
+        objectHolder.addComponentListener(this);
+        objectBrushHolder.addComponentListener(this);
+        toolsHolder.addComponentListener(this);
+
+        addWindowListener(this);
     }
 
     @Override
@@ -110,6 +124,8 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         basePalette = new JMenuItem("Base Palette");      basePalette.addActionListener(this);
         featurePalette = new JMenuItem("Feature Palette");featurePalette.addActionListener(this);
         objectPalette = new JMenuItem("Object Palette");  objectPalette.addActionListener(this);
+
+        JMenu help = new JMenu("Help");
 
         popToolWindow.add(basePalette);
         popToolWindow.add(featurePalette);
@@ -201,7 +217,48 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
     }
 
     private void saveSettings(){
+        if(localSettings!=null) {
+            localSettings.objectDirectory = levelHolder.getObjectBrushHolder().getDirectoryPath();
+
+            localSettings.mainWidth = this.getWidth();
+            localSettings.mainHeight = this.getHeight();
+
+            localSettings.lhX = levelHolderFrame.getX();
+            localSettings.lhY = levelHolderFrame.getY();
+            localSettings.lhWidth = levelHolderFrame.getWidth();
+            localSettings.lhHeigth = levelHolderFrame.getHeight();
+
+            localSettings.obhX = objectBrushHolder.getX();
+            localSettings.obhY = objectBrushHolder.getY();
+            localSettings.obhWidth = objectBrushHolder.getWidth();
+            localSettings.obhHeigth = objectBrushHolder.getHeight();
+
+            localSettings.ohX = objectHolder.getX();
+            localSettings.ohY = objectHolder.getY();
+            localSettings.ohWidth = objectHolder.getWidth();
+            localSettings.ohHeigth = objectHolder.getHeight();
+
+            localSettings.tX = toolsHolder.getX();
+            localSettings.tY = toolsHolder.getY();
+            localSettings.tWidth = toolsHolder.getWidth();
+            localSettings.tHeight = toolsHolder.getHeight();
+
 
             localSettings.store();
+        }else {
+            localSettings = new LocalSettings();
+        }
     }
+
+    private void loadSettings(){
+        if (localSettings!=null){
+            levelHolderFrame.setBounds(localSettings.lhX,localSettings.lhY,localSettings.lhWidth,localSettings.lhHeigth);
+            objectBrushHolder.setBounds(localSettings.obhX,localSettings.obhY,localSettings.obhWidth,localSettings.obhHeigth);
+            objectHolder.setBounds(localSettings.ohX,localSettings.ohY,localSettings.ohWidth,localSettings.ohHeigth);
+            toolsHolder.setBounds(localSettings.tX,localSettings.tY,localSettings.tWidth,localSettings.tHeight);
+            setSize(localSettings.mainWidth,localSettings.mainHeight);
+            if(!localSettings.objectDirectory.equals(""))objectBrushHolder.loadObjects(localSettings.objectDirectory);
+        }
+    }
+
 }

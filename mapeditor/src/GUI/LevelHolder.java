@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import level.Level;
 import level.objects.MapObject;
-import org.lwjgl.Sys;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,8 +40,12 @@ public class LevelHolder implements ApplicationListener{
     private ShapeRenderer shapeRenderer;
     private SpriteBatch localSpriteBatch;
 
-    private int width = 800;
-    private int height = 800;
+    private static final int SCREEN_WIDTH = 800;
+    private static final int SCREEN_HEIGTH = 800;
+
+    private int width;
+    private int height;
+
 
     private int tileSize = 20;
 
@@ -52,6 +56,7 @@ public class LevelHolder implements ApplicationListener{
     private boolean w_prev = false;
 
     private boolean left_prev = false;
+    private boolean right_prev = false;
 
     private Object editLock = new Object();
 
@@ -62,15 +67,20 @@ public class LevelHolder implements ApplicationListener{
 
     private List<MapObject> objects = new ArrayList<MapObject>();
 
+    private boolean drawGrids = false;
+
 
     @Override
     public void create() {
         level = new Level();
+        width = SCREEN_WIDTH;
+        height = SCREEN_HEIGTH;
+
         localSpriteBatch = new SpriteBatch();
 
         orthographicCamera = new OrthographicCamera();
-        viewport = new FitViewport(width,height,orthographicCamera);
-        orthographicCamera.translate(width/2,height/2);
+        viewport = new FitViewport(SCREEN_WIDTH,SCREEN_HEIGTH,orthographicCamera);
+        orthographicCamera.position.set(SCREEN_WIDTH/2,SCREEN_HEIGTH/2,0);
         orthographicCamera.update();
 
         layeredRenderer = new LayeredRenderer();
@@ -91,6 +101,16 @@ public class LevelHolder implements ApplicationListener{
             this.tileSize = tileSize;
             this.width = width;
             this.height = heigth;
+           if(width<=heigth){
+               viewport.setWorldSize(width,width);
+               orthographicCamera.position.set(width/2,width/2,0);
+               orthographicCamera.update();}
+            else{
+               viewport.setWorldSize(heigth,heigth);
+               orthographicCamera.position.set(heigth/2,heigth/2,0);
+               orthographicCamera.update();}
+            viewport.apply();
+
         }
 
         layeredRenderer.clear();
@@ -99,30 +119,45 @@ public class LevelHolder implements ApplicationListener{
 
     }
 
+    public void toggleGrids(){synchronized (editLock){drawGrids = !drawGrids;}}
+
     private void drawGrids(){
         synchronized (editLock) {
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-            viewport.apply();
+            if(drawGrids) {
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+                viewport.apply();
 
-            int borderLeft   = (int) orthographicCamera.position.x - (width / 2);
-            int borderRigth  = (int) orthographicCamera.position.x + (width / 2);
-            int borderTop    = (int) orthographicCamera.position.y + (height / 2);
-            int borderBottom = (int) orthographicCamera.position.y - (height / 2);
+                int borderLeft = (int) orthographicCamera.position.x - (SCREEN_WIDTH / 2);
+                int borderRigth = (int) orthographicCamera.position.x + (SCREEN_WIDTH / 2);
+                int borderTop = (int) orthographicCamera.position.y + (SCREEN_HEIGTH / 2);
+                int borderBottom = (int) orthographicCamera.position.y - (SCREEN_HEIGTH / 2);
 
-            for (int v = borderLeft; v <= borderRigth; v += tileSize) {
-                shapeRenderer.line(v, borderBottom, v, borderTop, Color.WHITE, Color.WHITE);
+                for (int v = borderLeft; v <= borderRigth; v += tileSize) {
+                    shapeRenderer.line(v, borderBottom, v, borderTop, Color.WHITE, Color.WHITE);
+                }
+                for (int h = borderBottom; h <= borderTop; h += tileSize) {
+                    shapeRenderer.line(borderLeft, h, borderRigth, h, Color.WHITE, Color.WHITE);
+                }
+
+                int worldLeft = 0 + tileSize;
+                int worldRigth = width + tileSize;
+                int worldTop = height + tileSize;
+                int worldBottom = 0 + tileSize;
+
+                shapeRenderer.line(worldLeft, worldBottom, worldRigth, worldBottom, Color.MAGENTA, Color.MAGENTA);
+                shapeRenderer.line(worldLeft, worldBottom, worldLeft, worldTop, Color.MAGENTA, Color.MAGENTA);
+                shapeRenderer.line(worldLeft, worldTop, worldRigth, worldTop, Color.MAGENTA, Color.MAGENTA);
+                shapeRenderer.line(worldRigth, worldTop, worldRigth, worldBottom, Color.MAGENTA, Color.MAGENTA);
+
+                shapeRenderer.end();
             }
-            for (int h = borderBottom; h <= borderTop; h += tileSize) {
-                shapeRenderer.line(borderLeft, h, borderRigth, h, Color.WHITE, Color.WHITE);
-            }
-
-            shapeRenderer.end();
         }
     }
 
     public void setObjectBrush(File file){
         synchronized (editLock) {
+            if(file==null){this.objectBrush = null; return;}
             this.objectBrush = new MapObject(file,ObjectIO.readObject(file.getAbsolutePath()));
         }
     }
@@ -139,6 +174,10 @@ public class LevelHolder implements ApplicationListener{
         }
     }
 
+    public OrthographicCamera getOrthographicCamera() {
+        return orthographicCamera;
+    }
+
     public void setActiveLayer(int activeLayer){this.activeLayer = activeLayer;}
     public void setPointType(int pointType){this.pointType = pointType;}
     public void changeBrushFrame(int frameIndex){objectBrush.changeCurrentFrame(frameIndex);}
@@ -146,6 +185,10 @@ public class LevelHolder implements ApplicationListener{
     public Viewport getViewport(){return viewport;}
     public MapObject getObjectBrush(){
         return objectBrush;
+    }
+
+    public ObjectBrushHolder getObjectBrushHolder() {
+        return objectBrushHolder;
     }
 
     public void handleInput(){
@@ -162,40 +205,56 @@ public class LevelHolder implements ApplicationListener{
         if((w_pressed && !w_prev)||(w_pressed && w_prev)){pos_y  += tileSize;}
         if((s_pressed && !s_prev)||(s_pressed && s_prev)){pos_y  -= tileSize;}
 
-        pos_x = pos_x>width ? width : pos_x;
+        pos_x = pos_x>width+tileSize ? width+tileSize : pos_x;
         pos_x = pos_x<0 ? 0 : pos_x;
 
-        pos_y = pos_y>height ? height : pos_y;
+        pos_y = pos_y>height+tileSize ? height+tileSize : pos_y;
         pos_y = pos_y<0 ? 0 : pos_y;
 
         orthographicCamera.position.x = pos_x;
         orthographicCamera.position.y = pos_y;
-
 
         a_prev = a_pressed;
         d_prev = d_pressed;
         w_prev = w_pressed;
         s_prev = s_pressed;
 
+
         int mouseX = Gdx.input.getX();
-        int mouseY = height - Gdx.input.getY();
+        int mouseY = SCREEN_HEIGTH - Gdx.input.getY();
 
-        float x = (pos_x - (width/2)) + mouseX;
-        float y = (pos_y - (height/2)) + mouseY;
+        float screenBoundsLeft = pos_x - (orthographicCamera.zoom*orthographicCamera.viewportWidth/2);
+        float screenBoundsBot  = pos_y - (orthographicCamera.zoom*orthographicCamera.viewportHeight/2);
+        float screenWidth      = orthographicCamera.viewportWidth * orthographicCamera.zoom;
+        float screenHeigth     = orthographicCamera.viewportHeight * orthographicCamera.zoom;
 
-        objectBrushHolder.setTilePositionText(getTile(x) + "," + getTile(y));
+
+        float relativePosX = screenBoundsLeft + (((float)mouseX / (float)SCREEN_WIDTH) * screenWidth);
+        float relativePosY = screenBoundsBot + (((float)mouseY / (float)SCREEN_HEIGTH) * screenHeigth);
+
+
+        objectBrushHolder.setTilePositionText(getTile(relativePosX) + "," + getTile(relativePosY));
+        boolean left_click = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+        boolean right_click = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+
+
         if(objectBrush!=null) {
-            objectBrush.setPosition(new Vector2(x, y));
-            boolean left_click = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
-
+            objectBrush.setImagePosition(mouseX,mouseY);
+            objectBrush.setRelativePosition(new Vector2(relativePosX,relativePosY));
             if(left_click && !left_prev){
-               insertObject(objectBrush.clone(),pointType,(int)x,(int)y,activeLayer,objectBrush.getCurrentFrame().getWidth(),objectBrush.getCurrentFrame().getHeight());
+               insertObject(objectBrush.clone(),pointType,(int)relativePosX,(int)relativePosY,activeLayer,objectBrush.getCurrentFrame().getWidth(),objectBrush.getCurrentFrame().getHeight());
+            }
+            if(right_click && !right_prev){
+                objectBrushHolder.clearBrush();
             }
 
-            left_prev = left_click;
+        }else{
+
         }
 
 
+        left_prev = left_click;
+        right_prev = right_click;
 
 
 
@@ -250,21 +309,24 @@ public class LevelHolder implements ApplicationListener{
     private int getTile(float tile){
         return Math.round(tile/tileSize);
     }
+    public int getTileSize() {return tileSize;}
 
-
-    private void insertObject(MapObject object,int pointing, int x,int y,int layer,float width,float heigth){
+    private void insertObject(MapObject object, int pointing, int x, int y, int layer, float width, float heigth){
         switch (pointing){
             case POINTING_TO_TILE:
                 float tileX = (x - (x%tileSize))+(tileSize/2);
                 float tileY = (y - (y%tileSize))+(tileSize/2);
                 object.setSize(tileSize,tileSize);
-                object.setPosition(new Vector2(tileX,tileY));
+                object.setRelativePosition(new Vector2(tileX,tileY));
+                object.setImagePosition(tileX,tileY);
                 layeredRenderer.addSprite(layer,object.getCurrentFrame());
                 objects.add(object);
                 level.addObject(object.getObjectFile(),new Vector2(tileX,tileY),layer,tileSize,tileSize);
 
                 break;
             case POINTING_TO_ABSOLUTE:
+                object.setRelativePosition(new Vector2(x,y));
+                object.setImagePosition(x,y);
                 layeredRenderer.addSprite(layer,object.getCurrentFrame());
                 objects.add(object);
                 level.addObject(object.getObjectFile(),new Vector2(x,y),layer,width,heigth);

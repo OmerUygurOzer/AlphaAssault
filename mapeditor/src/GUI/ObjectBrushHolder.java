@@ -33,17 +33,21 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
     private JButton heigthUp = new JButton("+");
     private JButton heigthDown = new JButton("-");
     private JComboBox<Integer> depthSelector = new JComboBox<Integer>();
+    private JButton fitTile = new JButton("Fit Tile");
     private JComboBox<String> pointTypeSelecetor = new JComboBox<String>();
+
 
     private File[] objectFiles;
 
     private LevelHolder levelHolder;
     private ObjectHolder objectHolder;
 
+    private String directoryPath = "";
+
     public ObjectBrushHolder(String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) {
         super(title, resizable, closable, maximizable, iconifiable);
         setLayout(null);
-        setSize(240,200);
+        setSize(260,200);
 
 
         selectedBrush.setBounds(0,0,100,20);
@@ -71,6 +75,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
         widthUp.setBounds(195,20,45,20);
 
         depthSelector.setBounds(100,50,40,20);
+        fitTile.setBounds(140,50,100,20);
 
         heigthUp.addActionListener(this);
         heigthDown.addActionListener(this);
@@ -82,11 +87,13 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
             depthSelector.addItem(i);
         }
         depthSelector.addActionListener(this);
+        fitTile.addActionListener(this);
 
         pointTypeSelecetor.setBounds(100,80,140,20);
         pointTypeSelecetor.addItem("To Tile");
         pointTypeSelecetor.addItem("To Absolute Point");
         pointTypeSelecetor.addActionListener(this);
+
 
 
 
@@ -99,12 +106,14 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
         add(widthUp);
 
         add(depthSelector);
+        add(fitTile);
         add(pointTypeSelecetor);
 
         add(directory);
         add(selectedBrush);
         add(tilePosition);
         add(listHolder);
+
 
 
     }
@@ -139,6 +148,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
             int lVal = loader.showOpenDialog(this);
             if (lVal == JFileChooser.APPROVE_OPTION) {
                 path = loader.getCurrentDirectory().toString();
+                directoryPath = path;
                 loadObjects(path);
                 return;
             }
@@ -165,6 +175,15 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
             levelHolder.setActiveLayer(depthSelector.getSelectedIndex());
         }
 
+        if(e.getSource().equals(fitTile)){
+            int tileSize = levelHolder.getTileSize();
+            levelHolder.getObjectBrush().setSize(tileSize,tileSize);
+            widthLabel.setText("W:"+levelHolder.getObjectBrush().getCurrentFrame().getWidth());
+            heigthLabel.setText("H:"+levelHolder.getObjectBrush().getCurrentFrame().getHeight());
+            repaint();
+        }
+
+
         if(e.getSource().equals(pointTypeSelecetor)){
             levelHolder.setPointType(pointTypeSelecetor.getSelectedIndex());
         }
@@ -182,4 +201,14 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
         String text = "Tile:" + tile;
         tilePosition.setText(text);
     }
+
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public void clearBrush(){
+        levelHolder.setObjectBrush(null);
+        objectHolder.clearObject();
+    }
+
 }
