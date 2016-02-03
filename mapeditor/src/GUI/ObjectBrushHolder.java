@@ -127,7 +127,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
     @Override
     public void valueChanged(ListSelectionEvent e) {
         JList list = (JList)e.getSource();
-        if(!e.getValueIsAdjusting()){
+        if(e.getValueIsAdjusting()){
             File file = objectFiles[list.getSelectedIndex()];
             selectedBrush.setText(file.getName());
             objectHolder.setObjectFile(file);
@@ -191,6 +191,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
 
 
     public void loadObjects(String absolutePath){
+        directoryPath = absolutePath;
         objectFiles = (new File(absolutePath)).listFiles();
         for(int i = 0; i < objectFiles.length; i++){
             listModel.addElement(objectFiles[i].getName());
@@ -207,7 +208,7 @@ public class ObjectBrushHolder extends JInternalFrame implements ListSelectionLi
     }
 
     public void clearBrush(){
-        levelHolder.setObjectBrush(null);
+        levelHolder.clearObjectBrush();
         objectHolder.clearObject();
     }
 

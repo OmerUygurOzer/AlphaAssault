@@ -8,12 +8,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import level.Level;
+import level.LoadableLevel;
 import level.objects.MapObject;
 
 
@@ -26,12 +28,15 @@ import java.util.List;
  * Created by Omer on 1/17/2016.
  */
 public class LevelHolder implements ApplicationListener{
-    private Level level;
+    private Sprite cursor;
+
+    private LoadableLevel loadableLevel;
 
     public static final int POINTING_TO_TILE = 0;
     public static final int POINTING_TO_ABSOLUTE = 1;
 
     private ObjectBrushHolder objectBrushHolder;
+    private TileHolder tileContentHolder;
 
     private OrthographicCamera orthographicCamera;
     private  Viewport viewport;
@@ -64,19 +69,29 @@ public class LevelHolder implements ApplicationListener{
     private int activeLayer;
     private int pointType;
 
+    private int pickedTileIndex = 0;
+    private boolean pickedTileActive = false;
+    private Vector2 pickedTilePosition = new Vector2();
 
     private List<MapObject> objects = new ArrayList<MapObject>();
 
     private boolean drawGrids = false;
+    private boolean drawLights = false;
+    private boolean drawFog = false;
 
 
     @Override
     public void create() {
-        level = new Level();
+        loadableLevel = new LoadableLevel();
+
         width = SCREEN_WIDTH;
         height = SCREEN_HEIGTH;
 
         localSpriteBatch = new SpriteBatch();
+
+        String localPath = System.getProperty("user.dir");
+        cursor = new Sprite(new Texture(localPath+"\\"+"cursor.png"));
+        cursor.setSize(20,20);
 
         orthographicCamera = new OrthographicCamera();
         viewport = new FitViewport(SCREEN_WIDTH,SCREEN_HEIGTH,orthographicCamera);
@@ -93,14 +108,21 @@ public class LevelHolder implements ApplicationListener{
 
     }
 
+    public LoadableLevel getLoadableLevel() {
+        return loadableLevel;
+    }
+
     public void createNewLevel(String name,int tileSize,int width,int heigth){
-        level.setName(name);
-        level.setTileSize(tileSize);
-        level.setSize(width,heigth);
+        loadableLevel.setName(name);
+        loadableLevel.setTileSize(tileSize);
+        loadableLevel.setSize(width,heigth);
+        loadableLevel.generateLevel();
         synchronized (editLock){
             this.tileSize = tileSize;
             this.width = width;
             this.height = heigth;
+
+
            if(width<=heigth){
                viewport.setWorldSize(width,width);
                orthographicCamera.position.set(width/2,width/2,0);
@@ -109,21 +131,21 @@ public class LevelHolder implements ApplicationListener{
                viewport.setWorldSize(heigth,heigth);
                orthographicCamera.position.set(heigth/2,heigth/2,0);
                orthographicCamera.update();}
+
             viewport.apply();
 
         }
 
         layeredRenderer.clear();
-        level.clear();
+        loadableLevel.clear();
 
 
     }
 
-    public void toggleGrids(){synchronized (editLock){drawGrids = !drawGrids;}}
+
 
     private void drawGrids(){
         synchronized (editLock) {
-            if(drawGrids) {
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
                 viewport.apply();
@@ -140,10 +162,10 @@ public class LevelHolder implements ApplicationListener{
                     shapeRenderer.line(borderLeft, h, borderRigth, h, Color.WHITE, Color.WHITE);
                 }
 
-                int worldLeft = 0 + tileSize;
-                int worldRigth = width + tileSize;
-                int worldTop = height + tileSize;
-                int worldBottom = 0 + tileSize;
+                int worldLeft = 0;
+                int worldRigth = width;
+                int worldTop = height;
+                int worldBottom = 0;
 
                 shapeRenderer.line(worldLeft, worldBottom, worldRigth, worldBottom, Color.MAGENTA, Color.MAGENTA);
                 shapeRenderer.line(worldLeft, worldBottom, worldLeft, worldTop, Color.MAGENTA, Color.MAGENTA);
@@ -151,8 +173,19 @@ public class LevelHolder implements ApplicationListener{
                 shapeRenderer.line(worldRigth, worldTop, worldRigth, worldBottom, Color.MAGENTA, Color.MAGENTA);
 
                 shapeRenderer.end();
-            }
         }
+    }
+
+    private void drawLights(){}
+    private void drawFog(){}
+
+    public void toggleGrids(){synchronized (editLock){drawGrids = !drawGrids;}}
+    public void toggleLights(){synchronized (editLock){drawLights = !drawLights;}}
+    public void toggleFog(){synchronized (editLock){drawFog = !drawFog;}}
+
+    public void setObjectBrushHolder(ObjectBrushHolder objectBrushHolder){this.objectBrushHolder = objectBrushHolder;}
+    public ObjectBrushHolder getObjectBrushHolder() {
+        return objectBrushHolder;
     }
 
     public void setObjectBrush(File file){
@@ -161,6 +194,27 @@ public class LevelHolder implements ApplicationListener{
             this.objectBrush = new MapObject(file,ObjectIO.readObject(file.getAbsolutePath()));
         }
     }
+
+    public void setObjectBrush(MapObject objectBrush){
+        synchronized (editLock){
+            this.objectBrush = objectBrush;
+            layeredRenderer.removeObject(objectBrush.layer,objectBrush);
+            loadableLevel.removeObject(objectBrush);
+        }
+    }
+
+    public void clearObjectBrush(){
+        synchronized (editLock){
+            this.objectBrush = null;
+        }
+    }
+
+    public void changeBrushFrame(int frameIndex){objectBrush.changeCurrentFrame(frameIndex);}
+    public MapObject getObjectBrush(){
+        return objectBrush;
+    }
+
+    public void setTileContentHolder(TileHolder tileContentHolder){this.tileContentHolder = tileContentHolder;}
 
     public void zoomIn(){
         synchronized (editLock) {
@@ -180,16 +234,12 @@ public class LevelHolder implements ApplicationListener{
 
     public void setActiveLayer(int activeLayer){this.activeLayer = activeLayer;}
     public void setPointType(int pointType){this.pointType = pointType;}
-    public void changeBrushFrame(int frameIndex){objectBrush.changeCurrentFrame(frameIndex);}
-    public void setObjectBrushHolder(ObjectBrushHolder objectBrushHolder){this.objectBrushHolder = objectBrushHolder;}
-    public Viewport getViewport(){return viewport;}
-    public MapObject getObjectBrush(){
-        return objectBrush;
-    }
 
-    public ObjectBrushHolder getObjectBrushHolder() {
-        return objectBrushHolder;
-    }
+
+    public Viewport getViewport(){return viewport;}
+
+
+
 
     public void handleInput(){
         boolean a_pressed = Gdx.input.isKeyPressed(Input.Keys.A);
@@ -205,10 +255,10 @@ public class LevelHolder implements ApplicationListener{
         if((w_pressed && !w_prev)||(w_pressed && w_prev)){pos_y  += tileSize;}
         if((s_pressed && !s_prev)||(s_pressed && s_prev)){pos_y  -= tileSize;}
 
-        pos_x = pos_x>width+tileSize ? width+tileSize : pos_x;
+        pos_x = pos_x>width ? width : pos_x;
         pos_x = pos_x<0 ? 0 : pos_x;
 
-        pos_y = pos_y>height+tileSize ? height+tileSize : pos_y;
+        pos_y = pos_y>height? height : pos_y;
         pos_y = pos_y<0 ? 0 : pos_y;
 
         orthographicCamera.position.x = pos_x;
@@ -223,6 +273,7 @@ public class LevelHolder implements ApplicationListener{
         int mouseX = Gdx.input.getX();
         int mouseY = SCREEN_HEIGTH - Gdx.input.getY();
 
+
         float screenBoundsLeft = pos_x - (orthographicCamera.zoom*orthographicCamera.viewportWidth/2);
         float screenBoundsBot  = pos_y - (orthographicCamera.zoom*orthographicCamera.viewportHeight/2);
         float screenWidth      = orthographicCamera.viewportWidth * orthographicCamera.zoom;
@@ -231,7 +282,7 @@ public class LevelHolder implements ApplicationListener{
 
         float relativePosX = screenBoundsLeft + (((float)mouseX / (float)SCREEN_WIDTH) * screenWidth);
         float relativePosY = screenBoundsBot + (((float)mouseY / (float)SCREEN_HEIGTH) * screenHeigth);
-
+        cursor.setCenter(relativePosX,relativePosY);
 
         objectBrushHolder.setTilePositionText(getTile(relativePosX) + "," + getTile(relativePosY));
         boolean left_click = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
@@ -239,17 +290,26 @@ public class LevelHolder implements ApplicationListener{
 
 
         if(objectBrush!=null) {
-            objectBrush.setImagePosition(mouseX,mouseY);
+            objectBrush.setImagePosition(relativePosX,relativePosY);
             objectBrush.setRelativePosition(new Vector2(relativePosX,relativePosY));
             if(left_click && !left_prev){
-               insertObject(objectBrush.clone(),pointType,(int)relativePosX,(int)relativePosY,activeLayer,objectBrush.getCurrentFrame().getWidth(),objectBrush.getCurrentFrame().getHeight());
+               insertObject(objectBrush.clone(),pointType,(int)relativePosX,(int)relativePosY,activeLayer);
             }
             if(right_click && !right_prev){
                 objectBrushHolder.clearBrush();
+                pickedTileActive = false;
+                tileContentHolder.clear();
             }
 
         }else{
+            if(left_click && !left_prev){
+              pickTile(relativePosX,relativePosY);
+            }
 
+            if(right_click && !right_prev){
+                pickedTileActive = false;
+                tileContentHolder.clear();
+            }
         }
 
 
@@ -270,11 +330,15 @@ public class LevelHolder implements ApplicationListener{
         synchronized (editLock) {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            drawGrids();
+
 
             handleInput();
 
             layeredRenderer.draw();
+
+            if(drawGrids){drawGrids();}
+            if(drawLights){drawLights();}
+            if(drawFog){drawFog();}
 
             localSpriteBatch.begin();
             localSpriteBatch.setProjectionMatrix(viewport.getCamera().combined);
@@ -283,6 +347,14 @@ public class LevelHolder implements ApplicationListener{
                 objectBrush.draw(localSpriteBatch);
             }
             localSpriteBatch.end();
+
+            if(pickedTileActive){renderTilePicker();}
+            localSpriteBatch.begin();
+            localSpriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+            viewport.apply();
+            cursor.draw(localSpriteBatch);
+            localSpriteBatch.end();
+
 
 
         }
@@ -309,27 +381,59 @@ public class LevelHolder implements ApplicationListener{
     private int getTile(float tile){
         return Math.round(tile/tileSize);
     }
+
+    private void pickTile(float x, float y){
+        int tileX = Math.round((x - (x%tileSize))/tileSize);
+        int tileY = Math.round((y - (y%tileSize))/tileSize);
+        if(!loadableLevel.fits(tileX,tileY)){return;}
+        pickedTileIndex = tileX + tileY*(width/tileSize);
+
+        int centerX = tileX * tileSize;
+        int centerY = tileY * tileSize;
+        pickedTilePosition.x = centerX;
+        pickedTilePosition.y = centerY;
+
+        pickedTileActive = true;
+        tileContentHolder.addObjects(loadableLevel.getTile(tileX,tileY));
+    }
+    private void renderTilePicker(){
+        synchronized (editLock){
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+            viewport.apply();
+            shapeRenderer.rect(pickedTilePosition.x,pickedTilePosition.y,tileSize,tileSize,Color.RED,Color.RED,Color.RED,Color.RED);
+            shapeRenderer.end();
+        }
+    }
+
+
     public int getTileSize() {return tileSize;}
 
-    private void insertObject(MapObject object, int pointing, int x, int y, int layer, float width, float heigth){
+    private void insertObject(MapObject object, int pointing, int x, int y, int layer){
+        int offsetX = (x - (x%tileSize))+(tileSize/2);
+        int offsetY = (y - (y%tileSize))+(tileSize/2);
+        int tileX = (x - (x%tileSize))/tileSize;
+        int tileY = (y - (y%tileSize))/tileSize;
+        if(!loadableLevel.fits(tileX,tileY)){return;}
+
         switch (pointing){
             case POINTING_TO_TILE:
-                float tileX = (x - (x%tileSize))+(tileSize/2);
-                float tileY = (y - (y%tileSize))+(tileSize/2);
                 object.setSize(tileSize,tileSize);
-                object.setRelativePosition(new Vector2(tileX,tileY));
-                object.setImagePosition(tileX,tileY);
-                layeredRenderer.addSprite(layer,object.getCurrentFrame());
+                object.setRelativePosition(new Vector2(offsetX,offsetY));
+                object.setImagePosition(offsetX,offsetY);
+                object.layer = layer;
+                layeredRenderer.addObject(layer,object);
                 objects.add(object);
-                level.addObject(object.getObjectFile(),new Vector2(tileX,tileY),layer,tileSize,tileSize);
+                loadableLevel.addObject(object,tileX,tileY);
 
                 break;
             case POINTING_TO_ABSOLUTE:
                 object.setRelativePosition(new Vector2(x,y));
                 object.setImagePosition(x,y);
-                layeredRenderer.addSprite(layer,object.getCurrentFrame());
+                object.layer = layer;
+                layeredRenderer.addObject(layer,object);
                 objects.add(object);
-                level.addObject(object.getObjectFile(),new Vector2(x,y),layer,width,heigth);
+                loadableLevel.addObject(object,tileX,tileY);
                 break;
             default:
                 //Do noting

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import level.objects.MapObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +18,16 @@ public class LayeredRenderer {
     private List<Integer> renderedLayers = new ArrayList<Integer>();
 
     private SpriteBatch spriteBatch;
-    private List<List<Sprite>> layers;
+    private List<List<MapObject>> layers;
 
     private OrthographicCamera orthographicCamera;
     private Viewport viewport;
 
+    private Object lock = new Object();
+
     public LayeredRenderer(){
         spriteBatch = new SpriteBatch();
-        layers = new ArrayList<List<Sprite>>();
+        layers = new ArrayList<List<MapObject>>();
     }
 
     public void addCamera(OrthographicCamera orthographicCamera){
@@ -35,12 +38,20 @@ public class LayeredRenderer {
         this.viewport = viewport;
     }
 
-    public void addSprite(int layer, Sprite sprite){
-        if(layer < layers.size()){
-            layers.get(layer).add(sprite);
-        }else{
-            layers.add(new ArrayList<Sprite>());
-            layers.get(layers.size()-1).add(sprite);
+    public void addObject(int layer, MapObject object){
+        synchronized (lock) {
+            if (layer < layers.size()) {
+                layers.get(layer).add(object);
+            } else {
+                layers.add(new ArrayList<MapObject>());
+                layers.get(layers.size() - 1).add(object);
+            }
+        }
+    }
+
+    public void removeObject(int layer,MapObject object){
+        synchronized (lock) {
+            layers.get(layer).remove(object);
         }
     }
 
@@ -61,17 +72,19 @@ public class LayeredRenderer {
     }
 
     public void draw(){
-        spriteBatch.begin();
-        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
-        viewport.apply();
-        for(int index = 0;index < layers.size();index++) {
-            if (renderedLayers.contains(index)){
-                for (Sprite sprite : layers.get(index)) {
-                    sprite.draw(spriteBatch);
+        synchronized (lock) {
+            spriteBatch.begin();
+            spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+            viewport.apply();
+            for (int index = 0; index < layers.size(); index++) {
+                if (renderedLayers.contains(index)) {
+                    for (MapObject object : layers.get(index)) {
+                        object.getCurrentFrame().draw(spriteBatch);
+                    }
                 }
-             }
+            }
+            spriteBatch.end();
         }
-        spriteBatch.end();
     }
 
 

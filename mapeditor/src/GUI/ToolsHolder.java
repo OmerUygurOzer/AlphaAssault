@@ -1,5 +1,7 @@
 package GUI;
 
+import level.LoadableLevel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,10 @@ public class ToolsHolder extends JInternalFrame implements ActionListener {
     private JButton zoomOut = new JButton("-");
 
     private JButton toggleGrids = new JButton("Toggle Grids");
+    private JButton toggleLights = new JButton("Toggle Lights");
+    private JButton toggleFog = new JButton("Toggle Fogs");
+
+    private LoadableLevel loadableLevel;
 
 
     public ToolsHolder(String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) {
@@ -28,22 +34,31 @@ public class ToolsHolder extends JInternalFrame implements ActionListener {
         zoomIn.setBounds(145,0,45,20);
 
         toggleGrids.setBounds(40,20,150,20);
+        toggleLights.setBounds(40,40,150,20);
+        toggleFog.setBounds(40,60,150,20);
+
 
 
         zoomOut.addActionListener(this);
         zoomIn.addActionListener(this);
         toggleGrids.addActionListener(this);
+        toggleLights.addActionListener(this);
+        toggleFog.addActionListener(this);
 
         add(zoomOut);
         add(zoom);
         add(zoomIn);
         add(toggleGrids);
+        add(toggleLights);
+        add(toggleFog);
     }
 
 
     public void setLevelHolder(LevelHolder levelHolder){
         this.levelHolder = levelHolder;
+        this.loadableLevel = levelHolder.getLoadableLevel();
     }
+    private void setLoadableLevel(LoadableLevel loadableLevel){this.loadableLevel = loadableLevel;}
 
 
     @Override
@@ -58,9 +73,16 @@ public class ToolsHolder extends JInternalFrame implements ActionListener {
         }
 
         if(e.getSource().equals(toggleGrids)){
-           levelHolder.toggleGrids();
+            levelHolder.toggleGrids();
         }
 
+        if(e.getSource().equals(toggleLights)){
+            levelHolder.toggleLights();
+        }
+
+        if(e.getSource().equals(toggleFog)){
+            levelHolder.toggleFog();
+        }
 
     }
 }

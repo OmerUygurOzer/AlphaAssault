@@ -13,8 +13,8 @@ Game Engine(EnJine2D) Features
 Event based system
 MultiThreaded
 3 State rendering system
-Comes with a level editor and a object editor.
-levels files(.enj) contain all resources for each level. Once loaded no more resource management is needed.
+Comes with a loadableLevel editor and a object editor.
+levels files(.enj) contain all resources for each loadableLevel. Once loaded no more resource management is needed.
 Multiplayer support
 
 Game Features:

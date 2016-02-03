@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import objects.ObjectBase;
 
@@ -17,12 +18,12 @@ import java.util.List;
  * Created by Omer on 2/1/2016.
  */
 public class MapObject {
-    private File objectFile;
-    private ObjectBase objectBase;
+    public File objectFile;
+    public ObjectBase objectBase;
 
     private Sprite currentFrame;
-    private Vector2 position;
-    private int layer;
+    public Vector2 position;
+    public int layer;
     private int currentFrameIndex;
 
 
@@ -39,9 +40,6 @@ public class MapObject {
             createFrames();
     }
 
-    public Vector2 getPosition() {
-        return position;
-    }
 
     public Sprite getCurrentFrame() {
         return new Sprite(currentFrame);
@@ -56,7 +54,6 @@ public class MapObject {
     public void setImagePosition(float x,float y){
         synchronized (lock){
             currentFrame.setCenter(x,y);
-            currentFrame.setCenter(position.x,position.y);
             for (Sprite sprite : frameSprites) {
                 sprite.setCenter(position.x,position.y);
             }

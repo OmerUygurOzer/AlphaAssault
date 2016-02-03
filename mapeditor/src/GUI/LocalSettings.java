@@ -39,6 +39,11 @@ public class LocalSettings implements Serializable {
     public int tWidth;
     public int tHeight;
 
+    public int tiX;
+    public int tiY;
+    public int tiWidth;
+    public int tiHeigth;
+
     public void store(){
         String localPath = System.getProperty("user.dir") + "\\" + "guiSettings.enj";
         ObjectIO.write(localPath,this);

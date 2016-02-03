@@ -1,6 +1,5 @@
 package GUI;
 
-import level.Level;
 import level.LevelType;
 
 import javax.swing.*;
@@ -47,9 +46,9 @@ public class NewLevelDialog extends JPanel {
 
 
         setBounds(X, Y, WIDTH, HEIGTH);
-        add(new JLabel("Level Name:"));
+        add(new JLabel("LoadableLevel Name:"));
         add(nameField);
-        add(new JLabel("Level Type:"));
+        add(new JLabel("LoadableLevel Type:"));
         add(typeField);
         add(Box.createHorizontalStrut(10));
         add(new JLabel("Width"));

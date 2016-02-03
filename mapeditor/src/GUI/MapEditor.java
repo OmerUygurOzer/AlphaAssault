@@ -23,6 +23,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
     private ObjectBrushHolder objectBrushHolder;
     private ObjectHolder objectHolder;
     private ToolsHolder toolsHolder;
+    private TileHolder tileHolder;
 
     private LwjglCanvas canvas;
     private LevelHolder levelHolder;
@@ -59,35 +60,41 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         levelHolder = new LevelHolder();
         final LwjglCanvas lwjglCanvas = new LwjglCanvas(levelHolder,configuration);
         canvas = lwjglCanvas;
-        levelHolderFrame = new JInternalFrame("EnJine2D Map",false,false,false,false);
+        levelHolderFrame = new JInternalFrame("EnJine2D Map",false,false,false,true);
         levelHolderFrame.setSize(WIDTH,HEIGHT);
         levelHolderFrame.setVisible(true);
 
 
-        objectHolder = new ObjectHolder("Object",true,false,true,false);
+        objectHolder = new ObjectHolder("Object",true,false,true,true);
         objectHolder.setVisible(true);
 
 
-        objectBrushHolder = new ObjectBrushHolder("Object Brush",true,false,true,false);
+        objectBrushHolder = new ObjectBrushHolder("Object Brush",true,false,true,true);
         objectBrushHolder.setVisible(true);
 
 
 
-        toolsHolder = new ToolsHolder("Tools",true,false,true,false);
+        toolsHolder = new ToolsHolder("Tools",true,false,true,true);
         toolsHolder.setLevelHolder(levelHolder);
         toolsHolder.setVisible(true);
+
+        tileHolder = new TileHolder("Tile Content",true,false,true,true);
+        tileHolder.setVisible(true);
 
 
 
         objectBrushHolder.setLevelHolder(levelHolder);
         objectBrushHolder.setObjectHolder(objectHolder);
         levelHolder.setObjectBrushHolder(objectBrushHolder);
+        levelHolder.setTileContentHolder(tileHolder);
         objectHolder.setLevelHolder(levelHolder);
+        tileHolder.setLevelHolder(levelHolder);
 
         getContentPane().add(objectHolder);
         getContentPane().add(toolsHolder);
         getContentPane().add(objectBrushHolder);
         getContentPane().add(levelHolderFrame);
+        getContentPane().add(tileHolder);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -103,6 +110,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         objectHolder.addComponentListener(this);
         objectBrushHolder.addComponentListener(this);
         toolsHolder.addComponentListener(this);
+        tileHolder.addComponentListener(this);
 
         addWindowListener(this);
     }
@@ -114,9 +122,9 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
 
 
         JMenu file = new JMenu("File");
-        newLevel = new JMenuItem("New Level...");         newLevel.addActionListener(this);
-        loadLevel = new JMenuItem("Load Level...");       loadLevel.addActionListener(this);
-        saveLevel = new JMenuItem("Save Level...");       saveLevel.addActionListener(this);
+        newLevel = new JMenuItem("New LoadableLevel...");         newLevel.addActionListener(this);
+        loadLevel = new JMenuItem("Load LoadableLevel...");       loadLevel.addActionListener(this);
+        saveLevel = new JMenuItem("Save LoadableLevel...");       saveLevel.addActionListener(this);
         exit = new JMenuItem("Exit");                     exit.addActionListener(this);
 
         JMenu tools = new JMenu("Tools");
@@ -243,6 +251,11 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
             localSettings.tWidth = toolsHolder.getWidth();
             localSettings.tHeight = toolsHolder.getHeight();
 
+            localSettings.tiX = tileHolder.getX();
+            localSettings.tiY = tileHolder.getY();
+            localSettings.tiWidth = tileHolder.getWidth();
+            localSettings.tiHeigth = tileHolder.getHeight();
+
 
             localSettings.store();
         }else {
@@ -256,6 +269,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
             objectBrushHolder.setBounds(localSettings.obhX,localSettings.obhY,localSettings.obhWidth,localSettings.obhHeigth);
             objectHolder.setBounds(localSettings.ohX,localSettings.ohY,localSettings.ohWidth,localSettings.ohHeigth);
             toolsHolder.setBounds(localSettings.tX,localSettings.tY,localSettings.tWidth,localSettings.tHeight);
+            tileHolder.setBounds(localSettings.tiX,localSettings.tiY,localSettings.tiWidth,localSettings.tiHeigth);
             setSize(localSettings.mainWidth,localSettings.mainHeight);
             if(!localSettings.objectDirectory.equals(""))objectBrushHolder.loadObjects(localSettings.objectDirectory);
         }
