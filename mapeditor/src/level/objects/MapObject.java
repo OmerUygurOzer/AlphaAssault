@@ -1,14 +1,14 @@
 package level.objects;
 
-import IOUtils.ByteIO;
-import IOUtils.SerializableImage;
+import utilities.ByteIO;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import objects.ObjectBase;
+import graphics.SerializableImage;
+import ingame.objects.RawObject;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class MapObject {
     public File objectFile;
-    public ObjectBase objectBase;
+    public RawObject rawObject;
 
     private Sprite currentFrame;
     public Vector2 position;
@@ -31,8 +31,8 @@ public class MapObject {
 
     private Object lock = new Object();
 
-    public MapObject(File objectFile,ObjectBase objectBase){
-            this.objectBase = objectBase;
+    public MapObject(File objectFile,RawObject rawObject){
+            this.rawObject = rawObject;
             this.objectFile = objectFile;
             this.layer = 0;
             this.position = new Vector2(0f,0f);
@@ -89,7 +89,7 @@ public class MapObject {
 
 
     private void createFrames(){
-            for (SerializableImage image : objectBase.frames) {
+            for (SerializableImage image : rawObject.frames) {
                 byte[] bytes = ByteIO.convertToByteArray(image.image);
                 Pixmap pixmap = new Pixmap(bytes,0,bytes.length);
                 frameSprites.add(new Sprite(new Texture(pixmap)));
@@ -99,7 +99,7 @@ public class MapObject {
     }
 
     public MapObject clone(){
-        MapObject object = new MapObject(objectFile,objectBase);
+        MapObject object = new MapObject(objectFile, rawObject);
         object.setSize(currentFrame.getWidth(),currentFrame.getHeight());
         object.setRelativePosition(position);
         object.changeCurrentFrame(currentFrameIndex);
@@ -107,7 +107,7 @@ public class MapObject {
         return object;
     }
 
-    public ObjectBase getObjectBase() {
-        return objectBase;
+    public RawObject getRawObject() {
+        return rawObject;
     }
 }

@@ -1,8 +1,10 @@
 package level;
 
 
-import level.objects.LoadableObject;
+
+import ingame.objects.InstanceableObject;
 import level.objects.MapObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,13 +15,16 @@ import java.util.ArrayList;
 public class LoadableLevel implements Serializable{
 
     private String name;
+
     private int width;
     private int height;
     private int tileSize;
 
 
-    private transient ArrayList<MapObject>[] tiles;
-    private ArrayList<LoadableObject> objects;
+
+
+    private ArrayList<MapObject>[] tiles;
+    private ArrayList<InstanceableObject> objects;
 
 
     public LoadableLevel() {
@@ -27,7 +32,7 @@ public class LoadableLevel implements Serializable{
         this.width = 800;
         this.height = 800;
         this.tileSize = 20;
-        objects = new ArrayList<LoadableObject>();
+        objects = new ArrayList<InstanceableObject>();
         generateLevel();
     }
 
@@ -57,14 +62,14 @@ public class LoadableLevel implements Serializable{
     }
 
     public void addObject(MapObject object,int tileX,int tileY){
-            LoadableObject loadableObject = new LoadableObject();
-            loadableObject.objectFileName = object.getObjectFile().getName();
-            loadableObject.imageWidth = (int)object.getCurrentFrame().getWidth();
-            loadableObject.imageWidth = (int)object.getCurrentFrame().getHeight();
-            loadableObject.layer = object.layer;
-            loadableObject.x = (int) object.position.x;
-            loadableObject.y = (int) object.position.y;
-            objects.add(loadableObject);
+            InstanceableObject instanceableObject = new InstanceableObject();
+            instanceableObject.objectFileName = object.getObjectFile().getName();
+            instanceableObject.imageWidth = (int)object.getCurrentFrame().getWidth();
+            instanceableObject.imageHeight = (int)object.getCurrentFrame().getHeight();
+            instanceableObject.layer = object.layer;
+            instanceableObject.x = (int) object.position.x;
+            instanceableObject.y = (int) object.position.y;
+            objects.add(instanceableObject);
 
 
            int index = tileX + tileY*(width/tileSize);

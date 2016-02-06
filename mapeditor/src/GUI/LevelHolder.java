@@ -1,7 +1,9 @@
 package GUI;
 
 
-import IOUtils.ObjectIO;
+
+import handlers.TextureManager;
+import utilities.ObjectIO;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -35,8 +37,7 @@ public class LevelHolder implements ApplicationListener{
     public static final int POINTING_TO_TILE = 0;
     public static final int POINTING_TO_ABSOLUTE = 1;
 
-    private ObjectBrushHolder objectBrushHolder;
-    private TileHolder tileContentHolder;
+    private Palette palette;
 
     private OrthographicCamera orthographicCamera;
     private  Viewport viewport;
@@ -83,6 +84,8 @@ public class LevelHolder implements ApplicationListener{
     @Override
     public void create() {
         loadableLevel = new LoadableLevel();
+        //TextureManager textureManager = new TextureManager();
+        //textureManager.initialize();
 
         width = SCREEN_WIDTH;
         height = SCREEN_HEIGTH;
@@ -183,15 +186,15 @@ public class LevelHolder implements ApplicationListener{
     public void toggleLights(){synchronized (editLock){drawLights = !drawLights;}}
     public void toggleFog(){synchronized (editLock){drawFog = !drawFog;}}
 
-    public void setObjectBrushHolder(ObjectBrushHolder objectBrushHolder){this.objectBrushHolder = objectBrushHolder;}
-    public ObjectBrushHolder getObjectBrushHolder() {
-        return objectBrushHolder;
+    public void setPalette(Palette palette){this.palette = palette;}
+    public Palette getPalette() {
+        return palette;
     }
 
     public void setObjectBrush(File file){
         synchronized (editLock) {
             if(file==null){this.objectBrush = null; return;}
-            this.objectBrush = new MapObject(file,ObjectIO.readObject(file.getAbsolutePath()));
+            this.objectBrush = new MapObject(file, ObjectIO.readObject(file.getAbsolutePath()));
         }
     }
 
@@ -213,8 +216,6 @@ public class LevelHolder implements ApplicationListener{
     public MapObject getObjectBrush(){
         return objectBrush;
     }
-
-    public void setTileContentHolder(TileHolder tileContentHolder){this.tileContentHolder = tileContentHolder;}
 
     public void zoomIn(){
         synchronized (editLock) {
@@ -278,7 +279,7 @@ public class LevelHolder implements ApplicationListener{
         float relativePosY = screenBoundsBot + (((float)mouseY / (float)SCREEN_HEIGTH) * screenHeigth);
         cursor.setCenter(relativePosX,relativePosY);
 
-        objectBrushHolder.setTilePositionText(getTile(relativePosX) + "," + getTile(relativePosY));
+        palette.setTilePositionText(getTile(relativePosX) + "," + getTile(relativePosY));
         boolean left_click = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
         boolean right_click = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
 
@@ -290,9 +291,9 @@ public class LevelHolder implements ApplicationListener{
                insertObject(objectBrush.clone(),pointType,(int)relativePosX,(int)relativePosY,activeLayer);
             }
             if(right_click && !right_prev){
-                objectBrushHolder.clearBrush();
+                palette.clearBrush();
                 pickedTileActive = false;
-                tileContentHolder.clear();
+                palette.clearTile();
             }
 
         }else{
@@ -302,7 +303,7 @@ public class LevelHolder implements ApplicationListener{
 
             if(right_click && !right_prev){
                 pickedTileActive = false;
-                tileContentHolder.clear();
+                palette.clearTile();
             }
         }
 
@@ -388,7 +389,7 @@ public class LevelHolder implements ApplicationListener{
         pickedTilePosition.y = centerY;
 
         pickedTileActive = true;
-        tileContentHolder.addObjects(loadableLevel.getTile(tileX,tileY));
+        palette.addObjects(loadableLevel.getTile(tileX,tileY));
     }
     private void renderTilePicker(){
         synchronized (editLock){

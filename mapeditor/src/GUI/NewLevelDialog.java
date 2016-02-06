@@ -1,6 +1,8 @@
 package GUI;
 
-import level.LevelType;
+
+
+import ingame.level.LevelType;
 
 import javax.swing.*;
 

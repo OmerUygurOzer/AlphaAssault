@@ -3,6 +3,7 @@ package GUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
+import handlers.TextureManager;
 import org.lwjgl.Sys;
 
 import javax.swing.*;
@@ -20,10 +21,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
 
     private JDesktopPane mainpane;
     private JInternalFrame levelHolderFrame;
-    private ObjectBrushHolder objectBrushHolder;
-    private ObjectHolder objectHolder;
-    private ToolsHolder toolsHolder;
-    private TileHolder tileHolder;
+    private Palette palette;
 
     private LwjglCanvas canvas;
     private LevelHolder levelHolder;
@@ -65,36 +63,14 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         levelHolderFrame.setVisible(true);
 
 
-        objectHolder = new ObjectHolder("Object",true,false,true,true);
-        objectHolder.setVisible(true);
+        palette = new Palette("Palette",true, false,true,true);
+        palette.setVisible(true);
+        palette.setLevelHolder(levelHolder);
+        levelHolder.setPalette(palette);
 
-
-        objectBrushHolder = new ObjectBrushHolder("Object Brush",true,false,true,true);
-        objectBrushHolder.setVisible(true);
-
-
-
-        toolsHolder = new ToolsHolder("Tools",true,false,true,true);
-        toolsHolder.setLevelHolder(levelHolder);
-        toolsHolder.setVisible(true);
-
-        tileHolder = new TileHolder("Tile Content",true,false,true,true);
-        tileHolder.setVisible(true);
-
-
-
-        objectBrushHolder.setLevelHolder(levelHolder);
-        objectBrushHolder.setObjectHolder(objectHolder);
-        levelHolder.setObjectBrushHolder(objectBrushHolder);
-        levelHolder.setTileContentHolder(tileHolder);
-        objectHolder.setLevelHolder(levelHolder);
-        tileHolder.setLevelHolder(levelHolder);
-
-        getContentPane().add(objectHolder);
-        getContentPane().add(toolsHolder);
-        getContentPane().add(objectBrushHolder);
+        getContentPane().add(palette);
         getContentPane().add(levelHolderFrame);
-        getContentPane().add(tileHolder);
+
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -107,10 +83,7 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
         loadSettings();
 
         levelHolderFrame.addComponentListener(this);
-        objectHolder.addComponentListener(this);
-        objectBrushHolder.addComponentListener(this);
-        toolsHolder.addComponentListener(this);
-        tileHolder.addComponentListener(this);
+        palette.addComponentListener(this);
 
         addWindowListener(this);
     }
@@ -226,35 +199,20 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
 
     private void saveSettings(){
         if(localSettings!=null) {
-            localSettings.objectDirectory = levelHolder.getObjectBrushHolder().getDirectoryPath();
+            localSettings.objectDirectory = levelHolder.getPalette().getDirectoryPath();
 
             localSettings.mainWidth = this.getWidth();
             localSettings.mainHeight = this.getHeight();
 
-            localSettings.lhX = levelHolderFrame.getX();
-            localSettings.lhY = levelHolderFrame.getY();
-            localSettings.lhWidth = levelHolderFrame.getWidth();
-            localSettings.lhHeigth = levelHolderFrame.getHeight();
+            localSettings.paletteX = palette.getX();
+            localSettings.paletteY = palette.getY();
+            localSettings.paletteWidth = palette.getWidth();
+            localSettings.paletteHeight = palette.getHeight();
 
-            localSettings.obhX = objectBrushHolder.getX();
-            localSettings.obhY = objectBrushHolder.getY();
-            localSettings.obhWidth = objectBrushHolder.getWidth();
-            localSettings.obhHeigth = objectBrushHolder.getHeight();
-
-            localSettings.ohX = objectHolder.getX();
-            localSettings.ohY = objectHolder.getY();
-            localSettings.ohWidth = objectHolder.getWidth();
-            localSettings.ohHeigth = objectHolder.getHeight();
-
-            localSettings.tX = toolsHolder.getX();
-            localSettings.tY = toolsHolder.getY();
-            localSettings.tWidth = toolsHolder.getWidth();
-            localSettings.tHeight = toolsHolder.getHeight();
-
-            localSettings.tiX = tileHolder.getX();
-            localSettings.tiY = tileHolder.getY();
-            localSettings.tiWidth = tileHolder.getWidth();
-            localSettings.tiHeigth = tileHolder.getHeight();
+            localSettings.levelHolderX = levelHolderFrame.getX();
+            localSettings.levelHolderY = levelHolderFrame.getY();
+            localSettings.levelHolderWidth = levelHolderFrame.getWidth();
+            localSettings.levelHolderHeight = levelHolderFrame.getHeight();
 
 
             localSettings.store();
@@ -265,13 +223,10 @@ public class MapEditor extends JFrame implements WindowListener,ActionListener,C
 
     private void loadSettings(){
         if (localSettings!=null){
-            levelHolderFrame.setBounds(localSettings.lhX,localSettings.lhY,localSettings.lhWidth,localSettings.lhHeigth);
-            objectBrushHolder.setBounds(localSettings.obhX,localSettings.obhY,localSettings.obhWidth,localSettings.obhHeigth);
-            objectHolder.setBounds(localSettings.ohX,localSettings.ohY,localSettings.ohWidth,localSettings.ohHeigth);
-            toolsHolder.setBounds(localSettings.tX,localSettings.tY,localSettings.tWidth,localSettings.tHeight);
-            tileHolder.setBounds(localSettings.tiX,localSettings.tiY,localSettings.tiWidth,localSettings.tiHeigth);
+            levelHolderFrame.setBounds(localSettings.levelHolderX,localSettings.levelHolderY,localSettings.levelHolderWidth,localSettings.levelHolderHeight);
+            palette.setBounds(localSettings.paletteX,localSettings.paletteY,localSettings.paletteWidth,localSettings.paletteHeight);
             setSize(localSettings.mainWidth,localSettings.mainHeight);
-            if(!localSettings.objectDirectory.equals(""))objectBrushHolder.loadObjects(localSettings.objectDirectory);
+            if(!localSettings.objectDirectory.equals(""))palette.loadObjects(localSettings.objectDirectory);
         }
     }
 

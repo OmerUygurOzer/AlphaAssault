@@ -14,7 +14,7 @@ public class ObjectCreator extends JFrame {
         private static final int HEIGHT = 800;
 
 
-        private JTabbedPane typePane;
+
 
 
         public ObjectCreator(){
@@ -23,14 +23,7 @@ public class ObjectCreator extends JFrame {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setResizable(false);
 
-            typePane = new JTabbedPane();
-            typePane.setBounds(0,0,WIDTH,HEIGHT);
-            typePane.addTab("Object Editor",new BaseEditor());
-
-            add(typePane);
-
-
-
+            add(new BaseEditor());
             setVisible(true);
         }
 

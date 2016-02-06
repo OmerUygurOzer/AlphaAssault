@@ -1,7 +1,7 @@
 package GUI;
 
-import IOUtils.ObjectIO;
-import objects.ObjectBase;
+import utilities.ObjectIO;
+import ingame.objects.RawObject;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -17,7 +17,7 @@ public abstract class EditorBase extends JPanel implements ActionListener {
     protected JButton save     = new JButton("Save");
     protected JButton load     = new JButton("Load");
 
-    protected ObjectBase object;
+    protected RawObject object;
 
     protected AttributesPanel attributesPanel;
 
@@ -45,7 +45,7 @@ public abstract class EditorBase extends JPanel implements ActionListener {
 
     }
 
-    public void setObject(ObjectBase object){
+    public void setObject(RawObject object){
         this.object = object;
     }
 

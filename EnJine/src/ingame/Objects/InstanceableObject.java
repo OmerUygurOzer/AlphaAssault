@@ -1,9 +1,11 @@
-package level.objects;
+package ingame.objects;
+
+import java.io.Serializable;
 
 /**
  * Created by Omer on 2/3/2016.
  */
-public class LoadableObject {
+public class InstanceableObject implements Serializable{
     public String objectFileName = "";
     public int imageWidth = 0;
     public int imageHeight = 0;

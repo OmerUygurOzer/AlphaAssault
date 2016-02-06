@@ -1,7 +1,7 @@
-package IOUtils;
+package utilities;
 
 
-import objects.ObjectBase;
+import ingame.objects.RawObject;
 
 import java.io.*;
 
@@ -9,7 +9,7 @@ import java.io.*;
  * Created by Omer on 1/30/2016.
  */
 public class ObjectIO {
-    public static void writeObject(String path, Object object){
+    public static void writeObject(String path, RawObject object){
         File file = new File(path + ".enjo");
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -23,13 +23,13 @@ public class ObjectIO {
         return;
     }
 
-    public static ObjectBase readObject(String path){
-        ObjectBase objectBase = null;
+    public static RawObject readObject(String path){
+        RawObject rawObject = null;
         try {
             FileInputStream fileInputStream = new FileInputStream(path);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-            objectBase = (ObjectBase) objectInputStream.readObject();
+            rawObject = (RawObject) objectInputStream.readObject();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -39,7 +39,7 @@ public class ObjectIO {
             e.printStackTrace();
         }
 
-        return objectBase;
+        return rawObject;
     }
 
     public static Object read(String path){

@@ -23,6 +23,8 @@ public class EnJine {
     private long window;
 
     public void run() {
+
+
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
         try {
@@ -105,7 +107,9 @@ public class EnJine {
         int fps = 0;
         while ( glfwWindowShouldClose(window) == GLFW_FALSE ) {
             if(System.currentTimeMillis() - time > 1000) {
-                System.out.println(fps);time = System.currentTimeMillis();fps=0;
+                System.out.println(fps);
+                time = System.currentTimeMillis();
+                fps=0;
             }
             fps++;
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer

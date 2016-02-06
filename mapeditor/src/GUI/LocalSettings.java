@@ -1,6 +1,8 @@
 package GUI;
 
-import IOUtils.ObjectIO;
+
+
+import utilities.ObjectIO;
 
 import java.io.File;
 import java.io.Serializable;
@@ -14,35 +16,15 @@ public class LocalSettings implements Serializable {
     public int mainWidth;
     public int mainHeight;
 
-    public int lhX;
-    public int lhY;
-    public int lhWidth;
-    public int lhHeigth;
+    public int levelHolderX;
+    public int levelHolderY;
+    public int levelHolderWidth;
+    public int levelHolderHeight;
 
-    public int obhX;
-    public int obhY;
-    public int obhWidth;
-    public int obhHeigth;
-
-    public int ohX;
-    public int ohY;
-    public int ohWidth;
-    public int ohHeigth;
-
-    public int lrX;
-    public int lrY;
-    public int lrWidth;
-    public int lrHeigth;
-
-    public int tX;
-    public int tY;
-    public int tWidth;
-    public int tHeight;
-
-    public int tiX;
-    public int tiY;
-    public int tiWidth;
-    public int tiHeigth;
+    public int paletteX;
+    public int paletteY;
+    public int paletteWidth;
+    public int paletteHeight;
 
     public void store(){
         String localPath = System.getProperty("user.dir") + "\\" + "guiSettings.enj";

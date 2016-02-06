@@ -3,9 +3,9 @@ package GUI;
 
 import GUI.utils.Animator;
 import GUI.utils.ImageUtils;
-import IOUtils.ObjectIO;
-import IOUtils.SerializableImage;
-import objects.ObjectBase;
+import utilities.ObjectIO;
+import graphics.SerializableImage;
+import ingame.objects.RawObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,11 +24,6 @@ public class BaseEditor extends EditorBase{
 
     private Animator animator;
 
-    private int[] frameX;
-    private int[] frameY;
-    private int frameCount = 0;
-    private Stack<JLabel> frameLabels = new Stack<JLabel>();
-    private Stack<BufferedImage> frames = new Stack<BufferedImage>();
 
     private JButton addFrame           = new JButton("Add Frame");
     private JButton addFrameSheet      = new JButton("Add Frame Sheet");
@@ -46,18 +41,7 @@ public class BaseEditor extends EditorBase{
         setLayout(null);
         setBounds(0,0,WIDTH,HEIGHT);
 
-
-        object = new ObjectBase();
-
-        frameX = new int[6 * 6];
-        frameY = new int[6 * 6];
-
-        for(int i = 0;i< 6;i++){
-            for(int j = 0;j< 6;j++){
-                frameX[j + i * 6] = j * 100;
-                frameY[j + i * 6] = 200 + i * 100;
-            }
-        }
+        object = new RawObject();
 
         for(int i = 20; i < 400; i++){
             frameWidth.addItem(i);
@@ -87,8 +71,7 @@ public class BaseEditor extends EditorBase{
         add(byLabel);
         add(frameHeigth);
 
-        line++;
-        animator = new Animator(20,20,100,100);
+        animator = new Animator(100,100,300,300);
         animator.setSPF(1/6f);
         add(animator);
 
@@ -139,18 +122,16 @@ public class BaseEditor extends EditorBase{
         }
 
         if(e.getSource().equals(newObject)){
-            int framesMax = frameCount;
-            for(int i = 0;i<framesMax;i++)
-                removeFrame();
-            frameCount = 0;
+            object.frames.clear();
+            animator.clear();
             attributesPanel.clearAttributes();
             return;
         }
 
 
         if(e.getSource().equals(save)){
-            String path;
-            String name;
+            String path = "";
+            String name = "";
             JFileChooser saver = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
                     "EnJine2D Files","enjo");
@@ -158,7 +139,7 @@ public class BaseEditor extends EditorBase{
             int sVal = saver.showSaveDialog(this);
             if (sVal == JFileChooser.APPROVE_OPTION) {
                 path = saver.getCurrentDirectory().toString();
-                name = saver.getSelectedFile().getName();
+                if(!path.endsWith("enjo"))name = saver.getSelectedFile().getName();
                 ObjectIO.writeObject(path+"\\"+name,object);
                 return;
             }
@@ -178,7 +159,7 @@ public class BaseEditor extends EditorBase{
             if(lVal ==JFileChooser.APPROVE_OPTION){
                 path = loader.getCurrentDirectory().toString();
                 name = loader.getSelectedFile().getName();
-                ObjectBase object = ObjectIO.readObject(path+"\\"+name);
+                RawObject object = ObjectIO.readObject(path+"\\"+name);
                 loadObject(object);
                 return;
             }
@@ -194,21 +175,9 @@ public class BaseEditor extends EditorBase{
 
 
     private void addFrame(BufferedImage image) {
-        if (frameCount < 36){
-            BufferedImage scaledImage = ImageUtils.resizeImage(image, 100, 100);
-            ImageIcon icon = new ImageIcon(scaledImage);
-            JLabel imageLabel = new JLabel();
-            imageLabel.setBackground(Color.MAGENTA);
-            imageLabel.setBounds(frameX[frameCount], frameY[frameCount], 100, 100);
-            imageLabel.setIcon(icon);
-            add(imageLabel);
-            animator.addFrame(scaledImage);
-            frames.push(scaledImage);
-            frameLabels.push(imageLabel);
-            object.frames.add(new SerializableImage(scaledImage));
-            frameCount++;
-            repaint();
-        }
+        BufferedImage scaledImage = ImageUtils.resizeImage(image, 100, 100);
+        animator.addFrame(scaledImage);
+        object.frames.add(new SerializableImage(scaledImage));
     }
 
     private void addFrames(BufferedImage image,int width,int height){
@@ -219,26 +188,22 @@ public class BaseEditor extends EditorBase{
     }
 
     private void removeFrame(){
-        if(frameLabels.size()==0)return;
-        frames.pop();
         animator.removeFrame(animator.getFrames().size()-1);
-        remove(frameLabels.pop());
-        frameCount--;
         object.frames.remove(object.frames.size()-1);
         repaint();
     }
 
-    private void loadObject(ObjectBase objectBase){
+    private void loadObject(RawObject rawObject){
         for(int i = 0 ; i < animator.getFrames().size(); i++){
-            animator.removeFrame(0);
+            animator.removeFrame(i);
         }
         attributesPanel.clearAttributes();
-        for(int i = 0 ; i < objectBase.frames.size(); i++){
-            addFrame(objectBase.frames.get(i).image);
+        for(int i = 0; i < rawObject.frames.size(); i++){
+            addFrame(rawObject.frames.get(i).image);
         }
-
-        for(String key:objectBase.attributes.keySet()){
-            attributesPanel.addAttribute(key,objectBase.attributes.get(key));
+        rawObject.attributes.clear();
+        for(String key: rawObject.attributes.keySet()){
+            attributesPanel.addAttribute(key, rawObject.attributes.get(key));
         }
 
 

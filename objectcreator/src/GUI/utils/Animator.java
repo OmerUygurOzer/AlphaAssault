@@ -131,6 +131,14 @@ public class Animator extends Canvas implements Runnable {
         }
     }
 
+    public void clear(){
+        synchronized (frameLock){
+            totalFrames = 0;
+            currentFrame = 0;
+            frames.clear();
+        }
+    }
+
     public List<BufferedImage> getFrames() {
         return frames;
     }

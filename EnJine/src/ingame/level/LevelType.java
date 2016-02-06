@@ -1,4 +1,4 @@
-package level;
+package ingame.level;
 
 /**
  * Created by Omer on 1/17/2016.
