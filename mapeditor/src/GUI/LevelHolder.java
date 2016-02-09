@@ -2,6 +2,9 @@ package GUI;
 
 
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Polygon;
+import core.BodyComponent;
 import handlers.TextureManager;
 import utilities.ObjectIO;
 import com.badlogic.gdx.ApplicationListener;
@@ -81,19 +84,61 @@ public class LevelHolder implements ApplicationListener{
     private boolean drawFog = false;
 
 
+    TextureManager textureManager = new TextureManager();
+    private TextureAtlas atlas;
+
+    BodyComponent bodyComponent1;
+    BodyComponent bodyComponent2;
+    BodyComponent bodyComponent3;
+
     @Override
     public void create() {
         loadableLevel = new LoadableLevel();
-        //TextureManager textureManager = new TextureManager();
-        //textureManager.initialize();
+
+        textureManager.initialize();
+        atlas = textureManager.getAtlas();
+
+        float [] polygon1 = {
+                            0f,0f,
+                            100f,0f,
+                            100f,50f,
+                            0f,50f
+                            };
+
+        float [] polygon2 = {
+                            0f,0f,
+                            50f,0f,
+                            50f,50f,
+                            0f,50f
+                            };
+
+        float [] polygon3 = {
+                            0f,0f,
+                            50f,0f,
+                            50f,50f,
+                            0f,50f
+                            };
+
+        bodyComponent1 = new BodyComponent(polygon1,new Vector2(0f,0f));
+        bodyComponent2 = new BodyComponent(polygon2);
+        bodyComponent3 = new BodyComponent(polygon3);
+        bodyComponent1.attach(bodyComponent2,new Vector2(100f,50f));
+        bodyComponent2.attach(bodyComponent3,new Vector2(150f,100f));
+        bodyComponent1.translate(50,50);
+        bodyComponent1.rotate(0);
+        bodyComponent1.rotate(10);
+        bodyComponent2.rotate(10);
+        bodyComponent3.rotate(10);
+
+
+
 
         width = SCREEN_WIDTH;
         height = SCREEN_HEIGTH;
 
         localSpriteBatch = new SpriteBatch();
 
-        String localPath = System.getProperty("user.dir");
-        cursor = new Sprite(new Texture(localPath+"\\"+"cursor.png"));
+        cursor = atlas.createSprite("cursor");
         cursor.setSize(20,20);
 
         orthographicCamera = new OrthographicCamera();
@@ -328,6 +373,15 @@ public class LevelHolder implements ApplicationListener{
 
 
             handleInput();
+
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+            viewport.apply();
+            shapeRenderer.polygon(bodyComponent1.getBounds().getTransformedVertices());
+            shapeRenderer.polygon(bodyComponent2.getBounds().getTransformedVertices());
+            shapeRenderer.polygon(bodyComponent3.getBounds().getTransformedVertices());
+            shapeRenderer.end();
 
             layeredRenderer.draw();
 

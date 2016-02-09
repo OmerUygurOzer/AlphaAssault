@@ -20,7 +20,7 @@ public class CircularBounds extends Bounds {
     }
     @Override
     public boolean isPointWithin(float x, float y) {
-        return MathUtilities.getDistance(x,y,center.x,center.y)<=radius;
+        return Vector2.dst(x,y,center.x,center.y)<=radius;
     }
 
     @Override

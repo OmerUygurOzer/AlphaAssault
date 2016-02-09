@@ -2,7 +2,7 @@ package GUI;
 
 
 import GUI.utils.Animator;
-import GUI.utils.ImageUtils;
+import graphics.NativeImageUtils;
 import utilities.ObjectIO;
 import graphics.SerializableImage;
 import ingame.objects.RawObject;
@@ -175,13 +175,13 @@ public class BaseEditor extends EditorBase{
 
 
     private void addFrame(BufferedImage image) {
-        BufferedImage scaledImage = ImageUtils.resizeImage(image, 100, 100);
+        BufferedImage scaledImage = NativeImageUtils.resizeImage(image, 100, 100);
         animator.addFrame(scaledImage);
         object.frames.add(new SerializableImage(scaledImage));
     }
 
     private void addFrames(BufferedImage image,int width,int height){
-        BufferedImage[] frames = ImageUtils.generateFrames(image,width,height);
+        BufferedImage[] frames = NativeImageUtils.generateFrames(image,width,height);
         for(int i = 0;i<frames.length;i++){
             addFrame(frames[i]);
         }

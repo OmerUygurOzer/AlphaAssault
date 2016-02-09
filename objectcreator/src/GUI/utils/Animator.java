@@ -1,6 +1,8 @@
 package GUI.utils;
 
 
+import graphics.NativeImageUtils;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -50,7 +52,7 @@ public class Animator extends Canvas implements Runnable {
 
     public void addFrame(BufferedImage frame){
         synchronized (frameLock) {
-            this.frames.add(ImageUtils.resizeImage(frame,canvasWidth,canvasHeight));
+            this.frames.add(NativeImageUtils.resizeImage(frame,canvasWidth,canvasHeight));
             totalFrames = frames.size();
         }
     }

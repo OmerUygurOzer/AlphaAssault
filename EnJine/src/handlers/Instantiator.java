@@ -9,6 +9,8 @@ import ingame.objects.RawObject;
  */
 public class Instantiator {
 
+
+
     public static GameObject createInstance(InstanceableObject instanceableObject, RawObject rawObject){
         GameObject gameObject = null;
 

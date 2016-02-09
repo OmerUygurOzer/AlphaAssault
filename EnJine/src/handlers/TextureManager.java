@@ -1,7 +1,12 @@
 package handlers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import graphics.NativeImageUtils;
 import ingame.objects.RawObject;
@@ -28,12 +33,13 @@ public class TextureManager {
     private String atlasPath = localPath + "\\atlas\\";
 
     private List<File> objectFiles = new ArrayList<File>();
-    private List<String> createdImages = new ArrayList<String>();
+    private List<File> images = new ArrayList<File>();
 
 
     private boolean isInitialized = false;
 
     public TextureManager(){
+
     }
 
 
@@ -55,9 +61,11 @@ public class TextureManager {
                     FileOutputStream outputStream = new FileOutputStream(packedImageFile);
                     ImageIO.write(packedImage,"png",outputStream);
                     outputStream.close();
+                    images.add(packedImageFile);
                 } catch (FileNotFoundException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();
                 }
                 objectFiles.add(file);
+
             }
         }
 
@@ -67,7 +75,14 @@ public class TextureManager {
         TexturePacker.process(settings,imagesPath,atlasPath,"EnjAtlas");
         textureAtlas = new TextureAtlas(atlasPath+"EnjAtlas.atlas");
 
+        /*
+        for(File image:createdImages){
+           image.delete();
+            }
+        */
         isInitialized = true;
     }
+
+    public TextureAtlas getAtlas(){return textureAtlas;}
 }
 
