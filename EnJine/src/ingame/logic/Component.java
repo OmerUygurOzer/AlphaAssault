@@ -1,8 +1,16 @@
 package ingame.logic;
 
+
+
+import ingame.objects.Entity;
+
 /**
  * Created by Omer on 3/1/2016.
  */
-public interface Component {
-    void use();
+public abstract class Component {
+     private Entity user;
+
+     public Entity getUser(){
+          return user;
+     }
 }
