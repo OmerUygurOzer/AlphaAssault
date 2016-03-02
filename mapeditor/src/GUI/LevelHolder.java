@@ -3,8 +3,7 @@ package GUI;
 
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Polygon;
-import core.BodyComponent;
+import ingame.physics.BodyComponent;
 import handlers.TextureManager;
 import utilities.ObjectIO;
 import com.badlogic.gdx.ApplicationListener;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -97,7 +95,7 @@ public class LevelHolder implements ApplicationListener{
 
         textureManager.initialize();
         atlas = textureManager.getAtlas();
-
+        //Debug
         float [] polygon1 = {
                             0f,0f,
                             100f,0f,
@@ -129,7 +127,7 @@ public class LevelHolder implements ApplicationListener{
         bodyComponent1.rotate(10);
         bodyComponent2.rotate(10);
         bodyComponent3.rotate(10);
-
+        ///////////////////////////////
 
 
 

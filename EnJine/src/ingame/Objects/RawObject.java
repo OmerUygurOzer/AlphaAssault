@@ -14,4 +14,5 @@ import java.util.Map;
 public class RawObject implements Serializable {
     public List<SerializableImage> frames = new ArrayList<SerializableImage>();
     public Map<String,Object> attributes = new HashMap<String, Object>();
+
 }

@@ -75,11 +75,6 @@ public class TextureManager {
         TexturePacker.process(settings,imagesPath,atlasPath,"EnjAtlas");
         textureAtlas = new TextureAtlas(atlasPath+"EnjAtlas.atlas");
 
-        /*
-        for(File image:createdImages){
-           image.delete();
-            }
-        */
         isInitialized = true;
     }
 

@@ -1,8 +1,5 @@
 package GUI;
 
-import GUI.utils.ImageHolder;
-
-
 import javax.swing.*;
 
 /**
@@ -15,15 +12,11 @@ public class ObjectCreator extends JFrame {
 
 
 
-
-
         public ObjectCreator(){
             setLayout(null);
             setSize(WIDTH,HEIGHT);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setResizable(false);
-
-            add(new BaseEditor());
             setVisible(true);
         }
 
