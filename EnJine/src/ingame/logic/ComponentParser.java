@@ -16,6 +16,7 @@ public class ComponentParser {
        componentTags = new ArrayList<String>();
     }
 
+
     public static Component parseComponent(String tag){
         /*Implement
          */

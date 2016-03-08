@@ -7,7 +7,7 @@ public class EventFilter {
 
     private EventHandler eventHandler;
 
-    public EventFilter(EventHandler eventHandler){
+    public EventFilter(){
         this.eventHandler = eventHandler;
     }
 

@@ -50,6 +50,30 @@ public class Attributes {
         return null;
     }
 
+    public double getNumeric(String key){
+        double val = 0d;
+        if(numericAttributes.containsKey(key)){
+             val = numericAttributes.get(key);
+        }
+        return val;
+    }
+
+    public boolean getBinary(String key){
+        boolean val = false;
+        if(binaryAttributes.containsKey(key)){
+            val = binaryAttributes.get(key);
+        }
+        return val;
+    }
+
+    public String getText(String key){
+        String val = "";
+        if(textAttributes.containsKey(key)){
+            val = textAttributes.get(key);
+        }
+        return val;
+    }
+
     public boolean seekAttribute(String key){
         boolean inDouble = numericAttributes.containsKey(key);
         boolean inBinary = binaryAttributes.containsKey(key);

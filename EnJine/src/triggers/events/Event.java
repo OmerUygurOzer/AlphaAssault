@@ -1,23 +1,29 @@
 package triggers.events;
 
+import ingame.logic.Attributes;
+
 /**
  * Created by Omer on 3/1/2016.
  */
-public abstract class Event {
+public abstract class Event implements EventHandler.Attachable {
 
+    protected Attributes attributes;
 
-    private EventState currentState;
-    private long startTime;
-    private float delay;
-    private float duration;
-    private float frequency;
+    protected EventState currentState;
+
+    protected long startTime;
+    protected float delay;
+    protected float duration;
+    protected float frequency;
 
     protected Event(){
+        this.attributes = new Attributes();
         this.currentState = EventState.IDLE;
         this.delay = 0;
     }
 
-    public void setDelay(int delay){
+
+    public void setDelay(float delay){
         this.delay = delay;
     }
 
@@ -29,6 +35,7 @@ public abstract class Event {
         this.frequency = frequency;
     }
 
+    @Override
     public void attach(EventHandler eventHandler){
         startTime = System.nanoTime();
         eventHandler.addEvent(this);
@@ -38,9 +45,11 @@ public abstract class Event {
         return currentState;
     }
 
+    public void setCurrentState(EventState state){ currentState = state;}
+
 
     public abstract void process();
-
+    public abstract EventModel getModel();
 
 
 
