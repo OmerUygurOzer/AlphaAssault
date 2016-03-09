@@ -22,7 +22,10 @@ public class FrameAnimator {
         this.currentFrame = 0;
     }
 
-
+    public void applySpriteSheet(SpriteSheet sheet){
+        frames.putAll(sheet.frames);
+        this.currentFrame = 0;
+    }
 
     public void addFrameSheet(String key,Sprite[] sheet){
         if(frames.isEmpty()){
