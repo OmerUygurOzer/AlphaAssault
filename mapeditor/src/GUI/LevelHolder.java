@@ -1,10 +1,7 @@
 package GUI;
 
 
-
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import ingame.physics.BodyComponent;
-import handlers.TextureManager;
 import utilities.ObjectIO;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -82,8 +79,8 @@ public class LevelHolder implements ApplicationListener{
     private boolean drawFog = false;
 
 
-    TextureManager textureManager = new TextureManager();
-    private TextureAtlas atlas;
+
+
 
     BodyComponent bodyComponent1;
     BodyComponent bodyComponent2;
@@ -93,8 +90,7 @@ public class LevelHolder implements ApplicationListener{
     public void create() {
         loadableLevel = new LoadableLevel();
 
-        textureManager.initialize();
-        atlas = textureManager.getAtlas();
+
         //Debug
         float [] polygon1 = {
                             0f,0f,
@@ -136,8 +132,8 @@ public class LevelHolder implements ApplicationListener{
 
         localSpriteBatch = new SpriteBatch();
 
-        cursor = atlas.createSprite("cursor");
-        cursor.setSize(20,20);
+        //cursor = atlas.createSprite("cursor");
+        //cursor.setSize(20,20);
 
         orthographicCamera = new OrthographicCamera();
         viewport = new FitViewport(SCREEN_WIDTH,SCREEN_HEIGTH,orthographicCamera);
@@ -320,7 +316,7 @@ public class LevelHolder implements ApplicationListener{
 
         float relativePosX = screenBoundsLeft + (((float)mouseX / (float)SCREEN_WIDTH) * screenWidth);
         float relativePosY = screenBoundsBot + (((float)mouseY / (float)SCREEN_HEIGTH) * screenHeigth);
-        cursor.setCenter(relativePosX,relativePosY);
+        //cursor.setCenter(relativePosX,relativePosY);
 
         palette.setTilePositionText(getTile(relativePosX) + "," + getTile(relativePosY));
         boolean left_click = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
@@ -366,6 +362,7 @@ public class LevelHolder implements ApplicationListener{
     @Override
     public void render() {
         synchronized (editLock) {
+
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -399,7 +396,7 @@ public class LevelHolder implements ApplicationListener{
             localSpriteBatch.begin();
             localSpriteBatch.setProjectionMatrix(viewport.getCamera().combined);
             viewport.apply();
-            cursor.draw(localSpriteBatch);
+//            cursor.draw(localSpriteBatch);
             localSpriteBatch.end();
 
 

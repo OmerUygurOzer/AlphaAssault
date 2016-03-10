@@ -1,5 +1,6 @@
 package graphics;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,8 +15,9 @@ import java.util.Map;
  */
 public class SpriteSheet {
 
-    public Map<String,Sprite[]> frames;
 
+    public Map<String,Sprite[]> frames;
+    public Texture texture;
 
 
     private SpriteSheet(){
@@ -24,6 +26,8 @@ public class SpriteSheet {
 
     public static SpriteSheet generateSheet(TextureRegion region, Grid grid,List<String> keys){
         SpriteSheet spriteSheet = new SpriteSheet();
+        spriteSheet.texture = region.getTexture();
+
         TextureRegion[][] regions = region.split(grid.tileWidth,grid.tileHeight);
         for(int i = 0 ; i< regions.length;i++){
             Sprite[] sprites = new Sprite[regions[i].length];

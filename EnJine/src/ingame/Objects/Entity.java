@@ -1,29 +1,21 @@
 package ingame.objects;
 
-import handlers.ResourceManager;
 import ingame.World;
+import resources.ResourceUser;
 
 /**
  * Created by Omer on 3/1/2016.
  */
-public class Entity extends GameObject implements ResourceManager.resourceUser{
+public abstract class Entity extends GameObject implements ResourceUser {
 
-    public Entity(World world) {
+    protected Entity(World world) {
         super(world);
     }
 
-    public Entity(GameObject gameObject) {
+    protected Entity(GameObject gameObject) {
         super(gameObject);
     }
 
 
-    @Override
-    public void register(String key) {
 
-    }
-
-    @Override
-    public void unregister(String key) {
-
-    }
 }

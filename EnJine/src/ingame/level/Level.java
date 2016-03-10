@@ -1,17 +1,17 @@
 package ingame.level;
 
-import ingame.objects.GameObject;
-import utilities.Packable;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.Gdx;
+import resources.ResourcePacker;
 
 /**
  * Created by Omer on 2/5/2016.
  */
-public class Level implements Packable {
+public class Level  {
+
     public String name;
 
-    public byte[] packed;
+    private ResourcePacker resourcePacker;
 
     public int width;
     public int height;
@@ -20,29 +20,11 @@ public class Level implements Packable {
 
 
     public Level(){
-
+        this.resourcePacker = new ResourcePacker("","","");
     }
 
 
 
 
-    @Override
-    public void pack() {
 
-    }
-
-    @Override
-    public void unpack(Packable packable) {
-
-    }
-
-    @Override
-    public void write(String name) {
-
-    }
-
-    @Override
-    public void read(String name) {
-
-    }
 }
