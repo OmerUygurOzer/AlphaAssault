@@ -1,7 +1,11 @@
 package ingame;
 
+import ingame.level.Level;
 import ingame.objects.EntityModel;
 import triggers.events.EventHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -12,16 +16,19 @@ public class World {
 
     private EventHandler eventHandler;
 
-
-
+    private Map<String,Level> levels;
+    private Level currentLevel;
 
     public World(){
-        eventHandler = new EventHandler();
+        this.eventHandler = new EventHandler();
+        this.levels = new HashMap<String, Level>();
     }
 
 
 
-
+    public void addLevel(Level level){
+        this.levels.put(level.name,level);
+    }
 
 
 

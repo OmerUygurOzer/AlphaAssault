@@ -40,14 +40,7 @@ public class ResourcePacker implements Packer,Serializable {
 
 
 
-    public ResourcePacker(String rawDir,String packedDir,String atlasName){
-
-        this.rawDir = Gdx.files.getLocalStoragePath()+ "\\" + rawDir;
-        this.packedDir = Gdx.files.getLocalStoragePath()+ "\\" + packedDir;
-
-        this.atlasName= atlasName + ".atlas";
-        this.atlasDir = packedDir + "\\" + atlasName;
-
+    public ResourcePacker(){
         this.resources     = new HashMap<String, String>();
         this.textureFiles  = new HashMap<String, String>();
         this.soundFiles    = new HashMap<String, String>();
@@ -55,9 +48,14 @@ public class ResourcePacker implements Packer,Serializable {
 
         this.soundResources= new HashMap<String, Sound>();
         this.musicResources= new HashMap<String, Music>();
+    }
 
+    public void setDirectoryNames(String rawDir,String packedDir,String atlasName){
+        this.rawDir = Gdx.files.getLocalStoragePath()+ "\\" + rawDir;
+        this.packedDir = Gdx.files.getLocalStoragePath()+ "\\" + packedDir;
 
-
+        this.atlasName= atlasName + ".atlas";
+        this.atlasDir = packedDir + "\\" + atlasName;
     }
 
     public void addTexture(String key,String fileName){

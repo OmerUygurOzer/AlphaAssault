@@ -2,6 +2,7 @@ package ingame.level;
 
 
 
+import ingame.logic.Attributes;
 import ingame.objects.ModelManager;
 import resources.Packer;
 import resources.ResourceData;
@@ -21,27 +22,25 @@ public class Level implements Packer,Serializable{
     private ResourceManager resourceManager;
     private ModelManager modelManager;
 
-    public int width;
-    public int height;
-
-    public int tileSize;
+    private Attributes levelAttributes;
     
 
     public Level(String name){
         this.name = name;
-        this.resourcePacker = new ResourcePacker("raw_"+name,"_packed"+name,name);
+        this.resourcePacker = new ResourcePacker();
+        this.resourcePacker.setDirectoryNames("raw_"+name,"_packed"+name,name);
         this.resourceManager = new ResourceManager();
         this.modelManager = new ModelManager();
-
+        this.levelAttributes = new Attributes();
     }
 
     public void setSize(int width,int height){
-        this.width  = width;
-        this.height = height;
+        levelAttributes.addAttribute("width",width);
+        levelAttributes.addAttribute("height",height);
     }
 
     public void setTileSize(int ts){
-        this.tileSize = ts;
+        levelAttributes.addAttribute("tileSize",ts);
     }
 
 
