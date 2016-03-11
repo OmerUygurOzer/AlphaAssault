@@ -53,6 +53,16 @@ public class MoveEntity extends Event {
         return eventModel;
     }
 
+    @Override
+    public String getMessage() {
+        return null;
+    }
+
+    @Override
+    public void readMessage(String message) {
+
+    }
+
     public static Trigger getTrigger(){
         return new Trigger(TAG);
     }

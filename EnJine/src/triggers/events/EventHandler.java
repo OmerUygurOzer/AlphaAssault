@@ -1,5 +1,6 @@
 package triggers.events;
 
+import triggers.Trigger;
 import triggers.TriggerHandler;
 
 import java.util.ArrayList;
@@ -17,10 +18,13 @@ public class EventHandler {
 
 
     public EventHandler(){
-        triggerHandler = new TriggerHandler(this);
+        this.eventsAll = new ArrayList<Event>();
+        this.eventsFinished = new ArrayList<Event>();
+    }
 
-        eventsAll = new ArrayList<Event>();
-        eventsFinished = new ArrayList<Event>();
+    public void setTriggerHandler(TriggerHandler triggerHandler){
+        this.triggerHandler = new TriggerHandler();
+        this.triggerHandler.setEventHandler(this);
     }
 
     public void addEvent(Event event){
@@ -31,6 +35,9 @@ public class EventHandler {
         eventsAll.addAll(events);
     }
 
+    public void addTrigger(Trigger trigger){
+        triggerHandler.addTrigger(trigger);
+    }
 
     public void processEvents(){
         for(Event event: eventsAll){

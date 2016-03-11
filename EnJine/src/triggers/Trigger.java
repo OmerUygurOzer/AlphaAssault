@@ -3,20 +3,27 @@ package triggers;
 import triggers.events.Event;
 import triggers.events.EventHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Omer on 3/7/2016.
  */
-public class Trigger {
+public class Trigger implements Serializable {
+
+    private Trigger.State currentState;
 
     public String cause;
     private List<Event> endResult;
 
-    public Trigger(String tag){
+    public Trigger(){
+        this.currentState = State.ACTIVE;
+        this.endResult = new ArrayList<Event>();
+    }
+
+    public void setCause(String tag){
         this.cause = tag;
-        endResult = new ArrayList<Event>();
     }
 
 
@@ -29,8 +36,20 @@ public class Trigger {
     }
 
     public void fire(EventHandler eventHandler){
-        for(Event event: endResult){
-            event.attach(eventHandler);
+        if(currentState == State.ACTIVE) {
+            for (Event event : endResult) {
+                event.attach(eventHandler);
+            }
         }
-    };
+    }
+
+    public State getCurrentState(){
+        return currentState;
+    }
+
+    public enum State{
+        ACTIVE,
+        IDLE,
+        DONE;
+    }
 }

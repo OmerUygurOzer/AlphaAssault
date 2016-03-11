@@ -1,11 +1,12 @@
 package triggers.events;
 
 import ingame.logic.Attributes;
+import network.Message;
 
 /**
  * Created by Omer on 3/1/2016.
  */
-public abstract class Event implements EventHandler.Attachable {
+public abstract class Event implements EventHandler.Attachable, Message {
 
     protected Attributes attributes;
 

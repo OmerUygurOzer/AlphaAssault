@@ -2,13 +2,14 @@ package ingame.logic;
 
 import exceptions.GameEngineException;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Omer on 3/1/2016.
  */
-public class Attributes {
+public class Attributes implements Serializable{
 
     private Map<String,Double> numericAttributes = new HashMap<String, Double>();
     private Map<String,Boolean> binaryAttributes = new HashMap<String, Boolean>();
@@ -39,6 +40,34 @@ public class Attributes {
             throw new GameEngineException("Attribute Addition: Two attributes can not have the same key.");
         }
         textAttributes.put(key,attribute);
+    }
+
+    public void replaceAttribute(String key,String attribute){
+        boolean inBinary  = binaryAttributes.containsKey(key);
+        boolean inNumeric = numericAttributes.containsKey(key);
+        if(inBinary || inNumeric){
+            throw new GameEngineException("Attribute Replacement: Type mismatch.");
+        }
+        textAttributes.put(key,attribute);
+    }
+
+    public void replaceAttribute(String key,double attribute){
+        boolean inBinary = binaryAttributes.containsKey(key);
+        boolean inText   = textAttributes.containsKey(key);
+        if(inBinary || inText){
+            throw new GameEngineException("Attribute Replacement: Type mismatch.");
+        }
+        numericAttributes.put(key,attribute);
+    }
+
+    public void replaceAttribute(String key,boolean attribute){
+        boolean inNumeric = numericAttributes.containsKey(key);
+        boolean inText   = textAttributes.containsKey(key);
+        if(inNumeric || inText){
+            throw new GameEngineException("Attribute Replacement: Type mismatch.");
+        }
+
+        binaryAttributes.put(key,attribute);
     }
 
     public Object getAttribute(String key){
@@ -93,5 +122,18 @@ public class Attributes {
             newAttribs.addAttribute(key,new String(textAttributes.get(key)));
         }
         return newAttribs;
+    }
+
+    public void insert(Attributes attributes){
+        for(String key : attributes.numericAttributes.keySet()){
+            this.numericAttributes.put(key,attributes.getNumeric(key));
+        }
+        for(String key : attributes.binaryAttributes.keySet()){
+            this.binaryAttributes.put(key,attributes.getBinary(key));
+        }
+        for(String key : attributes.textAttributes.keySet()){
+            this.textAttributes.put(key,attributes.getText(key));
+        }
+
     }
 }

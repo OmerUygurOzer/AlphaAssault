@@ -2,6 +2,7 @@ package triggers;
 
 import triggers.events.EventHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,15 +13,20 @@ import java.util.Map;
  */
 
 
-public class TriggerHandler {
+public class TriggerHandler implements Serializable{
 
-    private EventHandler eventHandler;
+    private transient EventHandler eventHandler;
 
     private Map<String,List<Trigger>> triggerMap;
+    private List<Trigger> finishedTriggers;
 
-    public TriggerHandler(EventHandler eventHandler){
-        this.eventHandler = eventHandler;
+    public TriggerHandler(){
         this.triggerMap = new HashMap<String, List<Trigger>>();
+        this.finishedTriggers = new ArrayList<Trigger>();
+    }
+
+    public void setEventHandler(EventHandler eventHandler){
+        this.eventHandler = eventHandler;
     }
 
     public void addTrigger(Trigger trigger){
@@ -36,7 +42,14 @@ public class TriggerHandler {
     public void filter(String tag){
         for(Trigger trigger: triggerMap.get(tag)){
             trigger.fire(eventHandler);
+            if(trigger.getCurrentState()== Trigger.State.DONE){
+                finishedTriggers.add(trigger);
+            }
         }
+        triggerMap.get(tag).removeAll(finishedTriggers);
+        finishedTriggers.clear();
+
+
     }
 
 

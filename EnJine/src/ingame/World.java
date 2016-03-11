@@ -1,9 +1,8 @@
 package ingame;
 
-import ingame.objects.Entity;
+import ingame.objects.EntityModel;
+import triggers.events.EventHandler;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Omer on 2/9/2016.
@@ -11,11 +10,13 @@ import java.util.Map;
 public class World {
     private static int baseID = Integer.MIN_VALUE;
 
+    private EventHandler eventHandler;
+
 
 
 
     public World(){
-
+        eventHandler = new EventHandler();
     }
 
 
@@ -24,8 +25,14 @@ public class World {
 
 
 
-    public int getID(){return baseID++;}
+    public int getNewID(){return baseID++;}
 
 
+    public interface WorldObject{
+        void instantiate(World world, EntityModel model);
+        boolean isInstantiated();
+        World getWorld();
+        int getID();
+    }
 
 }

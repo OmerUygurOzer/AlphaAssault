@@ -2,7 +2,7 @@ package level;
 
 
 
-import ingame.objects.InstanceableObject;
+
 import level.objects.MapObject;
 
 import java.io.Serializable;
@@ -24,7 +24,7 @@ public class LoadableLevel implements Serializable{
 
 
     private ArrayList<MapObject>[] tiles;
-    private ArrayList<InstanceableObject> objects;
+   // private ArrayList<InstanceableObject> objects;
 
 
     public LoadableLevel() {
@@ -32,7 +32,7 @@ public class LoadableLevel implements Serializable{
         this.width = 800;
         this.height = 800;
         this.tileSize = 20;
-        objects = new ArrayList<InstanceableObject>();
+        //objects = new ArrayList<InstanceableObject>();
         generateLevel();
     }
 
@@ -62,6 +62,7 @@ public class LoadableLevel implements Serializable{
     }
 
     public void addObject(MapObject object,int tileX,int tileY){
+        /*
             InstanceableObject instanceableObject = new InstanceableObject();
             instanceableObject.objectFileName = object.getObjectFile().getName();
             instanceableObject.imageWidth = (int)object.getCurrentFrame().getWidth();
@@ -70,7 +71,7 @@ public class LoadableLevel implements Serializable{
             instanceableObject.x = (int) object.position.x;
             instanceableObject.y = (int) object.position.y;
             objects.add(instanceableObject);
-
+*/
 
            int index = tileX + tileY*(width/tileSize);
             tiles[index].add(object);
@@ -90,7 +91,7 @@ public class LoadableLevel implements Serializable{
 
 
     public void clear(){
-        objects.clear();
+       // objects.clear();
         for(int i = 0; i < tiles.length;i++){
             tiles[i].clear();
         }
