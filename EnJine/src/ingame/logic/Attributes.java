@@ -9,12 +9,13 @@ import java.util.Map;
 /**
  * Created by Omer on 3/1/2016.
  */
-public class Attributes implements Serializable{
+public class Attributes implements AttributeHolder,Serializable{
 
     private Map<String,Double> numericAttributes = new HashMap<String, Double>();
     private Map<String,Boolean> binaryAttributes = new HashMap<String, Boolean>();
     private Map<String,String> textAttributes    = new HashMap<String, String>();
 
+    @Override
     public void addAttribute(String key, double attribute){
         boolean inBinary = binaryAttributes.containsKey(key);
         boolean inText = textAttributes.containsKey(key);
@@ -24,6 +25,7 @@ public class Attributes implements Serializable{
         numericAttributes.put(key,attribute);
     }
 
+    @Override
     public void addAttribute(String key, boolean attribute){
         boolean inNumeric = numericAttributes.containsKey(key);
         boolean inText = textAttributes.containsKey(key);
@@ -33,6 +35,7 @@ public class Attributes implements Serializable{
         binaryAttributes.put(key,attribute);
     }
 
+    @Override
     public void addAttribute(String key, String attribute){
         boolean inBinary = binaryAttributes.containsKey(key);
         boolean inNumeric = numericAttributes.containsKey(key);
@@ -42,6 +45,7 @@ public class Attributes implements Serializable{
         textAttributes.put(key,attribute);
     }
 
+    @Override
     public void replaceAttribute(String key,String attribute){
         boolean inBinary  = binaryAttributes.containsKey(key);
         boolean inNumeric = numericAttributes.containsKey(key);
@@ -51,6 +55,7 @@ public class Attributes implements Serializable{
         textAttributes.put(key,attribute);
     }
 
+    @Override
     public void replaceAttribute(String key,double attribute){
         boolean inBinary = binaryAttributes.containsKey(key);
         boolean inText   = textAttributes.containsKey(key);
@@ -60,6 +65,7 @@ public class Attributes implements Serializable{
         numericAttributes.put(key,attribute);
     }
 
+    @Override
     public void replaceAttribute(String key,boolean attribute){
         boolean inNumeric = numericAttributes.containsKey(key);
         boolean inText   = textAttributes.containsKey(key);
@@ -70,6 +76,7 @@ public class Attributes implements Serializable{
         binaryAttributes.put(key,attribute);
     }
 
+    @Override
     public Object getAttribute(String key){
         if(seekAttribute(key)){
             if(numericAttributes.containsKey(key))return numericAttributes.get(key);
@@ -79,6 +86,7 @@ public class Attributes implements Serializable{
         return null;
     }
 
+    @Override
     public double getNumeric(String key){
         double val = 0d;
         if(numericAttributes.containsKey(key)){
@@ -87,6 +95,7 @@ public class Attributes implements Serializable{
         return val;
     }
 
+    @Override
     public boolean getBinary(String key){
         boolean val = false;
         if(binaryAttributes.containsKey(key)){
@@ -95,6 +104,7 @@ public class Attributes implements Serializable{
         return val;
     }
 
+    @Override
     public String getText(String key){
         String val = "";
         if(textAttributes.containsKey(key)){
@@ -103,6 +113,7 @@ public class Attributes implements Serializable{
         return val;
     }
 
+    @Override
     public boolean seekAttribute(String key){
         boolean inDouble = numericAttributes.containsKey(key);
         boolean inBinary = binaryAttributes.containsKey(key);
@@ -110,6 +121,7 @@ public class Attributes implements Serializable{
         return inBinary || inDouble || inText;
     }
 
+    @Override
     public Attributes copy(){
         Attributes newAttribs = new Attributes();
         for(String key : numericAttributes.keySet()){
@@ -124,16 +136,39 @@ public class Attributes implements Serializable{
         return newAttribs;
     }
 
-    public void insert(Attributes attributes){
-        for(String key : attributes.numericAttributes.keySet()){
+    @Override
+    public void insert(AttributeHolder attributes) {
+        for(String key : attributes.getNumericAttributes().keySet()){
             this.numericAttributes.put(key,attributes.getNumeric(key));
         }
-        for(String key : attributes.binaryAttributes.keySet()){
+        for(String key : attributes.getBinaryAttributes().keySet()){
             this.binaryAttributes.put(key,attributes.getBinary(key));
         }
-        for(String key : attributes.textAttributes.keySet()){
+        for(String key : attributes.getTextAttributes().keySet()){
             this.textAttributes.put(key,attributes.getText(key));
         }
+    }
 
+    @Override
+    public void merge(AttributeHolder... attributeHolders) {
+        AttributeHolder[] ah = attributeHolders;
+        for(AttributeHolder attributeHolder: ah){
+            insert(attributeHolder);
+        }
+    }
+
+    @Override
+    public Map<String, Double> getNumericAttributes() {
+        return numericAttributes;
+    }
+
+    @Override
+    public Map<String, Boolean> getBinaryAttributes() {
+        return binaryAttributes;
+    }
+
+    @Override
+    public Map<String, String> getTextAttributes() {
+        return textAttributes;
     }
 }

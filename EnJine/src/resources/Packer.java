@@ -7,4 +7,5 @@ public interface Packer {
     void pack();
     void unpack();
     ResourceData getPackedData();
+    void dispose();
 }

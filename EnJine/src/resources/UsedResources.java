@@ -10,7 +10,15 @@ import java.util.List;
 public class UsedResources implements Serializable {
     public List<String> atlasRegions = new ArrayList<String>();
     public List<String> sounds       = new ArrayList<String>();
-    public List<String> music        = new ArrayList<String>();
+    public List<String> musics        = new ArrayList<String>();
+
+    public UsedResources getNew(){
+        UsedResources usedResources = new UsedResources();
+        usedResources.atlasRegions.addAll(atlasRegions);
+        usedResources.sounds.addAll(sounds);
+        usedResources.musics.addAll(musics);
+        return usedResources;
+    }
 
     public enum Type{
         REGION,

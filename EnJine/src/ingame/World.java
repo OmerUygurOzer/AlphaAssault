@@ -1,6 +1,8 @@
 package ingame;
 
 import ingame.level.Level;
+import ingame.logic.AttributeHolder;
+import ingame.logic.Attributes;
 import ingame.objects.EntityModel;
 import triggers.events.EventHandler;
 
@@ -30,13 +32,19 @@ public class World {
         this.levels.put(level.name,level);
     }
 
+    public void switchToLevel(String name){
+        currentLevel.dispose();
+        currentLevel = levels.get(name);
+        currentLevel.unpack();
+    }
 
+    public Level getCurrentLevel(){return currentLevel;}
 
     public int getNewID(){return baseID++;}
 
 
     public interface WorldObject{
-        void instantiate(World world, EntityModel model);
+        void instantiate(World world, EntityModel model, AttributeHolder instanceData);
         boolean isInstantiated();
         World getWorld();
         int getID();

@@ -59,4 +59,9 @@ public class Level implements Packer,Serializable{
     public ResourceData getPackedData() {
         return resourcePacker.getPackedData();
     }
+
+    @Override
+    public void dispose() {
+        resourcePacker.dispose();
+    }
 }

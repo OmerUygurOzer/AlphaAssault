@@ -37,6 +37,7 @@ public class ResourcePacker implements Packer,Serializable {
 
     private transient boolean isPacked = false;
     private transient boolean isUnpacked = false;
+    private transient boolean disposed = false;
 
 
 
@@ -140,6 +141,21 @@ public class ResourcePacker implements Packer,Serializable {
         resourceData.soundResources = soundResources;
         resourceData.musicResources = musicResources;
         return resourceData;
+    }
+
+    @Override
+    public void dispose() {
+        atlas.dispose();
+
+        for(String key : soundResources.keySet()){
+            soundResources.get(key).dispose();
+        }
+
+        for(String key : musicResources.keySet()){
+            musicResources.get(key).dispose();
+        }
+
+        disposed = true;
     }
 
 

@@ -6,6 +6,7 @@ package resources;
 public interface ResourceUser {
     String getName();
     UsedResources getUsedResources();
+    void insertResources(UsedResources usedResources);
     void registerForTextureRegion(String key);
     void registerForSound(String key);
     void registerForMusic(String key);
