@@ -8,8 +8,8 @@ import java.util.List;
  * Created by Omer on 3/10/2016.
  */
 public class UsedResources implements Serializable {
-    public List<String> atlasRegions = new ArrayList<String>();
-    public List<String> sounds       = new ArrayList<String>();
+    public List<String> atlasRegions  = new ArrayList<String>();
+    public List<String> sounds        = new ArrayList<String>();
     public List<String> musics        = new ArrayList<String>();
 
     public UsedResources getNew(){

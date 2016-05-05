@@ -104,7 +104,7 @@ public class ResourcePacker implements Packer,Serializable {
     }
 
     private void unPackCheck(){
-        if(!isUnpacked){throw new GameEngineException("Resources are not unpacked.");}
+        if(!isUnpacked){throw new GameEngineException("Resources are not packed.");}
     }
 
     @Override

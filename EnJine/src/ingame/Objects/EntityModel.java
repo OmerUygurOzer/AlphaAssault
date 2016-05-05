@@ -14,10 +14,9 @@ public class EntityModel implements Serializable{
     public UsedResources usedResources;
     public Attributes modelAttributes;
 
-    public EntityModel(String tag){
+    public EntityModel(){
         this.usedResources = new UsedResources();
         this.modelAttributes  = new Attributes();
-        this.modelAttributes.addAttribute("modelTag",tag);
     }
 
     public String getTag() {

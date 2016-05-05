@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import exceptions.GameEngineException;
 import graphics.FrameAnimator;
 import ingame.World;
+import ingame.logic.AttributeHolder;
+import ingame.logic.Attributes;
 import resources.ResourceManager;
 import resources.ResourceUser;
 import resources.UsedResources;
@@ -17,7 +19,7 @@ import resources.UsedResources;
  */
 public class Tile extends Entity  {
 
-    public UsedResources usedResources;
+    private UsedResources usedResources;
 
     private World world;
 
@@ -41,6 +43,11 @@ public class Tile extends Entity  {
     }
 
     @Override
+    public void insertResources(UsedResources usedResources) {
+        this.usedResources = usedResources;
+    }
+
+    @Override
     public void registerForTextureRegion(String key) {
         usedResources.atlasRegions.add(key);
     }
@@ -52,11 +59,11 @@ public class Tile extends Entity  {
 
     @Override
     public void registerForMusic(String key) {
-        usedResources.music.add(key);
+        usedResources.musics.add(key);
     }
 
     @Override
-    public void instantiate(World world,EntityModel model) {
+    public void instantiate(World world, EntityModel model, AttributeHolder instanceData) {
         this.world = world;
         this.attributes.addAttribute("id",world.getNewID());
         this.attributes.replaceAttribute("isInstantiated",true);

@@ -4,6 +4,8 @@ import ingame.level.Level;
 import ingame.logic.AttributeHolder;
 import ingame.logic.Attributes;
 import ingame.objects.EntityModel;
+import ingame.objects.EntityState;
+import ingame.objects.GameObject;
 import triggers.events.EventHandler;
 
 import java.util.HashMap;
