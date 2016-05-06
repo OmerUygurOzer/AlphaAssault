@@ -2,6 +2,8 @@ package ingame;
 
 import exceptions.GameEngineException;
 import ingame.level.Level;
+import ingame.objects.Entity;
+import ingame.objects.GameObject;
 import triggers.events.EventHandler;
 
 import java.util.HashMap;
@@ -33,15 +35,24 @@ public class World {
         this.levels.put(level.name,level);
     }
 
-    public void switchToLevel(String name){
+    public void switchToLevel(String name,boolean showLoadingScreen){
         if(!levels.containsKey(name)){throw new GameEngineException("Level does not exist");}
         currentLevel.dispose();
         currentLevel = levels.get(name);
         currentLevel.unpack();
     }
 
-    private void loadLevel(String name){
-
+    private void loadCurrentLevel(){
+        objects.clear();
+        for(Integer id: currentLevel.stateManager.getIDs()){
+            Entity entity = (Entity)GameObject.getLoader()
+                    .begin()
+                    .fromResourceManager(currentLevel.resourceManager)
+                    .fromModelManager(currentLevel.modelManager)
+                    .fromStateManager(currentLevel.stateManager)
+                    .load(currentLevel.stateManager.findName(id),id);
+            objects.put(id,entity);
+        }
     }
 
     public Level getCurrentLevel(){return currentLevel;}
