@@ -4,6 +4,7 @@ package ingame.level;
 
 import ingame.logic.Attributes;
 import ingame.objects.ModelManager;
+import ingame.objects.StateManager;
 import resources.Packer;
 import resources.ResourceData;
 import resources.ResourceManager;
@@ -18,19 +19,21 @@ public class Level implements Packer,Serializable{
 
     public String name;
 
-    private ResourcePacker resourcePacker;
-    private ResourceManager resourceManager;
-    private ModelManager modelManager;
+    public ResourcePacker resourcePacker;
+    public ResourceManager resourceManager;
+    public StateManager stateManager;
+    public ModelManager modelManager;
 
     private Attributes levelAttributes;
     
 
     public Level(String name){
         this.name = name;
-        this.resourcePacker = new ResourcePacker();
+        this.resourcePacker  = new ResourcePacker();
         this.resourcePacker.setDirectoryNames("raw_"+name,"_packed"+name,name);
         this.resourceManager = new ResourceManager();
-        this.modelManager = new ModelManager();
+        this.stateManager    = new StateManager();
+        this.modelManager    = new ModelManager();
         this.levelAttributes = new Attributes();
     }
 

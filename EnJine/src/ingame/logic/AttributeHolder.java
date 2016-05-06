@@ -1,11 +1,12 @@
 package ingame.logic;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Created by Omer on 3/11/2016.
  */
-public interface AttributeHolder {
+public interface AttributeHolder extends Serializable {
 
     void addAttribute(String key, double attribute);
 

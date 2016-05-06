@@ -1,11 +1,7 @@
 package ingame;
 
+import exceptions.GameEngineException;
 import ingame.level.Level;
-import ingame.logic.AttributeHolder;
-import ingame.logic.Attributes;
-import ingame.objects.EntityModel;
-import ingame.objects.EntityState;
-import ingame.objects.GameObject;
 import triggers.events.EventHandler;
 
 import java.util.HashMap;
@@ -20,12 +16,15 @@ public class World {
 
     private EventHandler eventHandler;
 
+    private Map<Integer,WorldObject> objects;
     private Map<String,Level> levels;
     private Level currentLevel;
 
+
     public World(){
         this.eventHandler = new EventHandler();
-        this.levels = new HashMap<String, Level>();
+        this.levels       = new HashMap<String, Level>();
+        this.objects      = new HashMap<Integer, WorldObject>();
     }
 
 
@@ -35,9 +34,14 @@ public class World {
     }
 
     public void switchToLevel(String name){
+        if(!levels.containsKey(name)){throw new GameEngineException("Level does not exist");}
         currentLevel.dispose();
         currentLevel = levels.get(name);
         currentLevel.unpack();
+    }
+
+    private void loadLevel(String name){
+
     }
 
     public Level getCurrentLevel(){return currentLevel;}
@@ -46,7 +50,8 @@ public class World {
 
 
     public interface WorldObject{
-        void instantiate(World world, EntityModel model, AttributeHolder instanceData);
+        void newInstance(World world);
+        void loadInstance(World world,int id);
         boolean isInstantiated();
         World getWorld();
         int getID();

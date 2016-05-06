@@ -12,7 +12,7 @@ public class UsedResources implements Serializable {
     public List<String> sounds        = new ArrayList<String>();
     public List<String> musics        = new ArrayList<String>();
 
-    public UsedResources getNew(){
+    public UsedResources getCopy(){
         UsedResources usedResources = new UsedResources();
         usedResources.atlasRegions.addAll(atlasRegions);
         usedResources.sounds.addAll(sounds);

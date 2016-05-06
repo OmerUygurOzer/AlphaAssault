@@ -35,9 +35,9 @@ public class ResourcePacker implements Packer,Serializable {
     private transient Map<String,Sound> soundResources;
     private transient Map<String,Music> musicResources;
 
-    private transient boolean isPacked = false;
-    private transient boolean isUnpacked = false;
-    private transient boolean disposed = false;
+    private transient boolean isPacked;
+    private transient boolean isUnpacked;
+    private transient boolean disposed;
 
 
 
@@ -49,6 +49,10 @@ public class ResourcePacker implements Packer,Serializable {
 
         this.soundResources= new HashMap<String, Sound>();
         this.musicResources= new HashMap<String, Music>();
+
+        isPacked   = false;
+        isUnpacked = false;
+        disposed   = false;
     }
 
     public void setDirectoryNames(String rawDir,String packedDir,String atlasName){

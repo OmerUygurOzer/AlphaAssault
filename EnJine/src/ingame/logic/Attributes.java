@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by Omer on 3/1/2016.
  */
-public class Attributes implements AttributeHolder,Serializable{
+public class Attributes implements AttributeHolder{
 
     private Map<String,Double> numericAttributes = new HashMap<String, Double>();
     private Map<String,Boolean> binaryAttributes = new HashMap<String, Boolean>();
