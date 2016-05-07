@@ -21,15 +21,27 @@ public class ResourceManager implements Serializable{
 
     public void loadResources(GameObject gameObject){
         for(String region:gameObject.objectModel.usedResources.atlasRegions){
-            gameObject.loadedResources.regions.put(region,resourceData.atlas.findRegion(region));
+            if(resourceData.atlas.findRegion(region)!=null) {
+                gameObject.loadedResources.regions.put(region, resourceData.atlas.findRegion(region));
+            }else{
+                System.out.println("TextureRegion " + region + " can not be loaded.");
+            }
         }
 
         for(String music:gameObject.objectModel.usedResources.musics){
-            gameObject.loadedResources.musics.put(music,resourceData.musicResources.get(music));
+            if(resourceData.musicResources.containsKey(music)) {
+                gameObject.loadedResources.musics.put(music, resourceData.musicResources.get(music));
+            }else{
+                System.out.println("Music " + music + " can not be loaded.");
+            }
         }
 
         for(String sound:gameObject.objectModel.usedResources.sounds){
-            gameObject.loadedResources.sounds.put(sound,resourceData.soundResources.get(sound));
+            if(resourceData.soundResources.containsKey(sound)) {
+                gameObject.loadedResources.sounds.put(sound, resourceData.soundResources.get(sound));
+            }else{
+                System.out.println("Sound " + sound + " can not be loaded.");
+            }
         }
 
     }

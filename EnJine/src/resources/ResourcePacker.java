@@ -82,8 +82,6 @@ public class ResourcePacker implements Packer,Serializable {
     }
 
 
-
-
     public TextureRegion getTextureRegion(String key){
         unPackCheck();
         return atlas.findRegion(key);

@@ -19,6 +19,7 @@ public class World {
     private EventHandler eventHandler;
 
     private Map<Integer,WorldObject> objects;
+
     private Map<String,Level> levels;
     private Level currentLevel;
 
@@ -40,6 +41,7 @@ public class World {
         currentLevel.dispose();
         currentLevel = levels.get(name);
         currentLevel.unpack();
+        loadCurrentLevel();
     }
 
     private void loadCurrentLevel(){
@@ -52,7 +54,10 @@ public class World {
                     .fromStateManager(currentLevel.stateManager)
                     .load(currentLevel.stateManager.findName(id),id);
             objects.put(id,entity);
+            entity.load(this,id);
         }
+
+
     }
 
     public Level getCurrentLevel(){return currentLevel;}
@@ -61,8 +66,8 @@ public class World {
 
 
     public interface WorldObject{
-        void newInstance(World world);
-        void loadInstance(World world,int id);
+        void instantiate(World world);
+        void load(World world,int id);
         boolean isInstantiated();
         World getWorld();
         int getID();
